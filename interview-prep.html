@@ -1,0 +1,1520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#6d17ce">
+<title>Interview Prep — JioBharatIQ</title>
+<link rel="stylesheet" href="shared/jds-tokens.css">
+<link rel="stylesheet" href="shared/ambient-glow.css">
+<style>
+  body { background: var(--white); }
+  .phone-frame { background: var(--white); }
+
+  /* Vertical accent: interview = purple */
+  :root { --vert-accent: #6d17ce; --vert-accent-light: #f0e2fc; --vert-accent-dark: #4a0e8a; }
+
+  /* ============= TOP BAR ============== */
+  .top-bar {
+    height: 56px;
+    padding: 0 var(--space-4);
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    background: var(--white);
+    flex-shrink: 0;
+    border-bottom: 1px solid transparent;
+    position: relative; z-index: 30;
+  }
+  .top-bar.scrolled { border-bottom-color: var(--grey-40); }
+  .top-bar .icon-btn {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--surface-ghost); border: none;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; flex-shrink: 0;
+    color: var(--grey-100);
+  }
+  .top-bar .title-area { flex: 1; min-width: 0; }
+  .top-bar .title-area .t1 {
+    font-size: 16px; font-weight: 700; color: var(--grey-100);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .top-bar .title-area .t2 {
+    font-size: 11px; font-weight: 500; color: var(--grey-60);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .vert-pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 10px; border-radius: var(--radius-pill);
+    background: var(--vert-accent-light); color: var(--vert-accent);
+    font-size: 11px; font-weight: 700; letter-spacing: 0.3px; text-transform: uppercase;
+  }
+
+  /* ============= VIEW SWITCHING ============== */
+  .view {
+    display: none; flex: 1; flex-direction: column; overflow: hidden;
+  }
+  .view.active { display: flex; }
+  .view-body {
+    flex: 1; overflow-y: auto; padding: var(--space-3) var(--space-4) var(--space-7);
+  }
+
+  /* ============= HOME VIEW ============== */
+  .interview-tomorrow {
+    margin: var(--space-3) 0 var(--space-5);
+    background: linear-gradient(135deg, var(--vert-accent) 0%, var(--vert-accent-dark) 100%);
+    border-radius: 22px;
+    padding: 18px;
+    color: white;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .interview-tomorrow::after {
+    content: '';
+    position: absolute;
+    right: -30px; top: -30px;
+    width: 140px; height: 140px;
+    background: radial-gradient(circle, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 70%);
+    pointer-events: none;
+  }
+  .it-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 10px; border-radius: var(--radius-pill);
+    background: rgba(255,255,255,0.2);
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.4px; text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .it-tag .pulse {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: #fff;
+    animation: livePulse 1.6s ease-in-out infinite;
+  }
+  @keyframes livePulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+  .it-h2 {
+    font-size: 22px; font-weight: 900; line-height: 1.15; letter-spacing: -0.4px;
+    margin-bottom: 6px;
+  }
+  .it-meta {
+    font-size: 13px; font-weight: 500; opacity: 0.9; margin-bottom: 14px;
+  }
+  .it-cta {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: white; color: var(--vert-accent-dark);
+    padding: 10px 16px; border-radius: var(--radius-pill);
+    font-size: 13px; font-weight: 700;
+  }
+
+  .section-h {
+    font-size: 11px; font-weight: 700; color: var(--grey-60);
+    letter-spacing: 0.6px; text-transform: uppercase;
+    margin: var(--space-5) 0 var(--space-3);
+  }
+  .section-h.first { margin-top: var(--space-3); }
+
+  /* Quick start companies */
+  .companies-row {
+    display: flex; gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    margin: 0 calc(var(--space-4) * -1);
+    padding-left: var(--space-4);
+    padding-right: var(--space-4);
+  }
+  .companies-row::-webkit-scrollbar { display: none; }
+  .company-chip {
+    flex-shrink: 0;
+    padding: 12px 14px;
+    border-radius: 14px;
+    background: var(--surface-ghost);
+    border: 1px solid var(--grey-40);
+    cursor: pointer;
+    transition: all 0.15s;
+    min-width: 130px;
+  }
+  .company-chip:hover { border-color: var(--vert-accent); }
+  .company-chip .c-logo {
+    width: 28px; height: 28px; border-radius: 8px;
+    background: var(--vert-accent);
+    color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 800;
+    margin-bottom: 8px;
+  }
+  .company-chip .c-name {
+    font-size: 13px; font-weight: 700; color: var(--grey-100);
+    line-height: 1.2; margin-bottom: 2px;
+  }
+  .company-chip .c-meta {
+    font-size: 11px; font-weight: 500; color: var(--grey-60);
+  }
+
+  /* CTA card */
+  .cta-card {
+    border: 1px solid var(--grey-40);
+    border-radius: 18px;
+    padding: 16px;
+    background: white;
+    cursor: pointer;
+    display: flex; align-items: center; gap: 14px;
+    transition: all 0.15s;
+  }
+  .cta-card:hover { border-color: var(--vert-accent); transform: translateY(-2px); }
+  .cta-card .cc-icon {
+    width: 44px; height: 44px; border-radius: 12px;
+    background: var(--vert-accent-light);
+    color: var(--vert-accent);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .cta-card .cc-text { flex: 1; }
+  .cta-card .cc-title {
+    font-size: 14px; font-weight: 700; color: var(--grey-100);
+  }
+  .cta-card .cc-sub {
+    font-size: 12px; font-weight: 500; color: var(--grey-60); margin-top: 2px;
+  }
+  .cta-card .cc-arrow { color: var(--grey-60); }
+
+  /* Stats */
+  .stats-strip {
+    display: flex; gap: 10px; margin: var(--space-4) 0 0;
+  }
+  .stat-card {
+    flex: 1;
+    background: var(--surface-ghost);
+    border-radius: 14px;
+    padding: 12px;
+    text-align: center;
+  }
+  .stat-card .v {
+    font-size: 22px; font-weight: 900; color: var(--grey-100);
+    line-height: 1;
+  }
+  .stat-card .l {
+    font-size: 10px; font-weight: 600; color: var(--grey-60);
+    margin-top: 6px; letter-spacing: 0.3px;
+  }
+
+  /* ============= SETUP WIZARD ============== */
+  .wizard-step { padding: 0 var(--space-4); }
+  .wizard-step .step-q {
+    font-size: 22px; font-weight: 900; color: var(--grey-100);
+    line-height: 1.2; margin: var(--space-3) 0 var(--space-4);
+  }
+  .wizard-options {
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .wiz-opt {
+    border: 1.5px solid var(--grey-40);
+    border-radius: 14px;
+    padding: 14px;
+    background: white;
+    cursor: pointer;
+    display: flex; align-items: center; gap: 14px;
+    transition: all 0.15s;
+  }
+  .wiz-opt:hover { border-color: var(--vert-accent); background: var(--vert-accent-light); }
+  .wiz-opt.selected { border-color: var(--vert-accent); background: var(--vert-accent-light); }
+  .wiz-opt .wo-logo {
+    width: 36px; height: 36px; border-radius: 10px;
+    background: var(--vert-accent);
+    color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 800;
+    flex-shrink: 0;
+  }
+  .wiz-opt .wo-text { flex: 1; }
+  .wiz-opt .wo-title {
+    font-size: 14px; font-weight: 700; color: var(--grey-100);
+  }
+  .wiz-opt .wo-meta {
+    font-size: 12px; font-weight: 500; color: var(--grey-60); margin-top: 2px;
+  }
+  .wiz-opt.selected .wo-meta { color: var(--vert-accent-dark); }
+  .wiz-progress {
+    display: flex; gap: 6px; padding: 12px var(--space-4) 0;
+  }
+  .wiz-progress .dot {
+    flex: 1;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--grey-40);
+  }
+  .wiz-progress .dot.done { background: var(--vert-accent); }
+  .wiz-progress .dot.current { background: var(--vert-accent); }
+
+  .wizard-footer {
+    flex-shrink: 0;
+    padding: 16px var(--space-4) calc(16px + env(safe-area-inset-bottom, 0px));
+    background: white;
+    border-top: 1px solid var(--grey-40);
+  }
+  .wizard-footer .btn-go {
+    width: 100%;
+    background: var(--vert-accent);
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: var(--radius-pill);
+    font-family: var(--font);
+    font-size: 15px; font-weight: 700;
+    cursor: pointer;
+  }
+  .wizard-footer .btn-go:disabled {
+    opacity: 0.4; cursor: default;
+  }
+
+  /* ============= CHEAT SHEET ============== */
+  .cheat-card {
+    border: 1px solid var(--grey-40);
+    border-radius: 18px;
+    padding: 16px;
+    background: white;
+    margin-bottom: 12px;
+  }
+  .cheat-card .cs-h {
+    display: flex; align-items: center; gap: 8px; margin-bottom: 10px;
+  }
+  .cheat-card .cs-icon {
+    width: 24px; height: 24px; border-radius: 6px;
+    background: var(--vert-accent-light); color: var(--vert-accent);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .cheat-card .cs-title {
+    font-size: 12px; font-weight: 700; color: var(--vert-accent);
+    letter-spacing: 0.4px; text-transform: uppercase;
+  }
+  .cheat-card .cs-list {
+    list-style: none; padding: 0; margin: 0;
+  }
+  .cheat-card .cs-list li {
+    font-size: 13px; line-height: 1.5; color: var(--grey-100);
+    padding: 6px 0;
+    border-bottom: 1px solid var(--grey-20);
+  }
+  .cheat-card .cs-list li:last-child { border-bottom: none; }
+  .cheat-card .cs-list li strong { color: var(--vert-accent-dark); font-weight: 700; }
+
+  .interviewer-card {
+    background: linear-gradient(135deg, #f0e2fc 0%, #e1c5f5 100%);
+    border-radius: 18px;
+    padding: 16px;
+    margin-bottom: 12px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .interviewer-card .ic-glow {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--vert-accent) 0%, var(--vert-accent-dark) 100%);
+    flex-shrink: 0;
+    box-shadow: 0 0 0 4px rgba(109,23,206,0.15);
+  }
+  .interviewer-card .ic-text { flex: 1; min-width: 0; }
+  .interviewer-card .ic-name {
+    font-size: 16px; font-weight: 800; color: var(--grey-100);
+    line-height: 1.2;
+  }
+  .interviewer-card .ic-role {
+    font-size: 12px; font-weight: 600; color: var(--vert-accent-dark);
+    margin-top: 2px;
+  }
+  .interviewer-card .ic-archetype {
+    font-size: 11px; font-weight: 500; color: var(--grey-80);
+    margin-top: 6px; font-style: italic;
+  }
+
+  .start-mock-btn {
+    width: 100%;
+    padding: 16px;
+    background: var(--vert-accent);
+    color: white;
+    border: none; border-radius: var(--radius-pill);
+    font-family: var(--font); font-size: 16px; font-weight: 800;
+    cursor: pointer;
+    margin-top: 12px;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .start-mock-btn .live-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #1eccb0;
+    animation: livePulse 1.6s ease-in-out infinite;
+  }
+
+  /* ============= LIVE MOCK CALL ============== */
+  .mock-view {
+    background: linear-gradient(180deg, #1f0a3d 0%, #0a0220 100%);
+    color: white;
+  }
+  .view.mock-view.active { background: linear-gradient(180deg, #1f0a3d 0%, #0a0220 100%); }
+  .mock-top {
+    height: 60px;
+    padding: 0 var(--space-4);
+    display: flex; align-items: center; gap: 12px;
+    flex-shrink: 0;
+  }
+  .mock-top .mt-end {
+    background: var(--error); color: white;
+    border: none; border-radius: var(--radius-pill);
+    padding: 8px 16px;
+    font-family: var(--font); font-size: 12px; font-weight: 700;
+    cursor: pointer;
+  }
+  .mock-top .mt-mid {
+    flex: 1; text-align: center; min-width: 0;
+  }
+  .mock-top .mt-name {
+    font-size: 14px; font-weight: 700; color: white;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .mock-top .mt-name .live-dot {
+    display: inline-block; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--success); margin-right: 6px;
+    animation: livePulse 1.6s ease-in-out infinite;
+  }
+  .mock-top .mt-timer {
+    font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.7);
+    margin-top: 2px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .mock-stage {
+    flex: 1;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: var(--space-4);
+    text-align: center;
+  }
+  .mock-stage .ambient-glow {
+    width: 220px; height: 220px;
+    margin-bottom: 28px;
+  }
+  .mock-stage .ms-q-num {
+    font-size: 11px; font-weight: 700;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 0.6px;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+  .mock-stage .ms-q {
+    font-size: 18px; font-weight: 700; color: white;
+    line-height: 1.4; max-width: 320px; margin-bottom: 8px;
+  }
+  .mock-stage .ms-prompt {
+    font-size: 12px; font-weight: 500;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.4; max-width: 280px;
+  }
+
+  .delivery-feedback {
+    position: absolute;
+    bottom: 168px; left: 50%; transform: translateX(-50%);
+    display: flex; gap: 8px;
+    padding: 6px 12px;
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    border-radius: var(--radius-pill);
+    font-size: 11px;
+    color: white;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .delivery-feedback.visible { opacity: 1; }
+  .delivery-feedback .df-pill {
+    display: inline-flex; align-items: center; gap: 4px;
+  }
+  .delivery-feedback .df-pill.warn { color: #ffd84d; }
+  .delivery-feedback .df-pill.good { color: #1eccb0; }
+
+  .mock-bottom {
+    flex-shrink: 0;
+    padding: 16px var(--space-4) calc(16px + env(safe-area-inset-bottom, 0px));
+    display: flex; align-items: center; justify-content: center;
+    gap: 16px;
+    position: relative;
+  }
+  .mock-mic {
+    width: 80px; height: 80px;
+    border-radius: 50%; border: none;
+    background: rgba(255,255,255,0.15);
+    color: white;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+  .mock-mic:hover { background: rgba(255,255,255,0.25); transform: scale(1.05); }
+  .mock-mic.recording {
+    background: var(--error);
+    animation: pulseRecord 1s ease-in-out infinite;
+  }
+  @keyframes pulseRecord {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(250,47,64,0.6); }
+    50% { box-shadow: 0 0 0 18px rgba(250,47,64,0); }
+  }
+  .mock-mic svg { width: 32px; height: 32px; }
+  .mock-side {
+    width: 52px; height: 52px;
+    border-radius: 50%; border: none;
+    background: rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.7);
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .mock-side svg { width: 22px; height: 22px; }
+
+  .pressure-overlay {
+    position: absolute;
+    top: 70px; left: 50%; transform: translateX(-50%);
+    background: var(--error);
+    color: white;
+    padding: 8px 16px;
+    border-radius: var(--radius-pill);
+    font-size: 13px;
+    font-weight: 700;
+    display: none;
+    z-index: 10;
+    animation: shake 0.5s ease-in-out;
+  }
+  .pressure-overlay.show { display: block; }
+  @keyframes shake {
+    0%, 100% { transform: translateX(-50%); }
+    25% { transform: translateX(-52%); }
+    75% { transform: translateX(-48%); }
+  }
+
+  /* ============= REPORT CARD ============== */
+  .report-hero {
+    text-align: center;
+    padding: var(--space-5) var(--space-4) var(--space-4);
+  }
+  .report-score {
+    width: 140px; height: 140px;
+    margin: 0 auto var(--space-4);
+    position: relative;
+  }
+  .report-score svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+  .report-score .score-num {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+  }
+  .report-score .sn-v {
+    font-size: 38px; font-weight: 900; color: var(--grey-100);
+    line-height: 1;
+  }
+  .report-score .sn-l {
+    font-size: 11px; font-weight: 600; color: var(--grey-60);
+    letter-spacing: 0.6px; text-transform: uppercase;
+    margin-top: 4px;
+  }
+  .report-headline {
+    font-size: 16px; font-weight: 700; color: var(--grey-100);
+    margin-bottom: 4px;
+  }
+  .report-sub {
+    font-size: 13px; color: var(--grey-80); line-height: 1.4;
+  }
+
+  .criteria-list {
+    background: white;
+    border: 1px solid var(--grey-40);
+    border-radius: 18px;
+    padding: 16px;
+    margin: 0 0 12px;
+  }
+  .criterion {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--grey-20);
+  }
+  .criterion:last-child { border-bottom: none; }
+  .criterion .cr-h {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 6px;
+  }
+  .criterion .cr-name {
+    font-size: 13px; font-weight: 700; color: var(--grey-100);
+  }
+  .criterion .cr-score {
+    font-size: 13px; font-weight: 800; color: var(--grey-100);
+    font-variant-numeric: tabular-nums;
+  }
+  .criterion .cr-bar {
+    width: 100%; height: 6px;
+    background: var(--grey-20);
+    border-radius: 3px; overflow: hidden;
+  }
+  .criterion .cr-fill {
+    height: 100%; background: var(--vert-accent);
+    border-radius: 3px;
+    transition: width 0.6s ease-out;
+  }
+  .criterion.weak .cr-fill { background: var(--warning); }
+  .criterion.strong .cr-fill { background: var(--success); }
+
+  .answer-dna {
+    background: linear-gradient(135deg, #d6f5ec 0%, #a6e2d2 100%);
+    border-radius: 18px;
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+  .answer-dna .ad-h {
+    font-size: 11px; font-weight: 700; color: #15791a;
+    letter-spacing: 0.4px; text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .answer-dna .ad-q {
+    font-size: 13px; color: var(--grey-80); margin-bottom: 6px;
+  }
+  .answer-dna .ad-a {
+    font-size: 14px; line-height: 1.4; color: var(--grey-100); font-weight: 600;
+    background: white;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid rgba(0,0,0,0.06);
+  }
+
+  .next-step-card {
+    background: linear-gradient(135deg, #fff8e7 0%, #ffe8b6 100%);
+    border-radius: 18px;
+    padding: 16px;
+  }
+  .next-step-card .ns-h {
+    font-size: 11px; font-weight: 700; color: #8c6500;
+    letter-spacing: 0.4px; text-transform: uppercase; margin-bottom: 8px;
+  }
+  .next-step-card .ns-text {
+    font-size: 13px; line-height: 1.4; color: var(--grey-100);
+  }
+
+  /* ============= MORNING-OF DASHBOARD ============== */
+  .morning-hero {
+    background: linear-gradient(135deg, #fff0d6 0%, #ffe2a6 100%);
+    border-radius: 22px;
+    padding: 18px;
+    margin-bottom: var(--space-3);
+  }
+  .morning-hero .mh-tag {
+    display: inline-flex; padding: 4px 10px;
+    background: white; color: #8c5500;
+    border-radius: var(--radius-pill);
+    font-size: 11px; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .morning-hero .mh-title {
+    font-size: 22px; font-weight: 900; color: var(--grey-100);
+    line-height: 1.2; margin-bottom: 4px;
+  }
+  .morning-hero .mh-meta {
+    font-size: 13px; color: #6c4400; font-weight: 600;
+  }
+
+  .check-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--grey-20);
+  }
+  .check-item:last-child { border-bottom: none; }
+  .check-item .ci-box {
+    width: 22px; height: 22px;
+    border: 2px solid var(--grey-40); border-radius: 6px;
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+  .check-item.checked .ci-box {
+    background: var(--success);
+    border-color: var(--success);
+    display: flex; align-items: center; justify-content: center;
+    color: white;
+  }
+  .check-item .ci-text {
+    font-size: 13px; color: var(--grey-100); line-height: 1.4;
+  }
+  .check-item.checked .ci-text {
+    color: var(--grey-60); text-decoration: line-through;
+  }
+
+  .audio-pep {
+    background: var(--vert-accent);
+    color: white;
+    border-radius: 18px;
+    padding: 18px;
+    margin-bottom: 12px;
+    display: flex; align-items: center; gap: 14px;
+    cursor: pointer;
+    transition: transform 0.15s;
+  }
+  .audio-pep:hover { transform: translateY(-2px); }
+  .audio-pep .ap-play {
+    width: 48px; height: 48px;
+    background: white; color: var(--vert-accent);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .audio-pep .ap-text { flex: 1; }
+  .audio-pep .ap-title {
+    font-size: 14px; font-weight: 700; line-height: 1.2;
+  }
+  .audio-pep .ap-sub {
+    font-size: 11px; opacity: 0.85; margin-top: 4px;
+  }
+
+  @media (min-width: 600px) {
+    .phone-frame { box-shadow: var(--shadow-lg); border-radius: 32px; margin-top: 24px; height: calc(100vh - 48px); }
+    body { background: linear-gradient(180deg, #f0f0f5 0%, #e8e8f5 100%); }
+  }
+</style>
+</head>
+<body>
+<div class="phone-frame">
+
+  <!-- ========================== HOME ========================== -->
+  <div class="view active" id="view-home">
+    <div class="top-bar">
+      <button class="icon-btn" onclick="window.location.href='index.html'" aria-label="Back">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <div class="title-area">
+        <div class="t1">Interview Prep</div>
+        <div class="t2">Mock the call. Kill the V&A.</div>
+      </div>
+      <span class="vert-pill">JBIQ</span>
+    </div>
+
+    <div class="view-body">
+      <!-- Tomorrow card — surfaces on interview day -->
+      <div class="interview-tomorrow" onclick="showView('morning')">
+        <div class="it-tag"><span class="pulse"></span>Tomorrow · 10:00 AM</div>
+        <div class="it-h2">Tech Mahindra BPS</div>
+        <div class="it-meta">V&A round + HR · Andheri East · Kept simple, you've got this.</div>
+        <div class="it-cta">Open morning-of kit
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+        </div>
+      </div>
+
+      <!-- Quick-start companies -->
+      <div class="section-h">Practise for a company</div>
+      <div class="companies-row">
+        <div class="company-chip" onclick="quickStart('tech-mahindra')">
+          <div class="c-logo" style="background:#cc0000">TM</div>
+          <div class="c-name">Tech Mahindra BPS</div>
+          <div class="c-meta">BPO · V&A round</div>
+        </div>
+        <div class="company-chip" onclick="quickStart('concentrix')">
+          <div class="c-logo" style="background:#0077c8">CX</div>
+          <div class="c-name">Concentrix</div>
+          <div class="c-meta">BPO · Customer voice</div>
+        </div>
+        <div class="company-chip" onclick="quickStart('hdfc')">
+          <div class="c-logo" style="background:#cc0000">H</div>
+          <div class="c-name">HDFC Sales</div>
+          <div class="c-meta">Sales · Field role</div>
+        </div>
+        <div class="company-chip" onclick="quickStart('bajaj')">
+          <div class="c-logo" style="background:#003d7a">BF</div>
+          <div class="c-name">Bajaj Finance</div>
+          <div class="c-meta">Sales · Telesales</div>
+        </div>
+        <div class="company-chip" onclick="showView('setup')">
+          <div class="c-logo" style="background:var(--grey-80)">+</div>
+          <div class="c-name">Other company</div>
+          <div class="c-meta">Custom mock</div>
+        </div>
+      </div>
+
+      <!-- Big CTA -->
+      <div class="section-h">Or jump in</div>
+      <div class="cta-card" onclick="showView('setup')">
+        <div class="cc-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="9" opacity="0.2"/><path d="M9 9l6 3-6 3V9z"/></svg>
+        </div>
+        <div class="cc-text">
+          <div class="cc-title">Start a mock interview now</div>
+          <div class="cc-sub">5 mins · Voice-only · Real-time feedback</div>
+        </div>
+        <span class="cc-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-strip">
+        <div class="stat-card"><div class="v">8</div><div class="l">MOCKS</div></div>
+        <div class="stat-card"><div class="v">72</div><div class="l">READINESS</div></div>
+        <div class="stat-card"><div class="v">3</div><div class="l">COMPANIES</div></div>
+      </div>
+
+      <!-- Last mock report teaser -->
+      <div class="section-h">Last mock</div>
+      <div class="cta-card" onclick="showView('report')">
+        <div class="cc-icon" style="background: #d6f5ec; color: #15791a;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M3 12l5 5L21 4" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+        </div>
+        <div class="cc-text">
+          <div class="cc-title">Concentrix · V&A round · 72/100</div>
+          <div class="cc-sub">Yesterday · Strongest opener saved · See report</div>
+        </div>
+        <span class="cc-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================== SETUP WIZARD ========================== -->
+  <div class="view" id="view-setup">
+    <div class="top-bar">
+      <button class="icon-btn" onclick="setupBack()" aria-label="Back">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <div class="title-area">
+        <div class="t1">Set up your mock</div>
+        <div class="t2" id="setup_subtitle">Pick a company</div>
+      </div>
+    </div>
+
+    <div class="wiz-progress" id="wiz_progress">
+      <div class="dot current"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+
+    <div class="view-body">
+      <div class="wizard-step" id="wiz_step">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+
+    <div class="wizard-footer">
+      <button class="btn-go" id="wiz_go" onclick="wizardNext()" disabled>Next →</button>
+    </div>
+  </div>
+
+  <!-- ========================== CHEAT SHEET ========================== -->
+  <div class="view" id="view-cheatsheet">
+    <div class="top-bar">
+      <button class="icon-btn" onclick="showView('setup')" aria-label="Back">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <div class="title-area">
+        <div class="t1" id="cs_title">Tech Mahindra · V&A round</div>
+        <div class="t2">Quick prep before you start</div>
+      </div>
+    </div>
+
+    <div class="view-body">
+      <!-- Interviewer card -->
+      <div class="interviewer-card">
+        <div class="ic-glow" id="cs_glow"></div>
+        <div class="ic-text">
+          <div class="ic-name" id="cs_name">Rajesh Kumar</div>
+          <div class="ic-role" id="cs_role">Ops Manager · Tech Mahindra BPS</div>
+          <div class="ic-archetype" id="cs_arch">Formal · Calm · Authoritative tone</div>
+        </div>
+      </div>
+
+      <!-- About company -->
+      <div class="cheat-card">
+        <div class="cs-h">
+          <div class="cs-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M3 21h18M5 21V8l7-4 7 4v13M9 12h6M9 16h6"/></svg>
+          </div>
+          <div class="cs-title">About the role</div>
+        </div>
+        <ul class="cs-list" id="cs_company">
+          <li><strong>Process:</strong> US Banking · BFSI · Inbound/outbound voice</li>
+          <li><strong>Salary:</strong> ₹22-26K base + ₹2-4K incentive</li>
+          <li><strong>Shifts:</strong> Rotational night shifts (6:30 PM – 3:30 AM IST)</li>
+          <li><strong>Office:</strong> Andheri East · Cab provided</li>
+        </ul>
+      </div>
+
+      <!-- Likely questions -->
+      <div class="cheat-card">
+        <div class="cs-h">
+          <div class="cs-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M9.5 8a2.5 2.5 0 115 0c0 1-.5 1.5-1.5 2.5S12 12 12 13M12 17h.01"/></svg>
+          </div>
+          <div class="cs-title">Likely questions</div>
+        </div>
+        <ul class="cs-list" id="cs_questions">
+          <li>Tell me about yourself in 60 seconds</li>
+          <li>Why BPO / why night shifts?</li>
+          <li>Customer is angry about a wrong charge — what do you do?</li>
+          <li>Why Tech Mahindra over Concentrix?</li>
+          <li>Can you commit to 6 months minimum?</li>
+        </ul>
+      </div>
+
+      <!-- What to remember -->
+      <div class="cheat-card">
+        <div class="cs-h">
+          <div class="cs-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="3" fill="none"/></svg>
+          </div>
+          <div class="cs-title">3 things to remember</div>
+        </div>
+        <ul class="cs-list">
+          <li><strong>Slow down.</strong> Native English speakers won't get you if you race. 130-140 words/min is the sweet spot.</li>
+          <li><strong>Empathy first.</strong> Before solving a customer problem, acknowledge how they feel.</li>
+          <li><strong>STAR for stories.</strong> Situation → Task → Action → Result. Keep it under 90 seconds.</li>
+        </ul>
+      </div>
+
+      <button class="start-mock-btn" onclick="startMock()">
+        <span class="live-dot"></span>
+        Start mock — voice on
+      </button>
+    </div>
+  </div>
+
+  <!-- ========================== LIVE MOCK CALL ========================== -->
+  <div class="view mock-view" id="view-mock">
+    <div class="mock-top">
+      <button class="mt-end" onclick="endMock()">End</button>
+      <div class="mt-mid">
+        <div class="mt-name"><span class="live-dot"></span><span id="mock_persona_name">Rajesh Kumar</span></div>
+        <div class="mt-timer" id="mock_timer">00:00</div>
+      </div>
+      <div style="width: 64px"></div>
+    </div>
+
+    <div class="pressure-overlay" id="pressure_overlay">⚡ PRESSURE DRILL</div>
+
+    <div class="mock-stage">
+      <div class="ambient-glow" id="mock_glow" data-state="speaking" data-vertical="interview">
+        <div class="halo h2"></div>
+        <div class="halo"></div>
+        <div class="orb"></div>
+      </div>
+      <div class="ms-q-num" id="mock_qnum">Question 1 of 5</div>
+      <div class="ms-q" id="mock_q">Hi, I'm Rajesh from Tech Mahindra. Let's start with — tell me about yourself in 60 seconds.</div>
+      <div class="ms-prompt" id="mock_prompt">Take a breath. Use STAR if you're sharing a story.</div>
+    </div>
+
+    <div class="delivery-feedback" id="delivery_fb">
+      <div class="df-pill" id="df_fillers">Fillers: 0</div>
+      <div class="df-pill" id="df_pace">Pace: —</div>
+      <div class="df-pill" id="df_conf">Confidence: —</div>
+    </div>
+
+    <div class="mock-bottom">
+      <button class="mock-side" onclick="skipQuestion()" aria-label="Skip question">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M5 4l10 8-10 8V4zm14 0v16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button class="mock-mic" id="mock_mic" aria-label="Mic">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 15a3 3 0 003-3V6a3 3 0 00-6 0v6a3 3 0 003 3z"/>
+          <path d="M19 11v1a7 7 0 01-14 0v-1" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+          <path d="M12 19v3m-3 0h6" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+        </svg>
+      </button>
+      <button class="mock-side" onclick="replayQuestion()" aria-label="Replay question">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M3 12a9 9 0 1015.5-6.4M21 5v4h-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- ========================== REPORT CARD ========================== -->
+  <div class="view" id="view-report">
+    <div class="top-bar">
+      <button class="icon-btn" onclick="showView('home')" aria-label="Back">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <div class="title-area">
+        <div class="t1">Mock report</div>
+        <div class="t2">Tech Mahindra · V&A round · 5 mins</div>
+      </div>
+    </div>
+
+    <div class="view-body">
+      <div class="report-hero">
+        <div class="report-score">
+          <svg viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="44" fill="none" stroke="#e0e0e0" stroke-width="6"/>
+            <circle cx="50" cy="50" r="44" fill="none" stroke="#6d17ce" stroke-width="6" stroke-dasharray="276" stroke-dashoffset="77" stroke-linecap="round"/>
+          </svg>
+          <div class="score-num">
+            <div class="sn-v">72</div>
+            <div class="sn-l">/ 100</div>
+          </div>
+        </div>
+        <div class="report-headline">Solid mock — top quartile of your last 8</div>
+        <div class="report-sub">Pace was good. Empathy could go up. One filler-heavy moment.</div>
+      </div>
+
+      <div class="section-h" style="padding: 0 var(--space-4)">5 criteria</div>
+      <div style="padding: 0 var(--space-4)">
+        <div class="criteria-list">
+          <div class="criterion strong">
+            <div class="cr-h"><div class="cr-name">Content</div><div class="cr-score">82</div></div>
+            <div class="cr-bar"><div class="cr-fill" style="width: 82%"></div></div>
+          </div>
+          <div class="criterion">
+            <div class="cr-h"><div class="cr-name">Clarity</div><div class="cr-score">75</div></div>
+            <div class="cr-bar"><div class="cr-fill" style="width: 75%"></div></div>
+          </div>
+          <div class="criterion strong">
+            <div class="cr-h"><div class="cr-name">Pace</div><div class="cr-score">88</div></div>
+            <div class="cr-bar"><div class="cr-fill" style="width: 88%"></div></div>
+          </div>
+          <div class="criterion">
+            <div class="cr-h"><div class="cr-name">Confidence</div><div class="cr-score">68</div></div>
+            <div class="cr-bar"><div class="cr-fill" style="width: 68%"></div></div>
+          </div>
+          <div class="criterion weak">
+            <div class="cr-h"><div class="cr-name">Empathy</div><div class="cr-score">56</div></div>
+            <div class="cr-bar"><div class="cr-fill" style="width: 56%"></div></div>
+          </div>
+        </div>
+
+        <!-- Answer DNA -->
+        <div class="answer-dna">
+          <div class="ad-h">⭐ Strongest answer · Saved to Answer DNA</div>
+          <div class="ad-q">Q: Why BPO?</div>
+          <div class="ad-a">"My customer-handling experience at Reliance Trends taught me people-first communication. I want to scale that — turning every customer call into a moment they remember well. BPO gives me that volume."</div>
+        </div>
+
+        <!-- Next step -->
+        <div class="next-step-card">
+          <div class="ns-h">↑ One thing to fix</div>
+          <div class="ns-text">Empathy was 56 — your answers were correct but skipped acknowledging customer feeling. Tomorrow: <strong>Lead every customer-roleplay with "I completely understand…"</strong> and the score jumps.</div>
+        </div>
+
+        <button class="start-mock-btn" style="margin-top: 16px;" onclick="showView('cheatsheet')">
+          🔁 Run another mock — fix the gap
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================== MORNING-OF DASHBOARD ========================== -->
+  <div class="view" id="view-morning">
+    <div class="top-bar">
+      <button class="icon-btn" onclick="showView('home')" aria-label="Back">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <div class="title-area">
+        <div class="t1">Morning-of kit</div>
+        <div class="t2">Everything for tomorrow's interview</div>
+      </div>
+    </div>
+
+    <div class="view-body">
+      <!-- Hero -->
+      <div class="morning-hero">
+        <div class="mh-tag">⏱ 18 hours to go</div>
+        <div class="mh-title">Tech Mahindra BPS · V&A round</div>
+        <div class="mh-meta">Tomorrow 10:00 AM · Andheri East</div>
+      </div>
+
+      <!-- Audio pep -->
+      <div class="audio-pep" onclick="playPep()">
+        <div class="ap-play">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </div>
+        <div class="ap-text">
+          <div class="ap-title">10-second pep talk · Tap to play</div>
+          <div class="ap-sub">A reminder of what you've already done well</div>
+        </div>
+      </div>
+
+      <!-- Voice warm-up -->
+      <div class="cheat-card">
+        <div class="cs-h">
+          <div class="cs-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 15a3 3 0 003-3V6a3 3 0 00-6 0v6a3 3 0 003 3z"/></svg>
+          </div>
+          <div class="cs-title">3-question voice warm-up</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-top: 6px;">
+          <button class="wiz-opt" style="text-align:left" onclick="warmupQ(1)">
+            <div class="wo-logo">1</div>
+            <div class="wo-text">
+              <div class="wo-title">"Tell me about yourself"</div>
+              <div class="wo-meta">60 seconds · Voice mock</div>
+            </div>
+          </button>
+          <button class="wiz-opt" style="text-align:left" onclick="warmupQ(2)">
+            <div class="wo-logo">2</div>
+            <div class="wo-text">
+              <div class="wo-title">"Why this company?"</div>
+              <div class="wo-meta">45 seconds · Voice mock</div>
+            </div>
+          </button>
+          <button class="wiz-opt" style="text-align:left" onclick="warmupQ(3)">
+            <div class="wo-logo">3</div>
+            <div class="wo-text">
+              <div class="wo-title">"Customer is shouting — what do you do?"</div>
+              <div class="wo-meta">60 seconds · Customer roleplay</div>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <!-- Dress code -->
+      <div class="cheat-card">
+        <div class="cs-h">
+          <div class="cs-icon">👔</div>
+          <div class="cs-title">Dress code · BPO formal</div>
+        </div>
+        <ul class="cs-list">
+          <li>Formal shirt (light blue/white) + dark trousers</li>
+          <li>Leather shoes (clean) · No sneakers</li>
+          <li>Tucked in · Belt · Ironed</li>
+        </ul>
+      </div>
+
+      <!-- Documents -->
+      <div class="cheat-card">
+        <div class="cs-h">
+          <div class="cs-icon">📋</div>
+          <div class="cs-title">Documents to carry</div>
+        </div>
+        <div>
+          <div class="check-item"><div class="ci-box" onclick="toggleCheck(this.parentNode)"></div><div class="ci-text">Resume — 2 printed copies</div></div>
+          <div class="check-item"><div class="ci-box" onclick="toggleCheck(this.parentNode)"></div><div class="ci-text">Aadhaar card + photocopy</div></div>
+          <div class="check-item"><div class="ci-box" onclick="toggleCheck(this.parentNode)"></div><div class="ci-text">Latest payslip (Reliance Trends)</div></div>
+          <div class="check-item"><div class="ci-box" onclick="toggleCheck(this.parentNode)"></div><div class="ci-text">Pen, notebook</div></div>
+        </div>
+      </div>
+
+      <!-- Hour-before checklist -->
+      <div class="cheat-card">
+        <div class="cs-h">
+          <div class="cs-icon">⏱</div>
+          <div class="cs-title">In the hour before</div>
+        </div>
+        <div>
+          <div class="check-item"><div class="ci-box" onclick="toggleCheck(this.parentNode)"></div><div class="ci-text">Drink water — your voice will thank you</div></div>
+          <div class="check-item"><div class="ci-box" onclick="toggleCheck(this.parentNode)"></div><div class="ci-text">Replay the 10-sec pep talk above</div></div>
+          <div class="check-item"><div class="ci-box" onclick="toggleCheck(this.parentNode)"></div><div class="ci-text">Practice "Tell me about yourself" once out loud</div></div>
+          <div class="check-item"><div class="ci-box" onclick="toggleCheck(this.parentNode)"></div><div class="ci-text">Smile + deep breath at the door</div></div>
+        </div>
+      </div>
+
+      <!-- Questions to ask back -->
+      <div class="cheat-card">
+        <div class="cs-h">
+          <div class="cs-icon">💬</div>
+          <div class="cs-title">Ask them back (impress)</div>
+        </div>
+        <ul class="cs-list">
+          <li>"What does success look like in the first 6 months in this role?"</li>
+          <li>"How is the team structure — is there a buddy system for new joiners?"</li>
+          <li>"What's the path from customer agent to Team Lead — typical timeline?"</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script src="shared/personas.js"></script>
+<script src="shared/jbiq-voice.js"></script>
+<script src="shared/multimodal.js"></script>
+<script>
+/* =========================================================================
+ * VIEW SWITCHING
+ * ========================================================================= */
+function showView(name) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-' + name).classList.add('active');
+  if (name !== 'mock' && mockVoice) mockVoice.stop();
+  if (name !== 'mock') stopTimer();
+  const body = document.querySelector('#view-' + name + ' .view-body');
+  if (body) body.scrollTop = 0;
+}
+
+/* =========================================================================
+ * COMPANIES + INTERVIEW SCRIPTS
+ * ========================================================================= */
+const COMPANIES = {
+  'tech-mahindra': {
+    name: 'Tech Mahindra BPS',
+    role: 'BPO Voice · US Banking',
+    salary: '₹22-26K base + ₹2-4K incentive',
+    shifts: 'Rotational night shifts (6:30 PM – 3:30 AM IST)',
+    location: 'Andheri East · Cab provided',
+    persona: 'interviewer_formal_ops',
+    questions: [
+      { q: "Hi, I'm Rajesh from Tech Mahindra. Let's start with — tell me about yourself in 60 seconds.", prompt: "Take a breath. Use STAR if you're sharing a story." },
+      { q: "Why BPO — and why specifically the night shift? What's your motivation?", prompt: "Honest is fine. Don't say 'I need money.'" },
+      { q: "A US customer is angry about a 30-minute wait. They're shouting. What's the first thing you say?", prompt: "Empathy first. Solution second.", pressure: false },
+      { q: "Quick — describe a time you handled a difficult situation. 30 seconds.", prompt: "Pressure drill. Time is short. Get to the point.", pressure: true, time: 30 },
+      { q: "Why Tech Mahindra over Concentrix or HDFC?", prompt: "Avoid generic 'great brand.' Be specific." },
+    ],
+  },
+  'concentrix': {
+    name: 'Concentrix',
+    role: 'BPO Voice · Customer Care',
+    salary: '₹20-24K base',
+    shifts: 'Day + evening shifts (mostly)',
+    location: 'Powai · Mumbai',
+    persona: 'interviewer_bored_hr',
+    questions: [
+      { q: "Hi… so… tell me about yourself.", prompt: "She's bored. Don't be boring. Pull her in." },
+      { q: "Why this company. (No 'great brand' please.)", prompt: "Be specific to Concentrix." },
+      { q: "Have you done customer voice work before?", prompt: "Reliance Trends is a YES — frame it that way." },
+    ],
+  },
+  'hdfc': {
+    name: 'HDFC Sales',
+    role: 'Field Sales · Cards & Loans',
+    salary: '₹18K base + commission',
+    shifts: 'Day shift (10 AM - 7 PM)',
+    location: 'Field role · Reports to Bandra branch',
+    persona: 'interviewer_friendly_tl',
+    questions: [
+      { q: "Heya! I'm Arjun, your potential TL. Tell me, why sales over BPO?", prompt: "Friendly TL. Be honest about money + people." },
+      { q: "Have you sold anything before? Even a YouTube channel counts.", prompt: "Reliance Trends sales — frame the experience." },
+      { q: "A customer says 'I'll think about it' for the third time. What do you do?", prompt: "Don't push too hard. Don't give up." },
+    ],
+  },
+  'bajaj': {
+    name: 'Bajaj Finance Sales',
+    role: 'Telesales · EMI Cards',
+    salary: '₹16K base + heavy incentive',
+    shifts: 'Day shift',
+    location: 'Wadala · Mumbai',
+    persona: 'interviewer_hostile_customer',
+    questions: [
+      { q: "(Customer roleplay) Look, I told the last guy — I don't want your card! Stop calling me!", prompt: "Hostile customer. Don't argue. De-escalate.", pressure: true, time: 30 },
+      { q: "(Customer roleplay) You charged my card for fees I never agreed to. I'm cancelling everything. NOW.", prompt: "Pressure drill. Empathy first. Then solve.", pressure: true, time: 30 },
+    ],
+  },
+};
+
+let currentCompany = 'tech-mahindra';
+let currentQIdx = 0;
+let timerInterval = null;
+let timerStart = 0;
+
+function quickStart(companyId) {
+  currentCompany = companyId;
+  setupCheatSheet();
+  showView('cheatsheet');
+}
+
+/* =========================================================================
+ * SETUP WIZARD
+ * ========================================================================= */
+let wizStep = 0;
+let wizData = { company: null, role: null, round: null, persona: null };
+
+const WIZARD_STEPS = [
+  {
+    title: 'Pick a company',
+    key: 'company',
+    options: [
+      { id: 'tech-mahindra', logo: 'TM', logoColor: '#cc0000', title: 'Tech Mahindra BPS', meta: 'BPO · BFSI · ₹22-26K' },
+      { id: 'concentrix',    logo: 'CX', logoColor: '#0077c8', title: 'Concentrix',          meta: 'BPO · Customer Care · ₹20-24K' },
+      { id: 'hdfc',          logo: 'H',  logoColor: '#cc0000', title: 'HDFC Sales',           meta: 'Field Sales · ₹18K + commission' },
+      { id: 'bajaj',         logo: 'BF', logoColor: '#003d7a', title: 'Bajaj Finance Sales',  meta: 'Telesales · ₹16K + heavy incentive' },
+    ],
+  },
+  {
+    title: 'Which round?',
+    key: 'round',
+    options: [
+      { id: 'hr',          logo: 'HR', logoColor: '#6d17ce', title: 'HR round',           meta: 'Tell-me-about-yourself, why-this-company' },
+      { id: 'va',          logo: 'V',  logoColor: '#6d17ce', title: 'V&A round',          meta: 'Voice & accent · Customer roleplay' },
+      { id: 'ops',         logo: 'O',  logoColor: '#6d17ce', title: 'Ops manager round',  meta: 'Process, decisions, scenarios' },
+      { id: 'pressure',    logo: '⚡',  logoColor: '#fa2f40', title: 'Pressure drill',     meta: 'Back-to-back hard Qs · Tight clock' },
+    ],
+  },
+  {
+    title: 'Pick the interviewer vibe',
+    key: 'persona',
+    options: [
+      { id: 'interviewer_bored_hr',         logo: 'PM', logoColor: '#6d17ce', title: 'Priya · Bored HR',         meta: 'Calm, flat, going-through-the-motions' },
+      { id: 'interviewer_formal_ops',       logo: 'RK', logoColor: '#3900ad', title: 'Rajesh · Formal Ops',      meta: 'Authoritative, evaluative' },
+      { id: 'interviewer_friendly_tl',      logo: 'AS', logoColor: '#1eccb0', title: 'Arjun · Friendly TL',      meta: 'Warm, encouraging, wants you to win' },
+      { id: 'interviewer_hostile_customer', logo: 'MS', logoColor: '#fa2f40', title: 'Mr. Sharma · Angry customer', meta: 'Hostile · For V&A pressure drills' },
+    ],
+  },
+  {
+    title: 'Ready to begin?',
+    key: 'confirm',
+    options: [
+      { id: 'go', logo: '▶', logoColor: '#6d17ce', title: 'Yes — start mock now', meta: '5 minutes · Voice-only · Real-time feedback' },
+    ],
+  },
+];
+
+function setupBack() {
+  if (wizStep === 0) {
+    showView('home');
+  } else {
+    wizStep--;
+    renderWizard();
+  }
+}
+
+function renderWizard() {
+  const step = WIZARD_STEPS[wizStep];
+  document.getElementById('setup_subtitle').textContent = step.title;
+  // Progress
+  document.querySelectorAll('#wiz_progress .dot').forEach((d, i) => {
+    d.classList.remove('done', 'current');
+    if (i < wizStep) d.classList.add('done');
+    if (i === wizStep) d.classList.add('current');
+  });
+  // Step
+  const c = document.getElementById('wiz_step');
+  c.innerHTML = `<div class="step-q">${step.title}</div><div class="wizard-options" id="wiz_opts"></div>`;
+  const opts = c.querySelector('#wiz_opts');
+  step.options.forEach(o => {
+    const el = document.createElement('div');
+    el.className = 'wiz-opt';
+    if (wizData[step.key] === o.id) el.classList.add('selected');
+    el.innerHTML = `
+      <div class="wo-logo" style="background:${o.logoColor}">${o.logo}</div>
+      <div class="wo-text">
+        <div class="wo-title">${o.title}</div>
+        <div class="wo-meta">${o.meta}</div>
+      </div>
+    `;
+    el.onclick = () => {
+      wizData[step.key] = o.id;
+      renderWizard();
+      // Auto-advance after a beat for non-confirm steps
+      if (step.key !== 'confirm') {
+        setTimeout(() => wizardNext(), 200);
+      }
+    };
+    opts.appendChild(el);
+  });
+  // Next button
+  const go = document.getElementById('wiz_go');
+  go.disabled = !wizData[step.key];
+  if (step.key === 'confirm') {
+    go.textContent = 'Start mock 🎤';
+  } else {
+    go.textContent = 'Next →';
+  }
+}
+
+function wizardNext() {
+  const step = WIZARD_STEPS[wizStep];
+  if (!wizData[step.key]) return;
+  if (wizStep < WIZARD_STEPS.length - 1) {
+    wizStep++;
+    renderWizard();
+  } else {
+    // Done — go to cheatsheet
+    if (wizData.company) currentCompany = wizData.company;
+    setupCheatSheet();
+    showView('cheatsheet');
+  }
+}
+
+/* =========================================================================
+ * CHEAT SHEET
+ * ========================================================================= */
+function setupCheatSheet() {
+  const c = COMPANIES[currentCompany];
+  if (!c) return;
+  const persona = window.JBIQ_PERSONAS[c.persona];
+  document.getElementById('cs_title').textContent = c.name + ' · ' + (wizData.round || 'V&A round');
+  document.getElementById('cs_name').textContent = persona.name;
+  document.getElementById('cs_role').textContent = persona.title;
+  document.getElementById('cs_arch').textContent = persona.archetype + ' · ' + persona.description;
+  document.getElementById('cs_glow').style.background = `radial-gradient(circle, ${persona.accentColor || '#6d17ce'} 0%, ${persona.accentColor ? persona.accentColor + '88' : '#3900ad'} 100%)`;
+  document.getElementById('cs_company').innerHTML = `
+    <li><strong>Process:</strong> ${c.role}</li>
+    <li><strong>Salary:</strong> ${c.salary}</li>
+    <li><strong>Shifts:</strong> ${c.shifts}</li>
+    <li><strong>Office:</strong> ${c.location}</li>
+  `;
+  document.getElementById('cs_questions').innerHTML = c.questions.map(q => `<li>${q.q.replace(/^\([^)]+\)\s*/, '').slice(0, 80)}${q.q.length > 80 ? '…' : ''}</li>`).join('');
+}
+
+/* =========================================================================
+ * LIVE MOCK CALL — Sarvam STT + persona TTS + delivery feedback
+ * ========================================================================= */
+let mockVoice = null;
+let mockStarted = false;
+
+function ensureMockVoice() {
+  const c = COMPANIES[currentCompany];
+  if (!c) return null;
+  if (mockVoice) {
+    mockVoice.setPersona(c.persona);
+    return mockVoice;
+  }
+  mockVoice = JBIQVoice.create({
+    persona: c.persona,
+    glowEl: document.getElementById('mock_glow'),
+    onTranscript: handleMockTranscript,
+    onState: handleMockState,
+    onError: (e) => { console.error('mock voice err', e); },
+  });
+  return mockVoice;
+}
+
+function handleMockState(state) {
+  const mic = document.getElementById('mock_mic');
+  mic.classList.toggle('recording', state === 'listening');
+  const fb = document.getElementById('delivery_fb');
+  fb.classList.toggle('visible', state === 'listening' || state === 'thinking');
+
+  if (state === 'listening') {
+    document.getElementById('mock_q').style.opacity = 0.4;
+  } else {
+    document.getElementById('mock_q').style.opacity = 1;
+  }
+}
+
+function startMock() {
+  showView('mock');
+  mockStarted = true;
+  currentQIdx = 0;
+  timerStart = Date.now();
+  startTimer();
+  loadQuestion(0);
+}
+
+function loadQuestion(idx) {
+  const c = COMPANIES[currentCompany];
+  if (!c || !c.questions[idx]) {
+    // End of mock
+    setTimeout(() => endMock(), 600);
+    return;
+  }
+  const persona = window.JBIQ_PERSONAS[c.persona];
+  document.getElementById('mock_persona_name').textContent = persona.name;
+  document.getElementById('mock_qnum').textContent = `Question ${idx+1} of ${c.questions.length}`;
+  const q = c.questions[idx];
+  document.getElementById('mock_q').textContent = q.q;
+  document.getElementById('mock_prompt').textContent = q.prompt;
+
+  // Pressure drill?
+  const overlay = document.getElementById('pressure_overlay');
+  if (q.pressure) {
+    overlay.classList.add('show');
+    setTimeout(() => overlay.classList.remove('show'), 2500);
+  } else {
+    overlay.classList.remove('show');
+  }
+
+  // Speak the question
+  const v = ensureMockVoice();
+  if (v) v.speak(q.q, 'en-IN');
+
+  currentQIdx = idx;
+}
+
+function handleMockTranscript(text, lang) {
+  // Compute cheap delivery metrics
+  const fillerWords = (text.toLowerCase().match(/\b(um|uh|like|you know|actually|basically)\b/g) || []).length;
+  const words = text.trim().split(/\s+/).filter(Boolean).length;
+  const pace = Math.round(words * 60 / 8); // assume ~8 sec utterance for demo
+  const conf = Math.max(40, Math.min(95, 80 - fillerWords * 8 + (pace > 110 && pace < 160 ? 10 : 0)));
+
+  const fillerEl = document.getElementById('df_fillers');
+  const paceEl = document.getElementById('df_pace');
+  const confEl = document.getElementById('df_conf');
+  fillerEl.textContent = `Fillers: ${fillerWords}`;
+  fillerEl.className = 'df-pill ' + (fillerWords > 2 ? 'warn' : 'good');
+  paceEl.textContent = `Pace: ${pace} wpm`;
+  paceEl.className = 'df-pill ' + (pace > 110 && pace < 160 ? 'good' : 'warn');
+  confEl.textContent = `Confidence: ${conf}`;
+  confEl.className = 'df-pill ' + (conf > 70 ? 'good' : 'warn');
+
+  // Move to next question
+  setTimeout(() => loadQuestion(currentQIdx + 1), 1000);
+}
+
+function skipQuestion() {
+  loadQuestion(currentQIdx + 1);
+}
+function replayQuestion() {
+  const c = COMPANIES[currentCompany];
+  const v = ensureMockVoice();
+  if (!c || !v) return;
+  v.speak(c.questions[currentQIdx].q, 'en-IN');
+}
+
+function endMock() {
+  if (mockVoice) mockVoice.stop();
+  stopTimer();
+  showView('report');
+}
+
+document.getElementById('mock_mic').addEventListener('click', () => {
+  const v = ensureMockVoice();
+  if (!v) return;
+  if (v.isRecording) v.stopRecording();
+  else v.startRecording();
+});
+
+/* Timer */
+function startTimer() {
+  stopTimer();
+  timerInterval = setInterval(() => {
+    const ms = Date.now() - timerStart;
+    const s = Math.floor(ms / 1000);
+    const mm = String(Math.floor(s / 60)).padStart(2, '0');
+    const ss = String(s % 60).padStart(2, '0');
+    const t = document.getElementById('mock_timer');
+    if (t) t.textContent = `${mm}:${ss}`;
+  }, 250);
+}
+function stopTimer() {
+  if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+}
+
+/* =========================================================================
+ * MORNING-OF
+ * ========================================================================= */
+function toggleCheck(el) {
+  el.classList.toggle('checked');
+}
+let pepVoice = null;
+function playPep() {
+  if (!pepVoice) {
+    pepVoice = JBIQVoice.create({ persona: 'jbiq_warm' });
+  }
+  pepVoice.speak("Hey Rohit — you've done eight mocks. You scored 72 yesterday. The customer roleplay was your best. Tomorrow, lead with empathy. Drink water. Smile at the door. You've got this.", 'en-IN');
+}
+function warmupQ(n) {
+  const questions = [
+    "Tell me about yourself in 60 seconds.",
+    "Why do you want to join this company?",
+    "A customer is shouting at you about a wrong charge. What do you do?"
+  ];
+  if (!pepVoice) pepVoice = JBIQVoice.create({ persona: 'interviewer_formal_ops' });
+  pepVoice.speak(questions[n-1], 'en-IN');
+  alert("Warmup Q" + n + " — " + questions[n-1] + "\n\n(In live demo, this would open a 60-sec voice mock.)");
+}
+
+/* =========================================================================
+ * INIT — handle ?q= from landing voice routing
+ * ========================================================================= */
+(function init() {
+  renderWizard(); // pre-renders the first wizard step
+  const params = new URLSearchParams(window.location.search);
+  const q = (params.get('q') || '').toLowerCase();
+  if (q.includes('tech mahindra')) currentCompany = 'tech-mahindra';
+  else if (q.includes('concentrix')) currentCompany = 'concentrix';
+  else if (q.includes('hdfc')) currentCompany = 'hdfc';
+  else if (q.includes('bajaj')) currentCompany = 'bajaj';
+
+  if (q.includes('mock now') || q.includes('start mock') || q.includes('mock interview')) {
+    setTimeout(() => { setupCheatSheet(); showView('cheatsheet'); }, 200);
+  } else if (q.includes('tomorrow') || q.includes('morning')) {
+    setTimeout(() => showView('morning'), 200);
+  }
+})();
+</script>
+</body>
+</html>
