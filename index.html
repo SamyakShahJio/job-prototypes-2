@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#3535f3">
+<title>Jobs · Careers · Skills — JioBharatIQ</title>
+<link rel="stylesheet" href="shared/jds-tokens.css">
+<link rel="stylesheet" href="shared/ambient-glow.css">
+<style>
+  body { background: #fafafe; }
+  .phone-frame { background: #fafafe; }
+
+  /* Header */
+  .top-bar {
+    height: 56px;
+    padding: 0 var(--space-4);
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    background: transparent;
+    flex-shrink: 0;
+  }
+  .top-bar .back {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--white); border: 1px solid var(--grey-40);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; flex-shrink: 0; transition: all 0.15s;
+  }
+  .top-bar .back:hover { background: var(--surface-ghost); }
+  .top-bar .back:active { transform: scale(0.92); }
+
+  /* Scroll body */
+  .body-scroll {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--space-3) var(--space-4) 120px;
+  }
+
+  /* Hero */
+  .hero {
+    padding: var(--space-3) var(--space-1) var(--space-5);
+  }
+  .hero h1 {
+    font-size: 32px;
+    line-height: 1.15;
+    font-weight: 900;
+    color: var(--grey-100);
+    letter-spacing: -0.5px;
+    margin-bottom: var(--space-3);
+  }
+  .hero h1 .accent { color: var(--primary); }
+  .hero p {
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--grey-80);
+    font-weight: 400;
+  }
+
+  /* Use case cards */
+  .cards {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+  }
+  .uc-card {
+    position: relative;
+    border-radius: 20px;
+    padding: 20px;
+    cursor: pointer;
+    overflow: hidden;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+    border: 1px solid rgba(20,20,20,0.06);
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+  .uc-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+  .uc-card:active { transform: scale(0.98); }
+  .uc-card .uc-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: var(--radius-pill);
+    background: rgba(255,255,255,0.6);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    margin-bottom: 12px;
+  }
+  .uc-card h2 {
+    font-size: 22px;
+    font-weight: 900;
+    line-height: 1.15;
+    letter-spacing: -0.3px;
+    color: var(--grey-100);
+    margin-bottom: 8px;
+  }
+  .uc-card .uc-quote {
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 1.45;
+    color: var(--grey-80);
+    margin-bottom: 16px;
+    font-style: italic;
+  }
+  .uc-card .uc-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--grey-100);
+  }
+  .uc-card .uc-cta svg { width: 14px; height: 14px; transition: transform 0.18s ease; }
+  .uc-card:hover .uc-cta svg { transform: translateX(2px); }
+  .uc-card .uc-illu {
+    position: absolute;
+    right: -8px;
+    bottom: -8px;
+    width: 110px;
+    height: 110px;
+    opacity: 0.95;
+    pointer-events: none;
+  }
+
+  /* Card colorways — Bharat-flavored, not hospital-corporate */
+  .uc-card.microlearning {
+    background: linear-gradient(135deg, #e7fce8 0%, #d3f5d5 100%);
+  }
+  .uc-card.microlearning .uc-tag { color: #167719; background: rgba(255,255,255,0.7); }
+  .uc-card.english {
+    background: linear-gradient(135deg, #e8e8fc 0%, #d2d2f5 100%);
+  }
+  .uc-card.english .uc-tag { color: #2929d0; background: rgba(255,255,255,0.7); }
+  .uc-card.interview {
+    background: linear-gradient(135deg, #f0e2fc 0%, #e1c5f5 100%);
+  }
+  .uc-card.interview .uc-tag { color: #5810b0; background: rgba(255,255,255,0.7); }
+  .uc-card.govt-exam {
+    background: linear-gradient(135deg, #fff0d6 0%, #ffe2a6 100%);
+  }
+  .uc-card.govt-exam .uc-tag { color: #9c6500; background: rgba(255,255,255,0.7); }
+
+  /* Section heading */
+  .section-h {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--grey-60);
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    margin: var(--space-6) var(--space-1) var(--space-3);
+  }
+
+  /* Day-in-life micro story */
+  .day-story {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 16px;
+    border: 1px solid var(--grey-40);
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .day-story .ds-time {
+    width: 56px;
+    flex-shrink: 0;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--grey-60);
+    letter-spacing: 0.3px;
+  }
+  .day-story .ds-text {
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--grey-100);
+    font-weight: 500;
+  }
+  .day-story .ds-text em { color: var(--primary); font-style: normal; font-weight: 700; }
+
+  /* Bottom voice dock */
+  .voice-dock {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    padding: var(--space-3) var(--space-4) calc(var(--space-3) + env(safe-area-inset-bottom, 0px));
+    background: linear-gradient(180deg, rgba(250,250,254,0) 0%, rgba(250,250,254,1) 30%);
+    z-index: 5;
+  }
+  .voice-dock-inner {
+    background: var(--white);
+    border: 1px solid var(--grey-40);
+    border-radius: var(--radius-pill);
+    padding: 8px 8px 8px 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: var(--shadow-md);
+  }
+  .voice-dock-inner .placeholder {
+    flex: 1;
+    font-size: 14px;
+    color: var(--grey-60);
+    font-weight: 500;
+  }
+  .voice-dock-mic {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    border: none;
+    background: var(--primary);
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: all 0.15s;
+  }
+  .voice-dock-mic:hover { background: var(--primary-dark); transform: scale(1.04); }
+  .voice-dock-mic:active { transform: scale(0.94); }
+  .voice-dock-mic svg { width: 20px; height: 20px; }
+
+  /* Voice overlay (fullscreen) */
+  .voice-overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--white);
+    z-index: 9999;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 24px;
+  }
+  .voice-overlay.open { display: flex; }
+  .voice-overlay .vo-top {
+    width: 100%;
+    max-width: 390px;
+    padding: 16px 0;
+    display: flex;
+    justify-content: flex-end;
+  }
+  .voice-overlay .vo-close {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    border: none;
+    background: var(--surface-ghost);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .voice-overlay .vo-body {
+    flex: 1;
+    width: 100%;
+    max-width: 390px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 24px;
+  }
+  .voice-overlay .vo-label {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--grey-100);
+    line-height: 1.3;
+  }
+  .voice-overlay .vo-sub {
+    font-size: 14px;
+    color: var(--grey-80);
+    line-height: 1.4;
+  }
+  .voice-overlay .vo-transcript {
+    background: var(--surface-ghost);
+    border-radius: 16px;
+    padding: 14px 18px;
+    font-size: 15px;
+    line-height: 1.4;
+    color: var(--grey-100);
+    max-width: 320px;
+    margin-top: 8px;
+    display: none;
+  }
+  .voice-overlay.has-transcript .vo-transcript { display: block; }
+  .voice-overlay .vo-bottom {
+    width: 100%;
+    max-width: 390px;
+    padding: 24px 0 max(24px, env(safe-area-inset-bottom, 0px));
+    display: flex;
+    justify-content: center;
+  }
+  .voice-overlay .vo-mic {
+    width: 72px; height: 72px;
+    border-radius: 50%;
+    border: none;
+    background: var(--primary);
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.15s;
+    box-shadow: 0 4px 16px rgba(53,53,243,0.3);
+  }
+  .voice-overlay .vo-mic:hover { transform: scale(1.06); }
+  .voice-overlay .vo-mic:active { transform: scale(0.94); }
+  .voice-overlay .vo-mic.recording {
+    background: var(--error);
+  }
+  .voice-overlay .vo-mic svg { width: 28px; height: 28px; }
+
+  /* Voice picker chip */
+  .voice-pref {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    display: flex;
+    gap: 6px;
+    background: var(--white);
+    border: 1px solid var(--grey-40);
+    border-radius: var(--radius-pill);
+    padding: 4px;
+  }
+  .voice-pref button {
+    padding: 6px 12px;
+    border-radius: var(--radius-pill);
+    border: none;
+    background: transparent;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--grey-80);
+    cursor: pointer;
+    font-family: var(--font);
+  }
+  .voice-pref button.active {
+    background: var(--primary);
+    color: var(--white);
+  }
+
+  @media (min-width: 600px) {
+    .phone-frame { box-shadow: var(--shadow-lg); border-radius: 32px; margin-top: 24px; height: calc(100vh - 48px); }
+    body { background: linear-gradient(180deg, #f0f0f5 0%, #e8e8f5 100%); }
+  }
+</style>
+</head>
+<body>
+<div class="phone-frame" id="phoneFrame">
+
+  <!-- Voice picker — discreet top right -->
+  <div class="voice-pref" role="group" aria-label="Choose JBIQ voice">
+    <button data-voice="jbiq_warm" class="active">Warm</button>
+    <button data-voice="jbiq_calm">Calm</button>
+  </div>
+
+  <!-- Top bar -->
+  <div class="top-bar">
+    <button class="back" onclick="window.history.length > 1 ? window.history.back() : null" aria-label="Back">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+        <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    <div style="flex:1"></div>
+    <span class="jbiq-pill">
+      <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="6"/></svg>
+      JBIQ
+    </span>
+  </div>
+
+  <!-- Body -->
+  <div class="body-scroll">
+
+    <!-- Hero -->
+    <div class="hero">
+      <h1>Jobs, careers,<br>skills — <span class="accent">your way.</span></h1>
+      <p>From a YouTube channel to a govt exam. From your first interview to your fluent English. A coach for whatever's next — not a library.</p>
+    </div>
+
+    <!-- Use case cards -->
+    <div class="section-h">Pick your goal</div>
+    <div class="cards">
+
+      <a class="uc-card microlearning" href="microlearning.html?from=landing">
+        <span class="uc-tag">Hard skills · Just-in-time</span>
+        <h2>Learn the one skill you need — in 10 minutes</h2>
+        <div class="uc-quote">"Mera thumbnail click kyun nahi ho raha. Bas ek seedha jawaab."</div>
+        <span class="uc-cta">Microlearning <svg viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <svg class="uc-illu" viewBox="0 0 120 120" fill="none">
+          <circle cx="60" cy="60" r="56" fill="#ffffff" opacity="0.5"/>
+          <rect x="32" y="38" width="56" height="38" rx="6" fill="#25ab21" opacity="0.85"/>
+          <polygon points="55,52 55,62 65,57" fill="#fff"/>
+          <rect x="40" y="80" width="40" height="3" rx="1.5" fill="#25ab21" opacity="0.6"/>
+          <rect x="44" y="86" width="32" height="3" rx="1.5" fill="#25ab21" opacity="0.4"/>
+        </svg>
+      </a>
+
+      <a class="uc-card english" href="english.html?from=landing">
+        <span class="uc-tag">English · Real situations</span>
+        <h2>Speak English without freezing</h2>
+        <div class="uc-quote">"Mujhe woh confidence chahiye jo English speakers ko hota hai."</div>
+        <span class="uc-cta">Speak English <svg viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <svg class="uc-illu" viewBox="0 0 120 120" fill="none">
+          <circle cx="60" cy="60" r="56" fill="#ffffff" opacity="0.5"/>
+          <circle cx="60" cy="55" r="22" fill="#3535f3" opacity="0.85"/>
+          <path d="M48 75 Q60 90 72 75" stroke="#3535f3" stroke-width="3" fill="none" opacity="0.85"/>
+          <circle cx="52" cy="52" r="2.5" fill="#fff"/>
+          <circle cx="68" cy="52" r="2.5" fill="#fff"/>
+          <path d="M52 60 Q60 65 68 60" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/>
+        </svg>
+      </a>
+
+      <a class="uc-card interview" href="interview-prep.html?from=landing">
+        <span class="uc-tag">Interview · Voice mock</span>
+        <h2>Mock the call — kill the V&A round</h2>
+        <div class="uc-quote">"V&A round mein freeze ho jaata hoon. Customer call role-play kaisa hota hai pata bhi nahi."</div>
+        <span class="uc-cta">Interview Prep <svg viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <svg class="uc-illu" viewBox="0 0 120 120" fill="none">
+          <circle cx="60" cy="60" r="56" fill="#ffffff" opacity="0.5"/>
+          <rect x="42" y="36" width="36" height="48" rx="20" fill="#6d17ce" opacity="0.85"/>
+          <rect x="56" y="84" width="8" height="14" fill="#6d17ce" opacity="0.85"/>
+          <line x1="44" y1="98" x2="76" y2="98" stroke="#6d17ce" stroke-width="3" stroke-linecap="round" opacity="0.85"/>
+          <circle cx="60" cy="55" r="3" fill="#fff"/>
+        </svg>
+      </a>
+
+      <a class="uc-card govt-exam" href="govt-exam.html?from=landing">
+        <span class="uc-tag">Govt Exam · Discovery + Prep</span>
+        <h2>Find your exam. Prep on your commute.</h2>
+        <div class="uc-quote">"Mujhe samajh nahi aa raha kaunsa exam dena hai. Koi seedha bata de."</div>
+        <span class="uc-cta">Govt Exam <svg viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <svg class="uc-illu" viewBox="0 0 120 120" fill="none">
+          <circle cx="60" cy="60" r="56" fill="#ffffff" opacity="0.5"/>
+          <path d="M40 50 L60 38 L80 50 L80 78 L40 78 Z" fill="#f7ab20" opacity="0.85"/>
+          <rect x="46" y="56" width="28" height="3" rx="1.5" fill="#fff"/>
+          <rect x="46" y="63" width="20" height="3" rx="1.5" fill="#fff" opacity="0.7"/>
+          <rect x="46" y="70" width="24" height="3" rx="1.5" fill="#fff" opacity="0.7"/>
+        </svg>
+      </a>
+
+    </div>
+
+  </div>
+
+  <!-- Bottom voice dock -->
+  <div class="voice-dock">
+    <div class="voice-dock-inner">
+      <span class="placeholder">Or just tell me what you need…</span>
+      <button class="voice-dock-mic" id="dockMic" aria-label="Open voice">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 15a3 3 0 003-3V6a3 3 0 00-6 0v6a3 3 0 003 3z"/>
+          <path d="M19 11v1a7 7 0 01-14 0v-1" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+          <path d="M12 19v3m-3 0h6" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<!-- Voice overlay -->
+<div class="voice-overlay" id="voiceOverlay" role="dialog" aria-modal="true" aria-label="Voice input">
+  <div class="vo-top">
+    <button class="vo-close" id="voClose" aria-label="Close">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+        <path d="M6 6l12 12M6 18l12-12" stroke="#141414" stroke-width="2.2" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+  <div class="vo-body">
+    <div class="ambient-glow" id="voGlow" data-state="idle">
+      <div class="halo h2"></div>
+      <div class="halo"></div>
+      <div class="orb"></div>
+    </div>
+    <div class="vo-label" id="voLabel">Tell me what you need</div>
+    <div class="vo-sub" id="voSub">Say "interview tomorrow" or "I want to learn thumbnails"</div>
+    <div class="vo-transcript" id="voTranscript"></div>
+  </div>
+  <div class="vo-bottom">
+    <button class="vo-mic" id="voMic" aria-label="Start recording">
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 15a3 3 0 003-3V6a3 3 0 00-6 0v6a3 3 0 003 3z"/>
+        <path d="M19 11v1a7 7 0 01-14 0v-1" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+        <path d="M12 19v3m-3 0h6" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+      </svg>
+    </button>
+  </div>
+</div>
+
+<script src="shared/personas.js"></script>
+<script src="shared/jbiq-voice.js"></script>
+<script src="shared/multimodal.js"></script>
+<script>
+  /* ============= Voice picker =============== */
+  document.querySelectorAll('.voice-pref button').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('.voice-pref button').forEach(x => x.classList.remove('active'));
+      b.classList.add('active');
+      window.JBIQ_VOICE_PREF = b.getAttribute('data-voice');
+      try { localStorage.setItem('jbiqVoicePref', window.JBIQ_VOICE_PREF); } catch(e) {}
+      if (voice && window.JBIQ_PERSONAS[window.JBIQ_VOICE_PREF]) {
+        voice.setPersona(window.JBIQ_VOICE_PREF);
+      }
+    });
+  });
+  // Restore voice pref
+  try {
+    const saved = localStorage.getItem('jbiqVoicePref');
+    if (saved && window.JBIQ_PERSONAS[saved]) {
+      window.JBIQ_VOICE_PREF = saved;
+      document.querySelectorAll('.voice-pref button').forEach(x => {
+        x.classList.toggle('active', x.getAttribute('data-voice') === saved);
+      });
+    }
+  } catch(e) {}
+
+  /* ============= Keyword router =============== */
+  const ROUTING = [
+    { keywords: ['interview', 'mock', 'concentrix', 'tech mahindra', 'hdfc sales', 'bajaj', 'bpo', 'v&a', 'voice and accent', 'hr round', 'sales role'],
+      target: 'interview-prep.html', label: 'Interview Prep', say: "Got it — let's get your interview ready. Opening Interview Prep now." },
+    { keywords: ['english', 'speak', 'fluent', 'duolingo', 'pronunciation', 'grammar', 'customer call', 'customer service', 'situational english', 'conversation'],
+      target: 'english.html', label: 'English Learning', say: "I'll set you up with the English coach. Opening now." },
+    { keywords: ['exam', 'ssc', 'ibps', 'rrb', 'banking exam', 'upsc', 'rbi', 'cgl', 'po', 'government job', 'sarkari', 'pyq', 'mock test'],
+      target: 'govt-exam.html', label: 'Govt Exam Prep', say: "Sure — let's find the right exam and start prep. Opening Govt Exam now." },
+    { keywords: ['thumbnail', 'youtube', 'creator', 'canva', 'shorts', 'editing', 'chatgpt', 'gemini', 'prompt', 'ai tool', 'capcut', 'photoshop', 'reel', 'micro', 'learn', 'skill', 'hindi', 'shop'],
+      target: 'microlearning.html', label: 'Microlearning', say: "Let's pull up the right micro-skill for you. Opening now." },
+  ];
+
+  function routeFromTranscript(text) {
+    const lower = (text || '').toLowerCase();
+    for (const r of ROUTING) {
+      for (const k of r.keywords) {
+        if (lower.includes(k)) return r;
+      }
+    }
+    return null;
+  }
+
+  /* ============= Voice overlay logic =============== */
+  const overlayEl = document.getElementById('voiceOverlay');
+  const voGlow = document.getElementById('voGlow');
+  const voLabel = document.getElementById('voLabel');
+  const voSub = document.getElementById('voSub');
+  const voTranscript = document.getElementById('voTranscript');
+  const voMic = document.getElementById('voMic');
+  const voClose = document.getElementById('voClose');
+  const dockMic = document.getElementById('dockMic');
+
+  function setLabel(label, sub) {
+    voLabel.textContent = label;
+    voSub.textContent = sub || '';
+    voSub.style.display = sub ? 'block' : 'none';
+  }
+
+  let voice = null;
+  function ensureVoice() {
+    if (voice) return voice;
+    voice = JBIQVoice.create({
+      persona: window.JBIQ_VOICE_PREF || 'jbiq_warm',
+      glowEl: voGlow,
+      onTranscript: handleTranscript,
+      onState: handleState,
+      onError: (err) => {
+        console.error(err);
+        setLabel('Mic access needed', 'Please allow microphone access');
+        voMic.classList.remove('recording');
+      },
+    });
+    return voice;
+  }
+
+  function handleState(state) {
+    voMic.classList.toggle('recording', state === 'listening');
+    if (state === 'listening') {
+      setLabel('Listening…', '');
+    } else if (state === 'thinking') {
+      setLabel('Got you. Routing…', '');
+    } else if (state === 'speaking') {
+      // label set by handleTranscript
+    } else {
+      // idle
+    }
+  }
+
+  async function handleTranscript(text, lang) {
+    if (!text) {
+      setLabel("Didn't catch that", 'Tap mic to try again');
+      return;
+    }
+    overlayEl.classList.add('has-transcript');
+    voTranscript.textContent = '"' + text + '"';
+    const route = routeFromTranscript(text);
+    if (route) {
+      setLabel('Heading to ' + route.label, 'One moment…');
+      try { await voice.speak(route.say, lang); } catch(e) {}
+      MM.chime();
+      setTimeout(() => {
+        const params = new URLSearchParams({ from: 'landing-voice', q: text });
+        window.location.href = route.target + '?' + params.toString();
+      }, 600);
+    } else {
+      // No route — pick best guess by intent
+      setLabel('Got it. Where would you like to go?', 'Pick a card below or try again.');
+      try { await voice.speak("I heard you — pick a card below to start, or try saying it again.", lang); } catch(e) {}
+    }
+  }
+
+  dockMic.addEventListener('click', () => {
+    overlayEl.classList.remove('has-transcript');
+    voTranscript.textContent = '';
+    setLabel('Tell me what you need', 'Say "interview tomorrow" or "I want to learn thumbnails"');
+    overlayEl.classList.add('open');
+    // Auto-start recording shortly after open animation
+    setTimeout(() => {
+      const v = ensureVoice();
+      v.startRecording();
+    }, 250);
+  });
+
+  voClose.addEventListener('click', () => {
+    if (voice) voice.stop();
+    overlayEl.classList.remove('open');
+    overlayEl.classList.remove('has-transcript');
+  });
+
+  voMic.addEventListener('click', () => {
+    const v = ensureVoice();
+    if (v.isRecording) {
+      v.stopRecording();
+    } else {
+      v.startRecording();
+    }
+  });
+
+  // ESC to close
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && overlayEl.classList.contains('open')) {
+      voClose.click();
+    }
+  });
+</script>
+</body>
+</html>
