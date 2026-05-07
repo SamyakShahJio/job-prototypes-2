@@ -1,0 +1,179 @@
+/* Ambient Glow — JBIQ's "no face, just light" component
+ * Per MultimodalUX deck POV slide 21:
+ *   "No face. Just light."
+ *   Soft glowing shape that moves when you talk, changes color
+ *   when JBIQ is thinking or replying.
+ *
+ * Four states: idle, listening, thinking, speaking
+ */
+
+.ambient-glow {
+  position: relative;
+  width: 180px;
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Core orb — always present */
+.ambient-glow .orb {
+  position: absolute;
+  inset: 30px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%,
+    rgba(53,53,243,0.95) 0%,
+    rgba(57,0,173,0.85) 60%,
+    rgba(57,0,173,0.4) 100%);
+  filter: blur(2px);
+  transition: background 0.6s ease, transform 0.4s ease, filter 0.4s ease;
+}
+
+/* Halos — scaling rings around the orb */
+.ambient-glow .halo {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(53,53,243,0.18) 0%, rgba(53,53,243,0) 65%);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  opacity: 0.6;
+}
+.ambient-glow .halo.h2 {
+  inset: -20px;
+  background: radial-gradient(circle, rgba(53,53,243,0.10) 0%, rgba(53,53,243,0) 60%);
+  opacity: 0.4;
+}
+
+/* ===== STATE: IDLE — slow gentle breathing ===== */
+.ambient-glow[data-state="idle"] .orb {
+  animation: glow-idle 4s ease-in-out infinite;
+}
+.ambient-glow[data-state="idle"] .halo,
+.ambient-glow[data-state="idle"] .halo.h2 {
+  animation: glow-halo-idle 4s ease-in-out infinite;
+}
+@keyframes glow-idle {
+  0%, 100% { transform: scale(1); filter: blur(2px) brightness(1); }
+  50%      { transform: scale(1.04); filter: blur(2px) brightness(1.1); }
+}
+@keyframes glow-halo-idle {
+  0%, 100% { transform: scale(1); opacity: 0.4; }
+  50%      { transform: scale(1.08); opacity: 0.6; }
+}
+
+/* ===== STATE: LISTENING — green/teal, audio-reactive pulse ===== */
+.ambient-glow[data-state="listening"] .orb {
+  background: radial-gradient(circle at 30% 30%,
+    rgba(30,204,176,1) 0%,
+    rgba(30,180,140,0.9) 60%,
+    rgba(30,150,120,0.5) 100%);
+  animation: glow-listening 0.7s ease-in-out infinite;
+}
+.ambient-glow[data-state="listening"] .halo {
+  background: radial-gradient(circle, rgba(30,204,176,0.30) 0%, rgba(30,204,176,0) 65%);
+  animation: glow-halo-listening 0.9s ease-in-out infinite;
+}
+.ambient-glow[data-state="listening"] .halo.h2 {
+  background: radial-gradient(circle, rgba(30,204,176,0.18) 0%, rgba(30,204,176,0) 60%);
+  animation: glow-halo-listening 1.2s ease-in-out infinite;
+}
+@keyframes glow-listening {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.10); }
+}
+@keyframes glow-halo-listening {
+  0%, 100% { transform: scale(1); opacity: 0.5; }
+  50%      { transform: scale(1.18); opacity: 0.85; }
+}
+
+/* ===== STATE: THINKING — purple, contemplative shimmer ===== */
+.ambient-glow[data-state="thinking"] .orb {
+  background: radial-gradient(circle at 30% 30%,
+    rgba(109,23,206,1) 0%,
+    rgba(80,0,170,0.85) 60%,
+    rgba(60,0,140,0.5) 100%);
+  animation: glow-thinking 1.6s ease-in-out infinite;
+}
+.ambient-glow[data-state="thinking"] .halo {
+  background: radial-gradient(circle, rgba(109,23,206,0.28) 0%, rgba(109,23,206,0) 65%);
+  animation: glow-halo-thinking 2s ease-in-out infinite;
+}
+.ambient-glow[data-state="thinking"] .halo.h2 {
+  background: radial-gradient(circle, rgba(109,23,206,0.16) 0%, rgba(109,23,206,0) 60%);
+  animation: glow-halo-thinking 2.6s ease-in-out infinite;
+}
+@keyframes glow-thinking {
+  0%, 100% { transform: scale(1) rotate(0deg); filter: blur(2px) brightness(0.95); }
+  50%      { transform: scale(1.06) rotate(15deg); filter: blur(3px) brightness(1.15); }
+}
+@keyframes glow-halo-thinking {
+  0%, 100% { transform: scale(1); opacity: 0.5; }
+  50%      { transform: scale(1.12); opacity: 0.8; }
+}
+
+/* ===== STATE: SPEAKING — JBIQ blue, audio-reactive expansion ===== */
+.ambient-glow[data-state="speaking"] .orb {
+  background: radial-gradient(circle at 30% 30%,
+    rgba(53,53,243,1) 0%,
+    rgba(57,0,173,0.92) 60%,
+    rgba(57,0,173,0.55) 100%);
+  animation: glow-speaking 0.5s ease-in-out infinite;
+}
+.ambient-glow[data-state="speaking"] .halo {
+  background: radial-gradient(circle, rgba(53,53,243,0.32) 0%, rgba(53,53,243,0) 65%);
+  animation: glow-halo-speaking 0.6s ease-in-out infinite;
+}
+.ambient-glow[data-state="speaking"] .halo.h2 {
+  background: radial-gradient(circle, rgba(53,53,243,0.20) 0%, rgba(53,53,243,0) 60%);
+  animation: glow-halo-speaking 0.8s ease-in-out infinite;
+}
+@keyframes glow-speaking {
+  0%, 100% { transform: scale(1); filter: blur(2px) brightness(1.05); }
+  50%      { transform: scale(1.08); filter: blur(2px) brightness(1.25); }
+}
+@keyframes glow-halo-speaking {
+  0%, 100% { transform: scale(1); opacity: 0.6; }
+  50%      { transform: scale(1.16); opacity: 0.95; }
+}
+
+/* Smaller glow variant for inline use (header, message bubble) */
+.ambient-glow.size-sm {
+  width: 56px;
+  height: 56px;
+}
+.ambient-glow.size-sm .orb {
+  inset: 8px;
+}
+
+/* Use case accent overrides — speaking color matches vertical accent */
+.ambient-glow[data-vertical="microlearning"][data-state="speaking"] .orb {
+  background: radial-gradient(circle at 30% 30%, var(--accent-microlearning) 0%, #15791a 60%, rgba(21,121,26,0.5) 100%);
+}
+.ambient-glow[data-vertical="microlearning"][data-state="speaking"] .halo {
+  background: radial-gradient(circle, rgba(37,171,33,0.30) 0%, rgba(37,171,33,0) 65%);
+}
+.ambient-glow[data-vertical="microlearning"][data-state="speaking"] .halo.h2 {
+  background: radial-gradient(circle, rgba(37,171,33,0.18) 0%, rgba(37,171,33,0) 60%);
+}
+
+.ambient-glow[data-vertical="interview"][data-state="speaking"] .orb {
+  background: radial-gradient(circle at 30% 30%, var(--accent-interview) 0%, #4a0e8a 60%, rgba(74,14,138,0.5) 100%);
+}
+.ambient-glow[data-vertical="interview"][data-state="speaking"] .halo {
+  background: radial-gradient(circle, rgba(109,23,206,0.30) 0%, rgba(109,23,206,0) 65%);
+}
+.ambient-glow[data-vertical="interview"][data-state="speaking"] .halo.h2 {
+  background: radial-gradient(circle, rgba(109,23,206,0.18) 0%, rgba(109,23,206,0) 60%);
+}
+
+.ambient-glow[data-vertical="govt-exam"][data-state="speaking"] .orb {
+  background: radial-gradient(circle at 30% 30%, var(--accent-govt-exam) 0%, #c08010 60%, rgba(192,128,16,0.5) 100%);
+}
+.ambient-glow[data-vertical="govt-exam"][data-state="speaking"] .halo {
+  background: radial-gradient(circle, rgba(247,171,32,0.30) 0%, rgba(247,171,32,0) 65%);
+}
+.ambient-glow[data-vertical="govt-exam"][data-state="speaking"] .halo.h2 {
+  background: radial-gradient(circle, rgba(247,171,32,0.18) 0%, rgba(247,171,32,0) 60%);
+}
