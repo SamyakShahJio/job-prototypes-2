@@ -1,0 +1,1312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#f7ab20">
+<title>Govt Exam Prep — JioBharatIQ</title>
+<link rel="stylesheet" href="shared/jds-tokens.css">
+<link rel="stylesheet" href="shared/ambient-glow.css">
+<style>
+  body { background: var(--white); }
+  .phone-frame { background: var(--white); }
+  :root { --vert-accent: #f7ab20; --vert-accent-light: #fff0d6; --vert-accent-dark: #b07410; }
+
+  /* ============= TOP BAR ============== */
+  .top-bar {
+    height: 56px;
+    padding: 0 var(--space-4);
+    display: flex; align-items: center; gap: var(--space-3);
+    background: var(--white);
+    flex-shrink: 0;
+    border-bottom: 1px solid transparent;
+    position: relative; z-index: 30;
+  }
+  .top-bar.scrolled { border-bottom-color: var(--grey-40); }
+  .top-bar .icon-btn {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--surface-ghost); border: none;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; flex-shrink: 0;
+    color: var(--grey-100);
+  }
+  .top-bar .title-area { flex: 1; min-width: 0; }
+  .top-bar .title-area .t1 {
+    font-size: 16px; font-weight: 700; color: var(--grey-100);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .top-bar .title-area .t2 {
+    font-size: 11px; font-weight: 500; color: var(--grey-60);
+  }
+  .vert-pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 10px; border-radius: var(--radius-pill);
+    background: var(--vert-accent-light); color: var(--vert-accent-dark);
+    font-size: 11px; font-weight: 700; letter-spacing: 0.3px; text-transform: uppercase;
+  }
+
+  .view {
+    display: none; flex: 1; flex-direction: column; overflow: hidden;
+  }
+  .view.active { display: flex; }
+  .view-body {
+    flex: 1; overflow-y: auto; padding: var(--space-3) var(--space-4) var(--space-7);
+  }
+
+  /* ============= HOME — life-first prompt ============== */
+  .life-first-card {
+    margin: var(--space-3) 0 var(--space-4);
+    background: linear-gradient(135deg, #fff0d6 0%, #ffe2a6 100%);
+    border-radius: 22px;
+    padding: 20px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .life-first-card::after {
+    content: '';
+    position: absolute;
+    right: -20px; top: -20px;
+    width: 100px; height: 100px;
+    background: radial-gradient(circle, rgba(247,171,32,0.4) 0%, rgba(247,171,32,0) 70%);
+  }
+  .life-first-card .lf-tag {
+    display: inline-flex;
+    padding: 4px 10px;
+    background: var(--white);
+    color: var(--vert-accent-dark);
+    border-radius: var(--radius-pill);
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.3px; text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .life-first-card .lf-q {
+    font-size: 20px; font-weight: 900; color: var(--grey-100);
+    line-height: 1.25; letter-spacing: -0.3px;
+    margin-bottom: 8px;
+  }
+  .life-first-card .lf-sub {
+    font-size: 13px; color: #6c4400; font-weight: 500;
+    line-height: 1.4; margin-bottom: 14px;
+  }
+  .life-first-card .lf-input-fake {
+    display: flex; align-items: center; gap: 10px;
+    background: white;
+    border: 1px solid rgba(0,0,0,0.06);
+    border-radius: var(--radius-pill);
+    padding: 8px 8px 8px 16px;
+  }
+  .life-first-card .lf-placeholder {
+    flex: 1; font-size: 14px; color: var(--grey-60);
+  }
+  .life-first-card .lf-mic {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: var(--vert-accent);
+    color: white;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+
+  /* ============= Path cards ============== */
+  .section-h {
+    font-size: 11px; font-weight: 700; color: var(--grey-60);
+    letter-spacing: 0.6px; text-transform: uppercase;
+    margin: var(--space-5) 0 var(--space-3);
+  }
+  .paths-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .path-card {
+    border-radius: 16px;
+    padding: 14px;
+    cursor: pointer;
+    transition: transform 0.15s;
+    color: var(--grey-100);
+    border: 1px solid rgba(20,20,20,0.06);
+    display: flex; flex-direction: column;
+    min-height: 120px;
+    justify-content: space-between;
+  }
+  .path-card:hover { transform: translateY(-2px); }
+  .path-card .pc-emoji {
+    font-size: 24px; width: 36px; height: 36px;
+    background: rgba(255,255,255,0.6);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .path-card .pc-name {
+    font-size: 14px; font-weight: 800; line-height: 1.2;
+  }
+  .path-card .pc-meta {
+    font-size: 11px; font-weight: 600; opacity: 0.7; margin-top: 2px;
+  }
+  .path-banking { background: linear-gradient(135deg, #d6f5ec 0%, #a6e2d2 100%); }
+  .path-admin   { background: linear-gradient(135deg, #ffe2e8 0%, #ffc4d2 100%); }
+  .path-tech    { background: linear-gradient(135deg, #e8e8fc 0%, #d2d2f5 100%); }
+  .path-state   { background: linear-gradient(135deg, #fff0d6 0%, #ffe2a6 100%); }
+
+  /* ============= Tracked exams ============== */
+  .tracked-list {
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .tracked-card {
+    border: 1px solid var(--grey-40);
+    border-radius: 16px;
+    padding: 14px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .tracked-card:hover { border-color: var(--vert-accent); }
+  .tracked-card .tc-h {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+  }
+  .tracked-card .tc-icon {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    background: var(--vert-accent-light);
+    color: var(--vert-accent-dark);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 800;
+    flex-shrink: 0;
+  }
+  .tracked-card .tc-name {
+    font-size: 14px; font-weight: 700; color: var(--grey-100);
+    flex: 1; min-width: 0;
+  }
+  .tracked-card .tc-cd {
+    font-size: 11px; font-weight: 700; color: var(--vert-accent-dark);
+    background: var(--vert-accent-light);
+    padding: 4px 8px; border-radius: var(--radius-pill);
+    flex-shrink: 0;
+  }
+  .tracked-card .tc-progress-row {
+    display: flex; align-items: center; gap: 10px; font-size: 11px;
+    color: var(--grey-60); font-weight: 500;
+  }
+  .tracked-card .tc-bar {
+    flex: 1; height: 6px;
+    background: var(--grey-20); border-radius: 3px; overflow: hidden;
+  }
+  .tracked-card .tc-fill {
+    height: 100%; background: var(--vert-accent);
+    border-radius: 3px;
+  }
+  .tracked-card .tc-pct {
+    font-size: 12px; font-weight: 700; color: var(--grey-100);
+    min-width: 38px; text-align: right;
+  }
+
+  /* Stats */
+  .stats-strip {
+    display: flex; gap: 10px; margin-top: var(--space-3);
+  }
+  .stat-card {
+    flex: 1;
+    background: var(--surface-ghost);
+    border-radius: 14px; padding: 12px;
+    text-align: center;
+  }
+  .stat-card .v {
+    font-size: 22px; font-weight: 900; color: var(--grey-100);
+    line-height: 1;
+  }
+  .stat-card .l {
+    font-size: 10px; font-weight: 600; color: var(--grey-60);
+    margin-top: 6px; letter-spacing: 0.3px;
+  }
+
+  /* Daily prep teaser */
+  .daily-prep-card {
+    margin-top: var(--space-3);
+    background: var(--vert-accent);
+    color: white;
+    border-radius: 18px;
+    padding: 16px;
+    cursor: pointer;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .daily-prep-card .dp-icon {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.2);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .daily-prep-card .dp-text { flex: 1; }
+  .daily-prep-card .dp-title {
+    font-size: 14px; font-weight: 800; line-height: 1.2;
+  }
+  .daily-prep-card .dp-sub {
+    font-size: 11px; opacity: 0.85; margin-top: 4px;
+  }
+
+  /* ============= DISCOVERY CHAT ============== */
+  .chat-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .msg { max-width: 88%; animation: msgIn 0.35s ease-out; }
+  .msg-ai { align-self: flex-start; }
+  .msg-user { align-self: flex-end; }
+  .bubble {
+    padding: 12px 16px;
+    font-size: 14px; line-height: 1.5;
+    color: var(--grey-100);
+  }
+  .bubble-ai {
+    background: var(--surface-ghost);
+    border-radius: 4px var(--radius-lg) var(--radius-lg) var(--radius-lg);
+  }
+  .bubble-user {
+    background: var(--vert-accent);
+    color: white;
+    border-radius: var(--radius-lg) 4px var(--radius-lg) var(--radius-lg);
+  }
+  .bubble-ai .speaker-pill {
+    display: inline-flex; padding: 3px 8px;
+    background: white; border-radius: var(--radius-pill);
+    font-size: 10px; font-weight: 700; color: var(--vert-accent-dark);
+    margin-bottom: 6px;
+  }
+  @keyframes msgIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+  .reply-chips {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    margin-top: 4px;
+    align-self: flex-start;
+    max-width: 100%;
+  }
+  .reply-chip {
+    padding: 8px 14px;
+    border-radius: var(--radius-pill);
+    border: 1.5px solid var(--vert-accent);
+    color: var(--vert-accent-dark);
+    background: white;
+    font-size: 13px; font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: var(--font);
+  }
+  .reply-chip:hover { background: var(--vert-accent-light); }
+
+  .exam-card-bubble {
+    background: white;
+    border: 1px solid var(--grey-40);
+    border-radius: 14px;
+    padding: 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .exam-card-bubble:hover { border-color: var(--vert-accent); }
+  .exam-card-bubble .ecb-icon {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    background: var(--vert-accent-light);
+    color: var(--vert-accent-dark);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 800;
+    flex-shrink: 0;
+  }
+  .exam-card-bubble .ecb-text { flex: 1; }
+  .exam-card-bubble .ecb-name {
+    font-size: 14px; font-weight: 700; color: var(--grey-100);
+  }
+  .exam-card-bubble .ecb-meta {
+    font-size: 11px; color: var(--grey-60); margin-top: 2px; line-height: 1.4;
+  }
+
+  .reality-check {
+    background: linear-gradient(135deg, #fff8e7 0%, #ffe8b6 100%);
+    border-radius: 14px;
+    padding: 14px;
+  }
+  .reality-check .rc-h {
+    font-size: 11px; font-weight: 700; color: #8c6500;
+    letter-spacing: 0.4px; text-transform: uppercase; margin-bottom: 8px;
+  }
+  .reality-check ul {
+    list-style: none; padding: 0; margin: 0;
+  }
+  .reality-check ul li {
+    font-size: 12px; line-height: 1.5; color: var(--grey-100);
+    padding: 4px 0;
+    display: flex; gap: 8px;
+  }
+  .reality-check ul li::before {
+    content: '•'; color: #8c6500; font-weight: 700;
+  }
+
+  /* Chat dock with mic + text */
+  .chat-dock {
+    flex-shrink: 0;
+    background: white;
+    border-top: 1px solid var(--grey-40);
+    padding: 10px var(--space-4) calc(10px + env(safe-area-inset-bottom, 0px));
+    display: flex; align-items: center; gap: 10px;
+  }
+  .chat-dock .chat-input {
+    flex: 1;
+    border: 1px solid var(--grey-40);
+    border-radius: var(--radius-pill);
+    padding: 10px 16px;
+    font-family: var(--font); font-size: 14px;
+    color: var(--grey-100);
+    outline: none;
+    background: var(--surface-ghost);
+  }
+  .chat-dock .chat-input:focus { border-color: var(--vert-accent); background: white; }
+  .chat-dock .icon-btn-mic {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    border: none;
+    background: var(--vert-accent);
+    color: white;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .chat-dock .icon-btn-mic.recording {
+    background: var(--error);
+    animation: pulseRecord 1s ease-in-out infinite;
+  }
+  @keyframes pulseRecord {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(250,47,64,0.5); }
+    50% { box-shadow: 0 0 0 12px rgba(250,47,64,0); }
+  }
+
+  /* ============= DAILY PREP DECK ============== */
+  .prep-tabs {
+    display: flex; gap: 6px;
+    padding: 8px var(--space-4);
+    background: white;
+    border-bottom: 1px solid var(--grey-40);
+  }
+  .prep-tab {
+    flex: 1;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    background: transparent;
+    font-family: var(--font); font-size: 13px; font-weight: 600;
+    color: var(--grey-80);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .prep-tab.active {
+    background: var(--vert-accent);
+    color: white;
+  }
+
+  /* Quiz card */
+  .quiz-card {
+    background: white;
+    border: 1px solid var(--grey-40);
+    border-radius: 22px;
+    padding: 22px;
+    margin-bottom: 14px;
+    box-shadow: var(--shadow-sm);
+  }
+  .quiz-card .q-meta {
+    display: flex; gap: 8px; margin-bottom: 10px;
+  }
+  .quiz-card .q-tag {
+    padding: 4px 10px;
+    background: var(--vert-accent-light);
+    color: var(--vert-accent-dark);
+    border-radius: var(--radius-pill);
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.3px; text-transform: uppercase;
+  }
+  .quiz-card .q-tag-asked {
+    background: #d6f5ec; color: #15791a;
+  }
+  .quiz-card .q-text {
+    font-size: 16px; font-weight: 700; color: var(--grey-100);
+    line-height: 1.4; margin-bottom: 16px;
+  }
+  .quiz-card .q-options {
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .quiz-card .q-opt {
+    border: 1.5px solid var(--grey-40);
+    border-radius: 12px;
+    padding: 12px 14px;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-size: 14px;
+    color: var(--grey-100);
+    display: flex; align-items: center; gap: 10px;
+    background: white;
+    text-align: left;
+    font-family: var(--font);
+  }
+  .quiz-card .q-opt:hover { border-color: var(--vert-accent); }
+  .quiz-card .q-opt.correct { border-color: var(--success); background: #d6f5ec; color: #0f5d12; }
+  .quiz-card .q-opt.wrong { border-color: var(--error); background: #ffe2e8; color: #8a1c2a; }
+  .quiz-card .q-opt-letter {
+    width: 24px; height: 24px; border-radius: 50%;
+    background: var(--surface-ghost);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 800; color: var(--grey-80);
+    flex-shrink: 0;
+  }
+  .quiz-card.solved .q-opt.correct .q-opt-letter { background: var(--success); color: white; }
+  .quiz-card.solved .q-opt.wrong .q-opt-letter { background: var(--error); color: white; }
+  .quiz-card .q-explain {
+    margin-top: 14px;
+    background: var(--vert-accent-light);
+    color: var(--grey-100);
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 12px; line-height: 1.4;
+    display: none;
+  }
+  .quiz-card.solved .q-explain { display: block; }
+  .quiz-card .q-explain strong { color: var(--vert-accent-dark); }
+
+  /* Flashcard */
+  .flashcard {
+    background: white;
+    border: 1px solid var(--grey-40);
+    border-radius: 22px;
+    margin-bottom: 14px;
+    perspective: 1000px;
+    cursor: pointer;
+    min-height: 180px;
+    position: relative;
+  }
+  .flashcard-inner {
+    position: relative;
+    width: 100%;
+    min-height: 180px;
+    transition: transform 0.5s;
+    transform-style: preserve-3d;
+  }
+  .flashcard.flipped .flashcard-inner { transform: rotateY(180deg); }
+  .flashcard-face {
+    position: absolute; inset: 0;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    padding: 22px;
+    display: flex; flex-direction: column; justify-content: center;
+    border-radius: 22px;
+  }
+  .flashcard-front {
+    background: white;
+  }
+  .flashcard-back {
+    background: linear-gradient(135deg, #fff0d6 0%, #ffe2a6 100%);
+    transform: rotateY(180deg);
+  }
+  .flashcard .fc-tap {
+    position: absolute; bottom: 12px; right: 16px;
+    font-size: 11px; color: var(--grey-60); font-weight: 600;
+  }
+  .flashcard .fc-q {
+    font-size: 16px; font-weight: 700; color: var(--grey-100);
+    line-height: 1.35; margin-bottom: 8px;
+  }
+  .flashcard .fc-tag {
+    display: inline-flex;
+    padding: 3px 10px;
+    background: var(--vert-accent-light);
+    color: var(--vert-accent-dark);
+    border-radius: var(--radius-pill);
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.3px; text-transform: uppercase;
+    margin-bottom: 8px;
+    align-self: flex-start;
+  }
+  .flashcard .fc-a {
+    font-size: 18px; font-weight: 800; color: var(--grey-100);
+    line-height: 1.3; margin-bottom: 6px;
+  }
+  .flashcard .fc-eg {
+    font-size: 12px; color: #6c4400; font-weight: 500; line-height: 1.4;
+  }
+
+  /* Concept card */
+  .concept-card {
+    background: white;
+    border: 1px solid var(--grey-40);
+    border-radius: 22px;
+    padding: 18px;
+    margin-bottom: 14px;
+  }
+  .concept-card .cc-tag {
+    display: inline-flex;
+    padding: 4px 10px;
+    background: var(--vert-accent-light);
+    color: var(--vert-accent-dark);
+    border-radius: var(--radius-pill);
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.3px; text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .concept-card .cc-title {
+    font-size: 18px; font-weight: 800; color: var(--grey-100);
+    margin-bottom: 8px;
+  }
+  .concept-card .cc-desc {
+    font-size: 13px; line-height: 1.5; color: var(--grey-80);
+    margin-bottom: 12px;
+  }
+  .concept-card .cc-diagram {
+    background: var(--vert-accent-light);
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 10px;
+    font-size: 12px;
+    color: var(--vert-accent-dark);
+    line-height: 1.5;
+  }
+  .concept-card .cc-actions {
+    display: flex; gap: 8px;
+  }
+  .concept-card .cc-btn {
+    padding: 8px 14px;
+    border-radius: var(--radius-pill);
+    border: 1.5px solid var(--vert-accent);
+    color: var(--vert-accent-dark);
+    background: white;
+    font-size: 12px; font-weight: 700;
+    cursor: pointer;
+    font-family: var(--font);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .concept-card .cc-btn:hover { background: var(--vert-accent-light); }
+  .concept-card .cc-btn.primary {
+    background: var(--vert-accent); color: white;
+  }
+
+  /* Floating "ask doubt" button */
+  .ask-doubt {
+    position: absolute;
+    right: 16px; bottom: 96px;
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    background: var(--vert-accent);
+    color: white;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(247,171,32,0.4);
+    z-index: 5;
+    border: none;
+    transition: transform 0.15s;
+  }
+  .ask-doubt:hover { transform: scale(1.06); }
+
+  @media (min-width: 600px) {
+    .phone-frame { box-shadow: var(--shadow-lg); border-radius: 32px; margin-top: 24px; height: calc(100vh - 48px); }
+    body { background: linear-gradient(180deg, #f0f0f5 0%, #e8e8f5 100%); }
+  }
+</style>
+</head>
+<body>
+<div class="phone-frame">
+
+  <!-- ========================== HOME ========================== -->
+  <div class="view active" id="view-home">
+    <div class="top-bar">
+      <button class="icon-btn" onclick="window.location.href='index.html'" aria-label="Back">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <div class="title-area">
+        <div class="t1">Govt Exam Prep</div>
+        <div class="t2">Find your exam · Prep on your commute</div>
+      </div>
+      <span class="vert-pill">JBIQ</span>
+    </div>
+
+    <div class="view-body">
+      <!-- Life-first prompt -->
+      <div class="life-first-card" onclick="startDiscovery()">
+        <div class="lf-tag">Tell me what you want</div>
+        <div class="lf-q">Mujhe samajh nahi aa raha kaunsa exam dena hai.</div>
+        <div class="lf-sub">Tap to start a quick chat — I'll figure out what fits your life.</div>
+        <div class="lf-input-fake">
+          <span class="lf-placeholder">Or type or speak…</span>
+          <div class="lf-mic">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 15a3 3 0 003-3V6a3 3 0 00-6 0v6a3 3 0 003 3z"/>
+              <path d="M19 11v1a7 7 0 01-14 0v-1" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Path-first cards -->
+      <div class="section-h">Or pick a path</div>
+      <div class="paths-row">
+        <div class="path-card path-banking" onclick="startPath('banking')">
+          <div class="pc-emoji">🏦</div>
+          <div>
+            <div class="pc-name">Banking</div>
+            <div class="pc-meta">IBPS · SBI · RBI</div>
+          </div>
+        </div>
+        <div class="path-card path-admin" onclick="startPath('admin')">
+          <div class="pc-emoji">📋</div>
+          <div>
+            <div class="pc-name">Admin</div>
+            <div class="pc-meta">SSC CGL · CHSL · UPSC</div>
+          </div>
+        </div>
+        <div class="path-card path-tech" onclick="startPath('tech')">
+          <div class="pc-emoji">⚙️</div>
+          <div>
+            <div class="pc-name">Technical</div>
+            <div class="pc-meta">SSC JE · GATE · DRDO</div>
+          </div>
+        </div>
+        <div class="path-card path-state" onclick="startPath('state')">
+          <div class="pc-emoji">🌾</div>
+          <div>
+            <div class="pc-name">State-level</div>
+            <div class="pc-meta">BPSC · UPPSC · MPSC</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tracked exams -->
+      <div class="section-h">Your tracked exams</div>
+      <div class="tracked-list">
+        <div class="tracked-card" onclick="showView('daily')">
+          <div class="tc-h">
+            <div class="tc-icon">PO</div>
+            <div class="tc-name">IBPS PO</div>
+            <div class="tc-cd">Form opens · 23 days</div>
+          </div>
+          <div class="tc-progress-row">
+            <div class="tc-bar"><div class="tc-fill" style="width: 78%"></div></div>
+            <div class="tc-pct">78%</div>
+          </div>
+        </div>
+        <div class="tracked-card">
+          <div class="tc-h">
+            <div class="tc-icon">CGL</div>
+            <div class="tc-name">SSC CGL</div>
+            <div class="tc-cd">Tier 1 · 62 days</div>
+          </div>
+          <div class="tc-progress-row">
+            <div class="tc-bar"><div class="tc-fill" style="width: 65%"></div></div>
+            <div class="tc-pct">65%</div>
+          </div>
+        </div>
+        <div class="tracked-card">
+          <div class="tc-h">
+            <div class="tc-icon">RBI</div>
+            <div class="tc-name">RBI Grade B <span style="color:var(--vert-accent-dark);font-weight:600">· 70% syllabus shared with IBPS PO</span></div>
+            <div class="tc-cd">Discover</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-strip">
+        <div class="stat-card"><div class="v">12</div><div class="l">DAY STREAK 🔥</div></div>
+        <div class="stat-card"><div class="v">284</div><div class="l">PYQs DONE</div></div>
+        <div class="stat-card"><div class="v">B+</div><div class="l">SCORE BAND</div></div>
+      </div>
+
+      <!-- Daily prep -->
+      <div class="daily-prep-card" onclick="showView('daily')">
+        <div class="dp-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2L4 6v6c0 5 3.5 9 8 10 4.5-1 8-5 8-10V6l-8-4z" stroke="currentColor" stroke-width="2"/><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+        <div class="dp-text">
+          <div class="dp-title">Today's prep · 12 min commute</div>
+          <div class="dp-sub">3 quizzes · 8 flashcards · 1 concept</div>
+        </div>
+        <span style="opacity:0.7"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================== DISCOVERY CHAT ========================== -->
+  <div class="view" id="view-discovery">
+    <div class="top-bar">
+      <button class="icon-btn" onclick="showView('home')" aria-label="Back">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <div class="title-area">
+        <div class="t1">Discover your exam</div>
+        <div class="t2">Life-first counselling · 5 min</div>
+      </div>
+    </div>
+
+    <div class="chat-area" id="discChat"></div>
+
+    <div class="chat-dock">
+      <input type="text" class="chat-input" id="disc_input" placeholder="Or type your answer…">
+      <button class="icon-btn-mic" id="disc_mic" aria-label="Mic">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 15a3 3 0 003-3V6a3 3 0 00-6 0v6a3 3 0 003 3z"/>
+          <path d="M19 11v1a7 7 0 01-14 0v-1" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- ========================== DAILY PREP ========================== -->
+  <div class="view" id="view-daily">
+    <div class="top-bar">
+      <button class="icon-btn" onclick="showView('home')" aria-label="Back">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <div class="title-area">
+        <div class="t1">Today's prep · IBPS PO</div>
+        <div class="t2">12-min commute · Day 12 streak</div>
+      </div>
+    </div>
+
+    <div class="prep-tabs">
+      <button class="prep-tab active" data-tab="quiz" onclick="setPrepTab('quiz')">3 Quizzes</button>
+      <button class="prep-tab" data-tab="flash" onclick="setPrepTab('flash')">8 Flashcards</button>
+      <button class="prep-tab" data-tab="concept" onclick="setPrepTab('concept')">1 Concept</button>
+    </div>
+
+    <div class="view-body" style="padding-top: var(--space-4); position: relative;">
+      <div id="prep_content"></div>
+
+      <!-- Floating ask-doubt button -->
+      <button class="ask-doubt" onclick="askDoubt()" aria-label="Ask doubt">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M9.5 8a2.5 2.5 0 115 0c0 1-.5 1.5-1.5 2.5S12 12 12 13M12 17h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<script src="shared/personas.js"></script>
+<script src="shared/jbiq-voice.js"></script>
+<script src="shared/multimodal.js"></script>
+<script>
+function showView(name) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-' + name).classList.add('active');
+  if (name !== 'discovery' && discVoice) discVoice.stop();
+  const body = document.querySelector('#view-' + name + ' .view-body, #view-' + name + ' .chat-area');
+  if (body) body.scrollTop = 0;
+}
+
+/* =========================================================================
+ * DISCOVERY CHAT — life-first scripted flow
+ * ========================================================================= */
+const DISCOVERY_FLOW = [
+  {
+    ai: "Theek hai — let's figure this out together. Pehle yeh batao: aapko life mein kya chahiye? Money, stability, posting near home?",
+    speaker: 'JBIQ',
+    chips: [
+      { text: "Stability + good salary",   key: 'stability_salary' },
+      { text: "Money matters most",        key: 'money' },
+      { text: "Ghar ke paas posting",       key: 'near_home' },
+      { text: "Power · prestige",           key: 'prestige' },
+    ],
+  },
+];
+
+const DISCOVERY_BRANCHES = {
+  stability_salary: {
+    ai: "Got it — stability + good money. Banking is your strongest path. 4 main routes — let me show you, with reality-check on each.",
+    next: 'banking_paths',
+  },
+  money: {
+    ai: "If money is the priority, banking PO is still your best shot — central govt offers job security AND ₹50K+ start. Want to see the options?",
+    next: 'banking_paths',
+  },
+  near_home: {
+    ai: "Posting near home? Then state-level exams are best — BPSC for Bihar, you'd stay there. But banking has reasonable transfer policies too. Want both options?",
+    next: 'state_or_banking',
+  },
+  prestige: {
+    ai: "If prestige is what drives you — UPSC Civil Services is the peak, but it's a 3-5 year commitment with ~0.2% selection. RBI Grade B and SBI PO are the next-best, much more achievable. Which direction?",
+    next: 'upsc_or_banking',
+  },
+};
+
+const BANKING_PATHS = {
+  ai: "Here are the 4 banking routes that fit your goal. I've marked the easiest by selection rate and the most rewarding by salary.",
+  cards: [
+    { id: 'ibps-po',   name: 'IBPS PO',          meta: '~3% selection · ₹52K-67K start · 18 mo prep typical · Posting anywhere in India' },
+    { id: 'ibps-clerk', name: 'IBPS Clerk',       meta: '~5% selection · ₹28K-32K start · 12 mo prep · Easier entry, lower salary' },
+    { id: 'sbi-po',    name: 'SBI PO',           meta: '~2% selection · ₹56K-70K start · 24 mo prep · Toughest banking exam, best brand' },
+    { id: 'rbi-grade-b', name: 'RBI Grade B',     meta: '~1% selection · ₹78K-90K start · 24 mo prep · Govt+banking peak, hard but rare' },
+  ],
+};
+
+const REALITY_CHECKS = {
+  'ibps-po': {
+    ai: "Real talk on IBPS PO — Sneha's profile (BCom from Patna) is exactly the typical aspirant. Here's the honest picture:",
+    bullets: [
+      "~5L apply each year, ~3K selected (one in 1,500)",
+      "Prep time: 12-18 months if 4-5 hrs/day, 24+ months at slower pace",
+      "Cost: ₹6K-15K mock test packages + optional ₹40-80K coaching",
+      "Salary at posting: ₹52K-67K incl. allowances",
+      "Posting: anywhere in India (rural branches first 2 years typical)",
+    ],
+    end: "Want me to add IBPS PO to your tracked list and start a 12-min daily prep plan from tomorrow?",
+  },
+};
+
+let discVoice = null;
+function ensureDiscVoice() {
+  if (discVoice) return discVoice;
+  discVoice = JBIQVoice.create({
+    persona: 'govt_exam_counselor',
+    onTranscript: handleDiscTranscript,
+    onState: (state) => {
+      const mic = document.getElementById('disc_mic');
+      mic.classList.toggle('recording', state === 'listening');
+    },
+    onError: (e) => console.error(e),
+  });
+  return discVoice;
+}
+
+let discStep = 0;
+
+function startDiscovery() {
+  showView('discovery');
+  const chat = document.getElementById('discChat');
+  chat.innerHTML = '';
+
+  // Sneha's opener (pre-populated as her question)
+  appendUserBubble("Mujhe samajh nahi aa raha kaunsa exam dena hai. Koi seedha bata de.");
+
+  // JBIQ first question
+  setTimeout(() => askDiscoveryQ(0), 600);
+}
+
+function askDiscoveryQ(idx) {
+  const step = DISCOVERY_FLOW[idx];
+  if (!step) return;
+  appendAIBubble(step.ai);
+  // Speak it
+  setTimeout(() => {
+    const v = ensureDiscVoice();
+    v.speak(step.ai, 'en-IN');
+  }, 200);
+  // Chips
+  if (step.chips) {
+    setTimeout(() => appendChips(step.chips, (chip) => {
+      appendUserBubble(chip.text);
+      const branch = DISCOVERY_BRANCHES[chip.key];
+      if (!branch) return;
+      setTimeout(() => {
+        appendAIBubble(branch.ai);
+        setTimeout(() => ensureDiscVoice().speak(branch.ai, 'en-IN'), 200);
+        if (branch.next === 'banking_paths') setTimeout(() => showBankingPaths(), 1500);
+        if (branch.next === 'state_or_banking') setTimeout(() => showStateOrBanking(), 1500);
+        if (branch.next === 'upsc_or_banking') setTimeout(() => showUpscOrBanking(), 1500);
+      }, 600);
+    }), 700);
+  }
+}
+
+function showBankingPaths() {
+  appendAIBubble(BANKING_PATHS.ai);
+  ensureDiscVoice().speak(BANKING_PATHS.ai, 'en-IN');
+  setTimeout(() => {
+    const wrap = document.createElement('div');
+    wrap.className = 'msg msg-ai';
+    wrap.style.maxWidth = '92%';
+    wrap.style.display = 'flex';
+    wrap.style.flexDirection = 'column';
+    wrap.style.gap = '8px';
+    BANKING_PATHS.cards.forEach(card => {
+      const c = document.createElement('div');
+      c.className = 'exam-card-bubble';
+      c.innerHTML = `
+        <div class="ecb-icon">${card.id.split('-').slice(0,2).map(s => s[0].toUpperCase()).join('')}</div>
+        <div class="ecb-text">
+          <div class="ecb-name">${card.name}</div>
+          <div class="ecb-meta">${card.meta}</div>
+        </div>
+      `;
+      c.onclick = () => showRealityCheck(card.id);
+      wrap.appendChild(c);
+    });
+    document.getElementById('discChat').appendChild(wrap);
+    scrollChatBottom();
+  }, 1100);
+}
+
+function showStateOrBanking() {
+  setTimeout(() => appendChips([
+    { text: "Show me state exams", key: 'state_exams' },
+    { text: "Banking, but with transfer info", key: 'banking_paths' },
+  ], (chip) => {
+    if (chip.key === 'banking_paths') showBankingPaths();
+    else appendAIBubble("State exams in your state (Bihar) — BPSC is the main one. Want details?");
+  }), 600);
+}
+
+function showUpscOrBanking() {
+  setTimeout(() => appendChips([
+    { text: "Banking — more achievable", key: 'banking_paths' },
+    { text: "UPSC anyway", key: 'upsc_real_check' },
+  ], (chip) => {
+    if (chip.key === 'banking_paths') showBankingPaths();
+    else appendAIBubble("Brave choice. UPSC is a 3-5 year journey. ~10L apply, ~1K selected. Want a real-check on what your day would look like?");
+  }), 600);
+}
+
+function showRealityCheck(examId) {
+  const rc = REALITY_CHECKS[examId];
+  if (!rc) {
+    appendAIBubble("That's a great choice. Let me set it up. (Detailed reality-check coming for that exam.)");
+    return;
+  }
+  appendUserBubble("Tell me about " + examId.toUpperCase());
+  setTimeout(() => {
+    appendAIBubble(rc.ai);
+    setTimeout(() => ensureDiscVoice().speak(rc.ai, 'en-IN'), 200);
+    setTimeout(() => {
+      const wrap = document.createElement('div');
+      wrap.className = 'msg msg-ai';
+      wrap.style.maxWidth = '94%';
+      const card = document.createElement('div');
+      card.className = 'reality-check';
+      let html = '<div class="rc-h">⚖️ Reality check</div><ul>';
+      rc.bullets.forEach(b => html += `<li>${b}</li>`);
+      html += '</ul>';
+      card.innerHTML = html;
+      wrap.appendChild(card);
+      document.getElementById('discChat').appendChild(wrap);
+      scrollChatBottom();
+    }, 1100);
+    setTimeout(() => {
+      appendAIBubble(rc.end);
+      ensureDiscVoice().speak(rc.end, 'en-IN');
+    }, 1900);
+    setTimeout(() => {
+      appendChips([
+        { text: "Yes, add to my plan", key: 'add_plan' },
+        { text: "Let me think", key: 'think' },
+      ], (chip) => {
+        if (chip.key === 'add_plan') {
+          appendUserBubble("Yes, add to my plan");
+          setTimeout(() => {
+            appendAIBubble("Done — IBPS PO added. Tomorrow morning your daily prep starts: 3 quizzes, 8 flashcards, 1 concept. 12 mins. Want a preview?");
+            ensureDiscVoice().speak("Done — your prep starts tomorrow.", 'en-IN');
+          }, 500);
+          setTimeout(() => appendChips([
+            { text: "Yes, preview", key: 'preview' },
+            { text: "Sounds good, see you tomorrow", key: 'done' },
+          ], (chip2) => {
+            if (chip2.key === 'preview') {
+              setTimeout(() => showView('daily'), 600);
+            } else {
+              appendUserBubble("Sounds good, see you tomorrow");
+              setTimeout(() => appendAIBubble("Tomorrow at 8 AM. You've got this. 🌟"), 400);
+            }
+          }), 1300);
+        } else {
+          appendUserBubble("Let me think");
+          setTimeout(() => appendAIBubble("Take your time — I'll be here. Tap me anytime."), 400);
+        }
+      });
+    }, 2700);
+  }, 600);
+}
+
+function appendAIBubble(text) {
+  const chat = document.getElementById('discChat');
+  const wrap = document.createElement('div');
+  wrap.className = 'msg msg-ai';
+  wrap.innerHTML = `<div class="bubble bubble-ai"><div class="speaker-pill">JBIQ</div>${text}</div>`;
+  chat.appendChild(wrap);
+  scrollChatBottom();
+}
+function appendUserBubble(text) {
+  const chat = document.getElementById('discChat');
+  const wrap = document.createElement('div');
+  wrap.className = 'msg msg-user';
+  wrap.innerHTML = `<div class="bubble bubble-user">${text}</div>`;
+  chat.appendChild(wrap);
+  scrollChatBottom();
+}
+function appendChips(chips, onPick) {
+  const chat = document.getElementById('discChat');
+  const wrap = document.createElement('div');
+  wrap.className = 'reply-chips';
+  chips.forEach(c => {
+    const b = document.createElement('button');
+    b.className = 'reply-chip';
+    b.textContent = c.text;
+    b.onclick = () => {
+      wrap.remove();
+      onPick(c);
+    };
+    wrap.appendChild(b);
+  });
+  chat.appendChild(wrap);
+  scrollChatBottom();
+}
+function scrollChatBottom() {
+  const chat = document.getElementById('discChat');
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function handleDiscTranscript(text, lang) {
+  if (!text) return;
+  appendUserBubble(text);
+  // Simple keyword route
+  const lower = text.toLowerCase();
+  let key = null;
+  if (/stab|salary|secur/.test(lower)) key = 'stability_salary';
+  else if (/money|paisa|earning/.test(lower)) key = 'money';
+  else if (/ghar|home|near|patna/.test(lower)) key = 'near_home';
+  else if (/prestig|power|status|dhasu|ifs|ias/.test(lower)) key = 'prestige';
+  else key = 'stability_salary';
+  setTimeout(() => {
+    const branch = DISCOVERY_BRANCHES[key];
+    appendAIBubble(branch.ai);
+    ensureDiscVoice().speak(branch.ai, 'en-IN');
+    if (branch.next === 'banking_paths') setTimeout(() => showBankingPaths(), 1500);
+  }, 500);
+}
+
+function startPath(pathId) {
+  showView('discovery');
+  const chat = document.getElementById('discChat');
+  chat.innerHTML = '';
+  appendUserBubble(`I'm interested in ${pathId} jobs.`);
+  setTimeout(() => {
+    if (pathId === 'banking') {
+      showBankingPaths();
+    } else {
+      appendAIBubble(`Got it — ${pathId} path. We're focused on banking for the demo, but full ${pathId} flow is coming soon.`);
+      ensureDiscVoice().speak("Coming soon", 'en-IN');
+    }
+  }, 600);
+}
+
+document.getElementById('disc_mic').addEventListener('click', () => {
+  const v = ensureDiscVoice();
+  if (v.isRecording) v.stopRecording();
+  else v.startRecording();
+});
+document.getElementById('disc_input').addEventListener('keypress', (e) => {
+  if (e.key === 'Enter' && e.target.value.trim()) {
+    handleDiscTranscript(e.target.value.trim(), 'en-IN');
+    e.target.value = '';
+  }
+});
+
+/* =========================================================================
+ * DAILY PREP DECK
+ * ========================================================================= */
+const QUIZZES = [
+  {
+    tag: 'Quant · Asked 4/5 last yrs',
+    q: "If a sum of money doubles in 8 years at simple interest, what is the rate of interest per annum?",
+    options: [
+      { letter: 'A', text: '8%' },
+      { letter: 'B', text: '10%' },
+      { letter: 'C', text: '12.5%' },
+      { letter: 'D', text: '15%' },
+    ],
+    correct: 'C',
+    explain: "<strong>Formula:</strong> Money doubles ⇒ SI = Principal. SI = P×R×T/100. P = P×R×8/100 ⇒ R = 100/8 = <strong>12.5%</strong>. This question pattern appeared in IBPS PO 2023, 2022, 2021, 2019."
+  },
+  {
+    tag: 'Reasoning · IBPS PO classic',
+    q: "All flowers are leaves. Some leaves are roots. Which conclusion is definitely true?",
+    options: [
+      { letter: 'A', text: 'Some flowers are roots' },
+      { letter: 'B', text: 'No flower is a root' },
+      { letter: 'C', text: 'Some leaves are flowers' },
+      { letter: 'D', text: "Can't be determined" },
+    ],
+    correct: 'C',
+    explain: "<strong>Conversion:</strong> 'All A is B' ⇒ 'Some B is A' is always true. So 'All flowers are leaves' ⇒ 'Some leaves are flowers' is definitely true. Other options aren't guaranteed."
+  },
+  {
+    tag: 'GA · Banking awareness',
+    q: "What is the current Repo Rate set by RBI as of January 2026?",
+    options: [
+      { letter: 'A', text: '5.50%' },
+      { letter: 'B', text: '6.00%' },
+      { letter: 'C', text: '6.25%' },
+      { letter: 'D', text: '6.50%' },
+    ],
+    correct: 'A',
+    explain: "<strong>Current Repo Rate:</strong> RBI cut repo to <strong>5.50%</strong> in Dec 2025 MPC meeting (was 6.00%). This pattern of asking current rates is asked every IBPS PO Tier 1."
+  },
+];
+
+const FLASHCARDS = [
+  { tag: 'Banking · Repo Rate', q: "What is the current Repo Rate (Jan 2026)?", a: "5.50%", eg: "Cut from 6.00% in Dec 2025 MPC. Rate at which RBI lends to banks." },
+  { tag: 'Banking · CRR', q: "What is CRR? Current rate?", a: "Cash Reserve Ratio · 4.50%", eg: "% of deposits banks must keep with RBI as cash. No interest paid." },
+  { tag: 'Quant · Compound Interest', q: "Formula for compound interest?", a: "A = P(1 + r/n)^(nt)", eg: "P = principal, r = annual rate, n = times compounded/year, t = years." },
+  { tag: 'GA · Banking apex', q: "Who is the current Governor of RBI?", a: "Sanjay Malhotra", eg: "Took office Dec 2024. 26th Governor." },
+  { tag: 'GA · Finance', q: "What does NEFT stand for?", a: "National Electronic Funds Transfer", eg: "RBI's electronic payment system. Settled in batches." },
+  { tag: 'Reasoning · Coding', q: "If MOTHER = NPUIFS, what is FATHER?", a: "GBUIFS", eg: "Each letter shifted by +1." },
+];
+
+const CONCEPTS = [
+  {
+    tag: 'Concept · Banking',
+    title: 'Repo Rate vs Reverse Repo Rate',
+    desc: 'Two opposite-direction tools RBI uses to control money supply. Both impact your home loan EMI and FD interest.',
+    diagram: "📈 <strong>Repo Rate</strong> (5.50%): RBI → Banks (RBI lends to banks)<br>📉 <strong>Reverse Repo</strong> (3.35%): Banks → RBI (Banks park money with RBI)<br><br>When repo rate ↓, EMIs ↓, FD rates ↓. When repo ↑, vice versa.",
+  },
+];
+
+let prepTab = 'quiz';
+function setPrepTab(tab) {
+  prepTab = tab;
+  document.querySelectorAll('.prep-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+  renderPrep();
+}
+
+function renderPrep() {
+  const c = document.getElementById('prep_content');
+  c.innerHTML = '';
+  if (prepTab === 'quiz') {
+    QUIZZES.forEach((q, i) => c.appendChild(renderQuiz(q, i)));
+  } else if (prepTab === 'flash') {
+    FLASHCARDS.forEach((f, i) => c.appendChild(renderFlashcard(f, i)));
+  } else if (prepTab === 'concept') {
+    CONCEPTS.forEach((cn, i) => c.appendChild(renderConcept(cn, i)));
+    // Tease the second one
+    const more = document.createElement('div');
+    more.className = 'concept-card';
+    more.style.opacity = '0.5';
+    more.innerHTML = `<div class="cc-tag">Coming up</div><div class="cc-title">CRR vs SLR — what's actually different?</div><div class="cc-desc">Tomorrow's concept · Will surface based on your weak topics.</div>`;
+    c.appendChild(more);
+  }
+}
+
+function renderQuiz(q, idx) {
+  const card = document.createElement('div');
+  card.className = 'quiz-card';
+  card.innerHTML = `
+    <div class="q-meta">
+      <span class="q-tag">${q.tag.split('·')[0]}</span>
+      <span class="q-tag q-tag-asked">${q.tag.split('·')[1] || ''}</span>
+    </div>
+    <div class="q-text">${q.q}</div>
+    <div class="q-options"></div>
+    <div class="q-explain">${q.explain}</div>
+  `;
+  const opts = card.querySelector('.q-options');
+  q.options.forEach(o => {
+    const b = document.createElement('button');
+    b.className = 'q-opt';
+    b.innerHTML = `<span class="q-opt-letter">${o.letter}</span><span>${o.text}</span>`;
+    b.onclick = () => {
+      if (card.classList.contains('solved')) return;
+      card.classList.add('solved');
+      if (o.letter === q.correct) {
+        b.classList.add('correct');
+      } else {
+        b.classList.add('wrong');
+        // also highlight correct
+        Array.from(opts.children).forEach(child => {
+          if (child.querySelector('.q-opt-letter').textContent === q.correct) child.classList.add('correct');
+        });
+      }
+    };
+    opts.appendChild(b);
+  });
+  return card;
+}
+
+function renderFlashcard(f, idx) {
+  const card = document.createElement('div');
+  card.className = 'flashcard';
+  card.innerHTML = `
+    <div class="flashcard-inner">
+      <div class="flashcard-face flashcard-front">
+        <div class="fc-tag">${f.tag}</div>
+        <div class="fc-q">${f.q}</div>
+        <div class="fc-tap">Tap to flip ↻</div>
+      </div>
+      <div class="flashcard-face flashcard-back">
+        <div class="fc-tag">Answer</div>
+        <div class="fc-a">${f.a}</div>
+        <div class="fc-eg">${f.eg}</div>
+        <div class="fc-tap">Tap to flip back ↻</div>
+      </div>
+    </div>
+  `;
+  card.onclick = () => card.classList.toggle('flipped');
+  return card;
+}
+
+function renderConcept(cn, idx) {
+  const card = document.createElement('div');
+  card.className = 'concept-card';
+  card.innerHTML = `
+    <div class="cc-tag">${cn.tag}</div>
+    <div class="cc-title">${cn.title}</div>
+    <div class="cc-desc">${cn.desc}</div>
+    <div class="cc-diagram">${cn.diagram}</div>
+    <div class="cc-actions">
+      <button class="cc-btn primary" onclick="speakConcept(${idx})"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg> Listen</button>
+      <button class="cc-btn">Got it · save</button>
+    </div>
+  `;
+  return card;
+}
+
+let conceptVoice = null;
+function speakConcept(idx) {
+  if (!conceptVoice) conceptVoice = JBIQVoice.create({ persona: 'govt_exam_counselor' });
+  const cn = CONCEPTS[idx];
+  if (!cn) return;
+  const text = cn.title + '. ' + cn.desc + ' Repo rate is the rate at which the Reserve Bank of India lends to banks. Reverse repo is when banks park money with RBI. When repo rate drops, your EMIs drop too.';
+  conceptVoice.speak(text, 'en-IN');
+}
+
+let doubtVoice = null;
+function askDoubt() {
+  if (!doubtVoice) {
+    doubtVoice = JBIQVoice.create({
+      persona: 'govt_exam_counselor',
+      onTranscript: (text) => {
+        if (!text) return;
+        // Demo: show a pop-up "got it, here's the answer"
+        alert("Doubt heard: \"" + text + "\"\n\nAnswer (demo): I'd give you a 30-second voice explanation here, mapped to your current syllabus topic.");
+      },
+    });
+  }
+  if (doubtVoice.isRecording) doubtVoice.stopRecording();
+  else doubtVoice.startRecording();
+}
+
+renderPrep();
+
+/* =========================================================================
+ * INIT — handle ?q= from landing voice
+ * ========================================================================= */
+(function init() {
+  const params = new URLSearchParams(window.location.search);
+  const q = (params.get('q') || '').toLowerCase();
+  if (q.includes('exam') || q.includes('which') || q.includes('kaunsa') || q.includes('discover') || q.includes('tell me')) {
+    setTimeout(() => startDiscovery(), 200);
+  } else if (q.includes('ibps') || q.includes('po')) {
+    setTimeout(() => showView('daily'), 200);
+  }
+})();
+</script>
+</body>
+</html>
