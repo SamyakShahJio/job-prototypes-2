@@ -1,6 +1,10 @@
-/* JDS Tokens — JioBharatIQ Design System
- * Extracted from design-prototypes (jbiq:v3.5.0)
- * Loaded by every prototype in this suite via <link rel="stylesheet">
+/* JDS Tokens — strict JDS-only palette
+ * Source of truth for all colors, type, radius, spacing.
+ * No custom hex values, no per-vertical accent gradients.
+ *
+ * Visual language: monochromatic (white + greys) with primary-dark (#3900ad
+ * a.k.a surface-bold) as the accent of the JCS vertical. JDS primary-50
+ * (#3535f3) is reserved for active/CTA states only.
  */
 
 @font-face { font-family: 'JioType'; font-weight: 400; font-display: swap;
@@ -13,43 +17,74 @@
   src: url('https://raw.githubusercontent.com/sunit1986/JioBharatIQ_Server/main/assets/fonts/woff2/JioTypeW05-Black.woff2') format('woff2'); }
 
 :root {
-  /* Brand */
-  --primary: #3535f3;
-  --primary-light: #e8e8fc;
-  --primary-dark: #3900ad;
-  --secondary: #f7ab20;
-  --sparkle: #1eccb0;
+  /* ===== JDS color tokens (resolved from mcp__JioBharatIQ__resolve_token) ===== */
+  --primary-20: #e8e8fc;
+  --primary-30: #9999ff;
+  --primary-40: #6464ff;
+  --primary-50: #3535f3;
+  --primary-60: #000093;
+  --primary-70: #00004c;
+  --primary-80: #010029;
 
-  /* Semantic */
+  --secondary-20: #fef7e9;
+  --secondary-50: #f7ab20;
+  --secondary-60: #ac660c;
+
+  --sparkle-20: #e8faf7;
+  --sparkle-50: #1eccb0;
+
   --error: #fa2f40;
   --warning: #f06d0f;
   --success: #25ab21;
 
-  /* Greys */
   --grey-100: #141414;
-  --grey-80: #5c5c5c;
-  --grey-60: #8f8f8f;
+  --grey-80: rgba(0,0,0,0.66);
+  --grey-60: #b5b5b5;
   --grey-40: #e0e0e0;
   --grey-20: #f5f5f5;
-  --surface-ghost: #eeeeef;
-  --surface-bold: #3900ad;
   --white: #ffffff;
-  --black: #000000;
+  --black: #141414;
 
-  /* Vertical accents — one per JCS use case */
-  --accent-microlearning: #25ab21;   /* green — growth */
-  --accent-english: #3535f3;         /* JBIQ blue — flagship */
-  --accent-interview: #6d17ce;       /* purple — pressure */
-  --accent-govt-exam: #f7ab20;       /* gold — gravitas */
+  --surface-default: #ffffff;
+  --surface-ghost: #eeeeef;
+  --surface-ghost-icon: #e7e9ff;
+  --surface-bold: #3900ad;       /* "purple dark" — the JCS vertical accent */
+  --surface-minimal: #f5f5f5;
+  --surface-moderate: #e3e3e4;
 
-  /* Radii */
+  --text-high: #141414;
+  --text-low: rgba(25,27,30,0.65);
+  --text-disabled: rgba(25,27,30,0.38);
+  --text-on-bold: #ffffff;
+
+  --icon-medium: #170054;        /* the deep purple — refined accent */
+  --icon-high: #141414;
+
+  --stroke-subtle: rgba(36,38,43,0.12);
+  --stroke-minimal: rgba(36,38,43,0.13);
+
+  /* ===== Aliases used throughout the prototype suite ===== */
+  --primary: var(--primary-50);
+  --primary-light: var(--primary-20);
+  --primary-dark: var(--surface-bold);
+  --secondary: var(--secondary-50);
+  --sparkle: var(--sparkle-50);
+
+  /* Vertical accent — single token for all 4 use cases.
+     Intentionally identical: the JCS vertical has ONE accent (purple-dark).
+     Use cases differ in content + voice, not in color palette. */
+  --vertical-accent: var(--surface-bold);
+  --vertical-accent-soft: var(--primary-20);
+  --vertical-accent-deep: var(--icon-medium);
+
+  /* ===== Radii ===== */
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 16px;
-  --radius-xl: 23px;
+  --radius-xl: 20px;
   --radius-pill: 999px;
 
-  /* Spacing */
+  /* ===== Spacing ===== */
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
@@ -58,161 +93,106 @@
   --space-6: 32px;
   --space-7: 48px;
 
-  /* Typography */
-  --font: 'JioType', -apple-system, system-ui, sans-serif;
-  --text-display: 32px;
-  --text-h1: 24px;
-  --text-h2: 20px;
-  --text-h3: 17px;
-  --text-body: 15px;
-  --text-small: 13px;
-  --text-tiny: 11px;
+  /* ===== Typography (JDS scale, mobile) ===== */
+  --font: 'JioType', sans-serif;
+  --text-display: 28px;
+  --text-h1: 22px;
+  --text-h2: 18px;
+  --text-h3: 16px;
+  --text-body: 14px;
+  --text-small: 12px;
+  --text-tiny: 10px;
 
-  /* Shadows */
-  --shadow-sm: 0 1px 2px rgba(20,20,20,0.04), 0 1px 3px rgba(20,20,20,0.06);
-  --shadow-md: 0 4px 12px rgba(20,20,20,0.08);
-  --shadow-lg: 0 12px 32px rgba(20,20,20,0.12);
-  --shadow-glow-primary: 0 0 0 4px rgba(53,53,243,0.15);
+  /* ===== Shadows — minimal, monochromatic ===== */
+  --shadow-sm: 0 1px 2px rgba(20,20,20,0.04);
+  --shadow-md: 0 2px 8px rgba(20,20,20,0.06);
+  --shadow-lg: 0 12px 32px rgba(20,20,20,0.10);
 }
 
-/* Reset */
+/* ===== Reset ===== */
 * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 html, body { height: 100%; overflow: hidden; }
 body {
   font-family: var(--font);
   font-size: var(--text-body);
-  color: var(--grey-100);
-  background: var(--white);
+  color: var(--text-high);
+  background: var(--surface-default);
   display: flex;
   flex-direction: column;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Phone frame — centers a 390px viewport on desktop, full-width on mobile */
 .phone-frame {
   width: 100%;
   max-width: 390px;
   height: 100%;
   margin: 0 auto;
-  background: var(--white);
+  background: var(--surface-default);
   position: relative;
   overflow: hidden;
   display: flex;
   flex-direction: column;
 }
 
-/* Common header — chat / vertical / use case */
-.app-header {
-  height: 56px;
-  padding: 0 var(--space-4);
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  border-bottom: 1px solid var(--grey-40);
-  background: var(--white);
-  position: relative;
-  z-index: 10;
-  flex-shrink: 0;
-}
-.app-header .back-btn {
-  width: 32px; height: 32px;
-  border-radius: 50%;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  color: var(--grey-100);
-  flex-shrink: 0;
-  transition: background 0.15s;
-}
-.app-header .back-btn:hover { background: var(--surface-ghost); }
-.app-header .back-btn:active { transform: scale(0.92); }
-.app-header h1 {
-  font-size: var(--text-h3);
-  font-weight: 700;
-  color: var(--grey-100);
-  flex: 1;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
-
-/* Buttons */
+/* ===== Buttons ===== */
 .btn { font-family: var(--font); cursor: pointer; border: none; transition: all 0.15s; user-select: none; }
 .btn-primary {
-  background: var(--primary);
-  color: var(--white);
+  background: var(--surface-bold);
+  color: var(--text-on-bold);
   padding: 14px 24px;
   border-radius: var(--radius-pill);
   font-size: var(--text-body);
   font-weight: 700;
 }
-.btn-primary:hover { background: var(--primary-dark); }
+.btn-primary:hover { background: var(--primary-70); }
 .btn-primary:active { transform: scale(0.97); }
 .btn-secondary {
-  background: var(--white);
-  color: var(--primary);
-  border: 1.5px solid var(--primary);
+  background: var(--surface-default);
+  color: var(--surface-bold);
+  border: 1.5px solid var(--surface-bold);
   padding: 12px 22px;
   border-radius: var(--radius-pill);
   font-weight: 700;
 }
-.btn-secondary:hover { background: var(--primary-light); }
+.btn-secondary:hover { background: var(--primary-20); }
 
-/* Chips */
+/* ===== Chips ===== */
 .chip {
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
   padding: 8px 14px;
   border-radius: var(--radius-pill);
-  border: 1.5px solid var(--primary);
-  color: var(--primary);
+  border: 1px solid var(--stroke-subtle);
+  color: var(--text-high);
   font-size: var(--text-small);
-  font-weight: 700;
-  background: var(--white);
+  font-weight: 600;
+  background: var(--surface-default);
   cursor: pointer;
   transition: all 0.15s;
   white-space: nowrap;
+  font-family: var(--font);
 }
-.chip:hover, .chip:active { background: var(--primary); color: var(--white); }
-.chip-soft {
-  border-color: var(--grey-40);
-  color: var(--grey-100);
-  background: var(--surface-ghost);
-  font-weight: 500;
+.chip:hover { background: var(--surface-ghost); border-color: var(--surface-bold); color: var(--surface-bold); }
+.chip.active {
+  background: var(--surface-bold);
+  color: var(--text-on-bold);
+  border-color: var(--surface-bold);
 }
-.chip-soft:hover { background: var(--grey-40); }
 
-/* Cards */
+/* ===== Cards ===== */
 .card {
-  background: var(--white);
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--grey-40);
+  background: var(--surface-default);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--stroke-subtle);
   padding: var(--space-4);
   transition: all 0.15s;
 }
-.card-elevated {
-  box-shadow: var(--shadow-md);
-  border: none;
-}
 
-/* Bottom dock — voice/text input bar */
-.bottom-dock {
-  flex-shrink: 0;
-  background: var(--white);
-  border-top: 1px solid var(--grey-40);
-  padding: var(--space-3) var(--space-4) calc(var(--space-3) + env(safe-area-inset-bottom, 0px));
-}
-
-/* Animations */
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
+/* ===== Animations ===== */
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 .fade-in { animation: fadeIn 0.3s ease-out; }
 .fade-in-up { animation: fadeInUp 0.35s ease-out; }
 
@@ -220,17 +200,31 @@ body {
 ::-webkit-scrollbar { display: none; }
 * { scrollbar-width: none; }
 
-/* JBIQ pill — vertical identifier */
+/* ===== JBIQ pill — vertical identifier ===== */
 .jbiq-pill {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   padding: 4px 10px;
   border-radius: var(--radius-pill);
-  background: var(--primary-light);
-  color: var(--primary);
+  background: var(--primary-20);
+  color: var(--surface-bold);
   font-size: var(--text-tiny);
   font-weight: 700;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.4px;
   text-transform: uppercase;
+}
+
+/* ===== Icon helpers ===== */
+.jds-icon {
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+[data-icon] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  line-height: 0;
 }

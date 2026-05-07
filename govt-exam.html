@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#f7ab20">
+<meta name="theme-color" content="#3900ad">
 <title>Govt Exam Prep — JioBharatIQ</title>
 <link rel="stylesheet" href="shared/jds-tokens.css">
 <link rel="stylesheet" href="shared/ambient-glow.css">
 <style>
   body { background: var(--white); }
   .phone-frame { background: var(--white); }
-  :root { --vert-accent: #f7ab20; --vert-accent-light: #fff0d6; --vert-accent-dark: #b07410; }
+  :root { --vert-accent: var(--surface-bold); --vert-accent-light: var(--primary-20); --vert-accent-dark: var(--icon-medium); }
 
   /* ============= TOP BAR ============== */
   .top-bar {
@@ -56,7 +56,7 @@
   /* ============= HOME — life-first prompt ============== */
   .life-first-card {
     margin: var(--space-3) 0 var(--space-4);
-    background: linear-gradient(135deg, #fff0d6 0%, #ffe2a6 100%);
+    background: var(--surface-ghost);
     border-radius: 22px;
     padding: 20px;
     cursor: pointer;
@@ -86,7 +86,7 @@
     margin-bottom: 8px;
   }
   .life-first-card .lf-sub {
-    font-size: 13px; color: #6c4400; font-weight: 500;
+    font-size: 13px; color: var(--icon-medium); font-weight: 500;
     line-height: 1.4; margin-bottom: 14px;
   }
   .life-first-card .lf-input-fake {
@@ -143,10 +143,10 @@
   .path-card .pc-meta {
     font-size: 11px; font-weight: 600; opacity: 0.7; margin-top: 2px;
   }
-  .path-banking { background: linear-gradient(135deg, #d6f5ec 0%, #a6e2d2 100%); }
-  .path-admin   { background: linear-gradient(135deg, #ffe2e8 0%, #ffc4d2 100%); }
-  .path-tech    { background: linear-gradient(135deg, #e8e8fc 0%, #d2d2f5 100%); }
-  .path-state   { background: linear-gradient(135deg, #fff0d6 0%, #ffe2a6 100%); }
+  .path-banking { background: var(--surface-ghost); }
+  .path-admin   { background: var(--surface-ghost); }
+  .path-tech    { background: var(--primary-20); }
+  .path-state   { background: var(--surface-ghost); }
 
   /* ============= Tracked exams ============== */
   .tracked-list {
@@ -325,12 +325,12 @@
   }
 
   .reality-check {
-    background: linear-gradient(135deg, #fff8e7 0%, #ffe8b6 100%);
+    background: var(--surface-ghost);
     border-radius: 14px;
     padding: 14px;
   }
   .reality-check .rc-h {
-    font-size: 11px; font-weight: 700; color: #8c6500;
+    font-size: 11px; font-weight: 700; color: var(--surface-bold);
     letter-spacing: 0.4px; text-transform: uppercase; margin-bottom: 8px;
   }
   .reality-check ul {
@@ -342,7 +342,7 @@
     display: flex; gap: 8px;
   }
   .reality-check ul li::before {
-    content: '•'; color: #8c6500; font-weight: 700;
+    content: '•'; color: var(--surface-bold); font-weight: 700;
   }
 
   /* Chat dock with mic + text */
@@ -427,7 +427,7 @@
     letter-spacing: 0.3px; text-transform: uppercase;
   }
   .quiz-card .q-tag-asked {
-    background: #d6f5ec; color: #15791a;
+    background: #d6f5ec; color: var(--success);
   }
   .quiz-card .q-text {
     font-size: 16px; font-weight: 700; color: var(--grey-100);
@@ -450,8 +450,8 @@
     font-family: var(--font);
   }
   .quiz-card .q-opt:hover { border-color: var(--vert-accent); }
-  .quiz-card .q-opt.correct { border-color: var(--success); background: #d6f5ec; color: #0f5d12; }
-  .quiz-card .q-opt.wrong { border-color: var(--error); background: #ffe2e8; color: #8a1c2a; }
+  .quiz-card .q-opt.correct { border-color: var(--success); background: #d6f5ec; color: var(--success); }
+  .quiz-card .q-opt.wrong { border-color: var(--error); background: #ffe2e8; color: var(--error); }
   .quiz-card .q-opt-letter {
     width: 24px; height: 24px; border-radius: 50%;
     background: var(--surface-ghost);
@@ -504,7 +504,7 @@
     background: white;
   }
   .flashcard-back {
-    background: linear-gradient(135deg, #fff0d6 0%, #ffe2a6 100%);
+    background: var(--surface-ghost);
     transform: rotateY(180deg);
   }
   .flashcard .fc-tap {
@@ -531,7 +531,7 @@
     line-height: 1.3; margin-bottom: 6px;
   }
   .flashcard .fc-eg {
-    font-size: 12px; color: #6c4400; font-weight: 500; line-height: 1.4;
+    font-size: 12px; color: var(--icon-medium); font-weight: 500; line-height: 1.4;
   }
 
   /* Concept card */
@@ -607,7 +607,7 @@
 
   @media (min-width: 600px) {
     .phone-frame { box-shadow: var(--shadow-lg); border-radius: 32px; margin-top: 24px; height: calc(100vh - 48px); }
-    body { background: linear-gradient(180deg, #f0f0f5 0%, #e8e8f5 100%); }
+    body { background: var(--surface-moderate); }
   }
 </style>
 </head>
@@ -650,28 +650,28 @@
       <div class="section-h">Or pick a path</div>
       <div class="paths-row">
         <div class="path-card path-banking" onclick="startPath('banking')">
-          <div class="pc-emoji">🏦</div>
+          <div class="pc-emoji"><span data-icon="document" data-size="20"></span></div>
           <div>
             <div class="pc-name">Banking</div>
             <div class="pc-meta">IBPS · SBI · RBI</div>
           </div>
         </div>
         <div class="path-card path-admin" onclick="startPath('admin')">
-          <div class="pc-emoji">📋</div>
+          <div class="pc-emoji"><span data-icon="list" data-size="20"></span></div>
           <div>
             <div class="pc-name">Admin</div>
             <div class="pc-meta">SSC CGL · CHSL · UPSC</div>
           </div>
         </div>
         <div class="path-card path-tech" onclick="startPath('tech')">
-          <div class="pc-emoji">⚙️</div>
+          <div class="pc-emoji"><span data-icon="brain" data-size="20"></span></div>
           <div>
             <div class="pc-name">Technical</div>
             <div class="pc-meta">SSC JE · GATE · DRDO</div>
           </div>
         </div>
         <div class="path-card path-state" onclick="startPath('state')">
-          <div class="pc-emoji">🌾</div>
+          <div class="pc-emoji"><span data-icon="document" data-size="20"></span></div>
           <div>
             <div class="pc-name">State-level</div>
             <div class="pc-meta">BPSC · UPPSC · MPSC</div>
@@ -715,7 +715,7 @@
 
       <!-- Stats -->
       <div class="stats-strip">
-        <div class="stat-card"><div class="v">12</div><div class="l">DAY STREAK 🔥</div></div>
+        <div class="stat-card"><div class="v">12</div><div class="l">DAY STREAK</div></div>
         <div class="stat-card"><div class="v">284</div><div class="l">PYQs DONE</div></div>
         <div class="stat-card"><div class="v">B+</div><div class="l">SCORE BAND</div></div>
       </div>
@@ -793,6 +793,7 @@
 
 </div>
 
+<script src="shared/icons.js"></script>
 <script src="shared/personas.js"></script>
 <script src="shared/jbiq-voice.js"></script>
 <script src="shared/multimodal.js"></script>
@@ -1014,7 +1015,7 @@ function showRealityCheck(examId) {
               setTimeout(() => showView('daily'), 600);
             } else {
               appendUserBubble("Sounds good, see you tomorrow");
-              setTimeout(() => appendAIBubble("Tomorrow at 8 AM. You've got this. 🌟"), 400);
+              setTimeout(() => appendAIBubble("Tomorrow at 8 AM. You've got this. ⭐"), 400);
             }
           }), 1300);
         } else {

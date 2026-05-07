@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#3900ad">
+<title>Microlearning — JioBharatIQ</title>
+<link rel="stylesheet" href="shared/jds-tokens.css">
+<link rel="stylesheet" href="shared/ambient-glow.css">
+<style>
+  body { background: var(--white); }
+  .phone-frame { background: var(--white); }
+  :root { --vert-accent: var(--surface-bold); --vert-accent-light: var(--primary-20); --vert-accent-dark: var(--icon-medium); }
+
+  /* ============= TOP BAR ============== */
+  .top-bar {
+    height: 56px;
+    padding: 0 var(--space-4);
+    display: flex; align-items: center; gap: var(--space-3);
+    background: var(--white);
+    flex-shrink: 0;
+    border-bottom: 1px solid transparent;
+    position: relative; z-index: 30;
+  }
+  .top-bar .icon-btn {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--surface-ghost); border: none;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; flex-shrink: 0;
+    color: var(--grey-100);
+  }
+  .top-bar .title-area { flex: 1; min-width: 0; }
+  .top-bar .title-area .t1 {
+    font-size: 16px; font-weight: 700; color: var(--grey-100);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .top-bar .title-area .t2 {
+    font-size: 11px; font-weight: 500; color: var(--grey-60);
+  }
+  .vert-pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 10px; border-radius: var(--radius-pill);
+    background: var(--vert-accent-light); color: var(--vert-accent-dark);
+    font-size: 11px; font-weight: 700; letter-spacing: 0.3px; text-transform: uppercase;
+  }
+
+  .view {
+    display: none; flex: 1; flex-direction: column; overflow: hidden;
+  }
+  .view.active { display: flex; }
+  .view-body {
+    flex: 1; overflow-y: auto; padding: var(--space-3) var(--space-4) var(--space-7);
+  }
+
+  /* ============= HOME ============== */
+  .what-card {
+    margin: var(--space-3) 0 var(--space-4);
+    background: var(--surface-ghost);
+    border-radius: 22px;
+    padding: 20px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .what-card::after {
+    content: '';
+    position: absolute;
+    right: -30px; top: -30px;
+    width: 130px; height: 130px;
+    background: radial-gradient(circle, rgba(37,171,33,0.25) 0%, rgba(37,171,33,0) 70%);
+  }
+  .what-card .wc-tag {
+    display: inline-flex;
+    padding: 4px 10px;
+    background: var(--white); color: var(--vert-accent-dark);
+    border-radius: var(--radius-pill);
+    font-size: 11px; font-weight: 700; letter-spacing: 0.3px; text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .what-card .wc-q {
+    font-size: 20px; font-weight: 900; color: var(--grey-100);
+    line-height: 1.25; letter-spacing: -0.3px; margin-bottom: 8px;
+  }
+  .what-card .wc-sub {
+    font-size: 13px; color: var(--icon-medium); font-weight: 500;
+    line-height: 1.4; margin-bottom: 14px;
+  }
+  .what-card .wc-input {
+    display: flex; align-items: center; gap: 10px;
+    background: white;
+    border: 1px solid rgba(0,0,0,0.06);
+    border-radius: var(--radius-pill);
+    padding: 8px 8px 8px 16px;
+  }
+  .what-card .wc-placeholder {
+    flex: 1; font-size: 14px; color: var(--grey-60);
+  }
+  .what-card .wc-mic {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: var(--vert-accent);
+    color: white;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+
+  /* Section */
+  .section-h {
+    font-size: 11px; font-weight: 700; color: var(--grey-60);
+    letter-spacing: 0.6px; text-transform: uppercase;
+    margin: var(--space-5) 0 var(--space-3);
+  }
+
+  /* Sub-tracks */
+  .subtracks {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .subtrack {
+    border-radius: 16px;
+    padding: 14px;
+    cursor: pointer;
+    color: var(--grey-100);
+    border: 1px solid rgba(20,20,20,0.06);
+    min-height: 110px;
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
+  .subtrack:hover { transform: translateY(-2px); }
+  .subtrack .st-emoji {
+    font-size: 22px;
+    width: 32px; height: 32px;
+    background: rgba(255,255,255,0.6);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .subtrack .st-name {
+    font-size: 13px; font-weight: 800; line-height: 1.2;
+  }
+  .subtrack .st-meta {
+    font-size: 11px; opacity: 0.7; margin-top: 2px;
+  }
+  .st-creator    { background: var(--surface-ghost); }
+  .st-shopkeeper { background: var(--surface-ghost); }
+  .st-office     { background: var(--primary-20); }
+  .st-ai-fluency { background: var(--surface-ghost); }
+
+  /* Earned skills strip */
+  .skills-strip {
+    display: flex; gap: 8px; overflow-x: auto;
+    margin: 0 calc(var(--space-4) * -1);
+    padding: 0 var(--space-4);
+  }
+  .skills-strip::-webkit-scrollbar { display: none; }
+  .skill-badge {
+    flex-shrink: 0;
+    width: 130px;
+    background: white;
+    border: 1px solid var(--grey-40);
+    border-radius: 14px;
+    padding: 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .skill-badge:hover { border-color: var(--vert-accent); transform: translateY(-2px); }
+  .skill-badge .sb-emoji {
+    font-size: 22px; width: 36px; height: 36px;
+    background: var(--vert-accent-light);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 8px;
+  }
+  .skill-badge .sb-name {
+    font-size: 12px; font-weight: 800; color: var(--grey-100);
+    line-height: 1.2; margin-bottom: 2px;
+  }
+  .skill-badge .sb-meta {
+    font-size: 10px; font-weight: 600; color: var(--vert-accent-dark);
+  }
+
+  /* Money tracker */
+  .money-tracker {
+    margin-top: var(--space-3);
+    background: var(--vert-accent);
+    color: white;
+    border-radius: 18px;
+    padding: 16px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .money-tracker .mt-icon {
+    width: 48px; height: 48px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    font-size: 22px;
+  }
+  .money-tracker .mt-text { flex: 1; }
+  .money-tracker .mt-amount {
+    font-size: 20px; font-weight: 900;
+    line-height: 1;
+  }
+  .money-tracker .mt-sub {
+    font-size: 11px; opacity: 0.9; margin-top: 4px;
+  }
+
+  /* In-progress course */
+  .inprogress-card {
+    margin-top: var(--space-3);
+    border: 1px solid var(--grey-40);
+    border-radius: 16px;
+    padding: 14px;
+    background: white;
+    cursor: pointer;
+    display: flex; align-items: center; gap: 12px;
+    transition: all 0.15s;
+  }
+  .inprogress-card:hover { border-color: var(--vert-accent); }
+  .inprogress-card .ip-thumb {
+    width: 56px; height: 56px;
+    border-radius: 12px;
+    background: var(--surface-ghost);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+  .inprogress-card .ip-text { flex: 1; min-width: 0; }
+  .inprogress-card .ip-title {
+    font-size: 14px; font-weight: 700; color: var(--grey-100);
+    line-height: 1.2;
+  }
+  .inprogress-card .ip-meta {
+    font-size: 11px; color: var(--grey-60); margin-top: 4px;
+  }
+  .inprogress-card .ip-progress {
+    margin-top: 8px;
+    height: 4px; background: var(--grey-20);
+    border-radius: 2px; overflow: hidden;
+  }
+  .inprogress-card .ip-fill {
+    height: 100%; background: var(--vert-accent);
+    border-radius: 2px;
+  }
+
+  /* ============= CHAT (Just-in-time) ============== */
+  .chat-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .msg { max-width: 88%; animation: msgIn 0.35s ease-out; }
+  .msg-ai { align-self: flex-start; }
+  .msg-user { align-self: flex-end; }
+  .bubble {
+    padding: 12px 16px;
+    font-size: 14px; line-height: 1.5;
+    color: var(--grey-100);
+  }
+  .bubble-ai {
+    background: var(--surface-ghost);
+    border-radius: 4px var(--radius-lg) var(--radius-lg) var(--radius-lg);
+  }
+  .bubble-user {
+    background: var(--vert-accent);
+    color: white;
+    border-radius: var(--radius-lg) 4px var(--radius-lg) var(--radius-lg);
+  }
+  .bubble-ai .speaker-pill {
+    display: inline-flex; padding: 3px 8px;
+    background: white; border-radius: var(--radius-pill);
+    font-size: 10px; font-weight: 700; color: var(--vert-accent-dark);
+    margin-bottom: 6px;
+  }
+  @keyframes msgIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+  .reply-chips {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    margin-top: 4px;
+    align-self: flex-start;
+    max-width: 100%;
+  }
+  .reply-chip {
+    padding: 8px 14px;
+    border-radius: var(--radius-pill);
+    border: 1.5px solid var(--vert-accent);
+    color: var(--vert-accent-dark);
+    background: white;
+    font-size: 13px; font-weight: 600;
+    cursor: pointer;
+    font-family: var(--font);
+  }
+  .reply-chip:hover { background: var(--vert-accent-light); }
+
+  /* Trailer card (root cause + N-step plan) */
+  .trailer-card {
+    background: white;
+    border: 1px solid var(--grey-40);
+    border-radius: 14px;
+    padding: 14px;
+  }
+  .trailer-card .tc-tag {
+    display: inline-flex;
+    padding: 4px 10px;
+    background: #fff0d6;
+    color: var(--surface-bold);
+    border-radius: var(--radius-pill);
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.3px; text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .trailer-card .tc-rootcause {
+    font-size: 14px; line-height: 1.4;
+    color: var(--grey-100); font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .trailer-card .tc-plan-h {
+    font-size: 11px; font-weight: 700; color: var(--vert-accent-dark);
+    letter-spacing: 0.3px; text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .trailer-card .tc-step {
+    display: flex; gap: 10px;
+    align-items: flex-start;
+    padding: 8px 0;
+    font-size: 13px;
+    color: var(--grey-100);
+    border-bottom: 1px solid var(--grey-20);
+  }
+  .trailer-card .tc-step:last-child { border-bottom: none; }
+  .trailer-card .tc-step .ts-num {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--vert-accent-light);
+    color: var(--vert-accent-dark);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 800;
+    flex-shrink: 0;
+  }
+  .trailer-card .tc-step .ts-text {
+    flex: 1; line-height: 1.4;
+  }
+  .trailer-card .tc-cta {
+    margin-top: 12px;
+    width: 100%;
+    background: var(--vert-accent);
+    color: white;
+    border: none; border-radius: var(--radius-pill);
+    padding: 12px;
+    font-family: var(--font); font-size: 13px; font-weight: 700;
+    cursor: pointer;
+  }
+
+  /* Chat dock */
+  .chat-dock {
+    flex-shrink: 0;
+    background: white;
+    border-top: 1px solid var(--grey-40);
+    padding: 10px var(--space-4) calc(10px + env(safe-area-inset-bottom, 0px));
+    display: flex; align-items: center; gap: 10px;
+  }
+  .chat-dock .chat-input {
+    flex: 1;
+    border: 1px solid var(--grey-40);
+    border-radius: var(--radius-pill);
+    padding: 10px 16px;
+    font-family: var(--font); font-size: 14px;
+    color: var(--grey-100);
+    outline: none;
+    background: var(--surface-ghost);
+  }
+  .chat-dock .chat-input:focus { border-color: var(--vert-accent); background: white; }
+  .chat-dock .icon-btn-mic {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    border: none;
+    background: var(--vert-accent);
+    color: white;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .chat-dock .icon-btn-mic.recording {
+    background: var(--error);
+    animation: pulseRecord 1s ease-in-out infinite;
+  }
+  @keyframes pulseRecord {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(250,47,64,0.5); }
+    50% { box-shadow: 0 0 0 12px rgba(250,47,64,0); }
+  }
+
+  /* ============= COURSE PLAYER (swipeable carousel) ============== */
+  .course-progress {
+    flex-shrink: 0;
+    padding: 12px var(--space-4);
+    display: flex; gap: 4px;
+  }
+  .course-progress .seg {
+    flex: 1; height: 4px;
+    background: var(--grey-20);
+    border-radius: 2px;
+  }
+  .course-progress .seg.done { background: var(--vert-accent); }
+  .course-progress .seg.current {
+    background: linear-gradient(to right, var(--vert-accent) 50%, var(--grey-20) 50%);
+  }
+  .lesson-stack {
+    flex: 1;
+    display: flex; flex-direction: column;
+    overflow-y: auto;
+    padding: 0 var(--space-4) var(--space-4);
+  }
+  .lesson-card {
+    background: white;
+    border: 1px solid var(--grey-40);
+    border-radius: 22px;
+    padding: 22px;
+    margin-bottom: 14px;
+  }
+  .lesson-card .lc-step {
+    font-size: 11px; font-weight: 700; color: var(--vert-accent-dark);
+    letter-spacing: 0.4px; text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .lesson-card .lc-title {
+    font-size: 18px; font-weight: 800; color: var(--grey-100);
+    line-height: 1.3; margin-bottom: 10px;
+  }
+  .lesson-card .lc-image {
+    width: 100%; height: 160px;
+    border-radius: 14px;
+    background: var(--surface-ghost);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 12px;
+    font-size: 60px;
+  }
+  .lesson-card .lc-text {
+    font-size: 13px; line-height: 1.55; color: var(--grey-80);
+    margin-bottom: 12px;
+  }
+  .lesson-card .lc-text strong { color: var(--grey-100); font-weight: 700; }
+  .lesson-card .lc-doalong {
+    background: var(--surface-ghost);
+    border-radius: 14px;
+    padding: 12px;
+  }
+  .lesson-card .lc-doalong-h {
+    font-size: 11px; font-weight: 700; color: var(--surface-bold);
+    letter-spacing: 0.3px; text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .lesson-card .lc-doalong-task {
+    font-size: 13px; color: var(--grey-100); font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .lesson-card .lc-doalong-cta {
+    background: var(--surface-bold); color: white;
+    border: none; border-radius: var(--radius-pill);
+    padding: 8px 14px;
+    font-family: var(--font); font-size: 12px; font-weight: 700;
+    cursor: pointer;
+  }
+  .lesson-nav {
+    flex-shrink: 0;
+    padding: 12px var(--space-4) calc(12px + env(safe-area-inset-bottom, 0px));
+    border-top: 1px solid var(--grey-40);
+    background: white;
+    display: flex; gap: 10px;
+  }
+  .lesson-nav .ln-prev {
+    flex: 1;
+    background: var(--surface-ghost);
+    border: none; border-radius: var(--radius-pill);
+    padding: 12px;
+    font-family: var(--font); font-size: 13px; font-weight: 700;
+    color: var(--grey-80);
+    cursor: pointer;
+  }
+  .lesson-nav .ln-next {
+    flex: 2;
+    background: var(--vert-accent);
+    color: white;
+    border: none; border-radius: var(--radius-pill);
+    padding: 12px;
+    font-family: var(--font); font-size: 13px; font-weight: 700;
+    cursor: pointer;
+  }
+
+  /* ============= AI FLUENCY TRACK ============== */
+  .fluency-hero {
+    background: var(--surface-ghost);
+    border-radius: 22px;
+    padding: 18px;
+    margin-bottom: var(--space-3);
+  }
+  .fluency-hero .fh-tag {
+    display: inline-flex;
+    padding: 4px 10px;
+    background: white; color: var(--vert-accent-dark);
+    border-radius: var(--radius-pill);
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.3px; text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .fluency-hero .fh-title {
+    font-size: 20px; font-weight: 900; color: var(--grey-100);
+    line-height: 1.2; margin-bottom: 6px;
+  }
+  .fluency-hero .fh-sub {
+    font-size: 13px; color: var(--icon-medium); font-weight: 500;
+    line-height: 1.4;
+  }
+
+  .skill-row {
+    border: 1px solid var(--grey-40);
+    border-radius: 14px;
+    padding: 12px;
+    background: white;
+    cursor: pointer;
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 8px;
+    transition: all 0.15s;
+  }
+  .skill-row:hover { border-color: var(--vert-accent); }
+  .skill-row .sr-emoji {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    background: var(--vert-accent-light);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .skill-row .sr-text { flex: 1; min-width: 0; }
+  .skill-row .sr-title {
+    font-size: 13px; font-weight: 700; color: var(--grey-100);
+  }
+  .skill-row .sr-meta {
+    font-size: 11px; color: var(--grey-60); margin-top: 2px;
+  }
+  .skill-row .sr-time {
+    font-size: 10px; font-weight: 700; color: var(--vert-accent-dark);
+    background: var(--vert-accent-light);
+    padding: 4px 8px; border-radius: var(--radius-pill);
+    flex-shrink: 0;
+  }
+
+  /* Prompt practice */
+  .prompt-card {
+    background: var(--surface-ghost);
+    border-radius: 18px;
+    padding: 18px;
+    margin-top: var(--space-3);
+  }
+  .prompt-card .pc-h {
+    font-size: 11px; font-weight: 700; color: var(--surface-bold);
+    letter-spacing: 0.3px; text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .prompt-card .pc-template {
+    background: white;
+    border-radius: 12px;
+    padding: 12px;
+    font-family: 'Monaco', 'Courier New', monospace;
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--grey-100);
+    margin-bottom: 10px;
+  }
+  .prompt-card .pc-template .var {
+    background: var(--vert-accent-light);
+    color: var(--vert-accent-dark);
+    padding: 1px 6px; border-radius: 4px;
+    font-weight: 700;
+  }
+  .prompt-card .pc-input {
+    width: 100%;
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-family: var(--font); font-size: 13px;
+    margin-bottom: 8px;
+    background: white;
+    outline: none;
+  }
+  .prompt-card .pc-go {
+    background: var(--vert-accent); color: white;
+    border: none; border-radius: var(--radius-pill);
+    padding: 10px 18px;
+    font-family: var(--font); font-size: 13px; font-weight: 700;
+    cursor: pointer;
+    width: 100%;
+  }
+  .prompt-result {
+    margin-top: 10px;
+    background: white;
+    border-radius: 12px;
+    padding: 12px;
+    font-size: 13px; line-height: 1.5;
+    color: var(--grey-100);
+    display: none;
+  }
+  .prompt-result.show { display: block; }
+  .prompt-result .pr-h {
+    font-size: 10px; font-weight: 700; color: var(--vert-accent-dark);
+    letter-spacing: 0.3px; text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .prompt-result ol {
+    padding-left: 16px;
+  }
+  .prompt-result li {
+    margin-bottom: 4px;
+  }
+
+  @media (min-width: 600px) {
+    .phone-frame { box-shadow: var(--shadow-lg); border-radius: 32px; margin-top: 24px; height: calc(100vh - 48px); }
+    body { background: var(--surface-moderate); }
+  }
+</style>
+</head>
+<body>
+<div class="phone-frame">
+
+  <!-- ========================== HOME ========================== -->
+  <div class="view active" id="view-home">
+    <div class="top-bar">
+      <button class="icon-btn" onclick="window.location.href='index.html'" aria-label="Back">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <div class="title-area">
+        <div class="t1">Microlearning</div>
+        <div class="t2">Got 10 min? Learn one thing well.</div>
+      </div>
+      <span class="vert-pill">JBIQ</span>
+    </div>
+
+    <div class="view-body">
+      <!-- What card -->
+      <div class="what-card" onclick="startChat()">
+        <div class="wc-tag">Tell me your problem</div>
+        <div class="wc-q">Mera thumbnail click kyun nahi ho raha?</div>
+        <div class="wc-sub">Tap to start a chat — I'll find the root cause and fix it in 10 mins.</div>
+        <div class="wc-input">
+          <span class="wc-placeholder">Or type or speak…</span>
+          <div class="wc-mic">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 15a3 3 0 003-3V6a3 3 0 00-6 0v6a3 3 0 003 3z"/>
+              <path d="M19 11v1a7 7 0 01-14 0v-1" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sub-tracks -->
+      <div class="section-h">Sub-tracks</div>
+      <div class="subtracks">
+        <div class="subtrack st-creator" onclick="startSubtrack('creator')">
+          <div class="st-emoji"><span data-icon="brain" data-size="20"></span></div>
+          <div>
+            <div class="st-name">Creator</div>
+            <div class="st-meta">Hooks · Titles · Thumbnails · Edits</div>
+          </div>
+        </div>
+        <div class="subtrack st-shopkeeper" onclick="startSubtrack('shop')">
+          <div class="st-emoji"><span data-icon="document" data-size="20"></span></div>
+          <div>
+            <div class="st-name">Shopkeeper</div>
+            <div class="st-meta">WhatsApp · POS · Inventory</div>
+          </div>
+        </div>
+        <div class="subtrack st-office" onclick="startSubtrack('office')">
+          <div class="st-emoji"><span data-icon="document" data-size="20"></span></div>
+          <div>
+            <div class="st-name">Office</div>
+            <div class="st-meta">Excel · Email · Slides</div>
+          </div>
+        </div>
+        <div class="subtrack st-ai-fluency" onclick="showView('ai-fluency')">
+          <div class="st-emoji"><span data-icon="brain" data-size="20"></span></div>
+          <div>
+            <div class="st-name">AI Fluency</div>
+            <div class="st-meta">ChatGPT · Image gen · Voice</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- In-progress course -->
+      <div class="section-h">Continue where you left off</div>
+      <div class="inprogress-card" onclick="continueCourse()">
+        <div class="ip-thumb"><span data-icon="brain" data-size="22"></span></div>
+        <div class="ip-text">
+          <div class="ip-title">YouTube Hook Patterns</div>
+          <div class="ip-meta">Step 3 of 5 · ~6 mins to finish</div>
+          <div class="ip-progress"><div class="ip-fill" style="width: 60%"></div></div>
+        </div>
+      </div>
+
+      <!-- Earned skills -->
+      <div class="section-h">Skills you've earned</div>
+      <div class="skills-strip">
+        <div class="skill-badge">
+          <div class="sb-emoji"><span data-icon="star" data-size="20"></span></div>
+          <div class="sb-name">Thumbnail Hooks</div>
+          <div class="sb-meta">Earned · Apr 28</div>
+        </div>
+        <div class="skill-badge">
+          <div class="sb-emoji"><span data-icon="document" data-size="20"></span></div>
+          <div class="sb-name">Title Writing</div>
+          <div class="sb-meta">Earned · Apr 22</div>
+        </div>
+        <div class="skill-badge">
+          <div class="sb-emoji"><span data-icon="chat" data-size="20"></span></div>
+          <div class="sb-name">ChatGPT Prompting</div>
+          <div class="sb-meta">Earned · Apr 15</div>
+        </div>
+        <div class="skill-badge">
+          <div class="sb-emoji"><span data-icon="brain" data-size="20"></span></div>
+          <div class="sb-name">CapCut Cuts</div>
+          <div class="sb-meta">Earned · Apr 8</div>
+        </div>
+      </div>
+
+      <!-- Money tracker -->
+      <div class="money-tracker">
+        <div class="mt-icon"><span data-icon="star" data-size="22"></span></div>
+        <div class="mt-text">
+          <div class="mt-amount">+ ₹4,200 this month</div>
+          <div class="mt-sub">Thumbnail Hooks skill — your videos earned this from improved CTR.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================== JUST-IN-TIME CHAT ========================== -->
+  <div class="view" id="view-chat">
+    <div class="top-bar">
+      <button class="icon-btn" onclick="showView('home')" aria-label="Back">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <div class="title-area">
+        <div class="t1">Skill coach</div>
+        <div class="t2">Tell me what's stuck</div>
+      </div>
+    </div>
+
+    <div class="chat-area" id="ml_chat"></div>
+
+    <div class="chat-dock">
+      <input type="text" class="chat-input" id="ml_input" placeholder="Or type your problem…">
+      <button class="icon-btn-mic" id="ml_mic" aria-label="Mic">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 15a3 3 0 003-3V6a3 3 0 00-6 0v6a3 3 0 003 3z"/>
+          <path d="M19 11v1a7 7 0 01-14 0v-1" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- ========================== COURSE PLAYER ========================== -->
+  <div class="view" id="view-course">
+    <div class="top-bar">
+      <button class="icon-btn" onclick="showView('home')" aria-label="Back">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <div class="title-area">
+        <div class="t1" id="course_title">YouTube Hook Patterns</div>
+        <div class="t2" id="course_meta">Step 3 of 5 · ~6 mins</div>
+      </div>
+    </div>
+
+    <div class="course-progress" id="course_progress">
+      <div class="seg done"></div>
+      <div class="seg done"></div>
+      <div class="seg current"></div>
+      <div class="seg"></div>
+      <div class="seg"></div>
+    </div>
+
+    <div class="lesson-stack" id="lesson_stack">
+      <!-- Filled by JS -->
+    </div>
+
+    <div class="lesson-nav">
+      <button class="ln-prev" onclick="prevLesson()">← Previous</button>
+      <button class="ln-next" onclick="nextLesson()">Next step →</button>
+    </div>
+  </div>
+
+  <!-- ========================== AI FLUENCY TRACK ========================== -->
+  <div class="view" id="view-ai-fluency">
+    <div class="top-bar">
+      <button class="icon-btn" onclick="showView('home')" aria-label="Back">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <div class="title-area">
+        <div class="t1">AI Fluency · Creator</div>
+        <div class="t2">Use AI like a tool, not a toy</div>
+      </div>
+    </div>
+
+    <div class="view-body">
+      <div class="fluency-hero">
+        <div class="fh-tag">8 micro-skills · Creator track</div>
+        <div class="fh-title">From "ChatGPT pe kya likhna hai" to job-ready outputs</div>
+        <div class="fh-sub">Each skill ends with a real output you'll use — a title bank, a thumbnail brief, a script outline.</div>
+      </div>
+
+      <div class="section-h">Today's lesson</div>
+      <div class="skill-row" onclick="openPromptPractice()">
+        <div class="sr-emoji"><span data-icon="document" data-size="18"></span></div>
+        <div class="sr-text">
+          <div class="sr-title">ChatGPT for YouTube titles</div>
+          <div class="sr-meta">Hands-on prompt · You'll generate 10 titles for your real video</div>
+        </div>
+        <div class="sr-time">8 min</div>
+      </div>
+
+      <div class="section-h">Next up</div>
+      <div class="skill-row">
+        <div class="sr-emoji"><span data-icon="brain" data-size="18"></span></div>
+        <div class="sr-text">
+          <div class="sr-title">AI image gen for thumbnails</div>
+          <div class="sr-meta">DALL-E + Midjourney basics · Free tools first</div>
+        </div>
+        <div class="sr-time">12 min</div>
+      </div>
+      <div class="skill-row">
+        <div class="sr-emoji"><span data-icon="mic" data-size="18"></span></div>
+        <div class="sr-text">
+          <div class="sr-title">ElevenLabs voice in your shorts</div>
+          <div class="sr-meta">Clone your voice · 5 demo voices included</div>
+        </div>
+        <div class="sr-time">10 min</div>
+      </div>
+      <div class="skill-row">
+        <div class="sr-emoji"><span data-icon="brain" data-size="18"></span></div>
+        <div class="sr-text">
+          <div class="sr-title">Use ChatGPT to read YouTube analytics</div>
+          <div class="sr-meta">Ask "why did this video drop 60%" and get a real answer</div>
+        </div>
+        <div class="sr-time">8 min</div>
+      </div>
+      <div class="skill-row">
+        <div class="sr-emoji"><span data-icon="flame" data-size="18"></span></div>
+        <div class="sr-text">
+          <div class="sr-title">Automate your YouTube descriptions</div>
+          <div class="sr-meta">A prompt that writes SEO-friendly descriptions in 10 sec</div>
+        </div>
+        <div class="sr-time">6 min</div>
+      </div>
+
+      <!-- Hands-on prompt -->
+      <div class="prompt-card" id="prompt_practice" style="display: none;">
+        <div class="pc-h">▶ Hands-on practice</div>
+        <div class="pc-template">
+          Give me 10 clickable YouTube titles<br>
+          for a video about <span class="var" id="var_topic">_____</span><br>
+          in <span class="var" id="var_style">_____</span> style.
+        </div>
+        <input type="text" class="pc-input" id="pp_topic" placeholder="Topic (e.g. Indore street food)">
+        <input type="text" class="pc-input" id="pp_style" placeholder="Style (e.g. surprising, listicle, story)">
+        <button class="pc-go" onclick="runPrompt()">Run prompt →</button>
+        <div class="prompt-result" id="prompt_result">
+          <div class="pr-h">✨ ChatGPT response</div>
+          <ol id="prompt_titles"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script src="shared/icons.js"></script>
+<script src="shared/personas.js"></script>
+<script src="shared/jbiq-voice.js"></script>
+<script src="shared/multimodal.js"></script>
+<script>
+function showView(name) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-' + name).classList.add('active');
+  if (name !== 'chat' && mlVoice) mlVoice.stop();
+  const body = document.querySelector('#view-' + name + ' .view-body, #view-' + name + ' .chat-area, #view-' + name + ' .lesson-stack');
+  if (body) body.scrollTop = 0;
+}
+
+/* =========================================================================
+ * JUST-IN-TIME CHAT — problem capture → root cause → N-step plan
+ * ========================================================================= */
+let mlVoice = null;
+function ensureMLVoice() {
+  if (mlVoice) return mlVoice;
+  mlVoice = JBIQVoice.create({
+    persona: 'microlearning_coach',
+    onTranscript: handleMLTranscript,
+    onState: (state) => {
+      const mic = document.getElementById('ml_mic');
+      mic.classList.toggle('recording', state === 'listening');
+    },
+    onError: (e) => console.error(e),
+  });
+  return mlVoice;
+}
+
+const PROBLEM_FLOWS = {
+  thumbnail: {
+    rootCause: "Likely your hook isn't visible in the thumbnail. The first 3 frames matter — face + text + tension.",
+    plan: [
+      "Hook patterns — what makes a face/text combo work",
+      "Title-thumbnail match test — they should mean the same thing",
+      "Thumbnail psychology — 1 emotion per thumbnail, not 3",
+      "A/B mini-test — 3 thumbnails, pick winner in 24h",
+      "Re-upload one old video with the new thumbnail",
+    ],
+    courseId: 'yt-hook-patterns',
+  },
+  title: {
+    rootCause: "Your titles are likely descriptive, not curious. Curiosity > description.",
+    plan: [
+      "What makes a title curious (gap, surprise, stakes)",
+      "10 title patterns that work in Hindi/English mix",
+      "Title-thumbnail consistency check",
+      "Run ChatGPT prompt to generate 10 titles",
+      "Pick top 2, A/B test on next video",
+    ],
+    courseId: 'yt-titles',
+  },
+  views: {
+    rootCause: "Three usual suspects — your hook, your title, or your thumbnail. Let me rank them by impact for your channel.",
+    plan: [
+      "First-3-second hook diagnosis",
+      "Title vs Thumbnail mismatch check",
+      "Audience retention curve read",
+      "One-skill-at-a-time fix plan",
+      "Re-test on next 3 videos",
+    ],
+    courseId: 'yt-hook-patterns',
+  },
+  chatgpt: {
+    rootCause: "Most people give ChatGPT a sentence. Pros give it a structure: role + task + format + constraints.",
+    plan: [
+      "The 4-part prompt formula",
+      "Role-setting (\"You are a YouTube growth strategist\")",
+      "Task + format (\"Give me 10 titles in this format…\")",
+      "Constraints (\"…each under 60 chars, in Hindi-English mix\")",
+      "Hands-on: write your own prompt for your real channel",
+    ],
+    courseId: 'ai-prompts',
+  },
+  default: {
+    rootCause: "Got it — let me find the right starting point for that.",
+    plan: [
+      "Diagnose the root cause",
+      "Pick the highest-impact skill",
+      "Quick teach-by-example",
+      "Hands-on do-along on your real work",
+      "3-day redo nudge to lock it in",
+    ],
+    courseId: 'yt-hook-patterns',
+  },
+};
+
+function startChat() {
+  showView('chat');
+  const chat = document.getElementById('ml_chat');
+  chat.innerHTML = '';
+  // JBIQ opener
+  appendAIBubble("Bata — kya stuck hai? Be specific. \"Mera thumbnail click nahi ho raha\" — that kind of thing.");
+  setTimeout(() => ensureMLVoice().speak("Bata — kya stuck hai? Be specific.", 'en-IN'), 200);
+  // Suggestion chips
+  setTimeout(() => appendChips([
+    { text: "Thumbnail click nahi ho raha", key: 'thumbnail' },
+    { text: "Titles boring hain", key: 'title' },
+    { text: "Views drop ho rahe hain", key: 'views' },
+    { text: "ChatGPT se kuch acha nahi nikalta", key: 'chatgpt' },
+  ], handleProblem), 700);
+}
+
+function handleProblem(chip) {
+  appendUserBubble(chip.text);
+  const flow = PROBLEM_FLOWS[chip.key] || PROBLEM_FLOWS.default;
+
+  setTimeout(() => {
+    appendAIBubble(flow.rootCause);
+    ensureMLVoice().speak(flow.rootCause, 'en-IN');
+  }, 500);
+
+  setTimeout(() => showTrailer(flow), 1500);
+}
+
+function showTrailer(flow) {
+  const chat = document.getElementById('ml_chat');
+  const wrap = document.createElement('div');
+  wrap.className = 'msg msg-ai';
+  wrap.style.maxWidth = '94%';
+  const card = document.createElement('div');
+  card.className = 'trailer-card';
+  let stepsHtml = '';
+  flow.plan.forEach((s, i) => {
+    stepsHtml += `<div class="tc-step"><div class="ts-num">${i+1}</div><div class="ts-text">${s}</div></div>`;
+  });
+  card.innerHTML = `
+    <div class="tc-tag">~12 min · 5 steps · 1 do-along</div>
+    <div class="tc-rootcause">Likely root cause</div>
+    <div class="tc-plan-h">My plan</div>
+    ${stepsHtml}
+    <button class="tc-cta" onclick="launchCourse('${flow.courseId}')">Start the 12-min course →</button>
+  `;
+  wrap.appendChild(card);
+  chat.appendChild(wrap);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function launchCourse(courseId) {
+  showView('course');
+  loadCourse(courseId);
+}
+
+function appendAIBubble(text) {
+  const chat = document.getElementById('ml_chat');
+  const wrap = document.createElement('div');
+  wrap.className = 'msg msg-ai';
+  wrap.innerHTML = `<div class="bubble bubble-ai"><div class="speaker-pill">JBIQ</div>${text}</div>`;
+  chat.appendChild(wrap);
+  chat.scrollTop = chat.scrollHeight;
+}
+function appendUserBubble(text) {
+  const chat = document.getElementById('ml_chat');
+  const wrap = document.createElement('div');
+  wrap.className = 'msg msg-user';
+  wrap.innerHTML = `<div class="bubble bubble-user">${text}</div>`;
+  chat.appendChild(wrap);
+  chat.scrollTop = chat.scrollHeight;
+}
+function appendChips(chips, onPick) {
+  const chat = document.getElementById('ml_chat');
+  const wrap = document.createElement('div');
+  wrap.className = 'reply-chips';
+  chips.forEach(c => {
+    const b = document.createElement('button');
+    b.className = 'reply-chip';
+    b.textContent = c.text;
+    b.onclick = () => { wrap.remove(); onPick(c); };
+    wrap.appendChild(b);
+  });
+  chat.appendChild(wrap);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function handleMLTranscript(text, lang) {
+  if (!text) return;
+  appendUserBubble(text);
+  // Route based on keywords
+  const lower = text.toLowerCase();
+  let key = 'default';
+  if (/thumb|click/.test(lower)) key = 'thumbnail';
+  else if (/title/.test(lower)) key = 'title';
+  else if (/view|drop|growth/.test(lower)) key = 'views';
+  else if (/chatgpt|prompt|ai/.test(lower)) key = 'chatgpt';
+  setTimeout(() => handleProblem({ text, key }), 200);
+}
+
+document.getElementById('ml_mic').addEventListener('click', () => {
+  const v = ensureMLVoice();
+  if (v.isRecording) v.stopRecording();
+  else v.startRecording();
+});
+document.getElementById('ml_input').addEventListener('keypress', (e) => {
+  if (e.key === 'Enter' && e.target.value.trim()) {
+    handleMLTranscript(e.target.value.trim(), 'en-IN');
+    e.target.value = '';
+  }
+});
+
+function startSubtrack(track) {
+  // For demo, route to chat with a prefilled subtrack-flavored opener
+  showView('chat');
+  const chat = document.getElementById('ml_chat');
+  chat.innerHTML = '';
+  const openers = {
+    creator: "Creator track. Tell me what's stuck — hooks? titles? thumbnails? edits?",
+    shop: "Shopkeeper track. WhatsApp campaigns? Inventory? POS? What's broken?",
+    office: "Office track. Excel formula stuck? Email stuck? Slides ugly? Specific kar.",
+  };
+  appendAIBubble(openers[track] || PROBLEM_FLOWS.default.rootCause);
+  setTimeout(() => ensureMLVoice().speak(openers[track] || "Tell me what's stuck", 'en-IN'), 200);
+  setTimeout(() => appendChips([
+    { text: "Thumbnail click nahi ho raha", key: 'thumbnail' },
+    { text: "Titles boring hain", key: 'title' },
+    { text: "Views drop ho rahe hain", key: 'views' },
+  ], handleProblem), 700);
+}
+
+function continueCourse() {
+  loadCourse('yt-hook-patterns', 2); // Step 3 (0-indexed = 2)
+  showView('course');
+}
+
+/* =========================================================================
+ * COURSE PLAYER — swipeable card carousel with do-alongs
+ * ========================================================================= */
+const COURSES = {
+  'yt-hook-patterns': {
+    title: "YouTube Hook Patterns",
+    steps: [
+      {
+        title: "What makes a hook?",
+        emoji: "🎯",
+        text: "<strong>Hook = curiosity gap.</strong> First 3 seconds either tease something the viewer doesn't know yet, or shock them. \"Most people miss this\" is a hook. \"Today I'll show you 5 tips\" is not.",
+        doalong: "Open your last video. Watch the first 3 seconds. Where's the gap?",
+        cta: "I checked — let's go",
+      },
+      {
+        title: "3 hook patterns that work in 2026",
+        emoji: "🪝",
+        text: "<strong>1. The wrong assumption</strong> — \"Everyone says do X. They're wrong.\"<br><strong>2. The micro-stakes</strong> — \"This 1-second mistake cost me 40K views.\"<br><strong>3. The contrast</strong> — \"Watch this video for 10 seconds. Then watch yours.\"",
+        doalong: "Pick one pattern. Write it for your next video right now.",
+        cta: "Done — show me what's next",
+      },
+      {
+        title: "Hook + thumbnail = 1 idea",
+        emoji: "🖼️",
+        text: "Your <strong>hook</strong> and your <strong>thumbnail</strong> should mean the same thing. If your thumbnail says \"how I made ₹50K\", your first sentence shouldn't be \"hi guys welcome back.\" It should be \"This video made me ₹52,400.\"",
+        doalong: "Your last 3 thumbnails — do they match your first sentence?",
+        cta: "Match check done",
+      },
+      {
+        title: "A/B mini-test (10 mins)",
+        emoji: "🔬",
+        text: "<strong>The 3-thumbnail test:</strong> Make 3 thumbnails for the same video. Ask 5 friends — \"Which one would you click?\" Pick the winner. Use that. Pure speed > perfect alone.",
+        doalong: "Make 3 thumbnails for your next video. Send to 5 people. Pick the winner.",
+        cta: "On it",
+      },
+      {
+        title: "The redo move",
+        emoji: "🔁",
+        text: "<strong>Re-upload trick:</strong> Pick your best-performing video from 6 months ago. Make a new thumbnail using your new hook pattern. Re-upload. Watch what happens. Most creators 2x their views.",
+        doalong: "Pick the video. Make the new thumbnail. Re-upload by tomorrow.",
+        cta: "Got it. Done.",
+      },
+    ],
+  },
+  'yt-titles': {
+    title: "YouTube Title Writing",
+    steps: [{ title: "Coming soon", emoji: "🛠️", text: "Title writing course is being built.", doalong: "", cta: "OK" }],
+  },
+  'ai-prompts': {
+    title: "ChatGPT Prompting Basics",
+    steps: [{ title: "Coming soon", emoji: "🛠️", text: "AI prompting course is being built.", doalong: "", cta: "OK" }],
+  },
+};
+let currentCourseId = 'yt-hook-patterns';
+let currentStepIdx = 0;
+
+function loadCourse(courseId, startIdx) {
+  currentCourseId = courseId;
+  currentStepIdx = startIdx || 0;
+  renderCourseStep();
+}
+
+function renderCourseStep() {
+  const course = COURSES[currentCourseId];
+  if (!course) return;
+  const step = course.steps[currentStepIdx];
+  document.getElementById('course_title').textContent = course.title;
+  document.getElementById('course_meta').textContent = `Step ${currentStepIdx+1} of ${course.steps.length}`;
+  // Progress
+  const prog = document.getElementById('course_progress');
+  prog.innerHTML = '';
+  course.steps.forEach((s, i) => {
+    const seg = document.createElement('div');
+    seg.className = 'seg' + (i < currentStepIdx ? ' done' : (i === currentStepIdx ? ' current' : ''));
+    prog.appendChild(seg);
+  });
+  // Card
+  const stack = document.getElementById('lesson_stack');
+  stack.innerHTML = '';
+  const card = document.createElement('div');
+  card.className = 'lesson-card fade-in-up';
+  card.innerHTML = `
+    <div class="lc-step">Step ${currentStepIdx+1} of ${course.steps.length}</div>
+    <div class="lc-title">${step.title}</div>
+    <div class="lc-image">${step.emoji}</div>
+    <div class="lc-text">${step.text}</div>
+    ${step.doalong ? `
+      <div class="lc-doalong">
+        <div class="lc-doalong-h">▶ Do this now</div>
+        <div class="lc-doalong-task">${step.doalong}</div>
+        <button class="lc-doalong-cta" onclick="markDoalong()">${step.cta || 'Done'}</button>
+      </div>
+    ` : ''}
+  `;
+  stack.appendChild(card);
+}
+
+function nextLesson() {
+  const course = COURSES[currentCourseId];
+  if (currentStepIdx < course.steps.length - 1) {
+    currentStepIdx++;
+    renderCourseStep();
+    document.getElementById('lesson_stack').scrollTop = 0;
+  } else {
+    // Done with course
+    alert("Course complete! Your 'YouTube Hook Patterns' badge is added.\n\n3-day redo nudge set: same task, no hints — Tuesday 8pm.");
+    showView('home');
+  }
+}
+function prevLesson() {
+  if (currentStepIdx > 0) {
+    currentStepIdx--;
+    renderCourseStep();
+  }
+}
+function markDoalong() {
+  alert("Nice. Step marked complete. (In real app: AI checks your output.)");
+}
+
+/* =========================================================================
+ * AI FLUENCY TRACK — hands-on prompt practice
+ * ========================================================================= */
+function openPromptPractice() {
+  document.getElementById('prompt_practice').style.display = 'block';
+  document.getElementById('prompt_practice').scrollIntoView({ behavior: 'smooth' });
+}
+
+function runPrompt() {
+  const topic = document.getElementById('pp_topic').value.trim() || 'Indore street food';
+  const style = document.getElementById('pp_style').value.trim() || 'surprising';
+  document.getElementById('var_topic').textContent = topic;
+  document.getElementById('var_style').textContent = style;
+
+  // Mocked LLM response — varied by style
+  const titleBank = {
+    surprising: [
+      `Indore me yeh ${topic} kha kar pachtaaye 🥺`,
+      `${topic} ka asli secret jo kisi ne nahi bataya`,
+      `200 ₹ me ${topic} — ya 2000 ₹ me? Sach yeh hai`,
+      `${topic} eating challenge — went horribly wrong`,
+      `Best ${topic} in Indore? I ate at 7 places. One won.`,
+      `${topic}: 5 mistakes everyone makes`,
+      `Indori bola: \"yeh real ${topic} hai\" — was he right?`,
+      `${topic} — local vs tourist places (huge difference)`,
+      `Iss ${topic} ne mera Sunday banaya 🌶️`,
+      `${topic} pe ₹500 spend kiye — kya bachaa?`,
+    ],
+    listicle: [
+      `Top 10 ${topic} spots in Indore (Ranked)`,
+      `5 Underrated ${topic} Places You're Missing`,
+      `${topic}: Your Complete 2026 Guide`,
+      `7 ${topic} Hacks Every Indori Knows`,
+      `${topic} A to Z — One Day, Many Plates`,
+      `Best ${topic} for Under ₹100`,
+      `${topic} Diaries: Day 1 to Day 7`,
+      `Veg vs Non-Veg ${topic} — The Verdict`,
+      `${topic} Map: From Sarafa to Chappan`,
+      `${topic} for First-Timers`,
+    ],
+    story: [
+      `Mein Indore aaya, ${topic} dhundha — yeh hua`,
+      `${topic} ki search me 4 ghante laga gaye`,
+      `Ek ${topic} ki dukaan ne meri photo le li`,
+      `${topic} bechne wala bola: \"sahab, photo kyun?\"`,
+      `${topic} ke liye 5 km chal kar gaya — story`,
+      `Indore ke ${topic} se mera dil tut gaya`,
+      `${topic} kha rahe the, news aaya — must watch`,
+      `${topic} ki jagah pe milwaaye uncle ji`,
+      `Mein ek vlogger hu, ${topic} ki kahani sun`,
+      `${topic} eating with my dad after 10 years`,
+    ],
+  };
+  const list = titleBank[style.toLowerCase()] || titleBank.surprising;
+  const ol = document.getElementById('prompt_titles');
+  ol.innerHTML = '';
+  list.forEach(t => {
+    const li = document.createElement('li');
+    li.textContent = t;
+    ol.appendChild(li);
+  });
+  document.getElementById('prompt_result').classList.add('show');
+}
+
+/* =========================================================================
+ * INIT
+ * ========================================================================= */
+(function init() {
+  const params = new URLSearchParams(window.location.search);
+  const q = (params.get('q') || '').toLowerCase();
+  if (q.includes('thumb') || q.includes('title') || q.includes('youtube') || q.includes('canva') || q.includes('chatgpt') || q.includes('prompt')) {
+    setTimeout(() => startChat(), 200);
+  } else if (q.includes('ai') && q.includes('learn')) {
+    setTimeout(() => showView('ai-fluency'), 200);
+  }
+})();
+</script>
+</body>
+</html>

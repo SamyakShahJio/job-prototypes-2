@@ -8,8 +8,8 @@
 <link rel="stylesheet" href="shared/jds-tokens.css">
 <link rel="stylesheet" href="shared/ambient-glow.css">
 <style>
-  body { background: #fafafe; }
-  .phone-frame { background: #fafafe; }
+  body { background: var(--grey-20); }
+  .phone-frame { background: var(--grey-20); }
 
   /* Header */
   .top-bar {
@@ -116,33 +116,19 @@
   }
   .uc-card .uc-cta svg { width: 14px; height: 14px; transition: transform 0.18s ease; }
   .uc-card:hover .uc-cta svg { transform: translateX(2px); }
-  .uc-card .uc-illu {
-    position: absolute;
-    right: -8px;
-    bottom: -8px;
-    width: 110px;
-    height: 110px;
-    opacity: 0.95;
-    pointer-events: none;
-  }
+  .uc-card .uc-illu { display: none; } /* Decorative illustrations replaced by JDS icons */
 
-  /* Card colorways — Bharat-flavored, not hospital-corporate */
-  .uc-card.microlearning {
-    background: linear-gradient(135deg, #e7fce8 0%, #d3f5d5 100%);
+  /* Cards — all white, JDS-only palette, monochromatic with surface-bold accent */
+  .uc-card { background: var(--surface-default); border: 1px solid var(--stroke-subtle); }
+  .uc-card .uc-tag { color: var(--surface-bold); background: var(--primary-20); }
+  .uc-card .uc-icon-wrap {
+    width: 44px; height: 44px;
+    border-radius: var(--radius-md);
+    background: var(--primary-20);
+    color: var(--surface-bold);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 14px;
   }
-  .uc-card.microlearning .uc-tag { color: #167719; background: rgba(255,255,255,0.7); }
-  .uc-card.english {
-    background: linear-gradient(135deg, #e8e8fc 0%, #d2d2f5 100%);
-  }
-  .uc-card.english .uc-tag { color: #2929d0; background: rgba(255,255,255,0.7); }
-  .uc-card.interview {
-    background: linear-gradient(135deg, #f0e2fc 0%, #e1c5f5 100%);
-  }
-  .uc-card.interview .uc-tag { color: #5810b0; background: rgba(255,255,255,0.7); }
-  .uc-card.govt-exam {
-    background: linear-gradient(135deg, #fff0d6 0%, #ffe2a6 100%);
-  }
-  .uc-card.govt-exam .uc-tag { color: #9c6500; background: rgba(255,255,255,0.7); }
 
   /* Section heading */
   .section-h {
@@ -185,7 +171,7 @@
     position: absolute;
     left: 0; right: 0; bottom: 0;
     padding: var(--space-3) var(--space-4) calc(var(--space-3) + env(safe-area-inset-bottom, 0px));
-    background: linear-gradient(180deg, rgba(250,250,254,0) 0%, rgba(250,250,254,1) 30%);
+    background: var(--grey-20);
     z-index: 5;
   }
   .voice-dock-inner {
@@ -208,8 +194,8 @@
     width: 44px; height: 44px;
     border-radius: 50%;
     border: none;
-    background: var(--primary);
-    color: var(--white);
+    background: var(--surface-bold);
+    color: var(--text-on-bold);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -217,7 +203,7 @@
     flex-shrink: 0;
     transition: all 0.15s;
   }
-  .voice-dock-mic:hover { background: var(--primary-dark); transform: scale(1.04); }
+  .voice-dock-mic:hover { background: var(--primary-70); transform: scale(1.04); }
   .voice-dock-mic:active { transform: scale(0.94); }
   .voice-dock-mic svg { width: 20px; height: 20px; }
 
@@ -295,14 +281,13 @@
     width: 72px; height: 72px;
     border-radius: 50%;
     border: none;
-    background: var(--primary);
-    color: var(--white);
+    background: var(--surface-bold);
+    color: var(--text-on-bold);
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     transition: all 0.15s;
-    box-shadow: 0 4px 16px rgba(53,53,243,0.3);
   }
   .voice-overlay .vo-mic:hover { transform: scale(1.06); }
   .voice-overlay .vo-mic:active { transform: scale(0.94); }
@@ -335,13 +320,13 @@
     font-family: var(--font);
   }
   .voice-pref button.active {
-    background: var(--primary);
-    color: var(--white);
+    background: var(--surface-bold);
+    color: var(--text-on-bold);
   }
 
   @media (min-width: 600px) {
     .phone-frame { box-shadow: var(--shadow-lg); border-radius: 32px; margin-top: 24px; height: calc(100vh - 48px); }
-    body { background: linear-gradient(180deg, #f0f0f5 0%, #e8e8f5 100%); }
+    body { background: var(--surface-moderate); }
   }
 </style>
 </head>
@@ -357,15 +342,10 @@
   <!-- Top bar -->
   <div class="top-bar">
     <button class="back" onclick="window.history.length > 1 ? window.history.back() : null" aria-label="Back">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-        <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
+      <span data-icon="chevron-left" data-size="20"></span>
     </button>
     <div style="flex:1"></div>
-    <span class="jbiq-pill">
-      <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="6"/></svg>
-      JBIQ
-    </span>
+    <span class="jbiq-pill">JBIQ</span>
   </div>
 
   <!-- Body -->
@@ -381,61 +361,36 @@
     <div class="section-h">Pick your goal</div>
     <div class="cards">
 
-      <a class="uc-card microlearning" href="microlearning.html?from=landing">
+      <a class="uc-card" href="microlearning.html?from=landing">
+        <div class="uc-icon-wrap"><span data-icon="brain" data-size="22"></span></div>
         <span class="uc-tag">Hard skills · Just-in-time</span>
         <h2>Learn the one skill you need — in 10 minutes</h2>
         <div class="uc-quote">"Mera thumbnail click kyun nahi ho raha. Bas ek seedha jawaab."</div>
-        <span class="uc-cta">Microlearning <svg viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-        <svg class="uc-illu" viewBox="0 0 120 120" fill="none">
-          <circle cx="60" cy="60" r="56" fill="#ffffff" opacity="0.5"/>
-          <rect x="32" y="38" width="56" height="38" rx="6" fill="#25ab21" opacity="0.85"/>
-          <polygon points="55,52 55,62 65,57" fill="#fff"/>
-          <rect x="40" y="80" width="40" height="3" rx="1.5" fill="#25ab21" opacity="0.6"/>
-          <rect x="44" y="86" width="32" height="3" rx="1.5" fill="#25ab21" opacity="0.4"/>
-        </svg>
+        <span class="uc-cta">Microlearning <span data-icon="chevron-right" data-size="14"></span></span>
       </a>
 
-      <a class="uc-card english" href="english.html?from=landing">
+      <a class="uc-card" href="english.html?from=landing">
+        <div class="uc-icon-wrap"><span data-icon="language" data-size="22"></span></div>
         <span class="uc-tag">English · Real situations</span>
         <h2>Speak English without freezing</h2>
         <div class="uc-quote">"Mujhe woh confidence chahiye jo English speakers ko hota hai."</div>
-        <span class="uc-cta">Speak English <svg viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-        <svg class="uc-illu" viewBox="0 0 120 120" fill="none">
-          <circle cx="60" cy="60" r="56" fill="#ffffff" opacity="0.5"/>
-          <circle cx="60" cy="55" r="22" fill="#3535f3" opacity="0.85"/>
-          <path d="M48 75 Q60 90 72 75" stroke="#3535f3" stroke-width="3" fill="none" opacity="0.85"/>
-          <circle cx="52" cy="52" r="2.5" fill="#fff"/>
-          <circle cx="68" cy="52" r="2.5" fill="#fff"/>
-          <path d="M52 60 Q60 65 68 60" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/>
-        </svg>
+        <span class="uc-cta">Speak English <span data-icon="chevron-right" data-size="14"></span></span>
       </a>
 
-      <a class="uc-card interview" href="interview-prep.html?from=landing">
+      <a class="uc-card" href="interview-prep.html?from=landing">
+        <div class="uc-icon-wrap"><span data-icon="mic" data-size="22"></span></div>
         <span class="uc-tag">Interview · Voice mock</span>
         <h2>Mock the call — kill the V&A round</h2>
         <div class="uc-quote">"V&A round mein freeze ho jaata hoon. Customer call role-play kaisa hota hai pata bhi nahi."</div>
-        <span class="uc-cta">Interview Prep <svg viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-        <svg class="uc-illu" viewBox="0 0 120 120" fill="none">
-          <circle cx="60" cy="60" r="56" fill="#ffffff" opacity="0.5"/>
-          <rect x="42" y="36" width="36" height="48" rx="20" fill="#6d17ce" opacity="0.85"/>
-          <rect x="56" y="84" width="8" height="14" fill="#6d17ce" opacity="0.85"/>
-          <line x1="44" y1="98" x2="76" y2="98" stroke="#6d17ce" stroke-width="3" stroke-linecap="round" opacity="0.85"/>
-          <circle cx="60" cy="55" r="3" fill="#fff"/>
-        </svg>
+        <span class="uc-cta">Interview Prep <span data-icon="chevron-right" data-size="14"></span></span>
       </a>
 
-      <a class="uc-card govt-exam" href="govt-exam.html?from=landing">
+      <a class="uc-card" href="govt-exam.html?from=landing">
+        <div class="uc-icon-wrap"><span data-icon="document" data-size="22"></span></div>
         <span class="uc-tag">Govt Exam · Discovery + Prep</span>
         <h2>Find your exam. Prep on your commute.</h2>
         <div class="uc-quote">"Mujhe samajh nahi aa raha kaunsa exam dena hai. Koi seedha bata de."</div>
-        <span class="uc-cta">Govt Exam <svg viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-        <svg class="uc-illu" viewBox="0 0 120 120" fill="none">
-          <circle cx="60" cy="60" r="56" fill="#ffffff" opacity="0.5"/>
-          <path d="M40 50 L60 38 L80 50 L80 78 L40 78 Z" fill="#f7ab20" opacity="0.85"/>
-          <rect x="46" y="56" width="28" height="3" rx="1.5" fill="#fff"/>
-          <rect x="46" y="63" width="20" height="3" rx="1.5" fill="#fff" opacity="0.7"/>
-          <rect x="46" y="70" width="24" height="3" rx="1.5" fill="#fff" opacity="0.7"/>
-        </svg>
+        <span class="uc-cta">Govt Exam <span data-icon="chevron-right" data-size="14"></span></span>
       </a>
 
     </div>
@@ -447,11 +402,7 @@
     <div class="voice-dock-inner">
       <span class="placeholder">Or just tell me what you need…</span>
       <button class="voice-dock-mic" id="dockMic" aria-label="Open voice">
-        <svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 15a3 3 0 003-3V6a3 3 0 00-6 0v6a3 3 0 003 3z"/>
-          <path d="M19 11v1a7 7 0 01-14 0v-1" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
-          <path d="M12 19v3m-3 0h6" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
-        </svg>
+        <span data-icon="mic" data-size="20"></span>
       </button>
     </div>
   </div>
@@ -462,9 +413,7 @@
 <div class="voice-overlay" id="voiceOverlay" role="dialog" aria-modal="true" aria-label="Voice input">
   <div class="vo-top">
     <button class="vo-close" id="voClose" aria-label="Close">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-        <path d="M6 6l12 12M6 18l12-12" stroke="#141414" stroke-width="2.2" stroke-linecap="round"/>
-      </svg>
+      <span data-icon="close" data-size="20"></span>
     </button>
   </div>
   <div class="vo-body">
@@ -479,15 +428,12 @@
   </div>
   <div class="vo-bottom">
     <button class="vo-mic" id="voMic" aria-label="Start recording">
-      <svg viewBox="0 0 24 24" fill="currentColor">
-        <path d="M12 15a3 3 0 003-3V6a3 3 0 00-6 0v6a3 3 0 003 3z"/>
-        <path d="M19 11v1a7 7 0 01-14 0v-1" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
-        <path d="M12 19v3m-3 0h6" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
-      </svg>
+      <span data-icon="mic" data-size="28"></span>
     </button>
   </div>
 </div>
 
+<script src="shared/icons.js"></script>
 <script src="shared/personas.js"></script>
 <script src="shared/jbiq-voice.js"></script>
 <script src="shared/multimodal.js"></script>

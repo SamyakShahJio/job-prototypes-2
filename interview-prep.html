@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#6d17ce">
+<meta name="theme-color" content="var(--surface-bold)">
 <title>Interview Prep — JioBharatIQ</title>
 <link rel="stylesheet" href="shared/jds-tokens.css">
 <link rel="stylesheet" href="shared/ambient-glow.css">
@@ -12,7 +12,7 @@
   .phone-frame { background: var(--white); }
 
   /* Vertical accent: interview = purple */
-  :root { --vert-accent: #6d17ce; --vert-accent-light: #f0e2fc; --vert-accent-dark: #4a0e8a; }
+  :root { --vert-accent: var(--surface-bold); --vert-accent-light: var(--primary-20); --vert-accent-dark: var(--icon-medium); }
 
   /* ============= TOP BAR ============== */
   .top-bar {
@@ -62,7 +62,7 @@
   /* ============= HOME VIEW ============== */
   .interview-tomorrow {
     margin: var(--space-3) 0 var(--space-5);
-    background: linear-gradient(135deg, var(--vert-accent) 0%, var(--vert-accent-dark) 100%);
+    background: var(--surface-bold);
     border-radius: 22px;
     padding: 18px;
     color: white;
@@ -298,7 +298,7 @@
   .cheat-card .cs-list li strong { color: var(--vert-accent-dark); font-weight: 700; }
 
   .interviewer-card {
-    background: linear-gradient(135deg, #f0e2fc 0%, #e1c5f5 100%);
+    background: var(--primary-20);
     border-radius: 18px;
     padding: 16px;
     margin-bottom: 12px;
@@ -344,10 +344,10 @@
 
   /* ============= LIVE MOCK CALL ============== */
   .mock-view {
-    background: linear-gradient(180deg, #1f0a3d 0%, #0a0220 100%);
+    background: var(--grey-100);
     color: white;
   }
-  .view.mock-view.active { background: linear-gradient(180deg, #1f0a3d 0%, #0a0220 100%); }
+  .view.mock-view.active { background: var(--grey-100); }
   .mock-top {
     height: 60px;
     padding: 0 var(--space-4);
@@ -553,13 +553,13 @@
   .criterion.strong .cr-fill { background: var(--success); }
 
   .answer-dna {
-    background: linear-gradient(135deg, #d6f5ec 0%, #a6e2d2 100%);
+    background: var(--surface-ghost);
     border-radius: 18px;
     padding: 16px;
     margin-bottom: 12px;
   }
   .answer-dna .ad-h {
-    font-size: 11px; font-weight: 700; color: #15791a;
+    font-size: 11px; font-weight: 700; color: var(--success);
     letter-spacing: 0.4px; text-transform: uppercase;
     margin-bottom: 8px;
   }
@@ -575,12 +575,12 @@
   }
 
   .next-step-card {
-    background: linear-gradient(135deg, #fff8e7 0%, #ffe8b6 100%);
+    background: var(--surface-ghost);
     border-radius: 18px;
     padding: 16px;
   }
   .next-step-card .ns-h {
-    font-size: 11px; font-weight: 700; color: #8c6500;
+    font-size: 11px; font-weight: 700; color: var(--surface-bold);
     letter-spacing: 0.4px; text-transform: uppercase; margin-bottom: 8px;
   }
   .next-step-card .ns-text {
@@ -589,14 +589,14 @@
 
   /* ============= MORNING-OF DASHBOARD ============== */
   .morning-hero {
-    background: linear-gradient(135deg, #fff0d6 0%, #ffe2a6 100%);
+    background: var(--surface-ghost);
     border-radius: 22px;
     padding: 18px;
     margin-bottom: var(--space-3);
   }
   .morning-hero .mh-tag {
     display: inline-flex; padding: 4px 10px;
-    background: white; color: #8c5500;
+    background: white; color: var(--surface-bold);
     border-radius: var(--radius-pill);
     font-size: 11px; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase;
     margin-bottom: 10px;
@@ -606,7 +606,7 @@
     line-height: 1.2; margin-bottom: 4px;
   }
   .morning-hero .mh-meta {
-    font-size: 13px; color: #6c4400; font-weight: 600;
+    font-size: 13px; color: var(--icon-medium); font-weight: 600;
   }
 
   .check-item {
@@ -662,7 +662,7 @@
 
   @media (min-width: 600px) {
     .phone-frame { box-shadow: var(--shadow-lg); border-radius: 32px; margin-top: 24px; height: calc(100vh - 48px); }
-    body { background: linear-gradient(180deg, #f0f0f5 0%, #e8e8f5 100%); }
+    body { background: var(--surface-moderate); }
   }
 </style>
 </head>
@@ -748,7 +748,7 @@
       <!-- Last mock report teaser -->
       <div class="section-h">Last mock</div>
       <div class="cta-card" onclick="showView('report')">
-        <div class="cc-icon" style="background: #d6f5ec; color: #15791a;">
+        <div class="cc-icon" style="background: #d6f5ec; color: var(--success);">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M3 12l5 5L21 4" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
         </div>
         <div class="cc-text">
@@ -938,7 +938,7 @@
         <div class="report-score">
           <svg viewBox="0 0 100 100">
             <circle cx="50" cy="50" r="44" fill="none" stroke="#e0e0e0" stroke-width="6"/>
-            <circle cx="50" cy="50" r="44" fill="none" stroke="#6d17ce" stroke-width="6" stroke-dasharray="276" stroke-dashoffset="77" stroke-linecap="round"/>
+            <circle cx="50" cy="50" r="44" fill="none" stroke="var(--surface-bold)" stroke-width="6" stroke-dasharray="276" stroke-dashoffset="77" stroke-linecap="round"/>
           </svg>
           <div class="score-num">
             <div class="sn-v">72</div>
@@ -988,7 +988,7 @@
         </div>
 
         <button class="start-mock-btn" style="margin-top: 16px;" onclick="showView('cheatsheet')">
-          🔁 Run another mock — fix the gap
+          Run another mock — fix the gap
         </button>
       </div>
     </div>
@@ -1063,7 +1063,7 @@
       <!-- Dress code -->
       <div class="cheat-card">
         <div class="cs-h">
-          <div class="cs-icon">👔</div>
+          <div class="cs-icon"><span data-icon="document" data-size="14"></span></div>
           <div class="cs-title">Dress code · BPO formal</div>
         </div>
         <ul class="cs-list">
@@ -1076,7 +1076,7 @@
       <!-- Documents -->
       <div class="cheat-card">
         <div class="cs-h">
-          <div class="cs-icon">📋</div>
+          <div class="cs-icon"><span data-icon="list" data-size="14"></span></div>
           <div class="cs-title">Documents to carry</div>
         </div>
         <div>
@@ -1090,7 +1090,7 @@
       <!-- Hour-before checklist -->
       <div class="cheat-card">
         <div class="cs-h">
-          <div class="cs-icon">⏱</div>
+          <div class="cs-icon"><span data-icon="stopwatch" data-size="14"></span></div>
           <div class="cs-title">In the hour before</div>
         </div>
         <div>
@@ -1104,7 +1104,7 @@
       <!-- Questions to ask back -->
       <div class="cheat-card">
         <div class="cs-h">
-          <div class="cs-icon">💬</div>
+          <div class="cs-icon"><span data-icon="chat" data-size="14"></span></div>
           <div class="cs-title">Ask them back (impress)</div>
         </div>
         <ul class="cs-list">
@@ -1118,6 +1118,7 @@
 
 </div>
 
+<script src="shared/icons.js"></script>
 <script src="shared/personas.js"></script>
 <script src="shared/jbiq-voice.js"></script>
 <script src="shared/multimodal.js"></script>
@@ -1225,9 +1226,9 @@ const WIZARD_STEPS = [
     title: 'Which round?',
     key: 'round',
     options: [
-      { id: 'hr',          logo: 'HR', logoColor: '#6d17ce', title: 'HR round',           meta: 'Tell-me-about-yourself, why-this-company' },
-      { id: 'va',          logo: 'V',  logoColor: '#6d17ce', title: 'V&A round',          meta: 'Voice & accent · Customer roleplay' },
-      { id: 'ops',         logo: 'O',  logoColor: '#6d17ce', title: 'Ops manager round',  meta: 'Process, decisions, scenarios' },
+      { id: 'hr',          logo: 'HR', logoColor: 'var(--surface-bold)', title: 'HR round',           meta: 'Tell-me-about-yourself, why-this-company' },
+      { id: 'va',          logo: 'V',  logoColor: 'var(--surface-bold)', title: 'V&A round',          meta: 'Voice & accent · Customer roleplay' },
+      { id: 'ops',         logo: 'O',  logoColor: 'var(--surface-bold)', title: 'Ops manager round',  meta: 'Process, decisions, scenarios' },
       { id: 'pressure',    logo: '⚡',  logoColor: '#fa2f40', title: 'Pressure drill',     meta: 'Back-to-back hard Qs · Tight clock' },
     ],
   },
@@ -1235,7 +1236,7 @@ const WIZARD_STEPS = [
     title: 'Pick the interviewer vibe',
     key: 'persona',
     options: [
-      { id: 'interviewer_bored_hr',         logo: 'PM', logoColor: '#6d17ce', title: 'Priya · Bored HR',         meta: 'Calm, flat, going-through-the-motions' },
+      { id: 'interviewer_bored_hr',         logo: 'PM', logoColor: 'var(--surface-bold)', title: 'Priya · Bored HR',         meta: 'Calm, flat, going-through-the-motions' },
       { id: 'interviewer_formal_ops',       logo: 'RK', logoColor: '#3900ad', title: 'Rajesh · Formal Ops',      meta: 'Authoritative, evaluative' },
       { id: 'interviewer_friendly_tl',      logo: 'AS', logoColor: '#1eccb0', title: 'Arjun · Friendly TL',      meta: 'Warm, encouraging, wants you to win' },
       { id: 'interviewer_hostile_customer', logo: 'MS', logoColor: '#fa2f40', title: 'Mr. Sharma · Angry customer', meta: 'Hostile · For V&A pressure drills' },
@@ -1245,7 +1246,7 @@ const WIZARD_STEPS = [
     title: 'Ready to begin?',
     key: 'confirm',
     options: [
-      { id: 'go', logo: '▶', logoColor: '#6d17ce', title: 'Yes — start mock now', meta: '5 minutes · Voice-only · Real-time feedback' },
+      { id: 'go', logo: '▶', logoColor: 'var(--surface-bold)', title: 'Yes — start mock now', meta: '5 minutes · Voice-only · Real-time feedback' },
     ],
   },
 ];
@@ -1328,7 +1329,7 @@ function setupCheatSheet() {
   document.getElementById('cs_name').textContent = persona.name;
   document.getElementById('cs_role').textContent = persona.title;
   document.getElementById('cs_arch').textContent = persona.archetype + ' · ' + persona.description;
-  document.getElementById('cs_glow').style.background = `radial-gradient(circle, ${persona.accentColor || '#6d17ce'} 0%, ${persona.accentColor ? persona.accentColor + '88' : '#3900ad'} 100%)`;
+  document.getElementById('cs_glow').style.background = `radial-gradient(circle, ${persona.accentColor || 'var(--surface-bold)'} 0%, ${persona.accentColor ? persona.accentColor + '88' : '#3900ad'} 100%)`;
   document.getElementById('cs_company').innerHTML = `
     <li><strong>Process:</strong> ${c.role}</li>
     <li><strong>Salary:</strong> ${c.salary}</li>

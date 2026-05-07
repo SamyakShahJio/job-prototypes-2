@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#3535f3">
+<meta name="theme-color" content="#3900ad">
 <title>Speak English — JioBharatIQ</title>
 <link rel="stylesheet" href="shared/jds-tokens.css">
 <link rel="stylesheet" href="shared/ambient-glow.css">
@@ -120,9 +120,9 @@
     color: white;
   }
   .entry-card .ec-icon svg { width: 24px; height: 24px; }
-  .entry-card.avatar .ec-icon { background: linear-gradient(135deg, #3535f3, #6d17ce); }
-  .entry-card.packs .ec-icon  { background: linear-gradient(135deg, #f7ab20, #fa2f40); }
-  .entry-card.daily .ec-icon  { background: linear-gradient(135deg, #1eccb0, #25ab21); }
+  .entry-card.avatar .ec-icon { background: linear-gradient(135deg, #3535f3, var(--surface-bold)); }
+  .entry-card.packs .ec-icon  { background: var(--surface-bold); }
+  .entry-card.daily .ec-icon  { background: var(--surface-bold); }
   .entry-card .ec-text { flex: 1; min-width: 0; }
   .entry-card .ec-title {
     font-size: 15px; font-weight: 700; color: var(--grey-100); margin-bottom: 2px;
@@ -161,7 +161,7 @@
     border: 1px solid var(--grey-40);
     border-radius: 20px;
     padding: 16px;
-    background: linear-gradient(135deg, #fff8e7 0%, #ffe8b6 100%);
+    background: var(--surface-ghost);
     cursor: pointer;
   }
   .phrasebook-teaser .pb-h {
@@ -171,10 +171,10 @@
     width: 28px; height: 28px; border-radius: 8px;
     background: rgba(255,255,255,0.7);
     display: flex; align-items: center; justify-content: center;
-    color: #9c6500;
+    color: var(--surface-bold);
   }
   .phrasebook-teaser .pb-title {
-    font-size: 13px; font-weight: 700; color: #6c4400;
+    font-size: 13px; font-weight: 700; color: var(--icon-medium);
     letter-spacing: 0.3px; text-transform: uppercase;
   }
   .phrasebook-teaser .pb-q {
@@ -182,7 +182,7 @@
     line-height: 1.3;
   }
   .phrasebook-teaser .pb-meta {
-    font-size: 12px; font-weight: 500; color: #8c5500;
+    font-size: 12px; font-weight: 500; color: var(--surface-bold);
     margin-top: 6px;
   }
 
@@ -227,11 +227,11 @@
   .pack-card .p-meta {
     font-size: 11px; font-weight: 600; opacity: 0.65; margin-top: 2px;
   }
-  .pack-office   { background: linear-gradient(135deg, #e8e8fc 0%, #d2d2f5 100%); }
-  .pack-customer { background: linear-gradient(135deg, #ffe2e8 0%, #ffc4d2 100%); }
-  .pack-dating   { background: linear-gradient(135deg, #ffe4f2 0%, #ffc4e0 100%); }
-  .pack-family   { background: linear-gradient(135deg, #fff0d6 0%, #ffe2a6 100%); }
-  .pack-travel   { background: linear-gradient(135deg, #d6f5ec 0%, #a6e2d2 100%); }
+  .pack-office   { background: var(--primary-20); }
+  .pack-customer { background: var(--surface-ghost); }
+  .pack-dating   { background: var(--surface-ghost); }
+  .pack-family   { background: var(--surface-ghost); }
+  .pack-travel   { background: var(--surface-ghost); }
   .pack-card.pack-coming { opacity: 0.55; cursor: default; pointer-events: none; }
 
   /* Single full-width scenario list */
@@ -355,7 +355,7 @@
     line-height: 1.4;
   }
   .correction-chip .c-label {
-    font-weight: 700; color: #8c6500;
+    font-weight: 700; color: var(--surface-bold);
     font-size: 10px; letter-spacing: 0.4px;
     text-transform: uppercase;
     margin-bottom: 2px; display: block;
@@ -600,10 +600,10 @@
     margin: 16px var(--space-4) 0;
     padding: 16px;
     border-radius: 16px;
-    background: linear-gradient(135deg, #d6f5ec 0%, #a6e2d2 100%);
+    background: var(--surface-ghost);
   }
   .word-of-day .wod-h {
-    font-size: 11px; font-weight: 700; color: #15791a;
+    font-size: 11px; font-weight: 700; color: var(--success);
     letter-spacing: 0.4px; text-transform: uppercase; margin-bottom: 6px;
   }
   .word-of-day .wod-w {
@@ -619,7 +619,7 @@
 
   @media (min-width: 600px) {
     .phone-frame { box-shadow: var(--shadow-lg); border-radius: 32px; margin-top: 24px; height: calc(100vh - 48px); }
-    body { background: linear-gradient(180deg, #f0f0f5 0%, #e8e8f5 100%); }
+    body { background: var(--surface-moderate); }
   }
 </style>
 </head>
@@ -688,7 +688,7 @@
           </div>
           <div class="ec-text">
             <div class="ec-title">Daily 5-min · Week 2</div>
-            <div class="ec-sub">Asking questions in meetings · 12-day streak 🔥</div>
+            <div class="ec-sub">Asking questions in meetings · 12-day streak</div>
           </div>
           <span class="ec-cta"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span>
         </div>
@@ -741,35 +741,35 @@
     <div class="view-body">
       <div class="packs-grid">
         <div class="pack-card pack-office" onclick="openPack('office')">
-          <div class="p-emoji">💼</div>
+          <div class="p-emoji"><span data-icon="document" data-size="22"></span></div>
           <div>
             <div class="p-name">Office</div>
             <div class="p-meta">5 scenarios · 5 done</div>
           </div>
         </div>
         <div class="pack-card pack-customer" onclick="openPack('customer')">
-          <div class="p-emoji">📞</div>
+          <div class="p-emoji"><span data-icon="chat" data-size="22"></span></div>
           <div>
             <div class="p-name">Customer Service</div>
             <div class="p-meta">5 scenarios · 2 done</div>
           </div>
         </div>
         <div class="pack-card pack-dating" onclick="openPack('dating')">
-          <div class="p-emoji">💖</div>
+          <div class="p-emoji"><span data-icon="star" data-size="22"></span></div>
           <div>
             <div class="p-name">Dating</div>
             <div class="p-meta">5 scenarios · 0 done</div>
           </div>
         </div>
         <div class="pack-card pack-family" onclick="openPack('family')">
-          <div class="p-emoji">🏠</div>
+          <div class="p-emoji"><span data-icon="document" data-size="22"></span></div>
           <div>
             <div class="p-name">Family / In-Laws</div>
             <div class="p-meta">5 scenarios · 1 done</div>
           </div>
         </div>
         <div class="pack-card pack-travel pack-coming">
-          <div class="p-emoji">✈️</div>
+          <div class="p-emoji"><span data-icon="document" data-size="22"></span></div>
           <div>
             <div class="p-name">Travel</div>
             <div class="p-meta">Coming soon</div>
@@ -918,7 +918,7 @@
         </svg>
       </button>
       <div class="title-area">
-        <div class="t1">Your pathway · 12-day streak 🔥</div>
+        <div class="t1">Your pathway · 12-day streak</div>
         <div class="t2">From beginner to confidence — week by week</div>
       </div>
     </div>
@@ -988,6 +988,7 @@
 
 </div>
 
+<script src="shared/icons.js"></script>
 <script src="shared/personas.js"></script>
 <script src="shared/jbiq-voice.js"></script>
 <script src="shared/multimodal.js"></script>
