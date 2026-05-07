@@ -1031,9 +1031,16 @@ function appendAIBubble(text) {
   const chat = document.getElementById('discChat');
   const wrap = document.createElement('div');
   wrap.className = 'msg msg-ai';
-  wrap.innerHTML = `<div class="bubble bubble-ai"><div class="speaker-pill">JBIQ</div>${text}</div>`;
+  wrap.innerHTML = `<div class="bubble bubble-ai"><div class="speaker-pill">JBIQ</div><span class="bubble-text"></span></div>`;
   chat.appendChild(wrap);
   scrollChatBottom();
+  // Stream text word-by-word for AI replies (per MultimodalUX deck §Latency Markers)
+  const target = wrap.querySelector('.bubble-text');
+  if (window.MM && window.MM.streamText) {
+    window.MM.streamText(target, text, { speed: 14, onDone: scrollChatBottom });
+  } else {
+    target.textContent = text;
+  }
 }
 function appendUserBubble(text) {
   const chat = document.getElementById('discChat');
@@ -1300,6 +1307,14 @@ renderPrep();
  * INIT — handle ?q= from landing voice
  * ========================================================================= */
 (function init() {
+  // Prefetch counselor's first line so discovery starts instantly with audio.
+  if (window.JBIQVoice && window.JBIQVoice.prefetch) {
+    window.JBIQVoice.prefetch([
+      { personaId: 'govt_exam_counselor', text: DISCOVERY_FLOW[0].ai },
+      { personaId: 'govt_exam_counselor', text: DISCOVERY_BRANCHES.stability_salary.ai },
+      { personaId: 'govt_exam_counselor', text: BANKING_PATHS.ai },
+    ]);
+  }
   const params = new URLSearchParams(window.location.search);
   const q = (params.get('q') || '').toLowerCase();
   if (q.includes('exam') || q.includes('which') || q.includes('kaunsa') || q.includes('discover') || q.includes('tell me')) {

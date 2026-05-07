@@ -1029,9 +1029,16 @@ function appendAIBubble(text) {
   const chat = document.getElementById('ml_chat');
   const wrap = document.createElement('div');
   wrap.className = 'msg msg-ai';
-  wrap.innerHTML = `<div class="bubble bubble-ai"><div class="speaker-pill">JBIQ</div>${text}</div>`;
+  wrap.innerHTML = `<div class="bubble bubble-ai"><div class="speaker-pill">JBIQ</div><span class="bubble-text"></span></div>`;
   chat.appendChild(wrap);
   chat.scrollTop = chat.scrollHeight;
+  // Stream text word-by-word for AI replies
+  const target = wrap.querySelector('.bubble-text');
+  if (window.MM && window.MM.streamText) {
+    window.MM.streamText(target, text, { speed: 14, onDone: () => { chat.scrollTop = chat.scrollHeight; } });
+  } else {
+    target.textContent = text;
+  }
 }
 function appendUserBubble(text) {
   const chat = document.getElementById('ml_chat');
@@ -1292,6 +1299,14 @@ function runPrompt() {
  * INIT
  * ========================================================================= */
 (function init() {
+  // Prefetch coach's openers so chat starts instantly with audio.
+  if (window.JBIQVoice && window.JBIQVoice.prefetch) {
+    window.JBIQVoice.prefetch([
+      { personaId: 'microlearning_coach', text: "Bata — kya stuck hai? Be specific." },
+      { personaId: 'microlearning_coach', text: PROBLEM_FLOWS.thumbnail.rootCause },
+      { personaId: 'microlearning_coach', text: PROBLEM_FLOWS.title.rootCause },
+    ]);
+  }
   const params = new URLSearchParams(window.location.search);
   const q = (params.get('q') || '').toLowerCase();
   if (q.includes('thumb') || q.includes('title') || q.includes('youtube') || q.includes('canva') || q.includes('chatgpt') || q.includes('prompt')) {

@@ -1503,6 +1503,23 @@ function warmupQ(n) {
  * ========================================================================= */
 (function init() {
   renderWizard(); // pre-renders the first wizard step
+
+  // Prefetch Q1 for each company so mock starts instantly with audio.
+  if (window.JBIQVoice && window.JBIQVoice.prefetch) {
+    const prefetchList = [];
+    Object.entries(COMPANIES).forEach(([id, c]) => {
+      if (c.questions && c.questions[0]) {
+        prefetchList.push({ personaId: c.persona, text: c.questions[0].q });
+      }
+    });
+    // Pep talk for morning kit
+    prefetchList.push({
+      personaId: 'jbiq_warm',
+      text: "Hey Rohit — you've done eight mocks. You scored 72 yesterday. The customer roleplay was your best. Tomorrow, lead with empathy. Drink water. Smile at the door. You've got this.",
+    });
+    window.JBIQVoice.prefetch(prefetchList);
+  }
+
   const params = new URLSearchParams(window.location.search);
   const q = (params.get('q') || '').toLowerCase();
   if (q.includes('tech mahindra')) currentCompany = 'tech-mahindra';

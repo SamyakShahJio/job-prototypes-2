@@ -150,6 +150,33 @@
     return arr.buffer;
   }
 
+  /* ========== TTS prefetch cache ==========
+   * Pre-fetches expected greetings so they play INSTANTLY when triggered,
+   * eliminating the 1-3s silent gap while Sarvam fetches.
+   * Cache key: persona.speaker + '|' + text + '|' + lang
+   */
+  const ttsCache = new Map();
+  function ttsKey(personaId, text, lang) {
+    return personaId + '|' + (lang || 'en-IN') + '|' + (text || '').substring(0, 200);
+  }
+  async function prefetchTts(personaId, text, lang) {
+    const persona = window.JBIQ_PERSONAS && window.JBIQ_PERSONAS[personaId];
+    if (!persona) return null;
+    const key = ttsKey(personaId, text, lang);
+    if (ttsCache.has(key)) return ttsCache.get(key);
+    try {
+      const buf = await sarvamSynthesize(text, persona, lang || 'en-IN');
+      if (buf) ttsCache.set(key, buf);
+      return buf;
+    } catch (e) {
+      console.warn('[JBIQ] prefetch failed for', personaId, e);
+      return null;
+    }
+  }
+  function getCachedTts(personaId, text, lang) {
+    return ttsCache.get(ttsKey(personaId, text, lang)) || null;
+  }
+
   /* ========== Ambient glow state controller ========== */
   function setGlowState(glowEl, state) {
     if (!glowEl) return;
@@ -316,11 +343,23 @@
         });
       }
       try {
-        notifyState('speaking');
+        // Try cache first — instant playback for prefetched greetings
+        const cached = getCachedTts(persona.id, text, langHint || 'en-IN');
+        if (cached) {
+          notifyState('speaking');
+          lastTtsBuffer = cached;
+          await playPcmBytes(cached, () => notifyState('idle'));
+          return;
+        }
+
+        notifyState('thinking'); // visible "Sarah is thinking…" state during fetch
         const arrayBuf = await sarvamSynthesize(text, persona, langHint || 'en-IN');
         if (!arrayBuf) { notifyState('idle'); return; }
         lastTtsBuffer = arrayBuf;
+        // Save to cache so subsequent identical lines (replay) are instant
+        ttsCache.set(ttsKey(persona.id, text, langHint || 'en-IN'), arrayBuf);
 
+        notifyState('speaking');
         await playPcmBytes(arrayBuf, () => notifyState('idle'));
       } catch (err) {
         onError(err);
@@ -353,10 +392,35 @@
     };
   }
 
+  /* ========== Prefetch helper for pages =========================
+   * Pages call JBIQVoice.prefetch([{ personaId, text, lang }, …]) on load.
+   * Pre-fetches happen in background, gated by first user gesture (so we
+   * don't waste bandwidth on bounced visitors).
+   */
+  function prefetchAll(items) {
+    const doFetch = () => {
+      items.forEach(it => {
+        prefetchTts(it.personaId, it.text, it.lang || 'en-IN');
+      });
+    };
+    if (audioUnlocked) {
+      doFetch();
+    } else {
+      // Fire on first gesture
+      const onGesture = () => {
+        doFetch();
+        ['click', 'touchstart', 'keydown'].forEach(e => document.removeEventListener(e, onGesture, { capture: true }));
+      };
+      ['click', 'touchstart', 'keydown'].forEach(e => document.addEventListener(e, onGesture, { capture: true, once: false, passive: true }));
+    }
+  }
+
   window.JBIQVoice = {
     create,
     sarvamTranscribe,
     sarvamSynthesize,
     convertToWav,
+    prefetch: prefetchAll,
+    prefetchOne: prefetchTts,
   };
 })();

@@ -1528,8 +1528,9 @@ showView = function(name) {
     setTimeout(() => {
       const greeting = SARAH_OPENERS[Math.floor(Math.random() * SARAH_OPENERS.length)];
       lastSarahLine = greeting;
+      // Prefetched on init — plays instantly via cache
       ensureAvatarVoice().speak(greeting, 'en-IN');
-    }, 400);
+    }, 150);
   }
 };
 
@@ -1537,6 +1538,17 @@ showView = function(name) {
  * Init — read query string, jump to mode if needed
  * ========================================================================= */
 (function init() {
+  // Prefetch greetings so they play instantly on entry — no silent gap.
+  if (window.JBIQVoice && window.JBIQVoice.prefetch) {
+    window.JBIQVoice.prefetch([
+      { personaId: 'sarah_avatar', text: SARAH_OPENERS[0] },
+      { personaId: 'sarah_avatar', text: SARAH_OPENERS[1] },
+      { personaId: 'sarah_avatar', text: SARAH_OPENERS[2] },
+      { personaId: 'sarah_avatar', text: 'I completely understand your frustration.' },
+      { personaId: 'sarah_avatar', text: 'Let me look into this right away.' },
+    ]);
+  }
+
   const params = new URLSearchParams(window.location.search);
   const q = (params.get('q') || '').toLowerCase();
   if (q && (q.includes('practice') || q.includes('avatar') || q.includes('sarah'))) {
