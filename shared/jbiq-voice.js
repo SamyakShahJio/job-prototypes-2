@@ -142,13 +142,12 @@
     const data = await resp.json();
     if (!data.audios || !data.audios[0]) throw new Error('TTS returned no audio');
 
-    // base64 → Blob URL
+    // base64 → ArrayBuffer (raw WAV bytes for Web Audio decoding)
     const b64 = data.audios[0];
     const bin = atob(b64);
     const arr = new Uint8Array(bin.length);
     for (let i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
-    const audioBlob = new Blob([arr], { type: 'audio/wav' });
-    return URL.createObjectURL(audioBlob);
+    return arr.buffer;
   }
 
   /* ========== Ambient glow state controller ========== */
@@ -157,16 +156,88 @@
     glowEl.setAttribute('data-state', state);
   }
 
-  /* ========== Audio context unlock (iOS Safari) ========== */
+  /* ========== Audio playback — Web Audio API approach ==========
+   * Why: HTMLAudioElement.play() loses gesture context across async/await
+   * boundaries, which causes NotAllowedError when speak() runs after a setTimeout
+   * or fetch chain. Web Audio API's AudioContext only needs to be resumed ONCE
+   * from a user gesture; after that, all BufferSourceNode plays work freely.
+   */
+  let sharedAudioCtx = null;
   let audioUnlocked = false;
+  let pendingGreets = [];        // queued speak calls if user hasn't gestured yet
+  let currentBufferSource = null; // active playback so we can stop it
+
+  function getAudioCtx() {
+    if (!sharedAudioCtx) {
+      const Ctx = window.AudioContext || window.webkitAudioContext;
+      if (!Ctx) return null;
+      sharedAudioCtx = new Ctx();
+    }
+    return sharedAudioCtx;
+  }
+
   function unlockAudio() {
-    if (audioUnlocked) return;
-    try {
-      const a = new Audio();
-      a.muted = true;
-      a.play().catch(() => {});
-      audioUnlocked = true;
-    } catch (e) {}
+    const ctx = getAudioCtx();
+    if (!ctx) return Promise.resolve();
+    if (ctx.state === 'running' && audioUnlocked) return Promise.resolve();
+    return ctx.resume().then(() => {
+      if (ctx.state === 'running') {
+        audioUnlocked = true;
+        flushPendingGreets();
+      }
+    }).catch(() => {});
+  }
+
+  function flushPendingGreets() {
+    const queue = pendingGreets.slice();
+    pendingGreets = [];
+    queue.forEach(fn => { try { fn(); } catch (e) {} });
+  }
+
+  // Stop any active playback
+  function stopActiveAudio() {
+    if (currentBufferSource) {
+      try { currentBufferSource.stop(); } catch (e) {}
+      try { currentBufferSource.disconnect(); } catch (e) {}
+      currentBufferSource = null;
+    }
+  }
+
+  // Auto-unlock on first user gesture anywhere in the doc
+  function attachUnlockListeners() {
+    const onGesture = () => { unlockAudio(); };
+    ['click', 'touchstart', 'keydown', 'pointerdown', 'mousedown'].forEach(evt => {
+      document.addEventListener(evt, onGesture, { capture: true, passive: true });
+    });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', attachUnlockListeners);
+  } else {
+    attachUnlockListeners();
+  }
+
+  // Decode raw WAV bytes (from Sarvam base64) and play via Web Audio API.
+  // Returns a promise that resolves when playback ends.
+  async function playPcmBytes(arrayBuffer, onEnded) {
+    const ctx = getAudioCtx();
+    if (!ctx) throw new Error('Web Audio API unavailable');
+    if (ctx.state !== 'running') {
+      try { await ctx.resume(); } catch (e) {}
+    }
+    const audioBuffer = await ctx.decodeAudioData(arrayBuffer.slice(0));
+    stopActiveAudio();
+    const src = ctx.createBufferSource();
+    src.buffer = audioBuffer;
+    src.connect(ctx.destination);
+    src.onended = () => {
+      currentBufferSource = null;
+      if (onEnded) try { onEnded(); } catch (e) {}
+    };
+    currentBufferSource = src;
+    src.start(0);
+    return new Promise((resolve) => {
+      src.addEventListener('ended', resolve, { once: true });
+    });
   }
 
   /* ========== Public API ========== */
@@ -185,8 +256,7 @@
     let audioChunks = [];
     let isRecording = false;
     let mediaStream = null;
-    let currentAudio = null;
-    let lastTtsUrl = null;
+    let lastTtsBuffer = null;
 
     function notifyState(s) {
       setGlowState(glowEl, s);
@@ -195,7 +265,7 @@
 
     async function startRecording() {
       unlockAudio();
-      if (currentAudio) { try { currentAudio.pause(); } catch (e) {} currentAudio = null; }
+      stopActiveAudio();
       try {
         mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
         audioChunks = [];
@@ -239,17 +309,19 @@
     }
 
     async function speak(text, langHint) {
+      // If audio isn't unlocked yet (no user gesture has happened), queue.
+      if (!audioUnlocked) {
+        return new Promise((resolve) => {
+          pendingGreets.push(() => speak(text, langHint).then(resolve));
+        });
+      }
       try {
         notifyState('speaking');
-        const url = await sarvamSynthesize(text, persona, langHint || 'en-IN');
-        if (!url) { notifyState('idle'); return; }
-        lastTtsUrl = url;
+        const arrayBuf = await sarvamSynthesize(text, persona, langHint || 'en-IN');
+        if (!arrayBuf) { notifyState('idle'); return; }
+        lastTtsBuffer = arrayBuf;
 
-        if (currentAudio) { try { currentAudio.pause(); } catch (e) {} }
-        currentAudio = new Audio(url);
-        currentAudio.onended = () => notifyState('idle');
-        currentAudio.onerror = () => notifyState('idle');
-        await currentAudio.play();
+        await playPcmBytes(arrayBuf, () => notifyState('idle'));
       } catch (err) {
         onError(err);
         notifyState('idle');
@@ -257,14 +329,9 @@
     }
 
     function replayLast() {
-      if (!lastTtsUrl) return;
-      try {
-        if (currentAudio) currentAudio.pause();
-        currentAudio = new Audio(lastTtsUrl);
-        currentAudio.onended = () => notifyState('idle');
-        notifyState('speaking');
-        currentAudio.play();
-      } catch (e) {}
+      if (!lastTtsBuffer) return;
+      notifyState('speaking');
+      playPcmBytes(lastTtsBuffer, () => notifyState('idle')).catch(() => notifyState('idle'));
     }
 
     function setGlow(el) { glowEl = el; }
@@ -275,7 +342,7 @@
 
     function stop() {
       stopRecording();
-      if (currentAudio) { try { currentAudio.pause(); } catch (e) {} currentAudio = null; }
+      stopActiveAudio();
       notifyState('idle');
     }
 
