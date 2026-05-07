@@ -1,0 +1,1551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#3535f3">
+<title>Speak English — JioBharatIQ</title>
+<link rel="stylesheet" href="shared/jds-tokens.css">
+<link rel="stylesheet" href="shared/ambient-glow.css">
+<style>
+  body { background: var(--white); }
+  .phone-frame { background: var(--white); }
+
+  /* ============= Common header ============== */
+  .top-bar {
+    height: 56px;
+    padding: 0 var(--space-4);
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    background: var(--white);
+    flex-shrink: 0;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s;
+    position: relative;
+    z-index: 30;
+  }
+  .top-bar.scrolled { border-bottom-color: var(--grey-40); }
+  .top-bar .icon-btn {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--surface-ghost);
+    border: none;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; flex-shrink: 0; transition: all 0.15s;
+    color: var(--grey-100);
+  }
+  .top-bar .icon-btn:hover { background: var(--grey-40); }
+  .top-bar .icon-btn:active { transform: scale(0.92); }
+  .top-bar .title-area {
+    flex: 1;
+    display: flex; flex-direction: column; gap: 2px;
+    min-width: 0;
+  }
+  .top-bar .title-area .t1 {
+    font-size: 16px; font-weight: 700; color: var(--grey-100);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .top-bar .title-area .t2 {
+    font-size: 11px; font-weight: 500; color: var(--grey-60);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+
+  /* ============= View switching ============== */
+  .view {
+    display: none;
+    flex: 1;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .view.active { display: flex; }
+  .view-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--space-3) var(--space-4) var(--space-7);
+  }
+
+  /* ============= HOME VIEW ============== */
+  .home-greeting {
+    padding: var(--space-3) var(--space-4) var(--space-5);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .home-greeting .glow-wrap {
+    width: 80px; height: 80px;
+    flex-shrink: 0;
+  }
+  .home-greeting .glow-wrap .ambient-glow {
+    width: 80px; height: 80px;
+  }
+  .home-greeting .glow-wrap .ambient-glow .orb { inset: 12px; }
+  .home-greeting .greet-text { flex: 1; }
+  .home-greeting .greet-text .hi {
+    font-size: 13px; font-weight: 600; color: var(--grey-60);
+    letter-spacing: 0.3px; text-transform: uppercase;
+  }
+  .home-greeting .greet-text .name {
+    font-size: 22px; font-weight: 900; color: var(--grey-100);
+    line-height: 1.2; margin-top: 2px;
+  }
+  .home-greeting .greet-text .sub {
+    font-size: 13px; font-weight: 500; color: var(--grey-80);
+    line-height: 1.4; margin-top: 4px;
+  }
+
+  .entry-cards {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding: 0 var(--space-4);
+  }
+  .entry-card {
+    border: 1px solid var(--grey-40);
+    border-radius: 20px;
+    padding: 18px;
+    background: var(--white);
+    cursor: pointer;
+    transition: all 0.18s ease;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .entry-card:hover { transform: translateY(-2px); border-color: var(--primary); box-shadow: var(--shadow-md); }
+  .entry-card:active { transform: scale(0.98); }
+  .entry-card .ec-icon {
+    width: 48px; height: 48px;
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    color: white;
+  }
+  .entry-card .ec-icon svg { width: 24px; height: 24px; }
+  .entry-card.avatar .ec-icon { background: linear-gradient(135deg, #3535f3, #6d17ce); }
+  .entry-card.packs .ec-icon  { background: linear-gradient(135deg, #f7ab20, #fa2f40); }
+  .entry-card.daily .ec-icon  { background: linear-gradient(135deg, #1eccb0, #25ab21); }
+  .entry-card .ec-text { flex: 1; min-width: 0; }
+  .entry-card .ec-title {
+    font-size: 15px; font-weight: 700; color: var(--grey-100); margin-bottom: 2px;
+  }
+  .entry-card .ec-sub {
+    font-size: 12px; font-weight: 500; color: var(--grey-60);
+    line-height: 1.4;
+  }
+  .entry-card .ec-cta { color: var(--grey-60); flex-shrink: 0; }
+
+  /* Stats strip */
+  .stats-strip {
+    display: flex;
+    gap: 12px;
+    padding: var(--space-5) var(--space-4) var(--space-3);
+  }
+  .stat-card {
+    flex: 1;
+    background: var(--surface-ghost);
+    border-radius: 14px;
+    padding: 12px;
+    text-align: center;
+  }
+  .stat-card .v {
+    font-size: 22px; font-weight: 900; color: var(--grey-100);
+    line-height: 1; letter-spacing: -0.5px;
+  }
+  .stat-card .l {
+    font-size: 11px; font-weight: 600; color: var(--grey-60);
+    margin-top: 6px; letter-spacing: 0.2px;
+  }
+
+  /* Phrasebook teaser */
+  .phrasebook-teaser {
+    margin: var(--space-5) var(--space-4) 0;
+    border: 1px solid var(--grey-40);
+    border-radius: 20px;
+    padding: 16px;
+    background: linear-gradient(135deg, #fff8e7 0%, #ffe8b6 100%);
+    cursor: pointer;
+  }
+  .phrasebook-teaser .pb-h {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 8px;
+  }
+  .phrasebook-teaser .pb-h .pb-icon {
+    width: 28px; height: 28px; border-radius: 8px;
+    background: rgba(255,255,255,0.7);
+    display: flex; align-items: center; justify-content: center;
+    color: #9c6500;
+  }
+  .phrasebook-teaser .pb-title {
+    font-size: 13px; font-weight: 700; color: #6c4400;
+    letter-spacing: 0.3px; text-transform: uppercase;
+  }
+  .phrasebook-teaser .pb-q {
+    font-size: 16px; font-weight: 700; color: var(--grey-100);
+    line-height: 1.3;
+  }
+  .phrasebook-teaser .pb-meta {
+    font-size: 12px; font-weight: 500; color: #8c5500;
+    margin-top: 6px;
+  }
+
+  /* Section headers */
+  .section-h {
+    font-size: 11px; font-weight: 700; color: var(--grey-60);
+    letter-spacing: 0.6px; text-transform: uppercase;
+    margin: var(--space-5) var(--space-4) var(--space-3);
+  }
+
+  /* ============= PACKS VIEW ============== */
+  .packs-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-3);
+    padding: 0 var(--space-4);
+  }
+  .pack-card {
+    border-radius: 18px;
+    padding: 16px;
+    cursor: pointer;
+    transition: transform 0.18s;
+    color: var(--grey-100);
+    border: 1px solid rgba(20,20,20,0.06);
+    aspect-ratio: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .pack-card:hover { transform: translateY(-2px); }
+  .pack-card:active { transform: scale(0.97); }
+  .pack-card .p-emoji {
+    font-size: 28px;
+    width: 44px; height: 44px;
+    background: rgba(255,255,255,0.6);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .pack-card .p-name {
+    font-size: 16px; font-weight: 800; line-height: 1.15;
+  }
+  .pack-card .p-meta {
+    font-size: 11px; font-weight: 600; opacity: 0.65; margin-top: 2px;
+  }
+  .pack-office   { background: linear-gradient(135deg, #e8e8fc 0%, #d2d2f5 100%); }
+  .pack-customer { background: linear-gradient(135deg, #ffe2e8 0%, #ffc4d2 100%); }
+  .pack-dating   { background: linear-gradient(135deg, #ffe4f2 0%, #ffc4e0 100%); }
+  .pack-family   { background: linear-gradient(135deg, #fff0d6 0%, #ffe2a6 100%); }
+  .pack-travel   { background: linear-gradient(135deg, #d6f5ec 0%, #a6e2d2 100%); }
+  .pack-card.pack-coming { opacity: 0.55; cursor: default; pointer-events: none; }
+
+  /* Single full-width scenario list */
+  .scenario-list {
+    display: flex; flex-direction: column; gap: var(--space-3);
+    padding: 0 var(--space-4);
+  }
+  .scenario-row {
+    border: 1px solid var(--grey-40);
+    border-radius: 16px;
+    padding: 14px;
+    background: var(--white);
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .scenario-row:hover { border-color: var(--primary); }
+  .scenario-row .s-num {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--surface-ghost);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700; color: var(--grey-80);
+    flex-shrink: 0;
+  }
+  .scenario-row.done .s-num {
+    background: var(--success); color: white;
+  }
+  .scenario-row .s-text { flex: 1; min-width: 0; }
+  .scenario-row .s-title {
+    font-size: 14px; font-weight: 700; color: var(--grey-100);
+    margin-bottom: 2px;
+  }
+  .scenario-row .s-meta {
+    font-size: 11px; color: var(--grey-60); font-weight: 500;
+  }
+  .scenario-row .s-arrow { color: var(--grey-60); flex-shrink: 0; }
+
+  /* ============= SCENARIO PRACTICE VIEW ============== */
+  .practice-modes {
+    display: flex; gap: 6px;
+    padding: 8px var(--space-4);
+    background: var(--white);
+    border-bottom: 1px solid var(--grey-40);
+  }
+  .mode-tab {
+    flex: 1;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: transparent;
+    border: none;
+    font-family: var(--font);
+    font-size: 13px; font-weight: 600; color: var(--grey-80);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .mode-tab.active {
+    background: var(--primary);
+    color: white;
+  }
+
+  .chat-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .msg {
+    max-width: 86%;
+    animation: msgIn 0.3s ease-out;
+  }
+  .msg-ai { align-self: flex-start; }
+  .msg-user { align-self: flex-end; }
+
+  .bubble {
+    padding: 12px 16px;
+    font-size: 14px;
+    line-height: 1.45;
+    color: var(--grey-100);
+  }
+  .bubble-ai {
+    background: var(--surface-ghost);
+    border-radius: 4px var(--radius-lg) var(--radius-lg) var(--radius-lg);
+  }
+  .bubble-user {
+    background: var(--primary);
+    color: white;
+    border-radius: var(--radius-lg) 4px var(--radius-lg) var(--radius-lg);
+  }
+  .bubble-ai .speaker-pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    margin-bottom: 6px;
+    padding: 3px 8px;
+    background: white;
+    border-radius: var(--radius-pill);
+    font-size: 10px; font-weight: 700; color: var(--primary);
+  }
+  .bubble-ai .play-btn {
+    background: white; border: 1px solid var(--grey-40);
+    width: 28px; height: 28px; border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    cursor: pointer; margin-top: 8px;
+    transition: all 0.15s;
+    color: var(--primary);
+  }
+  .bubble-ai .play-btn:hover { background: var(--primary); color: white; }
+  .bubble-ai .play-btn svg { width: 12px; height: 12px; }
+
+  .correction-chip {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 6px 10px 6px 8px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #fffbe6 0%, #fff3b0 100%);
+    border: 1px solid #ffd84d;
+    font-size: 12px;
+    line-height: 1.4;
+  }
+  .correction-chip .c-label {
+    font-weight: 700; color: #8c6500;
+    font-size: 10px; letter-spacing: 0.4px;
+    text-transform: uppercase;
+    margin-bottom: 2px; display: block;
+  }
+  .correction-chip .c-fix { color: var(--grey-100); font-weight: 600; }
+
+  @keyframes msgIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+  .key-phrases {
+    background: var(--primary-light);
+    border-radius: 16px;
+    padding: 14px;
+    margin-bottom: 4px;
+  }
+  .key-phrases .kp-h {
+    font-size: 11px; font-weight: 700; color: var(--primary);
+    letter-spacing: 0.4px; text-transform: uppercase; margin-bottom: 8px;
+  }
+  .key-phrases .kp-list { display: flex; flex-direction: column; gap: 6px; }
+  .key-phrases .kp-item {
+    background: white;
+    border-radius: 10px;
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: var(--grey-100);
+    cursor: pointer;
+  }
+  .key-phrases .kp-item .play {
+    width: 24px; height: 24px; border-radius: 50%;
+    background: var(--primary); color: white;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .key-phrases .kp-item .play svg { width: 10px; height: 10px; }
+  .key-phrases .kp-item .txt { flex: 1; }
+
+  /* Bottom dock for chat (Mode-appropriate per our spec) */
+  .chat-dock {
+    flex-shrink: 0;
+    background: white;
+    border-top: 1px solid var(--grey-40);
+    padding: 10px var(--space-4) calc(10px + env(safe-area-inset-bottom, 0px));
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .chat-dock .chat-input {
+    flex: 1;
+    border: 1px solid var(--grey-40);
+    border-radius: var(--radius-pill);
+    padding: 10px 16px;
+    font-family: var(--font);
+    font-size: 14px;
+    color: var(--grey-100);
+    outline: none;
+    background: var(--surface-ghost);
+  }
+  .chat-dock .chat-input:focus { border-color: var(--primary); background: white; }
+  .chat-dock .icon-btn-mic {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    border: none;
+    background: var(--primary);
+    color: white;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: all 0.15s;
+  }
+  .chat-dock .icon-btn-mic:hover { background: var(--primary-dark); }
+  .chat-dock .icon-btn-mic.recording {
+    background: var(--error);
+    animation: pulseRecord 1s ease-in-out infinite;
+  }
+  @keyframes pulseRecord {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(250,47,64,0.5); }
+    50% { box-shadow: 0 0 0 12px rgba(250,47,64,0); }
+  }
+
+  /* ============= AVATAR VIEW (Sarah lipsync) ============== */
+  .view.avatar-view.active {
+    background: linear-gradient(180deg, #f5f5fc 0%, #e8e8fc 100%);
+  }
+  .avatar-view .av-top {
+    height: 56px;
+    padding: 0 var(--space-4);
+    display: flex; align-items: center; gap: 12px;
+    flex-shrink: 0;
+  }
+  .avatar-view .av-top .av-end {
+    background: var(--error); color: white;
+    border: none; border-radius: var(--radius-pill);
+    padding: 8px 14px;
+    font-family: var(--font); font-size: 12px; font-weight: 700;
+    cursor: pointer;
+  }
+  .avatar-view .av-top .av-name {
+    flex: 1;
+    font-size: 14px; font-weight: 700; color: var(--grey-100);
+    text-align: center;
+  }
+  .avatar-view .av-top .av-name .live-dot {
+    display: inline-block; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--success); margin-right: 5px;
+    animation: livePulse 1.6s ease-in-out infinite;
+  }
+  @keyframes livePulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+  .avatar-view .av-stage {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-4);
+  }
+  .sarah-avatar {
+    width: 200px; height: 200px;
+    position: relative;
+    margin-bottom: 24px;
+  }
+  .sarah-avatar svg { width: 100%; height: 100%; }
+
+  .avatar-view .av-status {
+    font-size: 16px; font-weight: 700; color: var(--grey-100);
+    margin-bottom: 6px; text-align: center;
+  }
+  .avatar-view .av-sub {
+    font-size: 12px; font-weight: 500; color: var(--grey-60);
+    text-align: center; line-height: 1.4; max-width: 280px;
+  }
+  .avatar-view .av-transcript {
+    background: white;
+    border-radius: 16px;
+    padding: 14px 18px;
+    margin: 16px var(--space-4) 0;
+    font-size: 14px; line-height: 1.5;
+    color: var(--grey-100);
+    box-shadow: var(--shadow-sm);
+    max-height: 100px;
+    overflow-y: auto;
+    display: none;
+  }
+  .avatar-view.has-transcript .av-transcript { display: block; }
+
+  .avatar-view .av-bottom {
+    flex-shrink: 0;
+    padding: 16px var(--space-4) calc(16px + env(safe-area-inset-bottom, 0px));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+  }
+  .av-bottom .av-mic {
+    width: 72px; height: 72px;
+    border-radius: 50%;
+    border: none;
+    background: var(--primary);
+    color: white;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(53,53,243,0.3);
+    transition: all 0.15s;
+  }
+  .av-bottom .av-mic:hover { transform: scale(1.06); }
+  .av-bottom .av-mic.recording {
+    background: var(--error);
+    animation: pulseRecord 1s ease-in-out infinite;
+  }
+  .av-bottom .av-mic svg { width: 28px; height: 28px; }
+  .av-bottom .av-keyboard {
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    border: 1px solid var(--grey-40);
+    background: white;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    color: var(--grey-80);
+  }
+
+  /* ============= PATHWAY VIEW ============== */
+  .pathway-list {
+    display: flex; flex-direction: column; gap: 0;
+    padding: 0 var(--space-4);
+    position: relative;
+  }
+  .pathway-list::before {
+    content: '';
+    position: absolute;
+    left: calc(var(--space-4) + 19px);
+    top: 0; bottom: 0;
+    width: 2px;
+    background: var(--grey-40);
+    z-index: 0;
+  }
+  .pathway-week {
+    display: flex; gap: 14px;
+    padding: 12px 0;
+    position: relative;
+    z-index: 1;
+  }
+  .pathway-week .pw-num {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: white;
+    border: 2px solid var(--grey-40);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 800; color: var(--grey-80);
+    flex-shrink: 0;
+  }
+  .pathway-week.done .pw-num {
+    background: var(--success); border-color: var(--success); color: white;
+  }
+  .pathway-week.current .pw-num {
+    background: var(--primary); border-color: var(--primary); color: white;
+    box-shadow: 0 0 0 4px rgba(53,53,243,0.15);
+  }
+  .pathway-week .pw-content {
+    flex: 1;
+    background: white;
+    border: 1px solid var(--grey-40);
+    border-radius: 14px;
+    padding: 12px 14px;
+    cursor: pointer;
+  }
+  .pathway-week.current .pw-content {
+    border-color: var(--primary);
+    background: var(--primary-light);
+  }
+  .pathway-week .pw-title {
+    font-size: 13px; font-weight: 700; color: var(--grey-100);
+  }
+  .pathway-week .pw-meta {
+    font-size: 11px; color: var(--grey-60); margin-top: 2px;
+  }
+  .pathway-week.current .pw-meta { color: var(--primary); font-weight: 600; }
+
+  .word-of-day {
+    margin: 16px var(--space-4) 0;
+    padding: 16px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #d6f5ec 0%, #a6e2d2 100%);
+  }
+  .word-of-day .wod-h {
+    font-size: 11px; font-weight: 700; color: #15791a;
+    letter-spacing: 0.4px; text-transform: uppercase; margin-bottom: 6px;
+  }
+  .word-of-day .wod-w {
+    font-size: 22px; font-weight: 900; color: var(--grey-100);
+    margin-bottom: 4px;
+  }
+  .word-of-day .wod-m {
+    font-size: 13px; color: var(--grey-80); line-height: 1.4;
+  }
+  .word-of-day .wod-eg {
+    font-size: 12px; color: var(--grey-80); font-style: italic; margin-top: 6px;
+  }
+
+  @media (min-width: 600px) {
+    .phone-frame { box-shadow: var(--shadow-lg); border-radius: 32px; margin-top: 24px; height: calc(100vh - 48px); }
+    body { background: linear-gradient(180deg, #f0f0f5 0%, #e8e8f5 100%); }
+  }
+</style>
+</head>
+<body>
+<div class="phone-frame" id="phoneFrame">
+
+  <!-- ========================== HOME ========================== -->
+  <div class="view active" id="view-home">
+    <div class="top-bar">
+      <button class="icon-btn" onclick="window.location.href='index.html'" aria-label="Back">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <div class="title-area">
+        <div class="t1">English Coach</div>
+        <div class="t2">Speak English without freezing</div>
+      </div>
+      <span class="jbiq-pill">JBIQ</span>
+    </div>
+
+    <div class="view-body">
+      <!-- Sarah greeting with mini ambient glow -->
+      <div class="home-greeting">
+        <div class="glow-wrap">
+          <div class="ambient-glow size-sm" data-state="idle">
+            <div class="halo h2"></div>
+            <div class="halo"></div>
+            <div class="orb"></div>
+          </div>
+        </div>
+        <div class="greet-text">
+          <div class="hi">Hi, Pooja</div>
+          <div class="name">Ready to practice?</div>
+          <div class="sub">5-min session today — your customer call's on the way 😅</div>
+        </div>
+      </div>
+
+      <!-- 3 entry cards -->
+      <div class="entry-cards">
+        <div class="entry-card avatar" onclick="showView('avatar')">
+          <div class="ec-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12a4 4 0 100-8 4 4 0 000 8zM12 14c-4 0-8 2-8 6v2h16v-2c0-4-4-6-8-6z"/></svg>
+          </div>
+          <div class="ec-text">
+            <div class="ec-title">Free practice with Sarah</div>
+            <div class="ec-sub">Talk about anything — she'll correct you in flow</div>
+          </div>
+          <span class="ec-cta"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span>
+        </div>
+
+        <div class="entry-card packs" onclick="showView('packs')">
+          <div class="ec-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 7l9-5 9 5v10l-9 5-9-5V7z" opacity="0.3"/><path d="M3 7l9 5 9-5M12 12v10" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+          </div>
+          <div class="ec-text">
+            <div class="ec-title">Pick a situation</div>
+            <div class="ec-sub">Office · Customer service · Dating · Family · Travel</div>
+          </div>
+          <span class="ec-cta"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span>
+        </div>
+
+        <div class="entry-card daily" onclick="showView('pathway')">
+          <div class="ec-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8l-6.2 4.5 2.4-7.4L2 9.4h7.6z"/></svg>
+          </div>
+          <div class="ec-text">
+            <div class="ec-title">Daily 5-min · Week 2</div>
+            <div class="ec-sub">Asking questions in meetings · 12-day streak 🔥</div>
+          </div>
+          <span class="ec-cta"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-strip">
+        <div class="stat-card">
+          <div class="v">12</div>
+          <div class="l">DAYS</div>
+        </div>
+        <div class="stat-card">
+          <div class="v">38</div>
+          <div class="l">PHRASES</div>
+        </div>
+        <div class="stat-card">
+          <div class="v">A2→B1</div>
+          <div class="l">LEVEL</div>
+        </div>
+      </div>
+
+      <!-- Phrasebook teaser -->
+      <div class="phrasebook-teaser" onclick="alert('Phrasebook (38 phrases earned) — coming soon')">
+        <div class="pb-h">
+          <div class="pb-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h12a4 4 0 014 4v12H4V4z" opacity="0.5"/><path d="M8 8h8M8 12h8M8 16h5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+          <div class="pb-title">Word of the day</div>
+        </div>
+        <div class="pb-q">"What sets us apart is our fast service."</div>
+        <div class="pb-meta">Use this when introducing your company. Earned yesterday in Office Pack.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================== PACKS ========================== -->
+  <div class="view" id="view-packs">
+    <div class="top-bar">
+      <button class="icon-btn" onclick="showView('home')" aria-label="Back">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <div class="title-area">
+        <div class="t1">Situation packs</div>
+        <div class="t2">Real situations · 5 scenarios each</div>
+      </div>
+    </div>
+
+    <div class="view-body">
+      <div class="packs-grid">
+        <div class="pack-card pack-office" onclick="openPack('office')">
+          <div class="p-emoji">💼</div>
+          <div>
+            <div class="p-name">Office</div>
+            <div class="p-meta">5 scenarios · 5 done</div>
+          </div>
+        </div>
+        <div class="pack-card pack-customer" onclick="openPack('customer')">
+          <div class="p-emoji">📞</div>
+          <div>
+            <div class="p-name">Customer Service</div>
+            <div class="p-meta">5 scenarios · 2 done</div>
+          </div>
+        </div>
+        <div class="pack-card pack-dating" onclick="openPack('dating')">
+          <div class="p-emoji">💖</div>
+          <div>
+            <div class="p-name">Dating</div>
+            <div class="p-meta">5 scenarios · 0 done</div>
+          </div>
+        </div>
+        <div class="pack-card pack-family" onclick="openPack('family')">
+          <div class="p-emoji">🏠</div>
+          <div>
+            <div class="p-name">Family / In-Laws</div>
+            <div class="p-meta">5 scenarios · 1 done</div>
+          </div>
+        </div>
+        <div class="pack-card pack-travel pack-coming">
+          <div class="p-emoji">✈️</div>
+          <div>
+            <div class="p-name">Travel</div>
+            <div class="p-meta">Coming soon</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================== SCENARIO LIST ========================== -->
+  <div class="view" id="view-scenarios">
+    <div class="top-bar">
+      <button class="icon-btn" onclick="showView('packs')" aria-label="Back">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <div class="title-area">
+        <div class="t1" id="scList_title">Customer Service</div>
+        <div class="t2" id="scList_sub">5 scenarios — pick one to practice</div>
+      </div>
+    </div>
+
+    <div class="view-body">
+      <div class="scenario-list" id="scList_container"></div>
+    </div>
+  </div>
+
+  <!-- ========================== SCENARIO PRACTICE ========================== -->
+  <div class="view" id="view-practice">
+    <div class="top-bar">
+      <button class="icon-btn" onclick="showView('scenarios')" aria-label="Back">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <div class="title-area">
+        <div class="t1" id="prac_title">Practice</div>
+        <div class="t2" id="prac_sub">Customer Service</div>
+      </div>
+    </div>
+
+    <div class="practice-modes">
+      <button class="mode-tab active" data-mode="listen" onclick="setMode('listen')">Listen</button>
+      <button class="mode-tab" data-mode="repeat" onclick="setMode('repeat')">Repeat with me</button>
+      <button class="mode-tab" data-mode="free" onclick="setMode('free')">Free practice</button>
+    </div>
+
+    <div class="chat-area" id="prac_chat"></div>
+
+    <div class="chat-dock">
+      <input type="text" class="chat-input" id="prac_input" placeholder="Type or tap mic to speak…">
+      <button class="icon-btn-mic" id="prac_mic" aria-label="Mic">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 15a3 3 0 003-3V6a3 3 0 00-6 0v6a3 3 0 003 3z"/>
+          <path d="M19 11v1a7 7 0 01-14 0v-1" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+          <path d="M12 19v3m-3 0h6" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- ========================== AVATAR (Sarah) ========================== -->
+  <div class="view avatar-view" id="view-avatar">
+    <div class="av-top">
+      <button class="av-end" onclick="endAvatar()">End</button>
+      <div class="av-name"><span class="live-dot"></span>Sarah · English coach</div>
+      <div style="width: 56px"></div>
+    </div>
+    <div class="av-stage">
+      <div class="sarah-avatar" id="sarahAvatar">
+        <!-- Inline SVG avatar — animated mouth via JS -->
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="bgGlow" cx="50%" cy="40%" r="55%">
+              <stop offset="0%" stop-color="#e8e8fc"/>
+              <stop offset="100%" stop-color="#c8c8f5"/>
+            </radialGradient>
+            <linearGradient id="hairG" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#3a2618"/>
+              <stop offset="100%" stop-color="#1f140b"/>
+            </linearGradient>
+            <linearGradient id="skinG" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#f4d4b8"/>
+              <stop offset="100%" stop-color="#e8c0a0"/>
+            </linearGradient>
+          </defs>
+          <!-- Glow background -->
+          <circle cx="100" cy="100" r="95" fill="url(#bgGlow)"/>
+          <!-- Hair back -->
+          <path d="M50 90 Q50 35 100 30 Q150 35 150 90 Q150 130 130 145 L130 110 Q130 85 100 85 Q70 85 70 110 L70 145 Q50 130 50 90 Z" fill="url(#hairG)"/>
+          <!-- Face -->
+          <ellipse cx="100" cy="105" rx="40" ry="48" fill="url(#skinG)"/>
+          <!-- Hair front -->
+          <path d="M65 80 Q70 60 100 55 Q130 60 135 80 Q120 70 100 70 Q80 70 65 80 Z" fill="url(#hairG)"/>
+          <!-- Eyes -->
+          <ellipse class="eye" cx="85" cy="100" rx="3.5" ry="4.5" fill="#1f140b"/>
+          <ellipse class="eye" cx="115" cy="100" rx="3.5" ry="4.5" fill="#1f140b"/>
+          <!-- Eyebrows -->
+          <path d="M78 91 Q85 88 92 91" stroke="#3a2618" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <path d="M108 91 Q115 88 122 91" stroke="#3a2618" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <!-- Nose -->
+          <path d="M100 110 L98 122 Q100 125 102 122 Z" fill="#d4a888" opacity="0.6"/>
+          <!-- Mouth — closed (default) -->
+          <path id="mouth" d="M88 138 Q100 142 112 138" stroke="#a04050" stroke-width="2.5" fill="#c47080" stroke-linecap="round"/>
+          <!-- Cheeks -->
+          <ellipse cx="75" cy="125" rx="6" ry="4" fill="#f4a8a8" opacity="0.4"/>
+          <ellipse cx="125" cy="125" rx="6" ry="4" fill="#f4a8a8" opacity="0.4"/>
+          <!-- Earrings -->
+          <circle cx="58" cy="115" r="2.5" fill="#f7ab20"/>
+          <circle cx="142" cy="115" r="2.5" fill="#f7ab20"/>
+          <!-- Necklace (subtle) -->
+          <path d="M70 168 Q100 180 130 168" stroke="#3535f3" stroke-width="1.5" fill="none" opacity="0.5"/>
+        </svg>
+      </div>
+
+      <div class="av-status" id="av_status">Sarah is ready</div>
+      <div class="av-sub" id="av_sub">Tap mic and say hi! Try: "Hi Sarah, I had a tough day at work."</div>
+
+      <div class="av-transcript" id="av_transcript"></div>
+    </div>
+
+    <div class="av-bottom">
+      <button class="av-keyboard" onclick="alert('Keyboard mode — tap to type instead of speak. Coming soon.')" aria-label="Keyboard">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="2" y="6" width="20" height="13" rx="2" stroke="currentColor" stroke-width="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M6 14h.01M18 14h.01M9 14h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+      <button class="av-mic" id="av_mic" aria-label="Mic">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 15a3 3 0 003-3V6a3 3 0 00-6 0v6a3 3 0 003 3z"/>
+          <path d="M19 11v1a7 7 0 01-14 0v-1" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+          <path d="M12 19v3m-3 0h6" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+        </svg>
+      </button>
+      <button class="av-keyboard" onclick="replayLastSarah()" aria-label="Replay">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M3 12a9 9 0 1015.5-6.4M21 5v4h-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- ========================== PATHWAY ========================== -->
+  <div class="view" id="view-pathway">
+    <div class="top-bar">
+      <button class="icon-btn" onclick="showView('home')" aria-label="Back">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <div class="title-area">
+        <div class="t1">Your pathway · 12-day streak 🔥</div>
+        <div class="t2">From beginner to confidence — week by week</div>
+      </div>
+    </div>
+
+    <div class="view-body">
+      <div class="word-of-day">
+        <div class="wod-h">Word of the day</div>
+        <div class="wod-w">Apart</div>
+        <div class="wod-m"><strong>"Set apart"</strong> — different in a good way, special.</div>
+        <div class="wod-eg">"What sets us apart is our 24-hour service."</div>
+      </div>
+
+      <div class="section-h">12-week pathway</div>
+      <div class="pathway-list">
+        <div class="pathway-week done">
+          <div class="pw-num">1</div>
+          <div class="pw-content">
+            <div class="pw-title">Agreeing in meetings</div>
+            <div class="pw-meta">5 lessons · Done last week</div>
+          </div>
+        </div>
+        <div class="pathway-week current">
+          <div class="pw-num">2</div>
+          <div class="pw-content">
+            <div class="pw-title">Asking questions</div>
+            <div class="pw-meta">3 of 5 lessons · 2 days to go</div>
+          </div>
+        </div>
+        <div class="pathway-week">
+          <div class="pw-num">3</div>
+          <div class="pw-content">
+            <div class="pw-title">Giving opinions</div>
+            <div class="pw-meta">5 lessons · Starts next week</div>
+          </div>
+        </div>
+        <div class="pathway-week">
+          <div class="pw-num">4</div>
+          <div class="pw-content">
+            <div class="pw-title">Handling disagreement</div>
+            <div class="pw-meta">5 lessons · 4 weeks away</div>
+          </div>
+        </div>
+        <div class="pathway-week">
+          <div class="pw-num">5</div>
+          <div class="pw-content">
+            <div class="pw-title">Sound of "v" vs "w"</div>
+            <div class="pw-meta">Pronunciation gym · 4 lessons</div>
+          </div>
+        </div>
+        <div class="pathway-week">
+          <div class="pw-num">6</div>
+          <div class="pw-content">
+            <div class="pw-title">Small talk at work</div>
+            <div class="pw-meta">5 lessons · Coming up</div>
+          </div>
+        </div>
+        <div class="pathway-week">
+          <div class="pw-num">7</div>
+          <div class="pw-content">
+            <div class="pw-title">Customer call confidence</div>
+            <div class="pw-meta">8 lessons · Includes BPO V&A</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script src="shared/personas.js"></script>
+<script src="shared/jbiq-voice.js"></script>
+<script src="shared/multimodal.js"></script>
+<script>
+/* =========================================================================
+ * VIEW SWITCHING
+ * ========================================================================= */
+let currentView = 'home';
+function showView(name) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-' + name).classList.add('active');
+  currentView = name;
+  if (name !== 'avatar') {
+    if (avatarVoice) { avatarVoice.stop(); }
+  }
+  // Reset scroll
+  const body = document.querySelector('#view-' + name + ' .view-body');
+  if (body) body.scrollTop = 0;
+}
+
+/* =========================================================================
+ * SCENARIO DATA — scripted rails per JCS doc
+ * ========================================================================= */
+const PACKS = {
+  office: {
+    name: 'Office',
+    scenarios: [
+      { id: 'raise', title: 'Ask for a raise', meta: '4 turns · 3 min', done: true },
+      { id: 'mistake', title: 'Reporting a mistake', meta: '4 turns · 3 min', done: true },
+      { id: 'lunch', title: 'Lunch chat', meta: '5 turns · 4 min', done: true },
+      { id: 'disagree', title: 'Disagreeing politely', meta: '4 turns · 3 min', done: true },
+      { id: 'cooler', title: 'Water-cooler small talk', meta: '5 turns · 3 min', done: true },
+    ],
+  },
+  customer: {
+    name: 'Customer Service',
+    scenarios: [
+      { id: 'angry-customer', title: 'Calming an angry customer', meta: '5 turns · 4 min', done: true, lead: true },
+      { id: 'return-policy', title: 'Explaining a return policy', meta: '4 turns · 3 min', done: true },
+      { id: 'escalate', title: 'Politely refusing escalation', meta: '5 turns · 4 min', done: false },
+      { id: 'callback', title: 'Promising a callback', meta: '3 turns · 2 min', done: false },
+      { id: 'wrong-charge', title: 'Disputing a wrong charge', meta: '5 turns · 4 min', done: false },
+    ],
+  },
+  dating: {
+    name: 'Dating',
+    scenarios: [
+      { id: 'first-message', title: 'Sending the first message', meta: '3 turns · 2 min', done: false },
+      { id: 'first-date', title: 'First date small talk', meta: '6 turns · 5 min', done: false },
+      { id: 'compliment', title: 'Giving a compliment', meta: '3 turns · 2 min', done: false },
+      { id: 'no-thanks', title: 'Saying "no thanks" politely', meta: '4 turns · 3 min', done: false },
+      { id: 'meet-parents', title: 'Meeting their parents', meta: '6 turns · 5 min', done: false },
+    ],
+  },
+  family: {
+    name: 'Family / In-Laws',
+    scenarios: [
+      { id: 'in-laws', title: 'Talking to in-laws in English', meta: '5 turns · 4 min', done: true },
+      { id: 'kid-school', title: 'Helping kids with English homework', meta: '4 turns · 3 min', done: false },
+      { id: 'budget', title: 'Family budget discussion', meta: '5 turns · 4 min', done: false },
+      { id: 'visit', title: 'Inviting relatives over', meta: '4 turns · 3 min', done: false },
+      { id: 'argument', title: 'Resolving a family argument', meta: '6 turns · 5 min', done: false },
+    ],
+  },
+};
+
+const SCENARIO_SCRIPTS = {
+  'angry-customer': {
+    title: 'Calming an angry customer',
+    pack: 'Customer Service',
+    keyPhrases: [
+      "I completely understand your frustration.",
+      "Let me look into this right away.",
+      "I'll make sure this is resolved today.",
+      "Thank you for your patience, sir.",
+    ],
+    listen: [
+      { speaker: 'customer', text: "I've been on hold for 30 minutes! This is unacceptable!" },
+      { speaker: 'agent', text: "I completely understand your frustration, sir. I'm so sorry for the long wait." },
+      { speaker: 'customer', text: "Sorry won't fix the problem! What are you going to do about my refund?" },
+      { speaker: 'agent', text: "Let me look into this right away. Could I have your reference number, please?" },
+    ],
+    repeat: [
+      { ai: "Try this: \"I completely understand your frustration.\"", then: "Listen carefully — focus on saying 'frustration' clearly." },
+      { ai: "Now: \"Let me look into this right away.\"", then: "Notice the stress on 'right' — adds urgency." },
+      { ai: "And: \"I'll make sure this is resolved today.\"", then: "Confident tone — you're taking ownership." },
+    ],
+    free: [
+      { ai: "Customer says: \"I've been waiting 20 minutes — this is ridiculous!\" How do you respond?", expects: ['frustration', 'sorry', 'understand', 'apologize'] },
+      { ai: "Customer asks: \"Will you fix this today or not?\" What's a confident response?", expects: ['will', 'today', 'sure', 'resolve', 'today'] },
+    ],
+  },
+  'raise': {
+    title: 'Ask for a raise',
+    pack: 'Office',
+    keyPhrases: [
+      "I'd like to discuss my contribution this year.",
+      "Based on my impact, I'd like to discuss compensation.",
+      "I've taken on additional responsibilities this quarter.",
+      "I'm hoping we can revisit my package.",
+    ],
+    listen: [
+      { speaker: 'agent', text: "Sir, I'd like to discuss my contribution this year." },
+      { speaker: 'manager', text: "Sure, what's on your mind?" },
+      { speaker: 'agent', text: "Based on my impact — I closed 18 accounts last quarter — I'd like to discuss compensation." },
+      { speaker: 'manager', text: "I appreciate the directness. Let me think about this and get back to you." },
+    ],
+    repeat: [
+      { ai: "Say: \"I'd like to discuss my contribution this year.\"", then: "Calm tone — not asking, stating." },
+      { ai: "Now: \"Based on my impact, I'd like to discuss compensation.\"", then: "Notice — \"based on my impact\" comes before the ask." },
+    ],
+    free: [
+      { ai: "Your manager says: \"What's up?\" How do you open the raise conversation?", expects: ['discuss', 'contribution', 'compensation', 'package', 'year', 'impact'] },
+    ],
+  },
+  'mistake': {
+    title: 'Reporting a mistake',
+    pack: 'Office',
+    keyPhrases: [
+      "I need to bring something to your attention.",
+      "I made an error in the report yesterday.",
+      "Here's what happened — and here's how I'm fixing it.",
+      "It won't happen again.",
+    ],
+    listen: [
+      { speaker: 'agent', text: "Ma'am, I need to bring something to your attention." },
+      { speaker: 'manager', text: "Yes, go ahead." },
+      { speaker: 'agent', text: "I made an error in yesterday's report — the Q3 numbers were wrong by 5%. Here's what happened, and here's how I'm fixing it." },
+      { speaker: 'manager', text: "Thank you for telling me directly. What's the fix?" },
+    ],
+    repeat: [
+      { ai: "Try: \"I need to bring something to your attention.\"", then: "Direct, not anxious." },
+      { ai: "Now: \"It won't happen again.\"", then: "Short and confident." },
+    ],
+    free: [
+      { ai: "How do you start telling your manager about a mistake?", expects: ['bring', 'attention', 'mistake', 'error', 'sorry', 'report'] },
+    ],
+  },
+};
+
+/* =========================================================================
+ * PACK + SCENARIO NAVIGATION
+ * ========================================================================= */
+let currentPackId = null;
+let currentScenarioId = null;
+let currentMode = 'listen';
+
+function openPack(packId) {
+  currentPackId = packId;
+  const pack = PACKS[packId];
+  if (!pack) return;
+  document.getElementById('scList_title').textContent = pack.name;
+  document.getElementById('scList_sub').textContent = pack.scenarios.length + ' scenarios — pick one to practice';
+
+  const c = document.getElementById('scList_container');
+  c.innerHTML = '';
+  pack.scenarios.forEach((s, i) => {
+    const row = document.createElement('div');
+    row.className = 'scenario-row' + (s.done ? ' done' : '');
+    row.innerHTML = `
+      <div class="s-num">${s.done ? '✓' : (i+1)}</div>
+      <div class="s-text">
+        <div class="s-title">${s.title}</div>
+        <div class="s-meta">${s.meta}</div>
+      </div>
+      <div class="s-arrow"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+    `;
+    row.onclick = () => openScenario(s.id);
+    c.appendChild(row);
+  });
+  showView('scenarios');
+}
+
+function openScenario(scId) {
+  currentScenarioId = scId;
+  const sc = SCENARIO_SCRIPTS[scId];
+  if (!sc) {
+    alert("This scenario is coming soon — try 'Calming an angry customer' under Customer Service for the full demo.");
+    return;
+  }
+  document.getElementById('prac_title').textContent = sc.title;
+  document.getElementById('prac_sub').textContent = sc.pack;
+  setMode('listen');
+  showView('practice');
+}
+
+function setMode(mode) {
+  currentMode = mode;
+  document.querySelectorAll('.mode-tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.mode === mode);
+  });
+  renderPractice();
+}
+
+function renderPractice() {
+  const sc = SCENARIO_SCRIPTS[currentScenarioId];
+  const chat = document.getElementById('prac_chat');
+  chat.innerHTML = '';
+
+  // Key phrases preview always at top
+  const kp = document.createElement('div');
+  kp.className = 'msg msg-ai';
+  kp.style.maxWidth = '95%';
+  let kpHtml = '<div class="key-phrases"><div class="kp-h">Key phrases for this scenario</div><div class="kp-list">';
+  sc.keyPhrases.forEach((p, i) => {
+    kpHtml += `<div class="kp-item" onclick="speakPhrase(${i})"><div class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div><div class="txt">${p}</div></div>`;
+  });
+  kpHtml += '</div></div>';
+  kp.innerHTML = kpHtml;
+  chat.appendChild(kp);
+
+  if (currentMode === 'listen') {
+    sc.listen.forEach((line, i) => {
+      const m = document.createElement('div');
+      m.className = 'msg ' + (line.speaker === 'agent' ? 'msg-user' : 'msg-ai');
+      const speaker = line.speaker === 'agent' ? 'YOU' : (line.speaker === 'customer' ? 'CUSTOMER' : 'MANAGER');
+      m.innerHTML = `<div class="bubble ${line.speaker === 'agent' ? 'bubble-user' : 'bubble-ai'}">
+        ${line.speaker !== 'agent' ? `<div class="speaker-pill">${speaker}</div>` : ''}
+        ${line.text}
+        ${line.speaker !== 'agent' ? `<button class="play-btn" onclick="speakLine('${(line.text || '').replace(/'/g, "\\'")}')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button>` : ''}
+      </div>`;
+      chat.appendChild(m);
+    });
+  } else if (currentMode === 'repeat') {
+    if (sc.repeat) {
+      sc.repeat.forEach((step) => {
+        const m = document.createElement('div');
+        m.className = 'msg msg-ai';
+        m.innerHTML = `<div class="bubble bubble-ai"><div class="speaker-pill">SARAH</div>${step.ai}<div style="margin-top:6px;color:var(--grey-60);font-size:12px;">${step.then}</div></div>`;
+        chat.appendChild(m);
+      });
+      const tip = document.createElement('div');
+      tip.className = 'msg msg-ai';
+      tip.innerHTML = `<div class="bubble bubble-ai" style="background:#e8e8fc;color:var(--primary-dark);font-weight:600;">Tap the mic and repeat the bolded phrase. I'll listen and let you know.</div>`;
+      chat.appendChild(tip);
+    }
+  } else if (currentMode === 'free') {
+    if (sc.free && sc.free[0]) {
+      const m = document.createElement('div');
+      m.className = 'msg msg-ai';
+      m.innerHTML = `<div class="bubble bubble-ai"><div class="speaker-pill">SARAH</div>${sc.free[0].ai}</div>`;
+      chat.appendChild(m);
+    }
+  }
+}
+
+function speakPhrase(i) {
+  const sc = SCENARIO_SCRIPTS[currentScenarioId];
+  if (!sc) return;
+  speakLine(sc.keyPhrases[i]);
+}
+
+let practiceVoice = null;
+function ensurePracticeVoice() {
+  if (practiceVoice) return practiceVoice;
+  practiceVoice = JBIQVoice.create({
+    persona: 'sarah_avatar',
+    onTranscript: handlePracticeTranscript,
+    onError: (e) => console.error(e),
+  });
+  return practiceVoice;
+}
+function speakLine(text) {
+  const v = ensurePracticeVoice();
+  v.speak(text, 'en-IN');
+}
+
+function handlePracticeTranscript(text, lang) {
+  if (!text) return;
+  // Append user message
+  const chat = document.getElementById('prac_chat');
+  const m = document.createElement('div');
+  m.className = 'msg msg-user';
+  m.innerHTML = `<div class="bubble bubble-user">${text}</div>`;
+  chat.appendChild(m);
+
+  // Generate corrective AI reply based on mode
+  setTimeout(() => giveFeedback(text), 400);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function giveFeedback(userText) {
+  const sc = SCENARIO_SCRIPTS[currentScenarioId];
+  const chat = document.getElementById('prac_chat');
+  const lower = userText.toLowerCase();
+
+  let reply = '';
+  let correction = '';
+
+  if (currentMode === 'repeat') {
+    // Match against key phrases
+    const matched = sc.keyPhrases.some(p => lower.includes(p.toLowerCase().split(' ')[2] || ''));
+    if (matched) {
+      reply = "Good! Your pace was clear.";
+    } else {
+      reply = "Almost — try again, focus on the key phrase.";
+    }
+  } else if (currentMode === 'free') {
+    const expects = (sc.free[0] && sc.free[0].expects) || [];
+    const hits = expects.filter(k => lower.includes(k));
+    if (hits.length >= 2) {
+      reply = "Nice — you nailed the empathy. Customer would feel heard.";
+    } else if (hits.length === 1) {
+      reply = "Decent! One tweak — also acknowledge their feeling, e.g. \"I completely understand.\"";
+      correction = '"I completely understand your frustration, sir."';
+    } else {
+      reply = "Good attempt. Try leading with empathy first, like: \"I completely understand your frustration.\"";
+      correction = '"I completely understand your frustration."';
+    }
+  } else {
+    reply = "I heard you. Switch to 'Repeat with me' to practice these phrases.";
+  }
+
+  const m = document.createElement('div');
+  m.className = 'msg msg-ai';
+  let html = `<div class="bubble bubble-ai"><div class="speaker-pill">SARAH</div>${reply}`;
+  if (correction) {
+    html += `<div class="correction-chip"><span class="c-label">Try this</span><span class="c-fix">${correction}</span></div>`;
+  }
+  html += `<button class="play-btn" onclick="speakLine('${reply.replace(/'/g, "\\'")}')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button></div>`;
+  m.innerHTML = html;
+  chat.appendChild(m);
+  chat.scrollTop = chat.scrollHeight;
+
+  // Auto-speak in repeat/free modes
+  if (currentMode !== 'listen') {
+    setTimeout(() => speakLine(reply), 200);
+  }
+}
+
+/* =========================================================================
+ * PRACTICE MIC + INPUT
+ * ========================================================================= */
+const pracMic = document.getElementById('prac_mic');
+const pracInput = document.getElementById('prac_input');
+pracMic.addEventListener('click', () => {
+  const v = ensurePracticeVoice();
+  if (v.isRecording) {
+    v.stopRecording();
+    pracMic.classList.remove('recording');
+  } else {
+    v.startRecording();
+    pracMic.classList.add('recording');
+    // Persist visual until transcript arrives
+    setTimeout(() => {
+      if (!v.isRecording) pracMic.classList.remove('recording');
+    }, 8000);
+  }
+});
+pracInput.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter' && pracInput.value.trim()) {
+    handlePracticeTranscript(pracInput.value.trim(), 'en-IN');
+    pracInput.value = '';
+  }
+});
+
+/* =========================================================================
+ * SARAH AVATAR — guided free-form
+ * ========================================================================= */
+let avatarVoice = null;
+let lastSarahLine = '';
+let avTurn = 0;
+
+function ensureAvatarVoice() {
+  if (avatarVoice) return avatarVoice;
+  avatarVoice = JBIQVoice.create({
+    persona: 'sarah_avatar',
+    onTranscript: handleAvatarTranscript,
+    onState: handleAvatarState,
+    onError: (e) => {
+      console.error(e);
+      document.getElementById('av_status').textContent = 'Mic access needed';
+    },
+  });
+  return avatarVoice;
+}
+
+function handleAvatarState(state) {
+  const mic = document.getElementById('av_mic');
+  mic.classList.toggle('recording', state === 'listening');
+  const status = document.getElementById('av_status');
+  const sub = document.getElementById('av_sub');
+
+  if (state === 'listening') {
+    status.textContent = 'Listening…';
+    sub.textContent = 'Speak naturally. I\'ll wait until you stop.';
+    setMouth('listen');
+  } else if (state === 'thinking') {
+    status.textContent = 'Mmm, let me think…';
+    sub.textContent = '';
+    setMouth('think');
+  } else if (state === 'speaking') {
+    status.textContent = 'Sarah';
+    sub.textContent = '';
+    startMouthAnim();
+  } else {
+    status.textContent = 'Sarah is ready';
+    sub.textContent = 'Tap the mic to keep going.';
+    stopMouthAnim();
+    setMouth('rest');
+  }
+}
+
+const SARAH_OPENERS = [
+  "Hi! I'm Sarah. How's your day going?",
+  "Hey! Good to see you. How are you feeling today?",
+  "Hi Pooja! What did you do today?",
+];
+const SARAH_RESPONSES = {
+  // Topic: feelings
+  good_feeling: ["That's lovely to hear! What made it good?", "Nice! Tell me what made today good."],
+  bad_feeling: ["Sounds tough. What happened?", "I'm sorry. Want to talk about it?"],
+  tired: ["Feeling tired makes everything harder. Tough day at work?", "Long day? Tell me what happened."],
+  // Topic: work
+  work_general: ["Tell me about your work day. Any tough calls today?", "Customer service can be tough. Anything stand out today?"],
+  customer: ["Customer calls — those can be the trickiest. Was it angry or polite?", "How did the call end? Did you handle it OK?"],
+  hard_call: ["That sounds stressful. What did you say when they got angry?", "Did you stay calm? Walk me through it."],
+  // Topic: practice / interview
+  interview: ["Oh, an interview! Tell me which company. We can practice introducing yourself."],
+  practice: ["Of course — let's practice. Try: \"Tell me about yourself.\" I'll start."],
+  // Topic: family
+  family_chat: ["Family is everything. Who did you talk to?", "Tell me more about your family."],
+  // Default
+  off_topic: ["Interesting! And how does that connect to your work or day?", "Tell me more about that."],
+  // Fallback when nothing matches
+  fallback: ["Got it — and what about your day at the BPO? Any tough calls?", "Tell me more — what happened next?"],
+  // Closer
+  goodbye: ["Lovely chatting! Try one customer call practice tomorrow — same time?", "Take care, Pooja. Same time tomorrow?"],
+};
+function pickResp(category) {
+  const list = SARAH_RESPONSES[category] || SARAH_RESPONSES.fallback;
+  return list[Math.floor(Math.random() * list.length)];
+}
+
+function routeSarah(text) {
+  const t = text.toLowerCase();
+  if (/\b(bye|goodbye|see you|chalo|talk later)\b/.test(t)) return 'goodbye';
+  if (/\b(interview|tech mahindra|concentrix|hdfc|bajaj|hr round|v&a)\b/.test(t)) return 'interview';
+  if (/\b(practice|let's practice|repeat)\b/.test(t)) return 'practice';
+  if (/\b(customer|sir|ma'am|callback|refund|escalat)\b/.test(t)) return 'customer';
+  if (/\b(angry|rude|shout|frustrated|upset|hard call|tough call|difficult call)\b/.test(t)) return 'hard_call';
+  if (/\b(work|office|bpo|call|client|boss|manager|colleague|shift)\b/.test(t)) return 'work_general';
+  if (/\b(tired|exhausted|tough day|long day|stress)\b/.test(t)) return 'tired';
+  if (/\b(good|great|fine|happy|nice|lovely|amazing)\b/.test(t)) return 'good_feeling';
+  if (/\b(bad|sad|terrible|upset|low|down)\b/.test(t)) return 'bad_feeling';
+  if (/\b(family|parents|sister|brother|husband|wife|son|daughter|in.laws)\b/.test(t)) return 'family_chat';
+  return 'off_topic';
+}
+
+async function handleAvatarTranscript(text, lang) {
+  if (!text) {
+    document.getElementById('av_status').textContent = "Didn't catch that";
+    document.getElementById('av_sub').textContent = 'Tap the mic and try again.';
+    return;
+  }
+  document.getElementById('view-avatar').classList.add('has-transcript');
+  const t = document.getElementById('av_transcript');
+  t.innerHTML = '<strong>You said:</strong> "' + text + '"';
+
+  avTurn += 1;
+  const category = routeSarah(text);
+  const reply = pickResp(category);
+  lastSarahLine = reply;
+
+  await avatarVoice.speak(reply, lang);
+  // Update transcript area with Sarah's reply
+  setTimeout(() => {
+    t.innerHTML += '<br><br><strong style="color:var(--primary)">Sarah:</strong> ' + reply;
+    t.scrollTop = t.scrollHeight;
+  }, 200);
+}
+
+function endAvatar() {
+  if (avatarVoice) avatarVoice.stop();
+  showView('home');
+}
+function replayLastSarah() {
+  if (!lastSarahLine || !avatarVoice) return;
+  avatarVoice.speak(lastSarahLine, 'en-IN');
+}
+document.getElementById('av_mic').addEventListener('click', () => {
+  const v = ensureAvatarVoice();
+  if (v.isRecording) v.stopRecording();
+  else v.startRecording();
+});
+
+/* =========================================================================
+ * Sarah lipsync — toggle mouth shape while audio plays
+ * ========================================================================= */
+let mouthInterval = null;
+const MOUTHS = {
+  rest:    'M88 138 Q100 142 112 138',
+  smile:   'M86 137 Q100 145 114 137',
+  open_a:  'M90 137 Q100 148 110 137 Q100 144 90 137',
+  open_o:  'M93 137 Q100 152 107 137 Q100 144 93 137',
+  open_e:  'M88 138 Q100 144 112 138 Q100 141 88 138',
+  listen:  'M88 138 Q100 141 112 138',
+  think:   'M92 139 Q100 137 108 139',
+};
+function setMouth(shape) {
+  const m = document.getElementById('mouth');
+  if (!m) return;
+  m.setAttribute('d', MOUTHS[shape] || MOUTHS.rest);
+}
+function startMouthAnim() {
+  stopMouthAnim();
+  const shapes = ['open_a', 'open_o', 'open_e', 'rest', 'open_a', 'open_e'];
+  let i = 0;
+  mouthInterval = setInterval(() => {
+    setMouth(shapes[i % shapes.length]);
+    i++;
+  }, 130);
+}
+function stopMouthAnim() {
+  if (mouthInterval) { clearInterval(mouthInterval); mouthInterval = null; }
+  setMouth('rest');
+}
+
+/* Eye blink */
+function blink() {
+  document.querySelectorAll('.eye').forEach(e => e.style.transform = 'scaleY(0.1)');
+  setTimeout(() => {
+    document.querySelectorAll('.eye').forEach(e => e.style.transform = 'scaleY(1)');
+  }, 110);
+}
+setInterval(blink, 4500);
+document.querySelectorAll('.eye').forEach(e => {
+  e.style.transition = 'transform 0.1s ease';
+  e.style.transformOrigin = 'center';
+});
+
+/* Auto-greet when avatar opens */
+const _origShowView = showView;
+showView = function(name) {
+  _origShowView(name);
+  if (name === 'avatar') {
+    setTimeout(() => {
+      const greeting = SARAH_OPENERS[Math.floor(Math.random() * SARAH_OPENERS.length)];
+      lastSarahLine = greeting;
+      ensureAvatarVoice().speak(greeting, 'en-IN');
+    }, 400);
+  }
+};
+
+/* =========================================================================
+ * Init — read query string, jump to mode if needed
+ * ========================================================================= */
+(function init() {
+  const params = new URLSearchParams(window.location.search);
+  const q = (params.get('q') || '').toLowerCase();
+  if (q && (q.includes('practice') || q.includes('avatar') || q.includes('sarah'))) {
+    setTimeout(() => showView('avatar'), 200);
+  } else if (q && (q.includes('customer') || q.includes('call'))) {
+    setTimeout(() => { openPack('customer'); }, 200);
+  } else if (q && (q.includes('office') || q.includes('boss'))) {
+    setTimeout(() => { openPack('office'); }, 200);
+  }
+})();
+</script>
+</body>
+</html>
