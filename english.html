@@ -9,12 +9,6 @@
 <link rel="stylesheet" href="shared/ambient-glow.css">
 <link rel="stylesheet" href="shared/guided-chat.css">
 <style>
-  /* English vertical = primary JBIQ blue (the flagship) */
-  :root {
-    --v-accent: var(--primary-50);            /* #3535f3 */
-    --v-accent-soft: var(--primary-20);        /* #e8e8fc */
-    --v-accent-deep: var(--surface-bold);      /* #3900ad */
-  }
   body { background: var(--white); }
   .phone-frame { background: var(--white); }
 
@@ -688,6 +682,31 @@
         </div>
         <div class="pb-q">"What sets us apart is our fast service."</div>
         <div class="pb-meta">Use this when introducing your company. Earned yesterday in Office Pack.</div>
+      </div>
+    </div>
+
+    <!-- Ask anything dock — converse from home, no menu navigation needed -->
+    <div class="gc-input-dock">
+      <div class="gc-input-wrap">
+        <div class="gc-input-text">
+          <input type="text" placeholder="Ask Sarah anything…" readonly>
+        </div>
+        <div class="gc-input-actions">
+          <div class="gc-input-left">
+            <button class="gc-input-icon-btn" aria-label="Add" onclick="showView('avatar')">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20 11h-7V4a1 1 0 00-2 0v7H4a1 1 0 000 2h7v7a1 1 0 002 0v-7h7a1 1 0 000-2z"/></svg>
+            </button>
+          </div>
+          <div class="gc-input-right">
+            <button class="gc-input-icon-btn" aria-label="Mic" onclick="showView('avatar')">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 15a3 3 0 003-3V5a3 3 0 00-6 0v7a3 3 0 003 3zm6-5a1 1 0 00-1 1v1a5 5 0 11-10 0v-1a1 1 0 10-2 0v1a7 7 0 1014 0v-1a1 1 0 00-1-1zm-3 10H9a1 1 0 000 2h6a1 1 0 000-2z"/></svg>
+            </button>
+            <button class="gc-input-speak-btn" onclick="showView('avatar')">
+              <svg viewBox="0 0 24 24"><path d="M12 15a3 3 0 003-3V5a3 3 0 00-6 0v7a3 3 0 003 3zm6-5a1 1 0 00-1 1v1a5 5 0 11-10 0v-1a1 1 0 10-2 0v1a7 7 0 1014 0v-1a1 1 0 00-1-1z"/></svg>
+              <span>Speak</span>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </div>

@@ -11,14 +11,10 @@
 <style>
   body { background: var(--white); }
   .phone-frame { background: var(--white); }
-  /* Govt-exam vertical = secondary gold accent (gravitas) */
   :root {
-    --v-accent: var(--secondary-60);          /* #ac660c — dark gold/rust */
-    --v-accent-soft: var(--secondary-20);     /* #fef7e9 */
-    --v-accent-deep: var(--secondary-70);     /* #7f4b10 */
-    --vert-accent: var(--v-accent);
-    --vert-accent-light: var(--v-accent-soft);
-    --vert-accent-dark: var(--v-accent-deep);
+    --vert-accent: var(--surface-bold);
+    --vert-accent-light: var(--primary-20);
+    --vert-accent-dark: var(--icon-medium);
   }
 
   /* ============= TOP BAR ============== */
@@ -741,6 +737,31 @@
         <span style="opacity:0.7"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span>
       </div>
     </div>
+
+    <!-- Ask anything dock — converse from home -->
+    <div class="gc-input-dock">
+      <div class="gc-input-wrap">
+        <div class="gc-input-text">
+          <input type="text" placeholder="Ask about any exam — IBPS, SSC, RBI…" readonly>
+        </div>
+        <div class="gc-input-actions">
+          <div class="gc-input-left">
+            <button class="gc-input-icon-btn" aria-label="Add" onclick="startDiscovery()">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20 11h-7V4a1 1 0 00-2 0v7H4a1 1 0 000 2h7v7a1 1 0 002 0v-7h7a1 1 0 000-2z"/></svg>
+            </button>
+          </div>
+          <div class="gc-input-right">
+            <button class="gc-input-icon-btn" aria-label="Mic" onclick="startDiscovery()">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 15a3 3 0 003-3V5a3 3 0 00-6 0v7a3 3 0 003 3zm6-5a1 1 0 00-1 1v1a5 5 0 11-10 0v-1a1 1 0 10-2 0v1a7 7 0 1014 0v-1a1 1 0 00-1-1zm-3 10H9a1 1 0 000 2h6a1 1 0 000-2z"/></svg>
+            </button>
+            <button class="gc-input-speak-btn" onclick="startDiscovery()">
+              <svg viewBox="0 0 24 24"><path d="M12 15a3 3 0 003-3V5a3 3 0 00-6 0v7a3 3 0 003 3zm6-5a1 1 0 00-1 1v1a5 5 0 11-10 0v-1a1 1 0 10-2 0v1a7 7 0 1014 0v-1a1 1 0 00-1-1z"/></svg>
+              <span>Speak</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- ========================== DISCOVERY CHAT ========================== -->
@@ -809,10 +830,6 @@
     <div class="view-body" style="padding-top: var(--space-4); position: relative;">
       <div id="prep_content"></div>
 
-      <!-- Floating ask-doubt button -->
-      <button class="ask-doubt" onclick="askDoubt()" aria-label="Ask doubt">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M9.5 8a2.5 2.5 0 115 0c0 1-.5 1.5-1.5 2.5S12 12 12 13M12 17h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-      </button>
     </div>
   </div>
 

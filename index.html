@@ -314,16 +314,22 @@
     font-weight: 700;
   }
 
-  /* ============= 4 USE CASE CARDS (the menu) ============= */
-  .vertical-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+  /* ============= 4 USE CASE CARDS — horizontal carousel ============= */
+  .vertical-carousel {
+    display: flex;
     gap: 10px;
-    padding: 0 var(--space-4);
+    overflow-x: auto;
+    padding: 0 var(--space-4) 4px;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
   }
+  .vertical-carousel::-webkit-scrollbar { display: none; }
   .uc-card {
+    flex-shrink: 0;
+    width: 200px;
+    scroll-snap-align: start;
     border: 1px solid var(--stroke-subtle);
-    border-radius: 18px;
+    border-radius: 16px;
     padding: 14px;
     background: var(--surface-default);
     text-decoration: none;
@@ -331,9 +337,8 @@
     cursor: pointer;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
     transition: all 0.15s;
-    min-height: 184px;
   }
   .uc-card:hover {
     border-color: var(--surface-bold);
@@ -342,12 +347,12 @@
   }
   .uc-card:active { transform: scale(0.98); }
   .uc-card .uc-icon-wrap {
-    width: 40px; height: 40px;
-    border-radius: 12px;
+    width: 36px; height: 36px;
+    border-radius: 10px;
     background: var(--primary-20);
     color: var(--surface-bold);
     display: flex; align-items: center; justify-content: center;
-    margin-bottom: 4px;
+    margin-bottom: 2px;
   }
   .uc-card .uc-tag {
     display: inline-block;
@@ -359,9 +364,10 @@
     border-radius: var(--radius-pill);
     letter-spacing: 0.3px;
     text-transform: uppercase;
+    align-self: flex-start;
   }
   .uc-card h2 {
-    font-size: 17px;
+    font-size: 16px;
     font-weight: 800;
     line-height: 1.15;
     color: var(--text-high);
@@ -373,18 +379,7 @@
     line-height: 1.35;
     color: var(--text-low);
     font-style: italic;
-    flex: 1;
   }
-  .uc-card .uc-cta {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--text-high);
-    margin-top: auto;
-  }
-  .uc-card:hover .uc-cta { color: var(--surface-bold); }
 
   /* ============= BOTTOM SAFE PADDING ============= */
   .body-scroll-pad { height: 24px; }
@@ -504,60 +499,42 @@
 
   <div class="body-scroll">
 
-    <!-- Hero: voice-first -->
+    <!-- Hero: short, no big orb -->
     <div class="hero">
       <h1>Jobs · Careers · Skills</h1>
-      <p>Pick a vertical, say what you need, or jump back where you left off.</p>
-
-      <button class="voice-hero" id="voiceHero" aria-label="Tap to talk">
-        <div class="voice-stage" id="heroStage" data-state="idle">
-          <video class="voice-state idle"      src="https://raw.githubusercontent.com/sunit1986/JioBharatIQ_Server/main/assets/states/Light/Idle_state.mp4"      autoplay loop muted playsinline></video>
-          <video class="voice-state listening" src="https://raw.githubusercontent.com/sunit1986/JioBharatIQ_Server/main/assets/states/Light/Listening_state.mp4" autoplay loop muted playsinline></video>
-          <video class="voice-state thinking"  src="https://raw.githubusercontent.com/sunit1986/JioBharatIQ_Server/main/assets/states/Light/Thinking_state.mp4"  autoplay loop muted playsinline></video>
-          <video class="voice-state speaking"  src="https://raw.githubusercontent.com/sunit1986/JioBharatIQ_Server/main/assets/states/Light/Speaking_State.mp4"  autoplay loop muted playsinline></video>
-        </div>
-        <span class="voice-hero-label">
-          <span class="mic-pill"><span data-icon="mic" data-size="18"></span></span>
-          Tap to talk
-        </span>
-        <span class="voice-hero-hint">Say "interview tomorrow" or "fix my thumbnails"</span>
-      </button>
+      <p>Pick a goal, say what you need, or jump back where you left off.</p>
     </div>
 
-    <!-- THE 4 USE CASES — primary menu, persona-led -->
-    <div class="section-h">Pick a vertical</div>
-    <div class="vertical-grid">
+    <!-- THE 4 USE CASES — horizontal carousel of compact cards -->
+    <div class="section-h">Where do you want to start</div>
+    <div class="vertical-carousel">
 
       <a class="uc-card" href="microlearning.html?from=landing">
-        <div class="uc-icon-wrap"><span data-icon="brain" data-size="22"></span></div>
-        <span class="uc-tag">Hard skills · Just-in-time</span>
+        <div class="uc-icon-wrap"><span data-icon="brain" data-size="20"></span></div>
+        <span class="uc-tag">Just-in-time</span>
         <h2>Microlearning</h2>
         <div class="uc-quote">"Mera thumbnail click kyun nahi ho raha?"</div>
-        <span class="uc-cta">Open <span data-icon="chevron-right" data-size="14"></span></span>
       </a>
 
       <a class="uc-card" href="english.html?from=landing">
-        <div class="uc-icon-wrap"><span data-icon="language" data-size="22"></span></div>
-        <span class="uc-tag">English · Real situations</span>
+        <div class="uc-icon-wrap"><span data-icon="language" data-size="20"></span></div>
+        <span class="uc-tag">Real situations</span>
         <h2>Speak English</h2>
         <div class="uc-quote">"Mujhe woh confidence chahiye…"</div>
-        <span class="uc-cta">Open <span data-icon="chevron-right" data-size="14"></span></span>
       </a>
 
       <a class="uc-card" href="interview-prep.html?from=landing">
-        <div class="uc-icon-wrap"><span data-icon="mic" data-size="22"></span></div>
-        <span class="uc-tag">Interview · Voice mock</span>
+        <div class="uc-icon-wrap"><span data-icon="mic" data-size="20"></span></div>
+        <span class="uc-tag">Voice mock</span>
         <h2>Interview Prep</h2>
         <div class="uc-quote">"V&A round mein freeze ho jaata hoon."</div>
-        <span class="uc-cta">Open <span data-icon="chevron-right" data-size="14"></span></span>
       </a>
 
       <a class="uc-card" href="govt-exam.html?from=landing">
-        <div class="uc-icon-wrap"><span data-icon="document" data-size="22"></span></div>
-        <span class="uc-tag">Govt Exam · Discovery + Prep</span>
+        <div class="uc-icon-wrap"><span data-icon="document" data-size="20"></span></div>
+        <span class="uc-tag">Discovery + Prep</span>
         <h2>Govt Exam</h2>
         <div class="uc-quote">"Kaunsa exam dena hai? Koi seedha bata de."</div>
-        <span class="uc-cta">Open <span data-icon="chevron-right" data-size="14"></span></span>
       </a>
 
     </div>
@@ -800,7 +777,7 @@ function openVoice() {
   overlayEl.classList.add('open');
   setTimeout(() => { ensureVoice().startRecording(); }, 250);
 }
-voiceHero.addEventListener('click', openVoice);
+if (voiceHero) voiceHero.addEventListener('click', openVoice);
 voClose.addEventListener('click', () => {
   if (voice) voice.stop();
   overlayEl.classList.remove('open');

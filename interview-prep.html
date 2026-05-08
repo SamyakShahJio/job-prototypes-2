@@ -13,14 +13,10 @@
   .phone-frame { background: var(--white); }
 
   /* Vertical accent: interview = purple */
-  /* Interview vertical = surface-bold deep purple (serious, evaluative) */
   :root {
-    --v-accent: var(--surface-bold);          /* #3900ad — deep purple */
-    --v-accent-soft: var(--primary-20);        /* #e8e8fc */
-    --v-accent-deep: var(--icon-medium);       /* #170054 */
-    --vert-accent: var(--v-accent);
-    --vert-accent-light: var(--v-accent-soft);
-    --vert-accent-dark: var(--v-accent-deep);
+    --vert-accent: var(--surface-bold);
+    --vert-accent-light: var(--primary-20);
+    --vert-accent-dark: var(--icon-medium);
   }
 
   /* ============= TOP BAR ============== */
@@ -702,6 +698,31 @@
           <div class="cc-sub">Yesterday · Strongest opener saved · See report</div>
         </div>
         <span class="cc-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span>
+      </div>
+    </div>
+
+    <!-- Ask anything dock — converse from home -->
+    <div class="gc-input-dock">
+      <div class="gc-input-wrap">
+        <div class="gc-input-text">
+          <input type="text" placeholder="Ask about any company or round…" readonly>
+        </div>
+        <div class="gc-input-actions">
+          <div class="gc-input-left">
+            <button class="gc-input-icon-btn" aria-label="Add" onclick="showView('setup')">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20 11h-7V4a1 1 0 00-2 0v7H4a1 1 0 000 2h7v7a1 1 0 002 0v-7h7a1 1 0 000-2z"/></svg>
+            </button>
+          </div>
+          <div class="gc-input-right">
+            <button class="gc-input-icon-btn" aria-label="Mic" onclick="showView('setup')">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 15a3 3 0 003-3V5a3 3 0 00-6 0v7a3 3 0 003 3zm6-5a1 1 0 00-1 1v1a5 5 0 11-10 0v-1a1 1 0 10-2 0v1a7 7 0 1014 0v-1a1 1 0 00-1-1zm-3 10H9a1 1 0 000 2h6a1 1 0 000-2z"/></svg>
+            </button>
+            <button class="gc-input-speak-btn" onclick="showView('setup')">
+              <svg viewBox="0 0 24 24"><path d="M12 15a3 3 0 003-3V5a3 3 0 00-6 0v7a3 3 0 003 3zm6-5a1 1 0 00-1 1v1a5 5 0 11-10 0v-1a1 1 0 10-2 0v1a7 7 0 1014 0v-1a1 1 0 00-1-1z"/></svg>
+              <span>Speak</span>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
