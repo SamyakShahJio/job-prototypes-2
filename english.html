@@ -780,18 +780,8 @@
       <button class="mode-tab" data-mode="free" onclick="setMode('free')">Free practice</button>
     </div>
 
-    <div class="chat-area" id="prac_chat"></div>
-
-    <div class="chat-dock">
-      <input type="text" class="chat-input" id="prac_input" placeholder="Type or tap mic to speak…">
-      <button class="icon-btn-mic" id="prac_mic" aria-label="Mic">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 15a3 3 0 003-3V6a3 3 0 00-6 0v6a3 3 0 003 3z"/>
-          <path d="M19 11v1a7 7 0 01-14 0v-1" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
-          <path d="M12 19v3m-3 0h6" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
-        </svg>
-      </button>
-    </div>
+    <!-- Canned demo transcript — auto-plays on mode switch, no mic needed -->
+    <div class="guided-chat" id="prac_chat"></div>
   </div>
 
   <!-- ========================== AVATAR (Sarah) ========================== -->
@@ -1412,6 +1402,22 @@ function openScenario(scId) {
   showView('practice');
 }
 
+/* =========================================================================
+ * Practice modes — auto-playing canned demo transcripts (no mic, no STT)
+ * Each scenario × mode produces a transcript that GC.createTranscript runs.
+ * ========================================================================= */
+let practiceVoice = null;
+let practiceRunner = null;
+
+function ensurePracticeVoice() {
+  if (practiceVoice) return practiceVoice;
+  practiceVoice = JBIQVoice.create({
+    persona: 'sarah_avatar',
+    onError: (e) => console.error(e),
+  });
+  return practiceVoice;
+}
+
 function setMode(mode) {
   currentMode = mode;
   document.querySelectorAll('.mode-tab').forEach(t => {
@@ -1420,167 +1426,103 @@ function setMode(mode) {
   renderPractice();
 }
 
+// Build a canned transcript for a given scenario × mode.
+function buildPracticeTranscript(sc, mode) {
+  const transcript = [];
+
+  // Always lead with a Rich UI card showing the key phrases (with play buttons)
+  // Only the first key-phrase becomes a 'practice' card; the rest are listed in content.
+  if (sc.keyPhrases && sc.keyPhrases.length) {
+    transcript.push({
+      speaker: 'card',
+      card: {
+        kind: 'practice',
+        label: 'Key phrases for this scenario',
+        content: sc.keyPhrases.slice(1).map(p => `• "${p}"`).join('<br>'),
+        keyPhrase: sc.keyPhrases[0],
+      },
+    });
+  }
+
+  if (mode === 'listen') {
+    // Show the dialogue between agent and the other party.
+    sc.listen.forEach(line => {
+      // 'agent' = the user (Pooja). Map other speakers to AI bubbles.
+      transcript.push({
+        speaker: line.speaker === 'agent' ? 'user' : 'ai',
+        text: line.text,
+      });
+    });
+    transcript.push({
+      speaker: 'card',
+      card: {
+        kind: 'tip',
+        label: 'Listen mode',
+        content: 'Listen to a sample dialogue. Switch to <strong>Repeat with me</strong> to practice each phrase, or <strong>Free practice</strong> to apply it.',
+      },
+    });
+  } else if (mode === 'repeat') {
+    // For each of the first 3 key phrases: AI says it as instruction, user repeats, AI feedback card
+    sc.keyPhrases.slice(0, 3).forEach((phrase, i) => {
+      transcript.push({ speaker: 'ai',   text: `Repeat after me: "${phrase}"` });
+      transcript.push({ speaker: 'user', text: phrase });
+      transcript.push({
+        speaker: 'card',
+        card: {
+          kind: 'tip',
+          label: `Phrase ${i + 1} · Pacing`,
+          content: 'Good pace. Slight pause after the pronoun makes it feel more natural and confident.',
+        },
+      });
+    });
+    transcript.push({
+      speaker: 'ai',
+      text: "Lovely. All three phrases saved to your phrasebook. Try Free practice next.",
+    });
+  } else if (mode === 'free') {
+    // AI asks the open question, "Pooja" answers, AI gives feedback Rich UI card
+    if (sc.free && sc.free[0]) {
+      const f = sc.free[0];
+      // Build a canned answer using the strongest matching key phrase if available
+      const demoAnswer = f.demoAnswer || (sc.keyPhrases && sc.keyPhrases.length
+        ? `I would say — "${sc.keyPhrases[0]}" and then offer to look into the issue.`
+        : "I would lead with empathy and offer to resolve.");
+      transcript.push({ speaker: 'ai',   text: f.ai });
+      transcript.push({ speaker: 'user', text: demoAnswer });
+      transcript.push({
+        speaker: 'card',
+        card: {
+          kind: 'phrase',
+          label: 'Strong response',
+          content: 'Empathy first, solution second — exactly the right move. Saved to your phrasebook.',
+          keyPhrase: sc.keyPhrases ? sc.keyPhrases[0] : '',
+        },
+      });
+      transcript.push({
+        speaker: 'ai',
+        text: "Done. Your phrasebook for this scenario is now full. See you tomorrow at the same time.",
+      });
+    }
+  }
+
+  return transcript;
+}
+
 function renderPractice() {
   const sc = SCENARIO_SCRIPTS[currentScenarioId];
-  const chat = document.getElementById('prac_chat');
-  chat.innerHTML = '';
-
-  // Key phrases preview always at top
-  const kp = document.createElement('div');
-  kp.className = 'msg msg-ai';
-  kp.style.maxWidth = '95%';
-  let kpHtml = '<div class="key-phrases"><div class="kp-h">Key phrases for this scenario</div><div class="kp-list">';
-  sc.keyPhrases.forEach((p, i) => {
-    kpHtml += `<div class="kp-item" onclick="speakPhrase(${i})"><div class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div><div class="txt">${p}</div></div>`;
+  const chatEl = document.getElementById('prac_chat');
+  if (!sc || !chatEl) return;
+  if (practiceRunner) practiceRunner.stop();
+  ensurePracticeVoice();
+  const transcript = buildPracticeTranscript(sc, currentMode);
+  practiceRunner = window.GC.createTranscript({
+    transcript,
+    chatEl,
+    voice: practiceVoice,
+    speakerLabel: 'Sarah',
   });
-  kpHtml += '</div></div>';
-  kp.innerHTML = kpHtml;
-  chat.appendChild(kp);
-
-  if (currentMode === 'listen') {
-    sc.listen.forEach((line, i) => {
-      const m = document.createElement('div');
-      m.className = 'msg ' + (line.speaker === 'agent' ? 'msg-user' : 'msg-ai');
-      const speaker = line.speaker === 'agent' ? 'YOU' : (line.speaker === 'customer' ? 'CUSTOMER' : 'MANAGER');
-      m.innerHTML = `<div class="bubble ${line.speaker === 'agent' ? 'bubble-user' : 'bubble-ai'}">
-        ${line.speaker !== 'agent' ? `<div class="speaker-pill">${speaker}</div>` : ''}
-        ${line.text}
-        ${line.speaker !== 'agent' ? `<button class="play-btn" onclick="speakLine('${(line.text || '').replace(/'/g, "\\'")}')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button>` : ''}
-      </div>`;
-      chat.appendChild(m);
-    });
-  } else if (currentMode === 'repeat') {
-    if (sc.repeat) {
-      sc.repeat.forEach((step) => {
-        const m = document.createElement('div');
-        m.className = 'msg msg-ai';
-        m.innerHTML = `<div class="bubble bubble-ai"><div class="speaker-pill">SARAH</div>${step.ai}<div style="margin-top:6px;color:var(--grey-60);font-size:12px;">${step.then}</div></div>`;
-        chat.appendChild(m);
-      });
-      const tip = document.createElement('div');
-      tip.className = 'msg msg-ai';
-      tip.innerHTML = `<div class="bubble bubble-ai" style="background:#e8e8fc;color:var(--primary-dark);font-weight:600;">Tap the mic and repeat the bolded phrase. I'll listen and let you know.</div>`;
-      chat.appendChild(tip);
-    }
-  } else if (currentMode === 'free') {
-    if (sc.free && sc.free[0]) {
-      const m = document.createElement('div');
-      m.className = 'msg msg-ai';
-      m.innerHTML = `<div class="bubble bubble-ai"><div class="speaker-pill">SARAH</div>${sc.free[0].ai}</div>`;
-      chat.appendChild(m);
-    }
-  }
+  setTimeout(() => practiceRunner.start(), 150);
 }
-
-function speakPhrase(i) {
-  const sc = SCENARIO_SCRIPTS[currentScenarioId];
-  if (!sc) return;
-  speakLine(sc.keyPhrases[i]);
-}
-
-let practiceVoice = null;
-function ensurePracticeVoice() {
-  if (practiceVoice) return practiceVoice;
-  practiceVoice = JBIQVoice.create({
-    persona: 'sarah_avatar',
-    onTranscript: handlePracticeTranscript,
-    onError: (e) => console.error(e),
-  });
-  return practiceVoice;
-}
-function speakLine(text) {
-  const v = ensurePracticeVoice();
-  v.speak(text, 'en-IN');
-}
-
-function handlePracticeTranscript(text, lang) {
-  if (!text) return;
-  // Append user message
-  const chat = document.getElementById('prac_chat');
-  const m = document.createElement('div');
-  m.className = 'msg msg-user';
-  m.innerHTML = `<div class="bubble bubble-user">${text}</div>`;
-  chat.appendChild(m);
-
-  // Generate corrective AI reply based on mode
-  setTimeout(() => giveFeedback(text), 400);
-  chat.scrollTop = chat.scrollHeight;
-}
-
-function giveFeedback(userText) {
-  const sc = SCENARIO_SCRIPTS[currentScenarioId];
-  const chat = document.getElementById('prac_chat');
-  const lower = userText.toLowerCase();
-
-  let reply = '';
-  let correction = '';
-
-  if (currentMode === 'repeat') {
-    // Match against key phrases
-    const matched = sc.keyPhrases.some(p => lower.includes(p.toLowerCase().split(' ')[2] || ''));
-    if (matched) {
-      reply = "Good! Your pace was clear.";
-    } else {
-      reply = "Almost — try again, focus on the key phrase.";
-    }
-  } else if (currentMode === 'free') {
-    const expects = (sc.free[0] && sc.free[0].expects) || [];
-    const hits = expects.filter(k => lower.includes(k));
-    if (hits.length >= 2) {
-      reply = "Nice — you nailed the empathy. Customer would feel heard.";
-    } else if (hits.length === 1) {
-      reply = "Decent! One tweak — also acknowledge their feeling, e.g. \"I completely understand.\"";
-      correction = '"I completely understand your frustration, sir."';
-    } else {
-      reply = "Good attempt. Try leading with empathy first, like: \"I completely understand your frustration.\"";
-      correction = '"I completely understand your frustration."';
-    }
-  } else {
-    reply = "I heard you. Switch to 'Repeat with me' to practice these phrases.";
-  }
-
-  const m = document.createElement('div');
-  m.className = 'msg msg-ai';
-  let html = `<div class="bubble bubble-ai"><div class="speaker-pill">SARAH</div>${reply}`;
-  if (correction) {
-    html += `<div class="correction-chip"><span class="c-label">Try this</span><span class="c-fix">${correction}</span></div>`;
-  }
-  html += `<button class="play-btn" onclick="speakLine('${reply.replace(/'/g, "\\'")}')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button></div>`;
-  m.innerHTML = html;
-  chat.appendChild(m);
-  chat.scrollTop = chat.scrollHeight;
-
-  // Auto-speak in repeat/free modes
-  if (currentMode !== 'listen') {
-    setTimeout(() => speakLine(reply), 200);
-  }
-}
-
-/* =========================================================================
- * PRACTICE MIC + INPUT
- * ========================================================================= */
-const pracMic = document.getElementById('prac_mic');
-const pracInput = document.getElementById('prac_input');
-pracMic.addEventListener('click', () => {
-  const v = ensurePracticeVoice();
-  if (v.isRecording) {
-    v.stopRecording();
-    pracMic.classList.remove('recording');
-  } else {
-    v.startRecording();
-    pracMic.classList.add('recording');
-    // Persist visual until transcript arrives
-    setTimeout(() => {
-      if (!v.isRecording) pracMic.classList.remove('recording');
-    }, 8000);
-  }
-});
-pracInput.addEventListener('keypress', (e) => {
-  if (e.key === 'Enter' && pracInput.value.trim()) {
-    handlePracticeTranscript(pracInput.value.trim(), 'en-IN');
-    pracInput.value = '';
-  }
-});
 
 /* =========================================================================
  * SARAH AVATAR — guided free-form
@@ -1725,8 +1667,12 @@ showView = function(name) {
   if (name === 'avatar') {
     startSarahDemo();
   } else {
-    // Stop the demo if user leaves the avatar view
+    // Stop any running demos when leaving their views
     if (avatarRunner) avatarRunner.stop();
+  }
+  if (name !== 'practice') {
+    if (practiceRunner) practiceRunner.stop();
+    if (practiceVoice) practiceVoice.stop();
   }
 };
 

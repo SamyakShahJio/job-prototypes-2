@@ -347,17 +347,18 @@
         if (stopped) return;
         if (item.speaker === 'ai') {
           const streamMs = appendAi(item.text);
+          // Fire-and-forget the TTS — don't block on speak's promise.
+          // Audio may be locked (browser autoplay) until user clicks; advancing
+          // the demo via timer keeps the visual transcript flowing regardless.
           if (voice) {
-            try {
-              voice.speak(item.text, 'en-IN').then(() => {
-                if (!stopped) playNext();
-              }).catch(() => { if (!stopped) playNext(); });
-            } catch (e) {
-              setTimeout(() => !stopped && playNext(), Math.max(streamMs, 1200) + 400);
-            }
-          } else {
-            setTimeout(() => !stopped && playNext(), Math.max(streamMs, 1200) + 600);
+            try { voice.speak(item.text, 'en-IN'); } catch (e) {}
           }
+          // Estimated speaking duration: ~70ms per word (≈ 130 wpm) + buffer
+          const words = item.text.split(/\s+/).length;
+          const speakMs = Math.max(words * 70, 1500);
+          const advance = Math.max(streamMs + 400, speakMs);
+          const t2 = setTimeout(() => !stopped && playNext(), advance);
+          timers.push(t2);
         } else if (item.speaker === 'user') {
           // Shorter for short text, longer for long text
           const transcribeMs = item.transcribeMs || Math.min(2000, Math.max(900, item.text.length * 25));
