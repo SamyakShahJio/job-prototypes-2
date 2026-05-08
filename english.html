@@ -67,30 +67,44 @@
 
   /* ============= HOME VIEW ============== */
   .home-greeting {
-    padding: var(--space-3) var(--space-4) var(--space-5);
+    padding: var(--space-4) var(--space-4) var(--space-5);
     display: flex;
     align-items: center;
     gap: 16px;
+    background: linear-gradient(135deg, var(--primary-20) 0%, var(--surface-default) 100%);
+    border-radius: 0 0 24px 24px;
+    margin-bottom: var(--space-4);
   }
-  .home-greeting .glow-wrap {
-    width: 80px; height: 80px;
+  .home-sarah-face {
+    width: 84px; height: 84px;
     flex-shrink: 0;
+    position: relative;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid var(--surface-default);
+    box-shadow: 0 4px 12px rgba(57,0,173,0.18);
   }
-  .home-greeting .glow-wrap .ambient-glow {
-    width: 80px; height: 80px;
+  .home-sarah-face svg { width: 100%; height: 100%; display: block; }
+  .home-sarah-face .hsf-live {
+    position: absolute;
+    bottom: 4px; right: 4px;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--success);
+    border: 2px solid var(--surface-default);
   }
-  .home-greeting .glow-wrap .ambient-glow .orb { inset: 12px; }
   .home-greeting .greet-text { flex: 1; }
   .home-greeting .greet-text .hi {
-    font-size: 13px; font-weight: 600; color: var(--grey-60);
-    letter-spacing: 0.3px; text-transform: uppercase;
+    font-size: 11px; font-weight: 700; color: var(--surface-bold);
+    letter-spacing: 0.4px; text-transform: uppercase;
+    margin-bottom: 2px;
   }
   .home-greeting .greet-text .name {
-    font-size: 22px; font-weight: 900; color: var(--grey-100);
-    line-height: 1.2; margin-top: 2px;
+    font-size: 20px; font-weight: 900; color: var(--grey-100);
+    line-height: 1.15; letter-spacing: -0.3px;
   }
   .home-greeting .greet-text .sub {
-    font-size: 13px; font-weight: 500; color: var(--grey-80);
+    font-size: 12px; font-weight: 500; color: var(--grey-80);
     line-height: 1.4; margin-top: 4px;
   }
 
@@ -600,23 +614,48 @@
         <div class="t1">English Coach</div>
         <div class="t2">Speak English without freezing</div>
       </div>
-      <span class="jbiq-pill">JBIQ</span>
+      
     </div>
 
     <div class="view-body">
-      <!-- Sarah greeting with mini ambient glow -->
+      <!-- Sarah greeting with her actual avatar (compact face preview) -->
       <div class="home-greeting">
-        <div class="glow-wrap">
-          <div class="ambient-glow size-sm" data-state="idle">
-            <div class="halo h2"></div>
-            <div class="halo"></div>
-            <div class="orb"></div>
-          </div>
+        <div class="home-sarah-face">
+          <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="hgBgGlow" cx="50%" cy="40%" r="55%">
+                <stop offset="0%" stop-color="#e8e8fc"/>
+                <stop offset="100%" stop-color="#c8c8f5"/>
+              </radialGradient>
+              <linearGradient id="hgHair" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#3a2618"/>
+                <stop offset="100%" stop-color="#1f140b"/>
+              </linearGradient>
+              <linearGradient id="hgSkin" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#f4d4b8"/>
+                <stop offset="100%" stop-color="#e8c0a0"/>
+              </linearGradient>
+            </defs>
+            <circle cx="100" cy="100" r="95" fill="url(#hgBgGlow)"/>
+            <path d="M50 90 Q50 35 100 30 Q150 35 150 90 Q150 130 130 145 L130 110 Q130 85 100 85 Q70 85 70 110 L70 145 Q50 130 50 90 Z" fill="url(#hgHair)"/>
+            <ellipse cx="100" cy="105" rx="40" ry="48" fill="url(#hgSkin)"/>
+            <path d="M65 80 Q70 60 100 55 Q130 60 135 80 Q120 70 100 70 Q80 70 65 80 Z" fill="url(#hgHair)"/>
+            <ellipse cx="85" cy="100" rx="3.5" ry="4.5" fill="#1f140b"/>
+            <ellipse cx="115" cy="100" rx="3.5" ry="4.5" fill="#1f140b"/>
+            <path d="M78 91 Q85 88 92 91" stroke="#3a2618" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <path d="M108 91 Q115 88 122 91" stroke="#3a2618" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <path d="M88 138 Q100 144 112 138" stroke="#a04050" stroke-width="2.5" fill="#c47080" stroke-linecap="round"/>
+            <ellipse cx="75" cy="125" rx="6" ry="4" fill="#f4a8a8" opacity="0.4"/>
+            <ellipse cx="125" cy="125" rx="6" ry="4" fill="#f4a8a8" opacity="0.4"/>
+            <circle cx="58" cy="115" r="2.5" fill="#f7ab20"/>
+            <circle cx="142" cy="115" r="2.5" fill="#f7ab20"/>
+          </svg>
+          <span class="hsf-live"></span>
         </div>
         <div class="greet-text">
-          <div class="hi">Hi, Pooja</div>
-          <div class="name">Ready to practice?</div>
-          <div class="sub">5-min session today — your customer call's on the way 😅</div>
+          <div class="hi">Sarah · your English coach</div>
+          <div class="name">Ready when you are, Pooja</div>
+          <div class="sub">5-min session today. Tap "Free practice" or just type below.</div>
         </div>
       </div>
 
@@ -680,8 +719,8 @@
           </div>
           <div class="pb-title">Word of the day</div>
         </div>
-        <div class="pb-q">"What sets us apart is our fast service."</div>
-        <div class="pb-meta">Use this when introducing your company. Earned yesterday in Office Pack.</div>
+        <div class="pb-q">Apart</div>
+        <div class="pb-meta"><strong>"Set apart"</strong> — different in a good way, special.<br>e.g. "What sets us <em>apart</em> is our 24-hour service."</div>
       </div>
     </div>
 
@@ -1754,11 +1793,10 @@ showView = function(name) {
  * Init — read query string, jump to mode if needed
  * ========================================================================= */
 (function init() {
-  // Prefetch the first few Sarah lines so the demo plays instantly.
+  // Prefetch ALL AI lines on page load — instant playback when user enters avatar.
   if (window.JBIQVoice && window.JBIQVoice.prefetch) {
     const prefetchList = SARAH_TRANSCRIPT
       .filter(t => t.speaker === 'ai')
-      .slice(0, 4)
       .map(t => ({ personaId: 'sarah_avatar', text: t.text }));
     window.JBIQVoice.prefetch(prefetchList);
   }

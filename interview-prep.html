@@ -623,7 +623,7 @@
         <div class="t1">Interview Prep</div>
         <div class="t2">Mock the call. Kill the V&A.</div>
       </div>
-      <span class="vert-pill">JBIQ</span>
+      
     </div>
 
     <div class="view-body">
@@ -1585,13 +1585,15 @@ function warmupQ(n) {
 (function init() {
   renderWizard(); // pre-renders the first wizard step
 
-  // Prefetch Q1 for each company so mock starts instantly with audio.
+  // Prefetch ALL AI lines (interviewer questions) for every company so the
+  // canned mock plays instantly — no Sarvam round-trip during the demo.
   if (window.JBIQVoice && window.JBIQVoice.prefetch) {
     const prefetchList = [];
-    Object.entries(COMPANIES).forEach(([id, c]) => {
-      if (c.questions && c.questions[0]) {
-        prefetchList.push({ personaId: c.persona, text: c.questions[0].q });
-      }
+    Object.entries(MOCK_TRANSCRIPTS).forEach(([companyId, transcript]) => {
+      const persona = (COMPANIES[companyId] || COMPANIES['tech-mahindra']).persona;
+      transcript.filter(t => t.speaker === 'ai').forEach(t => {
+        prefetchList.push({ personaId: persona, text: t.text });
+      });
     });
     // Pep talk for morning kit
     prefetchList.push({

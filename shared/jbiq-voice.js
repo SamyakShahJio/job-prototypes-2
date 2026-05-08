@@ -398,21 +398,12 @@
    * don't waste bandwidth on bounced visitors).
    */
   function prefetchAll(items) {
-    const doFetch = () => {
-      items.forEach(it => {
-        prefetchTts(it.personaId, it.text, it.lang || 'en-IN');
-      });
-    };
-    if (audioUnlocked) {
-      doFetch();
-    } else {
-      // Fire on first gesture
-      const onGesture = () => {
-        doFetch();
-        ['click', 'touchstart', 'keydown'].forEach(e => document.removeEventListener(e, onGesture, { capture: true }));
-      };
-      ['click', 'touchstart', 'keydown'].forEach(e => document.addEventListener(e, onGesture, { capture: true, once: false, passive: true }));
-    }
+    // Fire immediately on page load — the fetch + decode is independent of
+    // audio context lock. Once unlocked (first user click), playback uses
+    // the cached buffers for instant audio with no Sarvam round-trip.
+    items.forEach(it => {
+      prefetchTts(it.personaId, it.text, it.lang || 'en-IN');
+    });
   }
 
   window.JBIQVoice = {
