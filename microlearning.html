@@ -1158,11 +1158,83 @@ const COURSES = {
   },
   'yt-titles': {
     title: "YouTube Title Writing",
-    steps: [{ title: "Coming soon", emoji: "🛠️", text: "Title writing course is being built.", doalong: "", cta: "OK" }],
+    steps: [
+      {
+        title: "Curiosity > description",
+        emoji: "T",
+        text: "<strong>Boring titles describe. Good titles tease.</strong> \"My day in Indore\" describes. \"What ₹500 buys you in Indore — went horribly wrong\" teases. The second one creates a gap the viewer needs filled.",
+        doalong: "Open your last 3 video titles. Are they descriptions or teases?",
+        cta: "Checked",
+      },
+      {
+        title: "5 patterns that work",
+        emoji: "P",
+        text: "<strong>1. Wrong assumption</strong> — \"Everyone says X. They're wrong.\"<br><strong>2. Stakes</strong> — \"This 5-minute mistake cost me 40K views.\"<br><strong>3. Gap</strong> — \"Most thumbnail tutorials skip this one thing.\"<br><strong>4. Number</strong> — \"3 hooks I steal from MrBeast.\"<br><strong>5. Contrast</strong> — \"Watch mine for 10 sec. Then watch yours.\"",
+        doalong: "Pick one pattern. Write a title for your next video using it.",
+        cta: "Title written",
+      },
+      {
+        title: "Title-thumbnail must match",
+        emoji: "M",
+        text: "<strong>If your thumbnail says \"how I made ₹50K\", your title can't say \"my journey as a creator\".</strong> The thumbnail and title together must mean the same thing — that's where most creators lose CTR.",
+        doalong: "Pick your latest video. Do the thumbnail and title say the same thing?",
+        cta: "Match check done",
+      },
+      {
+        title: "Length sweet spot: 50-60 chars",
+        emoji: "L",
+        text: "On YouTube, anything over 60 characters gets cut on mobile. Your most important word should be in the first 30 chars. <strong>\"Best ₹100 Indore street food — I tried 7 places\"</strong> beats <strong>\"Today I went to Indore and tried street food on a budget of ₹100 across multiple places\"</strong>.",
+        doalong: "Trim your latest title to under 60 chars. What's the most important word?",
+        cta: "Trimmed",
+      },
+      {
+        title: "A/B test 3 titles, pick winner",
+        emoji: "AB",
+        text: "<strong>Don't guess.</strong> Write 3 titles. Send them to 5 friends with the same thumbnail — \"which would you click?\" Pick the winner. Use it. <strong>Speed > perfect alone.</strong>",
+        doalong: "Write 3 titles for your next video. Send to 5 people. Pick winner.",
+        cta: "Done. On to the next video.",
+      },
+    ],
   },
   'ai-prompts': {
     title: "ChatGPT Prompting Basics",
-    steps: [{ title: "Coming soon", emoji: "🛠️", text: "AI prompting course is being built.", doalong: "", cta: "OK" }],
+    steps: [
+      {
+        title: "The 4-part formula",
+        emoji: "1",
+        text: "Most people give ChatGPT a sentence. Pros give it <strong>4 parts</strong>: <strong>Role</strong> (\"You are a YouTube growth strategist\"), <strong>Task</strong> (\"Give me 10 titles for…\"), <strong>Format</strong> (\"each under 60 chars\"), <strong>Constraints</strong> (\"in Hindi-English mix, surprising tone\"). All 4 = better outputs.",
+        doalong: "Write a 4-part prompt for your next video right now.",
+        cta: "Prompt written",
+      },
+      {
+        title: "Role-setting changes everything",
+        emoji: "2",
+        text: "<strong>\"Tell me about thumbnails\"</strong> → boring generic answer.<br><strong>\"You are a top YouTube creator with 100M views. Tell me what most thumbnails get wrong.\"</strong> → specific, sharp.<br>Adding a role makes ChatGPT sample from a smaller, better part of its training.",
+        doalong: "Run the same question with and without a role. Compare answers.",
+        cta: "Compared",
+      },
+      {
+        title: "Format = control",
+        emoji: "3",
+        text: "<strong>Tell ChatGPT exactly how to format the answer.</strong> \"Give me 10 titles, each under 60 chars, separated by newlines, no quotes, no numbering.\" → exactly that. Without format hints, you get markdown lists, intros, and \"hope this helps!\" garbage.",
+        doalong: "Write a prompt that asks for exactly 10 titles, no intro, no numbering.",
+        cta: "Format set",
+      },
+      {
+        title: "Constraints make it real",
+        emoji: "4",
+        text: "<strong>\"Give me 10 titles\"</strong> → too generic.<br><strong>\"Give me 10 clickable titles for a video about Indore street food, in Hindi-English mix, surprising tone, each under 60 chars.\"</strong> → usable.<br>The more specific the constraints, the more usable the output.",
+        doalong: "Add 3 constraints to your prompt. Re-run.",
+        cta: "Re-run done",
+      },
+      {
+        title: "Hands-on: your real prompt",
+        emoji: "5",
+        text: "Now write the prompt for YOUR next video using all 4 parts. Then go to the AI Fluency track \"ChatGPT for YouTube titles\" lesson — there's a hands-on field there to test it live.",
+        doalong: "Write the full 4-part prompt for your real next video. Save it.",
+        cta: "Saved. Open hands-on practice.",
+      },
+    ],
   },
 };
 let currentCourseId = 'yt-hook-patterns';
@@ -1216,9 +1288,7 @@ function nextLesson() {
     renderCourseStep();
     document.getElementById('lesson_stack').scrollTop = 0;
   } else {
-    // Done with course
-    alert("Course complete! Your 'YouTube Hook Patterns' badge is added.\n\n3-day redo nudge set: same task, no hints — Tuesday 8pm.");
-    showView('home');
+    showCourseComplete();
   }
 }
 function prevLesson() {
@@ -1228,7 +1298,42 @@ function prevLesson() {
   }
 }
 function markDoalong() {
-  alert("Nice. Step marked complete. (In real app: AI checks your output.)");
+  // Inline confirmation toast — no alert
+  showToast("Nice — step marked complete.");
+}
+function showToast(text) {
+  const t = document.createElement('div');
+  t.style.cssText = 'position:fixed;bottom:96px;left:50%;transform:translateX(-50%);background:var(--surface-bold);color:var(--text-on-bold);padding:10px 16px;border-radius:999px;font-family:var(--font);font-size:13px;font-weight:600;z-index:200;box-shadow:var(--shadow-md);animation:fadeInUp 0.3s ease-out';
+  t.textContent = text;
+  document.body.appendChild(t);
+  setTimeout(() => { t.style.opacity = '0'; t.style.transition = 'opacity 0.3s'; }, 1800);
+  setTimeout(() => t.remove(), 2200);
+}
+// Replace course-complete alert with a proper completion screen
+function showCourseComplete() {
+  const course = COURSES[currentCourseId];
+  const stack = document.getElementById('lesson_stack');
+  stack.innerHTML = '';
+  const card = document.createElement('div');
+  card.className = 'lesson-card fade-in-up';
+  card.style.textAlign = 'center';
+  card.innerHTML = `
+    <div style="width:64px;height:64px;border-radius:50%;background:var(--success);color:white;display:flex;align-items:center;justify-content:center;margin:8px auto 16px">
+      <svg viewBox="0 0 24 24" fill="none" width="32" height="32"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <div class="lc-title" style="margin-bottom:8px">Course complete</div>
+    <div class="lc-text" style="margin-bottom:16px">${course.title} · 5/5 steps · Skill badge added to your portfolio.</div>
+    <div class="lc-doalong">
+      <div class="lc-doalong-h">3-Day redo nudge set</div>
+      <div class="lc-doalong-task">Same task, no hints — Tuesday 8pm.</div>
+      <button class="lc-doalong-cta" onclick="showView('home')">Back to home</button>
+    </div>
+  `;
+  stack.appendChild(card);
+  // Update progress to fully done
+  const prog = document.getElementById('course_progress');
+  if (prog) Array.from(prog.children).forEach(seg => { seg.className = 'seg done'; });
+  document.getElementById('course_meta').textContent = 'Complete';
 }
 
 /* =========================================================================

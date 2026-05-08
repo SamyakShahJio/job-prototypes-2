@@ -711,7 +711,7 @@
       </div>
 
       <!-- Phrasebook teaser -->
-      <div class="phrasebook-teaser" onclick="alert('Phrasebook (38 phrases earned) — coming soon')">
+      <div class="phrasebook-teaser" onclick="showView('pathway')">
         <div class="pb-h">
           <div class="pb-icon">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h12a4 4 0 014 4v12H4V4z" opacity="0.5"/><path d="M8 8h8M8 12h8M8 16h5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
@@ -893,7 +893,7 @@
     </div>
 
     <div class="av-bottom">
-      <button class="av-keyboard" onclick="alert('Keyboard mode — tap to type instead of speak. Coming soon.')" aria-label="Keyboard">
+      <button class="av-keyboard" onclick="(function(){const t=prompt('Type instead of speaking:'); if(t&&t.trim()) handleAvatarTranscript(t.trim(),'en-IN');})()" aria-label="Keyboard">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="2" y="6" width="20" height="13" rx="2" stroke="currentColor" stroke-width="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M6 14h.01M18 14h.01M9 14h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
       </button>
       <button class="av-mic" id="av_mic" aria-label="Mic">
@@ -1127,6 +1127,304 @@ const SCENARIO_SCRIPTS = {
       { ai: "How do you start telling your manager about a mistake?", expects: ['bring', 'attention', 'mistake', 'error', 'sorry', 'report'] },
     ],
   },
+  'lunch': {
+    title: 'Lunch chat',
+    pack: 'Office',
+    keyPhrases: [ "How was your weekend?", "Any plans this evening?", "Did you watch the game last night?" ],
+    listen: [
+      { speaker: 'colleague', text: "Hey! Want to grab lunch?" },
+      { speaker: 'agent', text: "Sure! How was your weekend?" },
+      { speaker: 'colleague', text: "Spent time with family. Yours?" },
+      { speaker: 'agent', text: "Same — relaxed at home. Did you watch the game last night?" },
+    ],
+    repeat: [
+      { ai: "Try: \"How was your weekend?\"", then: "Casual, friendly." },
+      { ai: "Now: \"Did you watch the game last night?\"", then: "Find common ground." },
+    ],
+    free: [
+      { ai: "Colleague asks how your weekend was. Keep it light, ~2 sentences.", expects: ['weekend', 'good', 'family', 'home', 'relaxed', 'spent'] },
+    ],
+  },
+  'disagree': {
+    title: 'Disagreeing politely',
+    pack: 'Office',
+    keyPhrases: [ "I see your point, but here's another angle.", "I'd like to suggest a slightly different approach.", "What if we tried it this way instead?" ],
+    listen: [
+      { speaker: 'manager', text: "Let's go with the first option. Final answer." },
+      { speaker: 'agent', text: "I see your point, ma'am, but here's another angle. The second option might save us 2 hours per shift." },
+      { speaker: 'manager', text: "Hmm. Tell me more." },
+      { speaker: 'agent', text: "Sure. What if we tried it for one week and compared results?" },
+    ],
+    repeat: [
+      { ai: "Say: \"I see your point, but here's another angle.\"", then: "Acknowledge first, then redirect." },
+      { ai: "Now: \"What if we tried it this way instead?\"", then: "Suggest, don't demand." },
+    ],
+    free: [
+      { ai: "Manager makes a call you disagree with. How do you push back politely?", expects: ['see', 'point', 'angle', 'suggest', 'different', 'approach', 'what if'] },
+    ],
+  },
+  'cooler': {
+    title: 'Water-cooler small talk',
+    pack: 'Office',
+    keyPhrases: [ "How's your day going?", "Crazy weather, isn't it?", "Any plans for the weekend?" ],
+    listen: [
+      { speaker: 'colleague', text: "Hey! How's your day going?" },
+      { speaker: 'agent', text: "Pretty busy! Yours? Crazy weather, isn't it?" },
+      { speaker: 'colleague', text: "I know! Got drenched on the way in. Any plans for the weekend?" },
+      { speaker: 'agent', text: "Just relaxing at home. You?" },
+    ],
+    repeat: [
+      { ai: "Try: \"Crazy weather, isn't it?\"", then: "Universal small-talk opener." },
+      { ai: "Now: \"Any plans for the weekend?\"", then: "Friendly, opens conversation." },
+    ],
+    free: [
+      { ai: "Colleague asks how your day is going. Keep it casual.", expects: ['busy', 'going', 'weather', 'plans', 'weekend', 'good'] },
+    ],
+  },
+  'return-policy': {
+    title: 'Explaining a return policy',
+    pack: 'Customer Service',
+    keyPhrases: [ "Our return policy is 30 days from purchase.", "Let me walk you through the steps.", "You'll need the original receipt." ],
+    listen: [
+      { speaker: 'customer', text: "I want to return this. It's been 25 days. Is that OK?" },
+      { speaker: 'agent', text: "Yes, sir. Our return policy is 30 days from purchase. You're well within that window." },
+      { speaker: 'customer', text: "OK. What do I need?" },
+      { speaker: 'agent', text: "You'll need the original receipt and the item in original condition. Let me walk you through the steps." },
+    ],
+    repeat: [
+      { ai: "Try: \"Our return policy is 30 days from purchase.\"", then: "Calm, factual tone." },
+      { ai: "Now: \"Let me walk you through the steps.\"", then: "Helpful, taking ownership." },
+    ],
+    free: [
+      { ai: "A customer returns an item 35 days after purchase. How do you politely refuse?", expects: ['unfortunately', 'policy', 'understand', 'sorry', 'within', 'cannot'] },
+    ],
+  },
+  'escalate': {
+    title: 'Politely refusing escalation',
+    pack: 'Customer Service',
+    keyPhrases: [ "I understand you'd like to speak to my manager.", "I can absolutely escalate this if needed.", "But first, let me see if I can resolve it for you." ],
+    listen: [
+      { speaker: 'customer', text: "I want to speak to your manager. Now." },
+      { speaker: 'agent', text: "I understand you'd like to speak to my manager. I can absolutely escalate this if needed. But first, let me see if I can resolve it for you. What's the issue?" },
+      { speaker: 'customer', text: "Fine. The issue is..." },
+      { speaker: 'agent', text: "Thank you for letting me try. I'll do my best." },
+    ],
+    repeat: [
+      { ai: "Say: \"I understand you'd like to speak to my manager.\"", then: "Don't sound defensive." },
+      { ai: "Now: \"But first, let me see if I can resolve it for you.\"", then: "Confident, helpful." },
+    ],
+    free: [
+      { ai: "Customer demands manager. How do you redirect without dismissing them?", expects: ['understand', 'absolutely', 'first', 'resolve', 'try', 'help'] },
+    ],
+  },
+  'callback': {
+    title: 'Promising a callback',
+    pack: 'Customer Service',
+    keyPhrases: [ "I'll need 30 minutes to look into this.", "Can I call you back at this number?", "I'll personally make sure this is resolved." ],
+    listen: [
+      { speaker: 'customer', text: "I don't have time. I have a meeting in 5 minutes." },
+      { speaker: 'agent', text: "I completely understand, sir. I'll need 30 minutes to look into this. Can I call you back at this number — say, 3 PM?" },
+      { speaker: 'customer', text: "OK, fine. 3 PM. Don't miss it." },
+      { speaker: 'agent', text: "I won't, sir. I'll personally make sure this is resolved. 3 PM. Thank you." },
+    ],
+    repeat: [
+      { ai: "Try: \"I'll need 30 minutes to look into this.\"", then: "Specific time = trust." },
+      { ai: "Now: \"I'll personally make sure this is resolved.\"", then: "Ownership, not deflection." },
+    ],
+    free: [
+      { ai: "Customer needs a callback but is annoyed. How do you commit and reassure?", expects: ['minutes', 'callback', 'will', 'personally', 'resolve', 'sure'] },
+    ],
+  },
+  'wrong-charge': {
+    title: 'Disputing a wrong charge',
+    pack: 'Customer Service',
+    keyPhrases: [ "I see the charge you're referring to.", "Let me investigate this for you.", "I'll process the refund right away." ],
+    listen: [
+      { speaker: 'customer', text: "You charged me ₹2,500 for something I didn't order!" },
+      { speaker: 'agent', text: "I completely understand your frustration, sir. I see the charge you're referring to. Let me investigate this for you." },
+      { speaker: 'customer', text: "How long will this take?" },
+      { speaker: 'agent', text: "This looks like a duplicate charge. I'll process the refund right away — you should see it within 5-7 business days." },
+    ],
+    repeat: [
+      { ai: "Say: \"I see the charge you're referring to.\"", then: "Acknowledge before investigating." },
+      { ai: "Now: \"I'll process the refund right away.\"", then: "Decisive ownership." },
+    ],
+    free: [
+      { ai: "Customer claims a wrong charge. They're agitated. What's your first response?", expects: ['understand', 'frustration', 'see', 'investigate', 'right away', 'sorry'] },
+    ],
+  },
+  'in-laws': {
+    title: 'Talking to in-laws in English',
+    pack: 'Family / In-Laws',
+    keyPhrases: [ "It's so nice to see you.", "Thank you for the lovely meal.", "I really appreciate your help with the kids." ],
+    listen: [
+      { speaker: 'mil', text: "How are you, beta?" },
+      { speaker: 'agent', text: "I'm well, mummy ji. It's so nice to see you. How was your trip?" },
+      { speaker: 'mil', text: "Long but good. Have you had dinner?" },
+      { speaker: 'agent', text: "Not yet. Thank you for the lovely meal you brought." },
+    ],
+    repeat: [
+      { ai: "Say: \"It's so nice to see you.\"", then: "Warm but respectful." },
+      { ai: "Now: \"Thank you for the lovely meal.\"", then: "Gratitude is universal." },
+    ],
+    free: [
+      { ai: "Your mother-in-law just arrived. What's a warm English greeting?", expects: ['nice', 'see', 'how', 'you', 'mummy', 'welcome'] },
+    ],
+  },
+  'kid-school': {
+    title: 'Helping kids with English homework',
+    pack: 'Family / In-Laws',
+    keyPhrases: [ "Read it out loud to me.", "Try the sentence again, slowly.", "That's a great answer!" ],
+    listen: [
+      { speaker: 'kid', text: "Mummy, what is 'because'?" },
+      { speaker: 'agent', text: "It's a connecting word. Read it out loud to me, the whole sentence." },
+      { speaker: 'kid', text: "I am happy because the sun is out." },
+      { speaker: 'agent', text: "That's a great answer! 'Because' tells us why something is happening." },
+    ],
+    repeat: [
+      { ai: "Try: \"Read it out loud to me.\"", then: "Encouraging tone." },
+      { ai: "Now: \"That's a great answer!\"", then: "Celebrate their effort." },
+    ],
+    free: [
+      { ai: "Your child is stuck on an English word. Encourage them to try.", expects: ['read', 'try', 'slowly', 'good', 'great', 'again'] },
+    ],
+  },
+  'budget': {
+    title: 'Family budget discussion',
+    pack: 'Family / In-Laws',
+    keyPhrases: [ "Let's go through the expenses for this month.", "We saved a bit on groceries this time.", "Should we cut back on something?" ],
+    listen: [
+      { speaker: 'agent', text: "Let's go through the expenses for this month." },
+      { speaker: 'spouse', text: "Sure. Where did most of it go?" },
+      { speaker: 'agent', text: "Mostly groceries and electricity. We saved a bit on groceries this time. Should we cut back on something?" },
+      { speaker: 'spouse', text: "Maybe eating out. We can cook more." },
+    ],
+    repeat: [
+      { ai: "Say: \"Let's go through the expenses for this month.\"", then: "Calm, collaborative." },
+      { ai: "Now: \"Should we cut back on something?\"", then: "Open-ended, not blaming." },
+    ],
+    free: [
+      { ai: "You want to bring up the family budget without sounding worried. How?", expects: ['expenses', 'month', 'budget', 'cut', 'save', 'plan', 'together'] },
+    ],
+  },
+  'visit': {
+    title: 'Inviting relatives over',
+    pack: 'Family / In-Laws',
+    keyPhrases: [ "We'd love to have you over.", "When are you free?", "Let me know what works best." ],
+    listen: [
+      { speaker: 'agent', text: "Mummy ji, we'd love to have you over for dinner this weekend." },
+      { speaker: 'mil', text: "That sounds lovely. Saturday or Sunday?" },
+      { speaker: 'agent', text: "Either works. When are you free?" },
+      { speaker: 'mil', text: "Saturday is better." },
+    ],
+    repeat: [
+      { ai: "Try: \"We'd love to have you over.\"", then: "Warm, sincere." },
+      { ai: "Now: \"Let me know what works best.\"", then: "Polite, gives them control." },
+    ],
+    free: [
+      { ai: "You want to invite your in-laws for dinner. How do you ask?", expects: ['love', 'have', 'over', 'dinner', 'free', 'when'] },
+    ],
+  },
+  'argument': {
+    title: 'Resolving a family argument',
+    pack: 'Family / In-Laws',
+    keyPhrases: [ "I hear what you're saying.", "Let's take a moment.", "I'd like to understand your side." ],
+    listen: [
+      { speaker: 'family', text: "You never listen!" },
+      { speaker: 'agent', text: "I hear what you're saying. Let's take a moment. I'd like to understand your side." },
+      { speaker: 'family', text: "Really? You'd listen?" },
+      { speaker: 'agent', text: "Yes. Tell me what's bothering you." },
+    ],
+    repeat: [
+      { ai: "Say: \"I hear what you're saying.\"", then: "Defuses tension." },
+      { ai: "Now: \"Let's take a moment.\"", then: "Pause before reacting." },
+    ],
+    free: [
+      { ai: "Family member is upset. How do you defuse without escalating?", expects: ['hear', 'understand', 'moment', 'side', 'sorry', 'listen'] },
+    ],
+  },
+  'first-message': {
+    title: 'Sending the first message',
+    pack: 'Dating',
+    keyPhrases: [ "Hey, your bio mentioned X — same here.", "What got you into Y?", "Would love to hear more about that." ],
+    listen: [
+      { speaker: 'agent', text: "Hey, your bio mentioned hiking — same here. What got you into it?" },
+      { speaker: 'match', text: "Started during the lockdown. You?" },
+      { speaker: 'agent', text: "Same! Would love to hear about your favorite trail." },
+    ],
+    repeat: [
+      { ai: "Try: \"Hey, your bio mentioned X — same here.\"", then: "Specific > generic 'hi'." },
+    ],
+    free: [
+      { ai: "First message to a match who likes hiking. Keep it specific, ~2 sentences.", expects: ['hiking', 'same', 'love', 'favorite', 'trail', 'curious'] },
+    ],
+  },
+  'first-date': {
+    title: 'First date small talk',
+    pack: 'Dating',
+    keyPhrases: [ "How was your week?", "What do you do for fun?", "I'd love to hear more about that." ],
+    listen: [
+      { speaker: 'date', text: "Hi! Did you find this place easily?" },
+      { speaker: 'agent', text: "Yes, thanks. How was your week?" },
+      { speaker: 'date', text: "Busy but good. Yours?" },
+      { speaker: 'agent', text: "Same. What do you do for fun outside work?" },
+    ],
+    repeat: [
+      { ai: "Try: \"What do you do for fun?\"", then: "Open-ended, low-pressure." },
+    ],
+    free: [
+      { ai: "First date and there's a lull. Restart with a friendly question.", expects: ['fun', 'work', 'weekend', 'love', 'tell', 'more'] },
+    ],
+  },
+  'compliment': {
+    title: 'Giving a compliment',
+    pack: 'Dating',
+    keyPhrases: [ "I really like the way you talk about X.", "Your laugh is great.", "You're really easy to talk to." ],
+    listen: [
+      { speaker: 'agent', text: "I really like the way you talk about your work. You sound passionate." },
+      { speaker: 'date', text: "Aw, thanks!" },
+      { speaker: 'agent', text: "Also — you're really easy to talk to." },
+    ],
+    repeat: [
+      { ai: "Try: \"You're really easy to talk to.\"", then: "Specific > generic 'pretty'." },
+    ],
+    free: [
+      { ai: "Give a genuine compliment that's not about looks.", expects: ['like', 'way', 'talk', 'easy', 'great', 'love'] },
+    ],
+  },
+  'no-thanks': {
+    title: 'Saying "no thanks" politely',
+    pack: 'Dating',
+    keyPhrases: [ "I really enjoyed our chat.", "I don't think I'm the right fit, but…", "I wish you all the best." ],
+    listen: [
+      { speaker: 'agent', text: "I really enjoyed our chat. I don't think I'm the right fit for you, but I wish you all the best." },
+      { speaker: 'date', text: "Thanks for being upfront. Take care!" },
+    ],
+    repeat: [
+      { ai: "Say: \"I really enjoyed our chat.\"", then: "Acknowledge first." },
+      { ai: "Now: \"I don't think I'm the right fit, but I wish you well.\"", then: "Kind but clear." },
+    ],
+    free: [
+      { ai: "Politely tell someone you're not interested in a second date.", expects: ['enjoyed', 'chat', 'fit', 'wish', 'well', 'best'] },
+    ],
+  },
+  'meet-parents': {
+    title: 'Meeting their parents',
+    pack: 'Dating',
+    keyPhrases: [ "It's lovely to finally meet you.", "I've heard so much about you.", "Thank you for having me." ],
+    listen: [
+      { speaker: 'parent', text: "So you're the famous one!" },
+      { speaker: 'agent', text: "It's lovely to finally meet you, ma'am. I've heard so much about you." },
+      { speaker: 'parent', text: "All good, I hope!" },
+      { speaker: 'agent', text: "Of course! Thank you for having me." },
+    ],
+    repeat: [
+      { ai: "Try: \"It's lovely to finally meet you.\"", then: "Warm but respectful." },
+    ],
+    free: [
+      { ai: "Meeting your partner's parents for the first time. How do you greet them?", expects: ['lovely', 'meet', 'heard', 'about', 'thank', 'having'] },
+    ],
+  },
 };
 
 /* =========================================================================
@@ -1166,8 +1464,9 @@ function openScenario(scId) {
   currentScenarioId = scId;
   const sc = SCENARIO_SCRIPTS[scId];
   if (!sc) {
-    alert("This scenario is coming soon — try 'Calming an angry customer' under Customer Service for the full demo.");
-    return;
+    // Fallback (shouldn't happen — all scenarios are scripted)
+    currentScenarioId = 'angry-customer';
+    return openScenario('angry-customer');
   }
   document.getElementById('prac_title').textContent = sc.title;
   document.getElementById('prac_sub').textContent = sc.pack;

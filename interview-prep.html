@@ -1487,15 +1487,45 @@ function playPep() {
   }
   pepVoice.speak("Hey Rohit — you've done eight mocks. You scored 72 yesterday. The customer roleplay was your best. Tomorrow, lead with empathy. Drink water. Smile at the door. You've got this.", 'en-IN');
 }
+// Warm-up: launch a single-question micro-mock instead of an alert.
+// Reuses the live mock UI for visual consistency.
 function warmupQ(n) {
   const questions = [
-    "Tell me about yourself in 60 seconds.",
-    "Why do you want to join this company?",
-    "A customer is shouting at you about a wrong charge. What do you do?"
+    {
+      q: "Tell me about yourself in 60 seconds.",
+      prompt: "Use STAR if you're sharing a story. 60 seconds.",
+      persona: 'interviewer_formal_ops',
+    },
+    {
+      q: "Why do you want to join this company?",
+      prompt: "Avoid 'great brand'. Be specific.",
+      persona: 'interviewer_bored_hr',
+    },
+    {
+      q: "A customer is shouting at you about a wrong charge. What do you do?",
+      prompt: "Empathy first. Solution second.",
+      persona: 'interviewer_hostile_customer',
+    },
   ];
-  if (!pepVoice) pepVoice = JBIQVoice.create({ persona: 'interviewer_formal_ops' });
-  pepVoice.speak(questions[n-1], 'en-IN');
-  alert("Warmup Q" + n + " — " + questions[n-1] + "\n\n(In live demo, this would open a 60-sec voice mock.)");
+  const item = questions[n - 1];
+  if (!item) return;
+  // Set up a one-shot mock with this single question
+  const warmupCompany = {
+    name: 'Warm-up',
+    role: 'Single-question voice mock',
+    persona: item.persona,
+    questions: [{ q: item.q, prompt: item.prompt }],
+  };
+  COMPANIES['__warmup'] = warmupCompany;
+  currentCompany = '__warmup';
+  // Reset/destroy any prior mock voice so persona swap takes effect
+  if (mockVoice) { try { mockVoice.stop(); } catch (e) {} mockVoice = null; }
+  showView('mock');
+  mockStarted = true;
+  currentQIdx = 0;
+  timerStart = Date.now();
+  startTimer();
+  loadQuestion(0);
 }
 
 /* =========================================================================

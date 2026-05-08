@@ -853,7 +853,7 @@ const BANKING_PATHS = {
 
 const REALITY_CHECKS = {
   'ibps-po': {
-    ai: "Real talk on IBPS PO — Sneha's profile (BCom from Patna) is exactly the typical aspirant. Here's the honest picture:",
+    ai: "Real talk on IBPS PO — your profile is exactly the typical aspirant. Here's the honest picture:",
     bullets: [
       "~5L apply each year, ~3K selected (one in 1,500)",
       "Prep time: 12-18 months if 4-5 hrs/day, 24+ months at slower pace",
@@ -863,6 +863,156 @@ const REALITY_CHECKS = {
     ],
     end: "Want me to add IBPS PO to your tracked list and start a 12-min daily prep plan from tomorrow?",
   },
+  'ibps-clerk': {
+    ai: "IBPS Clerk — easier entry, smaller paycheck. Honest picture:",
+    bullets: [
+      "~4L apply each year, ~7K selected (~1.7%)",
+      "Prep time: 6-12 months at moderate pace",
+      "Cost: ₹4K-10K mock packages, less coaching needed than PO",
+      "Salary at posting: ₹28K-32K incl. allowances",
+      "Posting: home state preference is high — better for staying close to home",
+    ],
+    end: "Add IBPS Clerk to your tracked list?",
+  },
+  'sbi-po': {
+    ai: "SBI PO — toughest exam, biggest brand. Honest picture:",
+    bullets: [
+      "~25L apply, ~2.5K selected (~0.1% — fiercest)",
+      "Prep time: 18-24 months at 5+ hrs/day",
+      "Cost: ₹15K-30K mock packages + ₹60-120K coaching for many",
+      "Salary at posting: ₹56K-70K + bigger bonuses than IBPS",
+      "Brand: SBI on resume opens doors elsewhere too",
+    ],
+    end: "Add SBI PO to your tracked list?",
+  },
+  'rbi-grade-b': {
+    ai: "RBI Grade B — highest-paid banking exam, near-zero selection. Honest picture:",
+    bullets: [
+      "~3L apply, ~300 selected (~0.1%)",
+      "Prep time: 18-24+ months — needs Phase 2 specialised papers",
+      "Cost: ₹15K-40K mocks + ₹80-150K coaching is common",
+      "Salary at posting: ₹78K-90K + Mumbai/Delhi posting + RBI prestige",
+      "Realistic: do this AFTER IBPS PO, not as your first exam",
+    ],
+    end: "Track RBI Grade B as a future goal alongside IBPS PO?",
+  },
+  'bpsc': {
+    ai: "BPSC — Bihar's flagship state exam. Stays in Bihar, decent pay.",
+    bullets: [
+      "~5L apply, ~1.5K selected (~0.3%)",
+      "Prep time: 15-24 months",
+      "Cost: ₹5K-15K mock packages + optional coaching",
+      "Salary at posting: ₹56K-1.7L (depends on cadre)",
+      "Posting: Bihar only — close to home, away from inter-state cab life",
+    ],
+    end: "Add BPSC to your tracked list?",
+  },
+  'upsc-cse': {
+    ai: "UPSC Civil Services — the peak. Brutal but everyone has heard of it.",
+    bullets: [
+      "~10L apply, ~1K selected (~0.1%) — toughest in the country",
+      "Prep time: 2-4 years typical · 6-8 hrs/day for 3 attempts is common",
+      "Cost: ₹50K-200K coaching + 2-3 years of opportunity cost",
+      "Salary at posting: ₹56K-2.5L (rises fast with promotions)",
+      "Reality: 1 in 3 UPSC aspirants ends up in IBPS PO/SBI PO anyway",
+    ],
+    end: "Track both — UPSC as a stretch and IBPS PO as a fallback?",
+  },
+  'uppsc': {
+    ai: "UPPSC — UP's flagship state exam. Stays in UP, decent pay.",
+    bullets: [
+      "~7L apply, ~700 selected (~0.1%)",
+      "Prep time: 18-24 months · GS-heavy syllabus",
+      "Cost: ₹6K-15K mock packages + optional coaching",
+      "Salary at posting: ₹56K-1.7L (depends on cadre)",
+      "Posting: UP only — close to home if from there",
+    ],
+    end: "Add UPPSC to your tracked list?",
+  },
+  'mpsc': {
+    ai: "MPSC — Maharashtra's flagship state exam. Marathi-friendly, Maharashtra-only.",
+    bullets: [
+      "~3L apply, ~500 selected (~0.15%)",
+      "Prep time: 18-24 months",
+      "Cost: ₹5K-12K mock packages + optional coaching",
+      "Salary at posting: ₹56K-1.7L",
+      "Posting: Maharashtra only",
+    ],
+    end: "Add MPSC to your tracked list?",
+  },
+  'ssc-cgl': {
+    ai: "SSC CGL — central govt admin jobs. Big seat count, decent pay.",
+    bullets: [
+      "~30L apply, ~5-30K selected per cycle (varies)",
+      "Prep time: 12-18 months at 4-5 hrs/day",
+      "Cost: ₹4K-12K mock packages, coaching optional",
+      "Salary at posting: ₹35K-50K + DA",
+      "Posting: anywhere in India · Cadre depends on rank",
+    ],
+    end: "Add SSC CGL to your tracked list?",
+  },
+  'ssc-chsl': {
+    ai: "SSC CHSL — easier entry-level exam. 12th-pass eligible. Smaller paycheck.",
+    bullets: [
+      "~14L apply, ~4-9K selected",
+      "Prep time: 9-12 months",
+      "Cost: ₹3K-8K mock packages",
+      "Salary at posting: ₹28K-35K + DA",
+      "Posting: anywhere in India",
+    ],
+    end: "Add SSC CHSL to your tracked list?",
+  },
+  'ssc-je': {
+    ai: "SSC JE — Junior Engineer (Civil/Electrical/Mechanical). Engg degree needed.",
+    bullets: [
+      "~3L apply, ~1K selected (~0.3%)",
+      "Prep time: 12-18 months · technical paper-heavy",
+      "Cost: ₹6K-15K mock packages + technical books",
+      "Salary at posting: ₹35K-45K + DA",
+      "Posting: anywhere in India",
+    ],
+    end: "Add SSC JE to your tracked list?",
+  },
+  'gate-psu': {
+    ai: "GATE → PSU — Engg → GATE score → top PSUs (IOCL/NTPC/BHEL/ONGC). High pay.",
+    bullets: [
+      "GATE: ~10L apply, ~15% qualify · Each PSU shortlists from there",
+      "Prep time: 18-24 months · core branch + aptitude",
+      "Cost: ₹10K-30K coaching + technical materials",
+      "Salary at posting: ₹60K-90K + perks (housing, medical)",
+      "Posting: depends on PSU · usually metro or industrial belts",
+    ],
+    end: "Track GATE → PSU as your goal?",
+  },
+  'drdo-rac': {
+    ai: "DRDO RAC — defence research. Engg degree required, technical-heavy.",
+    bullets: [
+      "~50K apply, ~250 selected per cycle",
+      "Prep time: 18+ months · core engineering + research aptitude",
+      "Cost: ₹8K-20K materials + coaching optional",
+      "Salary at posting: ₹56K-80K + research benefits",
+      "Posting: Hyderabad/Bangalore/Delhi research labs",
+    ],
+    end: "Add DRDO RAC to your tracked list?",
+  },
+};
+
+const STATE_PATHS = {
+  ai: "Here are the main state-level exams. BPSC is the obvious one for Bihar — UPPSC and MPSC if you're moving.",
+  cards: [
+    { id: 'bpsc',  name: 'BPSC',  meta: 'Bihar · ~1.5K seats · ₹56K-1.7L · Posting: Bihar only' },
+    { id: 'uppsc', name: 'UPPSC', meta: 'UP · ~700 seats · ₹56K-1.7L · Posting: UP only' },
+    { id: 'mpsc',  name: 'MPSC',  meta: 'Maharashtra · ~500 seats · ₹56K-1.7L · Posting: Maharashtra' },
+  ],
+};
+
+const UPSC_PATHS = {
+  ai: "UPSC has multiple service exams. CSE (Civil Services) is the famous one. If you really want this, here's the truth.",
+  cards: [
+    { id: 'upsc-cse', name: 'UPSC CSE', meta: '~1K seats · 2-4 yr prep · ₹56K-2.5L · IAS/IPS/IFS' },
+    { id: 'rbi-grade-b', name: 'RBI Grade B', meta: '~300 seats · 1.5-2 yr prep · ₹78K-90K · Banking peak' },
+    { id: 'sbi-po', name: 'SBI PO', meta: '~2.5K seats · 1.5-2 yr prep · ₹56K-70K · Best banking brand' },
+  ],
 };
 
 let discVoice = null;
@@ -953,20 +1103,52 @@ function showStateOrBanking() {
     { text: "Show me state exams", key: 'state_exams' },
     { text: "Banking, but with transfer info", key: 'banking_paths' },
   ], (chip) => {
+    appendUserBubble(chip.text);
     if (chip.key === 'banking_paths') showBankingPaths();
-    else appendAIBubble("State exams in your state (Bihar) — BPSC is the main one. Want details?");
+    else showStatePaths();
   }), 600);
 }
 
 function showUpscOrBanking() {
   setTimeout(() => appendChips([
     { text: "Banking — more achievable", key: 'banking_paths' },
-    { text: "UPSC anyway", key: 'upsc_real_check' },
+    { text: "UPSC anyway", key: 'upsc_paths' },
   ], (chip) => {
+    appendUserBubble(chip.text);
     if (chip.key === 'banking_paths') showBankingPaths();
-    else appendAIBubble("Brave choice. UPSC is a 3-5 year journey. ~10L apply, ~1K selected. Want a real-check on what your day would look like?");
+    else showUpscPaths();
   }), 600);
 }
+
+function showExamCards(paths) {
+  appendAIBubble(paths.ai);
+  ensureDiscVoice().speak(paths.ai, 'en-IN');
+  setTimeout(() => {
+    const wrap = document.createElement('div');
+    wrap.className = 'msg msg-ai';
+    wrap.style.maxWidth = '92%';
+    wrap.style.display = 'flex';
+    wrap.style.flexDirection = 'column';
+    wrap.style.gap = '8px';
+    paths.cards.forEach(card => {
+      const c = document.createElement('div');
+      c.className = 'exam-card-bubble';
+      c.innerHTML = `
+        <div class="ecb-icon">${card.id.split('-').slice(0,2).map(s => s[0].toUpperCase()).join('')}</div>
+        <div class="ecb-text">
+          <div class="ecb-name">${card.name}</div>
+          <div class="ecb-meta">${card.meta}</div>
+        </div>
+      `;
+      c.onclick = () => showRealityCheck(card.id);
+      wrap.appendChild(c);
+    });
+    document.getElementById('discChat').appendChild(wrap);
+    scrollChatBottom();
+  }, 1100);
+}
+function showStatePaths() { showExamCards(STATE_PATHS); }
+function showUpscPaths() { showExamCards(UPSC_PATHS); }
 
 function showRealityCheck(examId) {
   const rc = REALITY_CHECKS[examId];
@@ -1095,13 +1277,36 @@ function startPath(pathId) {
   showView('discovery');
   const chat = document.getElementById('discChat');
   chat.innerHTML = '';
-  appendUserBubble(`I'm interested in ${pathId} jobs.`);
+  const labels = { banking: 'banking', admin: 'admin (SSC, UPSC)', tech: 'technical (SSC JE, GATE)', state: 'state-level' };
+  appendUserBubble(`I'm interested in ${labels[pathId] || pathId} jobs.`);
   setTimeout(() => {
     if (pathId === 'banking') {
       showBankingPaths();
+    } else if (pathId === 'state') {
+      showStatePaths();
+    } else if (pathId === 'admin') {
+      // Admin = SSC + UPSC. Reuse UPSC paths (covers UPSC CSE) — could expand later.
+      const ADMIN_PATHS = {
+        ai: "Admin path covers SSC and UPSC. Here are the main routes — easiest to hardest by selection rate.",
+        cards: [
+          { id: 'ssc-cgl', name: 'SSC CGL', meta: '~5-30K seats · 12-18 mo prep · ₹35K-50K · Posting: anywhere' },
+          { id: 'ssc-chsl', name: 'SSC CHSL', meta: '~4-9K seats · 12 mo prep · ₹28K-35K · Easier entry' },
+          { id: 'upsc-cse', name: 'UPSC CSE', meta: '~1K seats · 2-4 yr prep · ₹56K-2.5L · IAS/IPS/IFS' },
+        ],
+      };
+      showExamCards(ADMIN_PATHS);
+    } else if (pathId === 'tech') {
+      const TECH_PATHS = {
+        ai: "Technical path needs an engineering or technical background. Here are the main routes:",
+        cards: [
+          { id: 'ssc-je', name: 'SSC JE', meta: 'Junior Engineer · ~1K seats · 12 mo prep · ₹35K-45K' },
+          { id: 'gate-psu', name: 'GATE → PSU', meta: 'Engg degree → GATE → IOCL/NTPC/BHEL · 18-24 mo prep · ₹60K-90K' },
+          { id: 'drdo-rac', name: 'DRDO RAC', meta: 'Defence research · ~250 seats · 18 mo prep · ₹56K-80K' },
+        ],
+      };
+      showExamCards(TECH_PATHS);
     } else {
-      appendAIBubble(`Got it — ${pathId} path. We're focused on banking for the demo, but full ${pathId} flow is coming soon.`);
-      ensureDiscVoice().speak("Coming soon", 'en-IN');
+      showBankingPaths();
     }
   }, 600);
 }
@@ -1286,19 +1491,58 @@ function speakConcept(idx) {
 }
 
 let doubtVoice = null;
+const DOUBT_ANSWERS = {
+  repo: "Repo rate is the rate at which RBI lends to commercial banks. Currently 5.5%. When repo rate drops, your home loan EMI drops too, because banks lower their lending rates.",
+  crr: "Cash Reserve Ratio is the percent of total deposits banks must keep with RBI as cash. Currently 4.5%. Higher CRR means less money for banks to lend out — so it controls inflation.",
+  slr: "Statutory Liquidity Ratio is the percent of deposits banks must keep in liquid assets like government bonds. Currently 18%. CRR is in cash, SLR is in bonds — both are RBI's tools to control liquidity.",
+  inflation: "Inflation is the rate at which prices rise over time. India targets 4% with a band of 2-6%. RBI raises repo rate when inflation goes above target, lowers it when inflation cools.",
+  bond: "A bond is a debt instrument. The government or a company borrows money from you and promises to pay it back with interest. Higher interest rate generally means higher risk.",
+  fallback: "Good question. Here's the short answer — I'd give you a 30-second explanation tied to your current syllabus topic, then a 1-line takeaway you can recall in the exam.",
+};
+function pickDoubtAnswer(text) {
+  const t = (text || '').toLowerCase();
+  if (/repo/.test(t)) return DOUBT_ANSWERS.repo;
+  if (/\bcrr\b|cash reserve/.test(t)) return DOUBT_ANSWERS.crr;
+  if (/\bslr\b|statutory/.test(t)) return DOUBT_ANSWERS.slr;
+  if (/inflation/.test(t)) return DOUBT_ANSWERS.inflation;
+  if (/bond|debenture/.test(t)) return DOUBT_ANSWERS.bond;
+  return DOUBT_ANSWERS.fallback;
+}
 function askDoubt() {
   if (!doubtVoice) {
     doubtVoice = JBIQVoice.create({
       persona: 'govt_exam_counselor',
       onTranscript: (text) => {
         if (!text) return;
-        // Demo: show a pop-up "got it, here's the answer"
-        alert("Doubt heard: \"" + text + "\"\n\nAnswer (demo): I'd give you a 30-second voice explanation here, mapped to your current syllabus topic.");
+        const answer = pickDoubtAnswer(text);
+        // Use a small bottom-sheet pattern instead of alert
+        showDoubtAnswer(text, answer);
+        // Speak the answer
+        try { doubtVoice.speak(answer, 'en-IN'); } catch (e) {}
       },
     });
   }
   if (doubtVoice.isRecording) doubtVoice.stopRecording();
   else doubtVoice.startRecording();
+}
+function showDoubtAnswer(question, answer) {
+  // Create a transient popover at the bottom of the prep view
+  const existing = document.getElementById('doubt-popover');
+  if (existing) existing.remove();
+  const pop = document.createElement('div');
+  pop.id = 'doubt-popover';
+  pop.style.cssText = 'position:absolute;left:16px;right:16px;bottom:80px;background:var(--surface-bold);color:var(--text-on-bold);border-radius:18px;padding:16px;box-shadow:var(--shadow-lg);z-index:50;animation:fadeInUp 0.3s ease-out;';
+  pop.innerHTML = `
+    <div style="font-size:11px;font-weight:700;letter-spacing:0.4px;text-transform:uppercase;opacity:0.8;margin-bottom:6px">You asked</div>
+    <div style="font-size:13px;font-weight:600;margin-bottom:10px;font-style:italic">"${question}"</div>
+    <div style="font-size:11px;font-weight:700;letter-spacing:0.4px;text-transform:uppercase;opacity:0.8;margin-bottom:6px">Answer</div>
+    <div style="font-size:13px;line-height:1.5">${answer}</div>
+    <button onclick="this.parentNode.remove()" style="margin-top:12px;background:rgba(255,255,255,0.18);border:none;color:white;padding:8px 14px;border-radius:999px;font-family:var(--font);font-size:12px;font-weight:700;cursor:pointer">Got it</button>
+  `;
+  const view = document.getElementById('view-daily');
+  if (view) view.appendChild(pop);
+  // Auto-dismiss after 12s
+  setTimeout(() => { if (document.getElementById('doubt-popover')) document.getElementById('doubt-popover').remove(); }, 12000);
 }
 
 renderPrep();
