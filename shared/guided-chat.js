@@ -396,5 +396,100 @@
     return { start, stop, restart };
   }
 
-  window.GC = { create, createTranscript, ICONS };
+  /* ========== Helpers for chip-based chats (govt-exam, microlearning) ========== */
+
+  // Append an AI message bubble (with streaming text) to a chat container.
+  function chatAppendAi(chatEl, text, speakerLabel = 'JBIQ') {
+    const wrap = document.createElement('div');
+    wrap.className = 'gc-msg gc-msg-ai';
+    wrap.innerHTML = `<div class="gc-bubble gc-bubble-ai"><div class="gc-speaker"><span class="gc-speaker-dot"></span>${speakerLabel}</div><span class="gc-bubble-text"></span></div>`;
+    chatEl.appendChild(wrap);
+    const target = wrap.querySelector('.gc-bubble-text');
+    if (window.MM && window.MM.streamText) {
+      window.MM.streamText(target, text, { speed: 14, onDone: () => chatEl.scrollTop = chatEl.scrollHeight });
+    } else {
+      target.textContent = text;
+    }
+    chatEl.scrollTop = chatEl.scrollHeight;
+    return wrap;
+  }
+
+  // Append a user message bubble.
+  function chatAppendUser(chatEl, text) {
+    const wrap = document.createElement('div');
+    wrap.className = 'gc-msg gc-msg-user';
+    wrap.innerHTML = `<div class="gc-bubble gc-bubble-user">${text}</div>`;
+    chatEl.appendChild(wrap);
+    chatEl.scrollTop = chatEl.scrollHeight;
+    return wrap;
+  }
+
+  // Append a Rich UI card (uses buildCardHtml).
+  function chatAppendCard(chatEl, card, voice) {
+    const wrap = document.createElement('div');
+    wrap.innerHTML = buildCardHtml(card);
+    const cardEl = wrap.firstElementChild;
+    chatEl.appendChild(cardEl);
+    cardEl.querySelectorAll('[data-rc-play]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const txt = btn.getAttribute('data-rc-play');
+        if (voice && txt) try { voice.speak(txt, 'en-IN'); } catch (e) {}
+      });
+    });
+    chatEl.scrollTop = chatEl.scrollHeight;
+    return cardEl;
+  }
+
+  // Append an inline chip row (chips appear in-chat, not in a fixed dock).
+  function chatAppendChips(chatEl, chips, onPick) {
+    const wrap = document.createElement('div');
+    wrap.className = 'gc-chips-inline';
+    chips.forEach(c => {
+      const b = document.createElement('button');
+      b.className = 'gc-chip';
+      let inner = '';
+      if (c.tag) {
+        const tagCls = c.tagKind ? ' tag-' + c.tagKind : '';
+        inner += `<span class="gc-chip-tag${tagCls}">${c.tag}</span>`;
+      }
+      inner += c.text;
+      b.innerHTML = inner;
+      b.onclick = () => {
+        wrap.remove();
+        onPick(c);
+      };
+      wrap.appendChild(b);
+    });
+    chatEl.appendChild(wrap);
+    chatEl.scrollTop = chatEl.scrollHeight;
+    return wrap;
+  }
+
+  // Latency marker — show a contextual status pill, auto-removes after `ms`.
+  // Returns a promise that resolves when the pill is removed.
+  function chatStatus(chatEl, label, ms = 700) {
+    const wrap = document.createElement('div');
+    wrap.className = 'gc-status-pill';
+    wrap.innerHTML = `<span class="gc-status-dots"><span></span><span></span><span></span></span><span>${label}</span>`;
+    chatEl.appendChild(wrap);
+    chatEl.scrollTop = chatEl.scrollHeight;
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        wrap.classList.add('fade-out');
+        setTimeout(() => {
+          if (wrap.parentNode) wrap.parentNode.removeChild(wrap);
+          resolve();
+        }, 250);
+      }, ms);
+    });
+  }
+
+  window.GC = {
+    create, createTranscript, ICONS,
+    appendAi:    chatAppendAi,
+    appendUser:  chatAppendUser,
+    appendCard:  chatAppendCard,
+    appendChips: chatAppendChips,
+    status:      chatStatus,
+  };
 })();

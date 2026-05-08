@@ -7,6 +7,7 @@
 <title>Govt Exam Prep — JioBharatIQ</title>
 <link rel="stylesheet" href="shared/jds-tokens.css">
 <link rel="stylesheet" href="shared/ambient-glow.css">
+<link rel="stylesheet" href="shared/guided-chat.css">
 <style>
   body { background: var(--white); }
   .phone-frame { background: var(--white); }
@@ -748,17 +749,8 @@
       </div>
     </div>
 
-    <div class="chat-area" id="discChat"></div>
-
-    <div class="chat-dock">
-      <input type="text" class="chat-input" id="disc_input" placeholder="Or type your answer…">
-      <button class="icon-btn-mic" id="disc_mic" aria-label="Mic">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 15a3 3 0 003-3V6a3 3 0 00-6 0v6a3 3 0 003 3z"/>
-          <path d="M19 11v1a7 7 0 01-14 0v-1" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
-        </svg>
-      </button>
-    </div>
+    <!-- Guided chat — chip-driven canned demo, no mic -->
+    <div class="guided-chat" id="discChat"></div>
   </div>
 
   <!-- ========================== DAILY PREP ========================== -->
@@ -797,6 +789,7 @@
 <script src="shared/personas.js"></script>
 <script src="shared/jbiq-voice.js"></script>
 <script src="shared/multimodal.js"></script>
+<script src="shared/guided-chat.js"></script>
 <script>
 function showView(name) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
@@ -1020,11 +1013,6 @@ function ensureDiscVoice() {
   if (discVoice) return discVoice;
   discVoice = JBIQVoice.create({
     persona: 'govt_exam_counselor',
-    onTranscript: handleDiscTranscript,
-    onState: (state) => {
-      const mic = document.getElementById('disc_mic');
-      mic.classList.toggle('recording', state === 'listening');
-    },
     onError: (e) => console.error(e),
   });
   return discVoice;
@@ -1059,43 +1047,54 @@ function askDiscoveryQ(idx) {
       appendUserBubble(chip.text);
       const branch = DISCOVERY_BRANCHES[chip.key];
       if (!branch) return;
-      setTimeout(() => {
+      // Latency marker: brief status pill before AI replies
+      showThinking('Mapping your goals to a path…', 800).then(() => {
         appendAIBubble(branch.ai);
-        setTimeout(() => ensureDiscVoice().speak(branch.ai, 'en-IN'), 200);
-        if (branch.next === 'banking_paths') setTimeout(() => showBankingPaths(), 1500);
-        if (branch.next === 'state_or_banking') setTimeout(() => showStateOrBanking(), 1500);
-        if (branch.next === 'upsc_or_banking') setTimeout(() => showUpscOrBanking(), 1500);
-      }, 600);
+        try { ensureDiscVoice().speak(branch.ai, 'en-IN'); } catch (e) {}
+        if (branch.next === 'banking_paths') setTimeout(() => showBankingPaths(), 1400);
+        if (branch.next === 'state_or_banking') setTimeout(() => showStateOrBanking(), 1400);
+        if (branch.next === 'upsc_or_banking') setTimeout(() => showUpscOrBanking(), 1400);
+      });
     }), 700);
   }
 }
 
+function appendExamListCard(paths) {
+  const chat = document.getElementById('discChat');
+  const items = paths.cards.map(card =>
+    `<button class="rc-list-item" data-exam-id="${card.id}">
+      <div class="rli-icon">${card.id.split('-').slice(0,2).map(s => s[0].toUpperCase()).join('')}</div>
+      <div class="rli-text">
+        <div class="rli-name">${card.name}</div>
+        <div class="rli-meta">${card.meta}</div>
+      </div>
+    </button>`
+  ).join('');
+  const html = `
+    <div class="rich-card rich-card--list">
+      <div class="rc-h">
+        <div class="rc-icon">${window.GC.ICONS.tip}</div>
+        <div class="rc-label">Pick an exam</div>
+      </div>
+      <div class="rc-list">${items}</div>
+    </div>`;
+  const wrap = document.createElement('div');
+  wrap.innerHTML = html;
+  const cardEl = wrap.firstElementChild;
+  chat.appendChild(cardEl);
+  cardEl.querySelectorAll('[data-exam-id]').forEach(btn => {
+    btn.addEventListener('click', () => showRealityCheck(btn.getAttribute('data-exam-id')));
+  });
+  scrollChatBottom();
+  return cardEl;
+}
+
 function showBankingPaths() {
-  appendAIBubble(BANKING_PATHS.ai);
-  ensureDiscVoice().speak(BANKING_PATHS.ai, 'en-IN');
-  setTimeout(() => {
-    const wrap = document.createElement('div');
-    wrap.className = 'msg msg-ai';
-    wrap.style.maxWidth = '92%';
-    wrap.style.display = 'flex';
-    wrap.style.flexDirection = 'column';
-    wrap.style.gap = '8px';
-    BANKING_PATHS.cards.forEach(card => {
-      const c = document.createElement('div');
-      c.className = 'exam-card-bubble';
-      c.innerHTML = `
-        <div class="ecb-icon">${card.id.split('-').slice(0,2).map(s => s[0].toUpperCase()).join('')}</div>
-        <div class="ecb-text">
-          <div class="ecb-name">${card.name}</div>
-          <div class="ecb-meta">${card.meta}</div>
-        </div>
-      `;
-      c.onclick = () => showRealityCheck(card.id);
-      wrap.appendChild(c);
-    });
-    document.getElementById('discChat').appendChild(wrap);
-    scrollChatBottom();
-  }, 1100);
+  showThinking('Pulling banking paths…', 700).then(() => {
+    appendAIBubble(BANKING_PATHS.ai);
+    try { ensureDiscVoice().speak(BANKING_PATHS.ai, 'en-IN'); } catch (e) {}
+    setTimeout(() => appendExamListCard(BANKING_PATHS), 900);
+  });
 }
 
 function showStateOrBanking() {
@@ -1121,31 +1120,11 @@ function showUpscOrBanking() {
 }
 
 function showExamCards(paths) {
-  appendAIBubble(paths.ai);
-  ensureDiscVoice().speak(paths.ai, 'en-IN');
-  setTimeout(() => {
-    const wrap = document.createElement('div');
-    wrap.className = 'msg msg-ai';
-    wrap.style.maxWidth = '92%';
-    wrap.style.display = 'flex';
-    wrap.style.flexDirection = 'column';
-    wrap.style.gap = '8px';
-    paths.cards.forEach(card => {
-      const c = document.createElement('div');
-      c.className = 'exam-card-bubble';
-      c.innerHTML = `
-        <div class="ecb-icon">${card.id.split('-').slice(0,2).map(s => s[0].toUpperCase()).join('')}</div>
-        <div class="ecb-text">
-          <div class="ecb-name">${card.name}</div>
-          <div class="ecb-meta">${card.meta}</div>
-        </div>
-      `;
-      c.onclick = () => showRealityCheck(card.id);
-      wrap.appendChild(c);
-    });
-    document.getElementById('discChat').appendChild(wrap);
-    scrollChatBottom();
-  }, 1100);
+  showThinking('Pulling exam options…', 700).then(() => {
+    appendAIBubble(paths.ai);
+    try { ensureDiscVoice().speak(paths.ai, 'en-IN'); } catch (e) {}
+    setTimeout(() => appendExamListCard(paths), 900);
+  });
 }
 function showStatePaths() { showExamCards(STATE_PATHS); }
 function showUpscPaths() { showExamCards(UPSC_PATHS); }
@@ -1153,31 +1132,40 @@ function showUpscPaths() { showExamCards(UPSC_PATHS); }
 function showRealityCheck(examId) {
   const rc = REALITY_CHECKS[examId];
   if (!rc) {
-    appendAIBubble("That's a great choice. Let me set it up. (Detailed reality-check coming for that exam.)");
+    showThinking('Pulling reality-check…', 700).then(() => {
+      appendAIBubble("That's a great choice. Let me set it up. (Detailed reality-check coming for that exam.)");
+    });
     return;
   }
   appendUserBubble("Tell me about " + examId.toUpperCase());
-  setTimeout(() => {
+  showThinking('Pulling latest cut-offs and selection data…', 1000).then(() => {
     appendAIBubble(rc.ai);
-    setTimeout(() => ensureDiscVoice().speak(rc.ai, 'en-IN'), 200);
+    try { ensureDiscVoice().speak(rc.ai, 'en-IN'); } catch (e) {}
     setTimeout(() => {
-      const wrap = document.createElement('div');
-      wrap.className = 'msg msg-ai';
-      wrap.style.maxWidth = '94%';
-      const card = document.createElement('div');
-      card.className = 'reality-check';
-      let html = '<div class="rc-h">⚖️ Reality check</div><ul>';
-      rc.bullets.forEach(b => html += `<li>${b}</li>`);
-      html += '</ul>';
-      card.innerHTML = html;
-      wrap.appendChild(card);
-      document.getElementById('discChat').appendChild(wrap);
-      scrollChatBottom();
-    }, 1100);
+      const chat = document.getElementById('discChat');
+      window.GC.appendCard(chat, {
+        kind: 'bullets',
+        label: 'Reality check',
+        content: rc.bullets.map(b => `<li>${b}</li>`).join(''),
+      }, null);
+      // The .rc-content above wraps the LI string; we need .rc-bullets <ul>.
+      // Replace the appended card's body to use a proper list.
+      const cards = chat.querySelectorAll('.rich-card--bullets');
+      const last = cards[cards.length - 1];
+      if (last) {
+        const cont = last.querySelector('.rc-content');
+        if (cont) {
+          const ul = document.createElement('ul');
+          ul.className = 'rc-bullets';
+          ul.innerHTML = cont.innerHTML;
+          cont.replaceWith(ul);
+        }
+      }
+    }, 900);
     setTimeout(() => {
       appendAIBubble(rc.end);
-      ensureDiscVoice().speak(rc.end, 'en-IN');
-    }, 1900);
+      try { ensureDiscVoice().speak(rc.end, 'en-IN'); } catch (e) {}
+    }, 1700);
     setTimeout(() => {
       appendChips([
         { text: "Yes, add to my plan", key: 'add_plan' },
@@ -1211,47 +1199,24 @@ function showRealityCheck(examId) {
 
 function appendAIBubble(text) {
   const chat = document.getElementById('discChat');
-  const wrap = document.createElement('div');
-  wrap.className = 'msg msg-ai';
-  wrap.innerHTML = `<div class="bubble bubble-ai"><div class="speaker-pill">JBIQ</div><span class="bubble-text"></span></div>`;
-  chat.appendChild(wrap);
-  scrollChatBottom();
-  // Stream text word-by-word for AI replies (per MultimodalUX deck §Latency Markers)
-  const target = wrap.querySelector('.bubble-text');
-  if (window.MM && window.MM.streamText) {
-    window.MM.streamText(target, text, { speed: 14, onDone: scrollChatBottom });
-  } else {
-    target.textContent = text;
-  }
+  return window.GC.appendAi(chat, text, 'JBIQ');
 }
 function appendUserBubble(text) {
   const chat = document.getElementById('discChat');
-  const wrap = document.createElement('div');
-  wrap.className = 'msg msg-user';
-  wrap.innerHTML = `<div class="bubble bubble-user">${text}</div>`;
-  chat.appendChild(wrap);
-  scrollChatBottom();
+  return window.GC.appendUser(chat, text);
 }
 function appendChips(chips, onPick) {
   const chat = document.getElementById('discChat');
-  const wrap = document.createElement('div');
-  wrap.className = 'reply-chips';
-  chips.forEach(c => {
-    const b = document.createElement('button');
-    b.className = 'reply-chip';
-    b.textContent = c.text;
-    b.onclick = () => {
-      wrap.remove();
-      onPick(c);
-    };
-    wrap.appendChild(b);
-  });
-  chat.appendChild(wrap);
-  scrollChatBottom();
+  return window.GC.appendChips(chat, chips, onPick);
 }
 function scrollChatBottom() {
   const chat = document.getElementById('discChat');
   chat.scrollTop = chat.scrollHeight;
+}
+// Status pill (latency marker) — shown briefly between user pick and AI reply
+function showThinking(label, ms) {
+  const chat = document.getElementById('discChat');
+  return window.GC.status(chat, label || 'Looking that up…', ms || 700);
 }
 
 function handleDiscTranscript(text, lang) {
@@ -1311,17 +1276,7 @@ function startPath(pathId) {
   }, 600);
 }
 
-document.getElementById('disc_mic').addEventListener('click', () => {
-  const v = ensureDiscVoice();
-  if (v.isRecording) v.stopRecording();
-  else v.startRecording();
-});
-document.getElementById('disc_input').addEventListener('keypress', (e) => {
-  if (e.key === 'Enter' && e.target.value.trim()) {
-    handleDiscTranscript(e.target.value.trim(), 'en-IN');
-    e.target.value = '';
-  }
-});
+// (Mic + text input removed — discovery is fully chip-driven canned demo.)
 
 /* =========================================================================
  * DAILY PREP DECK

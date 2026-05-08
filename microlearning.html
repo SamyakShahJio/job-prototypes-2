@@ -7,6 +7,7 @@
 <title>Microlearning — JioBharatIQ</title>
 <link rel="stylesheet" href="shared/jds-tokens.css">
 <link rel="stylesheet" href="shared/ambient-glow.css">
+<link rel="stylesheet" href="shared/guided-chat.css">
 <style>
   body { background: var(--white); }
   .phone-frame { background: var(--white); }
@@ -749,17 +750,8 @@
       </div>
     </div>
 
-    <div class="chat-area" id="ml_chat"></div>
-
-    <div class="chat-dock">
-      <input type="text" class="chat-input" id="ml_input" placeholder="Or type your problem…">
-      <button class="icon-btn-mic" id="ml_mic" aria-label="Mic">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 15a3 3 0 003-3V6a3 3 0 00-6 0v6a3 3 0 003 3z"/>
-          <path d="M19 11v1a7 7 0 01-14 0v-1" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
-        </svg>
-      </button>
-    </div>
+    <!-- Guided chat — chip-driven canned demo, no mic -->
+    <div class="guided-chat" id="ml_chat"></div>
   </div>
 
   <!-- ========================== COURSE PLAYER ========================== -->
@@ -884,6 +876,7 @@
 <script src="shared/personas.js"></script>
 <script src="shared/jbiq-voice.js"></script>
 <script src="shared/multimodal.js"></script>
+<script src="shared/guided-chat.js"></script>
 <script>
 function showView(name) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
@@ -901,14 +894,14 @@ function ensureMLVoice() {
   if (mlVoice) return mlVoice;
   mlVoice = JBIQVoice.create({
     persona: 'microlearning_coach',
-    onTranscript: handleMLTranscript,
-    onState: (state) => {
-      const mic = document.getElementById('ml_mic');
-      mic.classList.toggle('recording', state === 'listening');
-    },
     onError: (e) => console.error(e),
   });
   return mlVoice;
+}
+// Latency status pill helper
+function showMlThinking(label, ms) {
+  const chat = document.getElementById('ml_chat');
+  return window.GC.status(chat, label || 'Pulling the right skill…', ms || 700);
 }
 
 const PROBLEM_FLOWS = {
@@ -989,34 +982,37 @@ function handleProblem(chip) {
   appendUserBubble(chip.text);
   const flow = PROBLEM_FLOWS[chip.key] || PROBLEM_FLOWS.default;
 
-  setTimeout(() => {
+  showMlThinking('Diagnosing root cause…', 900).then(() => {
     appendAIBubble(flow.rootCause);
-    ensureMLVoice().speak(flow.rootCause, 'en-IN');
-  }, 500);
-
-  setTimeout(() => showTrailer(flow), 1500);
+    try { ensureMLVoice().speak(flow.rootCause, 'en-IN'); } catch (e) {}
+    setTimeout(() => showTrailer(flow), 1100);
+  });
 }
 
 function showTrailer(flow) {
   const chat = document.getElementById('ml_chat');
+  const stepsHtml = flow.plan.map((s, i) =>
+    `<div class="rc-step"><div class="rc-step-num">${i+1}</div><div>${s}</div></div>`
+  ).join('');
+  const html = `
+    <div class="rich-card rich-card--trailer">
+      <div class="rc-h">
+        <div class="rc-icon">${window.GC.ICONS.tip}</div>
+        <div class="rc-label">My 12-min plan</div>
+      </div>
+      <div class="rc-rootcause">${flow.rootCause}</div>
+      <div class="rc-steps">${stepsHtml}</div>
+      <div class="rc-actions">
+        <button class="rc-btn" data-launch="${flow.courseId}">Start the course</button>
+      </div>
+    </div>`;
   const wrap = document.createElement('div');
-  wrap.className = 'msg msg-ai';
-  wrap.style.maxWidth = '94%';
-  const card = document.createElement('div');
-  card.className = 'trailer-card';
-  let stepsHtml = '';
-  flow.plan.forEach((s, i) => {
-    stepsHtml += `<div class="tc-step"><div class="ts-num">${i+1}</div><div class="ts-text">${s}</div></div>`;
+  wrap.innerHTML = html;
+  const cardEl = wrap.firstElementChild;
+  chat.appendChild(cardEl);
+  cardEl.querySelectorAll('[data-launch]').forEach(btn => {
+    btn.addEventListener('click', () => launchCourse(btn.getAttribute('data-launch')));
   });
-  card.innerHTML = `
-    <div class="tc-tag">~12 min · 5 steps · 1 do-along</div>
-    <div class="tc-rootcause">Likely root cause</div>
-    <div class="tc-plan-h">My plan</div>
-    ${stepsHtml}
-    <button class="tc-cta" onclick="launchCourse('${flow.courseId}')">Start the 12-min course →</button>
-  `;
-  wrap.appendChild(card);
-  chat.appendChild(wrap);
   chat.scrollTop = chat.scrollHeight;
 }
 
@@ -1025,68 +1021,10 @@ function launchCourse(courseId) {
   loadCourse(courseId);
 }
 
-function appendAIBubble(text) {
-  const chat = document.getElementById('ml_chat');
-  const wrap = document.createElement('div');
-  wrap.className = 'msg msg-ai';
-  wrap.innerHTML = `<div class="bubble bubble-ai"><div class="speaker-pill">JBIQ</div><span class="bubble-text"></span></div>`;
-  chat.appendChild(wrap);
-  chat.scrollTop = chat.scrollHeight;
-  // Stream text word-by-word for AI replies
-  const target = wrap.querySelector('.bubble-text');
-  if (window.MM && window.MM.streamText) {
-    window.MM.streamText(target, text, { speed: 14, onDone: () => { chat.scrollTop = chat.scrollHeight; } });
-  } else {
-    target.textContent = text;
-  }
-}
-function appendUserBubble(text) {
-  const chat = document.getElementById('ml_chat');
-  const wrap = document.createElement('div');
-  wrap.className = 'msg msg-user';
-  wrap.innerHTML = `<div class="bubble bubble-user">${text}</div>`;
-  chat.appendChild(wrap);
-  chat.scrollTop = chat.scrollHeight;
-}
-function appendChips(chips, onPick) {
-  const chat = document.getElementById('ml_chat');
-  const wrap = document.createElement('div');
-  wrap.className = 'reply-chips';
-  chips.forEach(c => {
-    const b = document.createElement('button');
-    b.className = 'reply-chip';
-    b.textContent = c.text;
-    b.onclick = () => { wrap.remove(); onPick(c); };
-    wrap.appendChild(b);
-  });
-  chat.appendChild(wrap);
-  chat.scrollTop = chat.scrollHeight;
-}
-
-function handleMLTranscript(text, lang) {
-  if (!text) return;
-  appendUserBubble(text);
-  // Route based on keywords
-  const lower = text.toLowerCase();
-  let key = 'default';
-  if (/thumb|click/.test(lower)) key = 'thumbnail';
-  else if (/title/.test(lower)) key = 'title';
-  else if (/view|drop|growth/.test(lower)) key = 'views';
-  else if (/chatgpt|prompt|ai/.test(lower)) key = 'chatgpt';
-  setTimeout(() => handleProblem({ text, key }), 200);
-}
-
-document.getElementById('ml_mic').addEventListener('click', () => {
-  const v = ensureMLVoice();
-  if (v.isRecording) v.stopRecording();
-  else v.startRecording();
-});
-document.getElementById('ml_input').addEventListener('keypress', (e) => {
-  if (e.key === 'Enter' && e.target.value.trim()) {
-    handleMLTranscript(e.target.value.trim(), 'en-IN');
-    e.target.value = '';
-  }
-});
+function appendAIBubble(text)  { return window.GC.appendAi(document.getElementById('ml_chat'), text, 'JBIQ'); }
+function appendUserBubble(text) { return window.GC.appendUser(document.getElementById('ml_chat'), text); }
+function appendChips(chips, onPick) { return window.GC.appendChips(document.getElementById('ml_chat'), chips, onPick); }
+// (Mic + text input removed — chat is fully chip-driven canned demo.)
 
 function startSubtrack(track) {
   // For demo, route to chat with a prefilled subtrack-flavored opener

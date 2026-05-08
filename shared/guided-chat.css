@@ -268,6 +268,119 @@
   text-transform: uppercase;
 }
 
+/* Variant: list (clickable rows — exam options, paths, etc) */
+.rich-card--list .rc-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.rich-card--list .rc-list-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: var(--surface-default);
+  border: 1px solid var(--stroke-subtle);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: var(--font);
+  text-align: left;
+  width: 100%;
+  border-style: solid;
+}
+.rich-card--list .rc-list-item:hover {
+  border-color: var(--surface-bold);
+  background: var(--primary-20);
+}
+.rich-card--list .rc-list-item:active { transform: scale(0.99); }
+.rich-card--list .rli-icon {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  background: var(--primary-20);
+  color: var(--surface-bold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+.rich-card--list .rli-text { flex: 1; min-width: 0; }
+.rich-card--list .rli-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-high);
+  line-height: 1.2;
+}
+.rich-card--list .rli-meta {
+  font-size: 11px;
+  color: var(--text-low);
+  margin-top: 2px;
+  line-height: 1.4;
+}
+
+/* Variant: bullets — for reality-check style cards */
+.rich-card--bullets .rc-bullets {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.rich-card--bullets .rc-bullets li {
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--text-high);
+  padding: 4px 0 4px 14px;
+  position: relative;
+}
+.rich-card--bullets .rc-bullets li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: var(--surface-bold);
+  font-weight: 700;
+}
+
+/* Variant: trailer — N-step plan card (microlearning) */
+.rich-card--trailer .rc-rootcause {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-high);
+  background: var(--surface-ghost);
+  padding: 8px 12px;
+  border-radius: 10px;
+  border-left: 3px solid var(--surface-bold);
+}
+.rich-card--trailer .rc-steps {
+  display: flex;
+  flex-direction: column;
+}
+.rich-card--trailer .rc-step {
+  display: flex;
+  gap: 10px;
+  padding: 6px 0;
+  font-size: 12px;
+  color: var(--text-high);
+  line-height: 1.4;
+  border-bottom: 1px solid var(--stroke-subtle);
+}
+.rich-card--trailer .rc-step:last-child { border-bottom: none; }
+.rich-card--trailer .rc-step-num {
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: var(--primary-20);
+  color: var(--surface-bold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
 /* Variant: practice (with audio playback) */
 .rich-card--practice .rc-key-phrase {
   background: var(--primary-20);
@@ -369,5 +482,53 @@
   font-size: 13px;
   font-style: italic;
 }
+
+/* Inline chip row — chips appear in the chat thread, not in a fixed dock.
+   Used by govt-exam discovery + microlearning chat (chip-driven canned flows). */
+.gc-chips-inline {
+  align-self: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-width: 92%;
+  animation: fadeInUp 0.3s ease-out 0.1s backwards;
+}
+
+/* Latency marker — status pill between user click and AI response.
+   Shows contextual micro-copy ("Looking up Tech Mahindra patterns…")
+   per MultimodalUX deck slide 18.
+   Lives in the chat thread, fades in/out gracefully. */
+.gc-status-pill {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 13px;
+  border-radius: 999px;
+  background: var(--primary-20);
+  color: var(--surface-bold);
+  font-size: 12px;
+  font-weight: 600;
+  animation: gcStatusIn 0.25s ease-out;
+}
+.gc-status-pill .gc-status-dots {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+.gc-status-pill .gc-status-dots span {
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: var(--surface-bold);
+  opacity: 0.5;
+  animation: gcSttDot 1.2s ease-in-out infinite;
+}
+.gc-status-pill .gc-status-dots span:nth-child(2) { animation-delay: 0.15s; }
+.gc-status-pill .gc-status-dots span:nth-child(3) { animation-delay: 0.3s; }
+.gc-status-pill.fade-out {
+  animation: gcStatusOut 0.25s ease-in forwards;
+}
+@keyframes gcStatusIn  { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes gcStatusOut { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-4px); } }
 
 @keyframes fadeInUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
