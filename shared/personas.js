@@ -34,13 +34,13 @@ window.JBIQ_PERSONAS = {
   // ============= ENGLISH LEARNING — AI AVATAR (lipsync) =============
   sarah_avatar: {
     id: 'sarah_avatar',
-    speaker: 'anushka',          // Most neutral-accent English voice in Sarvam Bulbul-v2
+    speaker: 'arya',             // Bulbul-v2 most natural / modern English female cadence
     model: 'bulbul:v2',
-    pitch: 0,
-    pace: 0.95,                   // Slightly slower for clarity, more natural cadence
+    pitch: -1,                    // Slightly lower pitch — warmer, less peppy
+    pace: 1.0,
     name: 'Sarah',
     title: 'Your English coach',
-    description: 'Warm, neutral-accent English — friendly tutor for free-form practice',
+    description: 'Modern Indian female English — friendly tutor for free-form practice',
     visual: 'avatar-lipsync',
     avatarColor: '#3535f3',
     fillerPhrase: 'Mmm, let me think…',
