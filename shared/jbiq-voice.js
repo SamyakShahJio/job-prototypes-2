@@ -206,13 +206,20 @@
   function unlockAudio() {
     const ctx = getAudioCtx();
     if (!ctx) return Promise.resolve();
-    if (ctx.state === 'running' && audioUnlocked) return Promise.resolve();
+    // Mark unlocked synchronously — the resume call below will succeed
+    // because we're (always) inside a user gesture when this fires.
+    audioUnlocked = true;
+    if (ctx.state === 'running') {
+      flushPendingGreets();
+      return Promise.resolve();
+    }
     return ctx.resume().then(() => {
-      if (ctx.state === 'running') {
-        audioUnlocked = true;
-        flushPendingGreets();
-      }
-    }).catch(() => {});
+      flushPendingGreets();
+    }).catch((e) => {
+      console.warn('[JBIQVoice] AudioContext.resume failed:', e);
+      // Still try to flush — some browsers report 'suspended' even when playable
+      flushPendingGreets();
+    });
   }
 
   function flushPendingGreets() {
@@ -336,7 +343,9 @@
     }
 
     async function speak(text, langHint) {
-      // If audio isn't unlocked yet (no user gesture has happened), queue.
+      // Try to unlock the audio context (idempotent if already unlocked).
+      try { unlockAudio(); } catch (e) {}
+      // If still not unlocked, queue for next gesture.
       if (!audioUnlocked) {
         return new Promise((resolve) => {
           pendingGreets.push(() => speak(text, langHint).then(resolve));

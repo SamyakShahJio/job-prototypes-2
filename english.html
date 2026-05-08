@@ -1706,13 +1706,23 @@ function startSarahDemo() {
   if (!chatEl) return;
   // Stop any prior runner
   if (avatarRunner) avatarRunner.stop();
+
+  // Fire the FIRST AI line's speak() synchronously inside the click chain.
+  // This locks in the user-gesture context for audio playback before any
+  // setTimeout breaks it. Strict autoplay policies (Safari especially)
+  // require this — the prefetched buffer plays instantly here.
+  const firstAi = SARAH_TRANSCRIPT.find(t => t.speaker === 'ai');
+  if (firstAi && avatarVoice) {
+    try { avatarVoice.speak(firstAi.text, 'en-IN'); } catch (e) { console.warn('[Sarah] first speak failed', e); }
+  }
+
   avatarRunner = window.GC.createTranscript({
     transcript: SARAH_TRANSCRIPT,
     chatEl,
     voice: avatarVoice,
     speakerLabel: 'Sarah',
+    skipFirstSpeak: true,   // we already played it directly above
   });
-  // Slight delay so view transition completes
   setTimeout(() => avatarRunner.start(), 300);
 }
 

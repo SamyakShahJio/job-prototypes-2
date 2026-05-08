@@ -269,11 +269,14 @@
       streamSpeed = 14,
       onComplete = null,
       autoScroll = true,
+      skipFirstSpeak = false,    // when true, the first 'ai' item only renders bubble
+                                  // (caller already triggered TTS within gesture context)
     } = opts;
 
     let i = 0;
     let stopped = false;
     let timers = [];
+    let firstAiSpoken = !skipFirstSpeak;  // if skipFirstSpeak, treat it as already done
 
     function scrollChat() {
       if (autoScroll) chatEl.scrollTop = chatEl.scrollHeight;
@@ -348,11 +351,13 @@
         if (item.speaker === 'ai') {
           const streamMs = appendAi(item.text);
           // Fire-and-forget the TTS — don't block on speak's promise.
-          // Audio may be locked (browser autoplay) until user clicks; advancing
-          // the demo via timer keeps the visual transcript flowing regardless.
-          if (voice) {
+          // If skipFirstSpeak was set and this is the first AI item, the
+          // caller already triggered playback synchronously inside the
+          // click handler — don't double-speak.
+          if (voice && firstAiSpoken) {
             try { voice.speak(item.text, 'en-IN'); } catch (e) {}
           }
+          firstAiSpoken = true;
           // Estimated speaking duration: ~70ms per word (≈ 130 wpm) + buffer
           const words = item.text.split(/\s+/).length;
           const speakMs = Math.max(words * 70, 1500);
