@@ -7,6 +7,7 @@
 <title>Speak English — JioBharatIQ</title>
 <link rel="stylesheet" href="shared/jds-tokens.css">
 <link rel="stylesheet" href="shared/ambient-glow.css">
+<link rel="stylesheet" href="shared/guided-chat.css">
 <style>
   body { background: var(--white); }
   .phone-frame { background: var(--white); }
@@ -438,15 +439,17 @@
     50% { box-shadow: 0 0 0 12px rgba(250,47,64,0); }
   }
 
-  /* ============= AVATAR VIEW (Sarah lipsync) ============== */
+  /* ============= AVATAR VIEW (Sarah — chat-driven demo) ============== */
   .view.avatar-view.active {
-    background: linear-gradient(180deg, #f5f5fc 0%, #e8e8fc 100%);
+    background: var(--surface-default);
   }
   .avatar-view .av-top {
     height: 56px;
     padding: 0 var(--space-4);
     display: flex; align-items: center; gap: 12px;
     flex-shrink: 0;
+    border-bottom: 1px solid var(--stroke-subtle);
+    background: var(--surface-default);
   }
   .avatar-view .av-top .av-end {
     background: var(--error); color: white;
@@ -466,77 +469,36 @@
     animation: livePulse 1.6s ease-in-out infinite;
   }
   @keyframes livePulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+  .avatar-view .av-replay-btn {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: var(--surface-ghost);
+    color: var(--text-high);
+    border: none;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
 
-  .avatar-view .av-stage {
-    flex: 1;
+  /* Sarah stage — compact avatar at top */
+  .sarah-stage {
+    flex-shrink: 0;
+    padding: 16px 0 12px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    padding: var(--space-4);
+    background: var(--surface-default);
+    border-bottom: 1px solid var(--stroke-subtle);
   }
   .sarah-avatar {
-    width: 200px; height: 200px;
+    width: 90px; height: 90px;
     position: relative;
-    margin-bottom: 24px;
   }
   .sarah-avatar svg { width: 100%; height: 100%; }
-
-  .avatar-view .av-status {
-    font-size: 16px; font-weight: 700; color: var(--grey-100);
-    margin-bottom: 6px; text-align: center;
-  }
-  .avatar-view .av-sub {
-    font-size: 12px; font-weight: 500; color: var(--grey-60);
-    text-align: center; line-height: 1.4; max-width: 280px;
-  }
-  .avatar-view .av-transcript {
-    background: white;
-    border-radius: 16px;
-    padding: 14px 18px;
-    margin: 16px var(--space-4) 0;
-    font-size: 14px; line-height: 1.5;
-    color: var(--grey-100);
-    box-shadow: var(--shadow-sm);
-    max-height: 100px;
-    overflow-y: auto;
-    display: none;
-  }
-  .avatar-view.has-transcript .av-transcript { display: block; }
-
-  .avatar-view .av-bottom {
-    flex-shrink: 0;
-    padding: 16px var(--space-4) calc(16px + env(safe-area-inset-bottom, 0px));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 16px;
-  }
-  .av-bottom .av-mic {
-    width: 72px; height: 72px;
-    border-radius: 50%;
-    border: none;
-    background: var(--primary);
-    color: white;
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer;
-    box-shadow: 0 4px 16px rgba(53,53,243,0.3);
-    transition: all 0.15s;
-  }
-  .av-bottom .av-mic:hover { transform: scale(1.06); }
-  .av-bottom .av-mic.recording {
-    background: var(--error);
-    animation: pulseRecord 1s ease-in-out infinite;
-  }
-  .av-bottom .av-mic svg { width: 28px; height: 28px; }
-  .av-bottom .av-keyboard {
-    width: 48px; height: 48px;
-    border-radius: 50%;
-    border: 1px solid var(--grey-40);
-    background: white;
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer;
-    color: var(--grey-80);
+  .sarah-status {
+    font-size: 11px; font-weight: 700; color: var(--text-low);
+    letter-spacing: 0.5px; text-transform: uppercase;
+    margin-top: 6px;
   }
 
   /* ============= PATHWAY VIEW ============== */
@@ -837,11 +799,14 @@
     <div class="av-top">
       <button class="av-end" onclick="endAvatar()">End</button>
       <div class="av-name"><span class="live-dot"></span>Sarah · English coach</div>
-      <div style="width: 56px"></div>
+      <button class="av-replay-btn" id="avatarRestart" aria-label="Replay demo">
+        <span data-icon="refresh" data-size="18"></span>
+      </button>
     </div>
-    <div class="av-stage">
+
+    <!-- Sarah avatar — small, top-aligned, mood-aware -->
+    <div class="sarah-stage">
       <div class="sarah-avatar" id="sarahAvatar">
-        <!-- Inline SVG avatar — animated mouth via JS -->
         <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <radialGradient id="bgGlow" cx="50%" cy="40%" r="55%">
@@ -857,56 +822,28 @@
               <stop offset="100%" stop-color="#e8c0a0"/>
             </linearGradient>
           </defs>
-          <!-- Glow background -->
           <circle cx="100" cy="100" r="95" fill="url(#bgGlow)"/>
-          <!-- Hair back -->
           <path d="M50 90 Q50 35 100 30 Q150 35 150 90 Q150 130 130 145 L130 110 Q130 85 100 85 Q70 85 70 110 L70 145 Q50 130 50 90 Z" fill="url(#hairG)"/>
-          <!-- Face -->
           <ellipse cx="100" cy="105" rx="40" ry="48" fill="url(#skinG)"/>
-          <!-- Hair front -->
           <path d="M65 80 Q70 60 100 55 Q130 60 135 80 Q120 70 100 70 Q80 70 65 80 Z" fill="url(#hairG)"/>
-          <!-- Eyes -->
           <ellipse class="eye" cx="85" cy="100" rx="3.5" ry="4.5" fill="#1f140b"/>
           <ellipse class="eye" cx="115" cy="100" rx="3.5" ry="4.5" fill="#1f140b"/>
-          <!-- Eyebrows -->
           <path d="M78 91 Q85 88 92 91" stroke="#3a2618" stroke-width="2" fill="none" stroke-linecap="round"/>
           <path d="M108 91 Q115 88 122 91" stroke="#3a2618" stroke-width="2" fill="none" stroke-linecap="round"/>
-          <!-- Nose -->
           <path d="M100 110 L98 122 Q100 125 102 122 Z" fill="#d4a888" opacity="0.6"/>
-          <!-- Mouth — closed (default) -->
           <path id="mouth" d="M88 138 Q100 142 112 138" stroke="#a04050" stroke-width="2.5" fill="#c47080" stroke-linecap="round"/>
-          <!-- Cheeks -->
           <ellipse cx="75" cy="125" rx="6" ry="4" fill="#f4a8a8" opacity="0.4"/>
           <ellipse cx="125" cy="125" rx="6" ry="4" fill="#f4a8a8" opacity="0.4"/>
-          <!-- Earrings -->
           <circle cx="58" cy="115" r="2.5" fill="#f7ab20"/>
           <circle cx="142" cy="115" r="2.5" fill="#f7ab20"/>
-          <!-- Necklace (subtle) -->
           <path d="M70 168 Q100 180 130 168" stroke="#3535f3" stroke-width="1.5" fill="none" opacity="0.5"/>
         </svg>
       </div>
-
-      <div class="av-status" id="av_status">Sarah is ready</div>
-      <div class="av-sub" id="av_sub">Tap mic and say hi! Try: "Hi Sarah, I had a tough day at work."</div>
-
-      <div class="av-transcript" id="av_transcript"></div>
+      <div class="sarah-status" id="av_status">Sarah</div>
     </div>
 
-    <div class="av-bottom">
-      <button class="av-keyboard" onclick="(function(){const t=prompt('Type instead of speaking:'); if(t&&t.trim()) handleAvatarTranscript(t.trim(),'en-IN');})()" aria-label="Keyboard">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="2" y="6" width="20" height="13" rx="2" stroke="currentColor" stroke-width="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M6 14h.01M18 14h.01M9 14h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-      </button>
-      <button class="av-mic" id="av_mic" aria-label="Mic">
-        <svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 15a3 3 0 003-3V6a3 3 0 00-6 0v6a3 3 0 003 3z"/>
-          <path d="M19 11v1a7 7 0 01-14 0v-1" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
-          <path d="M12 19v3m-3 0h6" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
-        </svg>
-      </button>
-      <button class="av-keyboard" onclick="replayLastSarah()" aria-label="Replay">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M3 12a9 9 0 1015.5-6.4M21 5v4h-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </button>
-    </div>
+    <!-- Chat thread (auto-plays demo transcript) -->
+    <div class="guided-chat" id="avatarChat"></div>
   </div>
 
   <!-- ========================== PATHWAY ========================== -->
@@ -992,6 +929,7 @@
 <script src="shared/personas.js"></script>
 <script src="shared/jbiq-voice.js"></script>
 <script src="shared/multimodal.js"></script>
+<script src="shared/guided-chat.js"></script>
 <script>
 /* =========================================================================
  * VIEW SWITCHING
@@ -1647,131 +1585,92 @@ pracInput.addEventListener('keypress', (e) => {
 /* =========================================================================
  * SARAH AVATAR — guided free-form
  * ========================================================================= */
+/* =========================================================================
+ * Sarah avatar — auto-playing demo transcript.
+ * No mic, no STT. AI speaks via TTS, user "messages" appear with a brief
+ * transcribing animation (simulating live STT). Rich UI cards inline for
+ * tips, corrections, saved phrases.
+ * ========================================================================= */
 let avatarVoice = null;
-let lastSarahLine = '';
-let avTurn = 0;
+let avatarRunner = null;
 
 function ensureAvatarVoice() {
   if (avatarVoice) return avatarVoice;
   avatarVoice = JBIQVoice.create({
     persona: 'sarah_avatar',
-    onTranscript: handleAvatarTranscript,
-    onState: handleAvatarState,
-    onError: (e) => {
-      console.error(e);
-      document.getElementById('av_status').textContent = 'Mic access needed';
+    onState: (state) => {
+      // Drive Sarah's mouth + status from voice state
+      const status = document.getElementById('av_status');
+      if (state === 'speaking') { status.textContent = 'Speaking'; startMouthAnim(); }
+      else if (state === 'thinking') { status.textContent = 'Thinking'; setMouth('think'); }
+      else { status.textContent = 'Sarah'; stopMouthAnim(); setMouth('rest'); }
     },
+    onError: (e) => console.error(e),
   });
   return avatarVoice;
 }
 
-function handleAvatarState(state) {
-  const mic = document.getElementById('av_mic');
-  mic.classList.toggle('recording', state === 'listening');
-  const status = document.getElementById('av_status');
-  const sub = document.getElementById('av_sub');
-
-  if (state === 'listening') {
-    status.textContent = 'Listening…';
-    sub.textContent = 'Speak naturally. I\'ll wait until you stop.';
-    setMouth('listen');
-  } else if (state === 'thinking') {
-    status.textContent = 'Mmm, let me think…';
-    sub.textContent = '';
-    setMouth('think');
-  } else if (state === 'speaking') {
-    status.textContent = 'Sarah';
-    sub.textContent = '';
-    startMouthAnim();
-  } else {
-    status.textContent = 'Sarah is ready';
-    sub.textContent = 'Tap the mic to keep going.';
-    stopMouthAnim();
-    setMouth('rest');
-  }
-}
-
-const SARAH_OPENERS = [
-  "Hi! I'm Sarah. How's your day going?",
-  "Hey! Good to see you. How are you feeling today?",
-  "Hi Pooja! What did you do today?",
+const SARAH_TRANSCRIPT = [
+  { speaker: 'ai', text: "Hi Pooja! How's your day going?" },
+  { speaker: 'user', text: "Tough day at the BPO. A customer shouted at me." },
+  { speaker: 'ai', text: "Sorry to hear that. \"Tough day\" is fine — but listen to this." },
+  { speaker: 'card', card: {
+      kind: 'tip',
+      label: 'Phrase tip',
+      content: 'In English, we usually add "I had…" before "tough day".',
+      better: 'I had a tough day at the BPO.',
+  } },
+  { speaker: 'ai', text: "What did the customer say to you?" },
+  { speaker: 'user', text: "He said I was useless and wanted to speak to my manager." },
+  { speaker: 'ai', text: "Ouch. That stings. How did you respond to him?" },
+  { speaker: 'user', text: "I just kept saying sorry, sir, sorry, sir." },
+  { speaker: 'ai', text: "Apologizing is OK, but doing it five times weakens you. Let me show you a stronger reply." },
+  { speaker: 'card', card: {
+      kind: 'correction',
+      label: 'Better response',
+      before: 'I am sorry, sir. Sorry, sir. Sorry, sorry.',
+      after: 'I completely understand your frustration, sir. Let me look into this right away.',
+  } },
+  { speaker: 'user', text: "That sounds much calmer. Can I save this?" },
+  { speaker: 'ai', text: "Already done. It's in your phrasebook for tomorrow's recall." },
+  { speaker: 'card', card: {
+      kind: 'phrase',
+      label: 'Saved to your phrasebook',
+      content: '"I completely understand your frustration."',
+      why: 'This single phrase de-escalates ~80% of angry customer calls. Lead with it before any solution.',
+      actions: [{ label: 'Play again', action: 'play' }],
+      keyPhrase: 'I completely understand your frustration.',
+  } },
+  { speaker: 'user', text: "Thank you, Sarah. This helped a lot." },
+  { speaker: 'ai', text: "Glad to help, Pooja. Tomorrow morning I'll quiz you on this — three customer calls, three minutes. Same time. You've got this." },
 ];
-const SARAH_RESPONSES = {
-  // Topic: feelings
-  good_feeling: ["That's lovely to hear! What made it good?", "Nice! Tell me what made today good."],
-  bad_feeling: ["Sounds tough. What happened?", "I'm sorry. Want to talk about it?"],
-  tired: ["Feeling tired makes everything harder. Tough day at work?", "Long day? Tell me what happened."],
-  // Topic: work
-  work_general: ["Tell me about your work day. Any tough calls today?", "Customer service can be tough. Anything stand out today?"],
-  customer: ["Customer calls — those can be the trickiest. Was it angry or polite?", "How did the call end? Did you handle it OK?"],
-  hard_call: ["That sounds stressful. What did you say when they got angry?", "Did you stay calm? Walk me through it."],
-  // Topic: practice / interview
-  interview: ["Oh, an interview! Tell me which company. We can practice introducing yourself."],
-  practice: ["Of course — let's practice. Try: \"Tell me about yourself.\" I'll start."],
-  // Topic: family
-  family_chat: ["Family is everything. Who did you talk to?", "Tell me more about your family."],
-  // Default
-  off_topic: ["Interesting! And how does that connect to your work or day?", "Tell me more about that."],
-  // Fallback when nothing matches
-  fallback: ["Got it — and what about your day at the BPO? Any tough calls?", "Tell me more — what happened next?"],
-  // Closer
-  goodbye: ["Lovely chatting! Try one customer call practice tomorrow — same time?", "Take care, Pooja. Same time tomorrow?"],
-};
-function pickResp(category) {
-  const list = SARAH_RESPONSES[category] || SARAH_RESPONSES.fallback;
-  return list[Math.floor(Math.random() * list.length)];
-}
 
-function routeSarah(text) {
-  const t = text.toLowerCase();
-  if (/\b(bye|goodbye|see you|chalo|talk later)\b/.test(t)) return 'goodbye';
-  if (/\b(interview|tech mahindra|concentrix|hdfc|bajaj|hr round|v&a)\b/.test(t)) return 'interview';
-  if (/\b(practice|let's practice|repeat)\b/.test(t)) return 'practice';
-  if (/\b(customer|sir|ma'am|callback|refund|escalat)\b/.test(t)) return 'customer';
-  if (/\b(angry|rude|shout|frustrated|upset|hard call|tough call|difficult call)\b/.test(t)) return 'hard_call';
-  if (/\b(work|office|bpo|call|client|boss|manager|colleague|shift)\b/.test(t)) return 'work_general';
-  if (/\b(tired|exhausted|tough day|long day|stress)\b/.test(t)) return 'tired';
-  if (/\b(good|great|fine|happy|nice|lovely|amazing)\b/.test(t)) return 'good_feeling';
-  if (/\b(bad|sad|terrible|upset|low|down)\b/.test(t)) return 'bad_feeling';
-  if (/\b(family|parents|sister|brother|husband|wife|son|daughter|in.laws)\b/.test(t)) return 'family_chat';
-  return 'off_topic';
-}
-
-async function handleAvatarTranscript(text, lang) {
-  if (!text) {
-    document.getElementById('av_status').textContent = "Didn't catch that";
-    document.getElementById('av_sub').textContent = 'Tap the mic and try again.';
-    return;
-  }
-  document.getElementById('view-avatar').classList.add('has-transcript');
-  const t = document.getElementById('av_transcript');
-  t.innerHTML = '<strong>You said:</strong> "' + text + '"';
-
-  avTurn += 1;
-  const category = routeSarah(text);
-  const reply = pickResp(category);
-  lastSarahLine = reply;
-
-  await avatarVoice.speak(reply, lang);
-  // Update transcript area with Sarah's reply
-  setTimeout(() => {
-    t.innerHTML += '<br><br><strong style="color:var(--primary)">Sarah:</strong> ' + reply;
-    t.scrollTop = t.scrollHeight;
-  }, 200);
+function startSarahDemo() {
+  ensureAvatarVoice();
+  const chatEl = document.getElementById('avatarChat');
+  if (!chatEl) return;
+  // Stop any prior runner
+  if (avatarRunner) avatarRunner.stop();
+  avatarRunner = window.GC.createTranscript({
+    transcript: SARAH_TRANSCRIPT,
+    chatEl,
+    voice: avatarVoice,
+    speakerLabel: 'Sarah',
+  });
+  // Slight delay so view transition completes
+  setTimeout(() => avatarRunner.start(), 300);
 }
 
 function endAvatar() {
+  if (avatarRunner) avatarRunner.stop();
   if (avatarVoice) avatarVoice.stop();
   showView('home');
 }
-function replayLastSarah() {
-  if (!lastSarahLine || !avatarVoice) return;
-  avatarVoice.speak(lastSarahLine, 'en-IN');
-}
-document.getElementById('av_mic').addEventListener('click', () => {
-  const v = ensureAvatarVoice();
-  if (v.isRecording) v.stopRecording();
-  else v.startRecording();
+
+// Replay button on the av-top
+document.addEventListener('DOMContentLoaded', () => {
+  const r = document.getElementById('avatarRestart');
+  if (r) r.addEventListener('click', () => { startSarahDemo(); });
 });
 
 /* =========================================================================
@@ -1819,17 +1718,15 @@ document.querySelectorAll('.eye').forEach(e => {
   e.style.transformOrigin = 'center';
 });
 
-/* Auto-greet when avatar opens */
+/* Auto-start the Sarah demo when avatar view opens */
 const _origShowView = showView;
 showView = function(name) {
   _origShowView(name);
   if (name === 'avatar') {
-    setTimeout(() => {
-      const greeting = SARAH_OPENERS[Math.floor(Math.random() * SARAH_OPENERS.length)];
-      lastSarahLine = greeting;
-      // Prefetched on init — plays instantly via cache
-      ensureAvatarVoice().speak(greeting, 'en-IN');
-    }, 150);
+    startSarahDemo();
+  } else {
+    // Stop the demo if user leaves the avatar view
+    if (avatarRunner) avatarRunner.stop();
   }
 };
 
@@ -1837,15 +1734,13 @@ showView = function(name) {
  * Init — read query string, jump to mode if needed
  * ========================================================================= */
 (function init() {
-  // Prefetch greetings so they play instantly on entry — no silent gap.
+  // Prefetch the first few Sarah lines so the demo plays instantly.
   if (window.JBIQVoice && window.JBIQVoice.prefetch) {
-    window.JBIQVoice.prefetch([
-      { personaId: 'sarah_avatar', text: SARAH_OPENERS[0] },
-      { personaId: 'sarah_avatar', text: SARAH_OPENERS[1] },
-      { personaId: 'sarah_avatar', text: SARAH_OPENERS[2] },
-      { personaId: 'sarah_avatar', text: 'I completely understand your frustration.' },
-      { personaId: 'sarah_avatar', text: 'Let me look into this right away.' },
-    ]);
+    const prefetchList = SARAH_TRANSCRIPT
+      .filter(t => t.speaker === 'ai')
+      .slice(0, 4)
+      .map(t => ({ personaId: 'sarah_avatar', text: t.text }));
+    window.JBIQVoice.prefetch(prefetchList);
   }
 
   const params = new URLSearchParams(window.location.search);

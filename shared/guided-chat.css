@@ -1,0 +1,373 @@
+/* Guided Chat — shared chat + chip + Rich UI card patterns
+ *
+ * Used identically across Sarah avatar (English), Interview mock,
+ * Govt-exam discovery, Microlearning chat, and English scenario practice.
+ *
+ * Pattern: AI bubble (TTS plays) + optional Rich UI card → User chips →
+ * User taps chip → user bubble appears → next AI turn.
+ *
+ * No mic, no STT inside use cases — fully canned, deterministic demo.
+ * (Real Sarvam STT only on the landing voice overlay for routing.)
+ */
+
+/* ============= CHAT THREAD ============= */
+.guided-chat {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: var(--surface-default);
+}
+.guided-chat::-webkit-scrollbar { display: none; }
+
+.gc-msg {
+  max-width: 86%;
+  animation: fadeInUp 0.3s ease-out;
+}
+.gc-msg-ai { align-self: flex-start; }
+.gc-msg-user { align-self: flex-end; }
+
+.gc-bubble {
+  padding: 11px 14px;
+  font-size: 14px;
+  line-height: 1.45;
+}
+.gc-bubble-ai {
+  background: var(--surface-ghost);
+  color: var(--text-high);
+  border-radius: 4px 16px 16px 16px;
+}
+.gc-bubble-user {
+  background: var(--surface-bold);
+  color: var(--text-on-bold);
+  border-radius: 16px 4px 16px 16px;
+}
+.gc-speaker {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  background: var(--surface-default);
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--surface-bold);
+  letter-spacing: 0.3px;
+  margin-bottom: 6px;
+}
+.gc-speaker .gc-speaker-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--success);
+  animation: gcPulse 1.6s ease-in-out infinite;
+}
+@keyframes gcPulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+/* Streaming caret */
+.gc-bubble-text.mm-streaming::after {
+  content: '▌';
+  opacity: 0.6;
+  animation: gcCaret 0.8s steps(2) infinite;
+  margin-left: 2px;
+  color: var(--surface-bold);
+}
+@keyframes gcCaret { 0%, 50% { opacity: 0.6; } 50.01%, 100% { opacity: 0; } }
+
+/* User STT-transcribing pill — shown while "listening" simulation runs */
+.gc-stt-pill {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px !important;
+}
+.gc-stt-dots {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.gc-stt-dots span {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--text-on-bold);
+  opacity: 0.5;
+  animation: gcSttDot 1.2s ease-in-out infinite;
+}
+.gc-stt-dots span:nth-child(2) { animation-delay: 0.15s; }
+.gc-stt-dots span:nth-child(3) { animation-delay: 0.3s; }
+@keyframes gcSttDot {
+  0%, 100% { opacity: 0.5; transform: translateY(0); }
+  50%      { opacity: 1; transform: translateY(-2px); }
+}
+.gc-stt-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-on-bold);
+  opacity: 0.85;
+  letter-spacing: 0.3px;
+}
+
+/* User bubble — clean, no decorations. Color/position differentiates from AI. */
+
+/* ============= RICH UI CARDS ============= */
+.rich-card {
+  align-self: flex-start;
+  max-width: 92%;
+  background: var(--surface-default);
+  border: 1px solid var(--stroke-subtle);
+  border-radius: 14px;
+  padding: 12px 14px;
+  margin-top: -2px;
+  animation: fadeInUp 0.3s ease-out 0.05s backwards;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.rich-card .rc-h {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.rich-card .rc-icon {
+  width: 22px; height: 22px;
+  border-radius: 7px;
+  background: var(--primary-20);
+  color: var(--surface-bold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.rich-card .rc-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--surface-bold);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+.rich-card .rc-content {
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--text-high);
+}
+.rich-card .rc-meta {
+  font-size: 11px;
+  line-height: 1.4;
+  color: var(--text-low);
+}
+.rich-card .rc-better {
+  background: var(--primary-20);
+  color: var(--surface-bold);
+  font-weight: 700;
+  font-size: 13px;
+  padding: 9px 12px;
+  border-radius: 10px;
+  font-style: italic;
+}
+.rich-card .rc-actions {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.rich-card .rc-btn {
+  background: var(--surface-bold);
+  color: var(--text-on-bold);
+  border: none;
+  border-radius: 999px;
+  padding: 7px 12px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font);
+  transition: transform 0.15s;
+}
+.rich-card .rc-btn:active { transform: scale(0.95); }
+.rich-card .rc-btn-secondary {
+  background: var(--surface-ghost);
+  color: var(--text-high);
+}
+
+/* Variant: correction (before → after) */
+.rich-card--correction .rc-icon { background: rgba(250,47,64,0.10); color: var(--error); }
+.rich-card--correction .rc-label { color: var(--error); }
+.rich-card .rc-before {
+  font-size: 12px;
+  color: var(--text-low);
+  text-decoration: line-through;
+  font-style: italic;
+  padding: 6px 10px;
+  background: var(--surface-ghost);
+  border-radius: 8px;
+}
+.rich-card .rc-after {
+  background: rgba(37,171,33,0.10);
+  color: #15791a;
+  font-weight: 600;
+  font-size: 13px;
+  padding: 9px 12px;
+  border-radius: 10px;
+  font-style: italic;
+}
+
+/* Variant: phrase saved (success accent) */
+.rich-card--phrase .rc-icon { background: rgba(37,171,33,0.12); color: var(--success); }
+.rich-card--phrase .rc-label { color: var(--success); }
+
+/* Variant: tip (default — primary surface-bold) — already covered */
+
+/* Variant: feedback (interview metrics) */
+.rich-card--feedback .rc-metrics {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 6px;
+}
+.rich-card--feedback .rc-metric {
+  text-align: center;
+  padding: 8px 4px;
+  background: var(--surface-ghost);
+  border-radius: 10px;
+}
+.rich-card--feedback .rc-metric-v {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--text-high);
+  line-height: 1;
+}
+.rich-card--feedback .rc-metric-l {
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--text-low);
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+.rich-card--feedback .rc-metric.good .rc-metric-v { color: var(--success); }
+.rich-card--feedback .rc-metric.warn .rc-metric-v { color: var(--warning); }
+
+/* Variant: score (single big number) */
+.rich-card--score {
+  align-items: center;
+  text-align: center;
+}
+.rich-card--score .rc-score-num {
+  font-size: 28px;
+  font-weight: 900;
+  color: var(--surface-bold);
+  line-height: 1;
+}
+.rich-card--score .rc-score-l {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-low);
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+}
+
+/* Variant: practice (with audio playback) */
+.rich-card--practice .rc-key-phrase {
+  background: var(--primary-20);
+  color: var(--surface-bold);
+  font-weight: 700;
+  font-size: 14px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.rich-card--practice .rc-key-play {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--surface-bold);
+  color: var(--text-on-bold);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+/* ============= CHIP AREA (replaces mic dock) ============= */
+.gc-chips {
+  flex-shrink: 0;
+  background: var(--surface-default);
+  border-top: 1px solid var(--stroke-subtle);
+  padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px));
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.gc-chips:empty { display: none; }
+.gc-chip-prompt {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-low);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  padding-left: 4px;
+  margin-bottom: 2px;
+}
+.gc-chip-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.gc-chip {
+  background: var(--surface-default);
+  border: 1px solid var(--stroke-subtle);
+  border-radius: 12px;
+  padding: 11px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-high);
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--font);
+  transition: all 0.15s;
+  line-height: 1.35;
+  animation: fadeInUp 0.25s ease-out backwards;
+}
+.gc-chip:nth-child(1) { animation-delay: 0.05s; }
+.gc-chip:nth-child(2) { animation-delay: 0.15s; }
+.gc-chip:nth-child(3) { animation-delay: 0.25s; }
+.gc-chip:hover {
+  border-color: var(--surface-bold);
+  background: var(--primary-20);
+  color: var(--surface-bold);
+}
+.gc-chip:active { transform: scale(0.98); }
+.gc-chip-tag {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 999px;
+  background: var(--surface-ghost);
+  color: var(--text-low);
+  margin-right: 8px;
+  vertical-align: middle;
+}
+.gc-chip-tag.tag-good { background: rgba(37,171,33,0.12); color: var(--success); }
+.gc-chip-tag.tag-medium { background: rgba(240,109,15,0.10); color: var(--warning); }
+.gc-chip-tag.tag-poor { background: rgba(250,47,64,0.10); color: var(--error); }
+
+/* End-state chip area: "Restart" or "Open packs" */
+.gc-end {
+  text-align: center;
+  padding: 20px 16px;
+  color: var(--text-low);
+  font-size: 13px;
+  font-style: italic;
+}
+
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
