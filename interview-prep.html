@@ -7,6 +7,7 @@
 <title>Interview Prep — JioBharatIQ</title>
 <link rel="stylesheet" href="shared/jds-tokens.css">
 <link rel="stylesheet" href="shared/ambient-glow.css">
+<link rel="stylesheet" href="shared/guided-chat.css">
 <style>
   body { background: var(--white); }
   .phone-frame { background: var(--white); }
@@ -342,145 +343,82 @@
     animation: livePulse 1.6s ease-in-out infinite;
   }
 
-  /* ============= LIVE MOCK CALL ============== */
-  .mock-view {
-    background: var(--grey-100);
-    color: white;
-  }
-  .view.mock-view.active { background: var(--grey-100); }
+  /* ============= LIVE MOCK CALL — canned demo transcript ============== */
+  .mock-view { background: var(--surface-default); color: var(--text-high); }
+  .view.mock-view.active { background: var(--surface-default); }
   .mock-top {
-    height: 60px;
+    height: 56px;
     padding: 0 var(--space-4);
-    display: flex; align-items: center; gap: 12px;
+    display: flex; align-items: center; gap: 10px;
     flex-shrink: 0;
+    border-bottom: 1px solid var(--stroke-subtle);
+    background: var(--surface-default);
   }
   .mock-top .mt-end {
     background: var(--error); color: white;
     border: none; border-radius: var(--radius-pill);
-    padding: 8px 16px;
+    padding: 7px 14px;
     font-family: var(--font); font-size: 12px; font-weight: 700;
     cursor: pointer;
   }
-  .mock-top .mt-mid {
-    flex: 1; text-align: center; min-width: 0;
-  }
+  .mock-top .mt-mid { flex: 1; text-align: center; min-width: 0; }
   .mock-top .mt-name {
-    font-size: 14px; font-weight: 700; color: white;
+    font-size: 14px; font-weight: 700; color: var(--text-high);
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
   .mock-top .mt-name .live-dot {
     display: inline-block; width: 6px; height: 6px; border-radius: 50%;
-    background: var(--success); margin-right: 6px;
+    background: var(--success); margin-right: 5px;
     animation: livePulse 1.6s ease-in-out infinite;
   }
   .mock-top .mt-timer {
-    font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.7);
-    margin-top: 2px;
+    font-size: 11px; font-weight: 600; color: var(--text-low);
+    margin-top: 1px;
     font-variant-numeric: tabular-nums;
   }
-
-  .mock-stage {
-    flex: 1;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    padding: var(--space-4);
-    text-align: center;
-  }
-  .mock-stage .ambient-glow {
-    width: 220px; height: 220px;
-    margin-bottom: 28px;
-  }
-  .mock-stage .ms-q-num {
-    font-size: 11px; font-weight: 700;
-    color: rgba(255,255,255,0.5);
-    letter-spacing: 0.6px;
-    margin-bottom: 8px;
-    text-transform: uppercase;
-  }
-  .mock-stage .ms-q {
-    font-size: 18px; font-weight: 700; color: white;
-    line-height: 1.4; max-width: 320px; margin-bottom: 8px;
-  }
-  .mock-stage .ms-prompt {
-    font-size: 12px; font-weight: 500;
-    color: rgba(255,255,255,0.55);
-    line-height: 1.4; max-width: 280px;
-  }
-
-  .delivery-feedback {
-    position: absolute;
-    bottom: 168px; left: 50%; transform: translateX(-50%);
-    display: flex; gap: 8px;
-    padding: 6px 12px;
-    background: rgba(255,255,255,0.1);
-    backdrop-filter: blur(10px);
-    border-radius: var(--radius-pill);
-    font-size: 11px;
-    color: white;
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-  .delivery-feedback.visible { opacity: 1; }
-  .delivery-feedback .df-pill {
-    display: inline-flex; align-items: center; gap: 4px;
-  }
-  .delivery-feedback .df-pill.warn { color: #ffd84d; }
-  .delivery-feedback .df-pill.good { color: #1eccb0; }
-
-  .mock-bottom {
+  .mt-replay {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: var(--surface-ghost);
+    color: var(--text-high);
+    border: none;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
     flex-shrink: 0;
-    padding: 16px var(--space-4) calc(16px + env(safe-area-inset-bottom, 0px));
-    display: flex; align-items: center; justify-content: center;
-    gap: 16px;
-    position: relative;
   }
-  .mock-mic {
-    width: 80px; height: 80px;
-    border-radius: 50%; border: none;
-    background: rgba(255,255,255,0.15);
-    color: white;
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    transition: all 0.2s;
-  }
-  .mock-mic:hover { background: rgba(255,255,255,0.25); transform: scale(1.05); }
-  .mock-mic.recording {
-    background: var(--error);
-    animation: pulseRecord 1s ease-in-out infinite;
-  }
-  @keyframes pulseRecord {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(250,47,64,0.6); }
-    50% { box-shadow: 0 0 0 18px rgba(250,47,64,0); }
-  }
-  .mock-mic svg { width: 32px; height: 32px; }
-  .mock-side {
-    width: 52px; height: 52px;
-    border-radius: 50%; border: none;
-    background: rgba(255,255,255,0.1);
-    color: rgba(255,255,255,0.7);
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .mock-side svg { width: 22px; height: 22px; }
 
-  .pressure-overlay {
-    position: absolute;
-    top: 70px; left: 50%; transform: translateX(-50%);
-    background: var(--error);
-    color: white;
-    padding: 8px 16px;
-    border-radius: var(--radius-pill);
-    font-size: 13px;
-    font-weight: 700;
-    display: none;
-    z-index: 10;
-    animation: shake 0.5s ease-in-out;
+  /* Persona strip — replaces the big ambient orb */
+  .mock-persona-strip {
+    flex-shrink: 0;
+    padding: 12px var(--space-4);
+    display: flex; align-items: center; gap: 12px;
+    background: var(--surface-default);
+    border-bottom: 1px solid var(--stroke-subtle);
   }
-  .pressure-overlay.show { display: block; }
-  @keyframes shake {
-    0%, 100% { transform: translateX(-50%); }
-    25% { transform: translateX(-52%); }
-    75% { transform: translateX(-48%); }
+  .mps-glow {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: var(--surface-bold);
+    flex-shrink: 0;
+    box-shadow: 0 0 0 4px var(--primary-20);
+  }
+  .mps-text { flex: 1; min-width: 0; }
+  .mps-name {
+    font-size: 14px; font-weight: 800; color: var(--text-high);
+    line-height: 1.1;
+  }
+  .mps-role {
+    font-size: 11px; font-weight: 500; color: var(--text-low);
+    margin-top: 2px;
+  }
+  .mps-q {
+    background: var(--primary-20);
+    color: var(--surface-bold);
+    padding: 5px 10px;
+    border-radius: 999px;
+    font-size: 11px; font-weight: 800;
+    letter-spacing: 0.4px;
+    flex-shrink: 0;
   }
 
   /* ============= REPORT CARD ============== */
@@ -872,7 +810,7 @@
     </div>
   </div>
 
-  <!-- ========================== LIVE MOCK CALL ========================== -->
+  <!-- ========================== LIVE MOCK CALL (canned demo transcript) ========================== -->
   <div class="view mock-view" id="view-mock">
     <div class="mock-top">
       <button class="mt-end" onclick="endMock()">End</button>
@@ -880,43 +818,23 @@
         <div class="mt-name"><span class="live-dot"></span><span id="mock_persona_name">Rajesh Kumar</span></div>
         <div class="mt-timer" id="mock_timer">00:00</div>
       </div>
-      <div style="width: 64px"></div>
+      <button class="mt-replay" id="mock_replay_btn" aria-label="Replay demo">
+        <span data-icon="refresh" data-size="18"></span>
+      </button>
     </div>
 
-    <div class="pressure-overlay" id="pressure_overlay">⚡ PRESSURE DRILL</div>
-
-    <div class="mock-stage">
-      <div class="ambient-glow" id="mock_glow" data-state="speaking" data-vertical="interview">
-        <div class="halo h2"></div>
-        <div class="halo"></div>
-        <div class="orb"></div>
+    <!-- Persona identity card (replaces ambient glow) -->
+    <div class="mock-persona-strip">
+      <div class="mps-glow" id="mock_glow_mini"></div>
+      <div class="mps-text">
+        <div class="mps-name" id="mock_persona_name_2">Rajesh Kumar</div>
+        <div class="mps-role" id="mock_persona_role">Ops Manager · Tech Mahindra BPS</div>
       </div>
-      <div class="ms-q-num" id="mock_qnum">Question 1 of 5</div>
-      <div class="ms-q" id="mock_q">Hi, I'm Rajesh from Tech Mahindra. Let's start with — tell me about yourself in 60 seconds.</div>
-      <div class="ms-prompt" id="mock_prompt">Take a breath. Use STAR if you're sharing a story.</div>
+      <div class="mps-q" id="mock_qnum_pill">Q 1 / 5</div>
     </div>
 
-    <div class="delivery-feedback" id="delivery_fb">
-      <div class="df-pill" id="df_fillers">Fillers: 0</div>
-      <div class="df-pill" id="df_pace">Pace: —</div>
-      <div class="df-pill" id="df_conf">Confidence: —</div>
-    </div>
-
-    <div class="mock-bottom">
-      <button class="mock-side" onclick="skipQuestion()" aria-label="Skip question">
-        <svg viewBox="0 0 24 24" fill="none"><path d="M5 4l10 8-10 8V4zm14 0v16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </button>
-      <button class="mock-mic" id="mock_mic" aria-label="Mic">
-        <svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 15a3 3 0 003-3V6a3 3 0 00-6 0v6a3 3 0 003 3z"/>
-          <path d="M19 11v1a7 7 0 01-14 0v-1" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
-          <path d="M12 19v3m-3 0h6" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
-        </svg>
-      </button>
-      <button class="mock-side" onclick="replayQuestion()" aria-label="Replay question">
-        <svg viewBox="0 0 24 24" fill="none"><path d="M3 12a9 9 0 1015.5-6.4M21 5v4h-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </button>
-    </div>
+    <!-- Chat thread (auto-plays mock interview transcript) -->
+    <div class="guided-chat" id="mockChat"></div>
   </div>
 
   <!-- ========================== REPORT CARD ========================== -->
@@ -1122,6 +1040,7 @@
 <script src="shared/personas.js"></script>
 <script src="shared/jbiq-voice.js"></script>
 <script src="shared/multimodal.js"></script>
+<script src="shared/guided-chat.js"></script>
 <script>
 /* =========================================================================
  * VIEW SWITCHING
@@ -1340,9 +1259,13 @@ function setupCheatSheet() {
 }
 
 /* =========================================================================
- * LIVE MOCK CALL — Sarvam STT + persona TTS + delivery feedback
+ * LIVE MOCK CALL — canned demo transcript (no mic, no STT)
+ * Interviewer speaks via TTS, "Rohit's" answers appear with transcribing
+ * animation, then a Rich UI feedback card appears with metrics + tip,
+ * then the next question. Linear, deterministic, holistic.
  * ========================================================================= */
 let mockVoice = null;
+let mockRunner = null;
 let mockStarted = false;
 
 function ensureMockVoice() {
@@ -1354,109 +1277,172 @@ function ensureMockVoice() {
   }
   mockVoice = JBIQVoice.create({
     persona: c.persona,
-    glowEl: document.getElementById('mock_glow'),
-    onTranscript: handleMockTranscript,
-    onState: handleMockState,
-    onError: (e) => { console.error('mock voice err', e); },
+    onError: (e) => console.error('mock voice err', e),
   });
   return mockVoice;
 }
 
-function handleMockState(state) {
-  const mic = document.getElementById('mock_mic');
-  mic.classList.toggle('recording', state === 'listening');
-  const fb = document.getElementById('delivery_fb');
-  fb.classList.toggle('visible', state === 'listening' || state === 'thinking');
+// Per-company canned mock — interviewer Qs + Rohit's canned A + feedback cards
+const MOCK_TRANSCRIPTS = {
+  'tech-mahindra': [
+    { speaker: 'ai', text: "Hi, I'm Rajesh from Tech Mahindra. Let's start. Tell me about yourself in 60 seconds." },
+    { speaker: 'user', text: "Hi sir. I'm Rohit, BCom from Hardoi, currently 14 months at Reliance Trends in Lucknow as a sales associate. I handle 60 to 80 walk-in customers a day, returns, complaints, and team coordination on weekends. I'm looking to move into a structured BPO role where my customer-handling experience can scale.", transcribeMs: 1800 },
+    { speaker: 'card', card: { kind: 'feedback', label: 'Q1 — Tell me about yourself',
+        content: 'Solid intro. Specific numbers (60-80 walk-ins) make it credible. STAR-ish structure.',
+        metrics: [
+          { v: '85', l: 'Content', tone: 'good' },
+          { v: '142', l: 'Pace WPM', tone: 'good' },
+          { v: '0', l: 'Fillers', tone: 'good' },
+        ],
+    } },
+    { speaker: 'ai', text: "Good. Now — why BPO, and why specifically the night shift?" },
+    { speaker: 'user', text: "Sir, BPO because I want to work at scale. At Reliance I see 80 customers a day, in BPO I'd see 200 calls a day. The reps and skills compound faster. Night shift — honestly, I've worked rotational shifts at Reliance, the 6:30 to 3:30 schedule actually fits my study time better.", transcribeMs: 2000 },
+    { speaker: 'card', card: { kind: 'feedback', label: 'Q2 — Why BPO + night shift',
+        content: 'Honest framing on shift preference is rare and credible. The "skills compound" line is a nice touch.',
+        metrics: [
+          { v: '88', l: 'Content', tone: 'good' },
+          { v: '136', l: 'Pace WPM', tone: 'good' },
+          { v: '1', l: 'Fillers', tone: 'good' },
+        ],
+    } },
+    { speaker: 'ai', text: "Now a roleplay. A US customer is angry about a 30-minute wait. They're shouting. What's the first thing you say?" },
+    { speaker: 'user', text: "I would say — sir, I completely understand your frustration, and I'm sorry for the long wait. Let me look into this for you right now.", transcribeMs: 1600 },
+    { speaker: 'card', card: { kind: 'phrase', label: 'Strong empathy opener',
+        content: 'Lead with feeling, then action. Saved as your strongest customer-call opener.',
+        keyPhrase: 'I completely understand your frustration. Let me look into this right now.',
+    } },
+    { speaker: 'ai', text: "Quick one — describe a time you handled a difficult situation. 30 seconds. Go." },
+    { speaker: 'user', text: "Last Diwali rush at Reliance, the POS went down for 40 minutes, queue of 30 customers. I got a paper register from stockroom, manually noted purchases, took photos of barcodes, and my TL processed them when system was back. Zero customer walked out angry.", transcribeMs: 1900 },
+    { speaker: 'card', card: { kind: 'feedback', label: 'Q4 — Pressure drill (30 sec)',
+        content: 'Excellent. Specific scenario, concrete action, clear outcome — textbook STAR.',
+        metrics: [
+          { v: '92', l: 'Content', tone: 'good' },
+          { v: '154', l: 'Pace WPM', tone: 'good' },
+          { v: '0', l: 'Fillers', tone: 'good' },
+        ],
+    } },
+    { speaker: 'ai', text: "Last one — why Tech Mahindra over Concentrix or HDFC?" },
+    { speaker: 'user', text: "Sir, I researched the BFSI process specifically. Tech Mahindra's US Banking voice has a stronger career path into Ops Lead within 18 months, and the Andheri office has a buddy system for new joiners. That structure matters more to me than salary alone.", transcribeMs: 1900 },
+    { speaker: 'card', card: { kind: 'feedback', label: 'Q5 — Why this company',
+        content: 'Specific (18-mo Ops Lead, buddy system) beats generic. Strong close.',
+        metrics: [
+          { v: '90', l: 'Content', tone: 'good' },
+          { v: '138', l: 'Pace WPM', tone: 'good' },
+          { v: '0', l: 'Fillers', tone: 'good' },
+        ],
+    } },
+    { speaker: 'ai', text: "That's the mock. You're well-prepared. Tap End to see the full report." },
+  ],
 
-  if (state === 'listening') {
-    document.getElementById('mock_q').style.opacity = 0.4;
-  } else {
-    document.getElementById('mock_q').style.opacity = 1;
-  }
-}
+  'concentrix': [
+    { speaker: 'ai', text: "Hi… so… tell me about yourself." },
+    { speaker: 'user', text: "Hi ma'am. I'm Rohit, BCom graduate, 14 months as a sales associate at Reliance Trends. Customer-handling is my strongest skill — Diwali season I handled 80+ walk-ins a day. Now ready to move into structured customer voice work.", transcribeMs: 1900 },
+    { speaker: 'card', card: { kind: 'feedback', label: 'Q1 — Tell me about yourself',
+        content: 'Pulled her in fast with the 80+ walk-ins number. Bored HR woke up.',
+        metrics: [{ v: '80', l: 'Content', tone: 'good' }, { v: '128', l: 'Pace WPM', tone: 'good' }, { v: '0', l: 'Fillers', tone: 'good' }],
+    } },
+    { speaker: 'ai', text: "Why this company. (No 'great brand' please.)" },
+    { speaker: 'user', text: "Concentrix's Powai office is closer to my Andheri PG, the day-shift roles fit my evening study schedule, and your customer voice training programme is 6 weeks longer than industry average — that matters for someone making the transition from retail.", transcribeMs: 2000 },
+    { speaker: 'card', card: { kind: 'feedback', label: 'Q2 — Why this company',
+        content: 'Specific reasons (location, training length) — exactly what kills the "great brand" trap.',
+        metrics: [{ v: '85', l: 'Content', tone: 'good' }, { v: '132', l: 'Pace WPM', tone: 'good' }, { v: '1', l: 'Fillers', tone: 'good' }],
+    } },
+    { speaker: 'ai', text: "Have you done customer voice work before?" },
+    { speaker: 'user', text: "Not on calls, ma'am, but face-to-face with 80+ customers a day at Reliance — I've handled returns, complaints, and angry walk-ins. The empathy and de-escalation are the same skills, just on a different channel.", transcribeMs: 1700 },
+    { speaker: 'card', card: { kind: 'phrase', label: 'Saved opener',
+        content: 'Reframing retail as voice-equivalent skill is sharp.',
+        keyPhrase: 'The empathy and de-escalation are the same skills, just on a different channel.',
+    } },
+    { speaker: 'ai', text: "Alright, that's it from my side. Tap End to see the full report." },
+  ],
+
+  'hdfc': [
+    { speaker: 'ai', text: "Heya! I'm Arjun, your potential TL. Tell me — why sales over BPO?" },
+    { speaker: 'user', text: "Honestly, sir — I've already done 14 months of customer-facing sales at Reliance Trends. I know I love the chase, the close. BPO felt like a step sideways. Sales is a step forward — owning revenue, not just calls.", transcribeMs: 1900 },
+    { speaker: 'card', card: { kind: 'feedback', label: 'Q1 — Sales vs BPO',
+        content: 'Honest, energetic. "Owning revenue" lands well with a sales TL.',
+        metrics: [{ v: '88', l: 'Content', tone: 'good' }, { v: '148', l: 'Pace WPM', tone: 'good' }, { v: '0', l: 'Fillers', tone: 'good' }],
+    } },
+    { speaker: 'ai', text: "Have you sold anything before? Even a YouTube channel counts." },
+    { speaker: 'user', text: "At Reliance I drove ₹3-4 lakh in incremental sales last quarter just by upselling layered products at the till. I also run a small Instagram page reselling thrift clothes — 18K followers, 60-70 sales a month at margin.", transcribeMs: 2100 },
+    { speaker: 'card', card: { kind: 'feedback', label: 'Q2 — Sales experience',
+        content: 'Two concrete revenue stories — TL will love the upsell number.',
+        metrics: [{ v: '92', l: 'Content', tone: 'good' }, { v: '140', l: 'Pace WPM', tone: 'good' }, { v: '0', l: 'Fillers', tone: 'good' }],
+    } },
+    { speaker: 'ai', text: "A customer says 'I'll think about it' for the third time. What do you do?" },
+    { speaker: 'user', text: "I'd ask — what's the one thing holding you back? Not 'have you decided?' but a specific, single concern. That moves them from procrastinating to either deciding or naming the real objection.", transcribeMs: 1700 },
+    { speaker: 'card', card: { kind: 'phrase', label: 'Saved technique',
+        content: 'The one-thing question is a classic — works in sales and in interviews.',
+        keyPhrase: "What's the one thing holding you back?",
+    } },
+    { speaker: 'ai', text: "I like your style. Tap End for the report." },
+  ],
+
+  'bajaj': [
+    { speaker: 'ai', text: "Look, I told the last guy — I don't want your card! Stop calling me!" },
+    { speaker: 'user', text: "Sir, I completely understand your frustration with multiple calls — that's not okay. I'm not calling to sell — I'm calling to remove your number from our outbound list permanently. Can I take 30 seconds?", transcribeMs: 2000 },
+    { speaker: 'card', card: { kind: 'feedback', label: 'Q1 — Hostile customer (de-escalation)',
+        content: 'Pivot from "selling" to "removing you from list" is brilliant — disarms the anger AND opens the conversation.',
+        metrics: [{ v: '95', l: 'Content', tone: 'good' }, { v: '128', l: 'Pace WPM', tone: 'good' }, { v: '0', l: 'Fillers', tone: 'good' }],
+    } },
+    { speaker: 'ai', text: "You charged my card for fees I never agreed to. I'm cancelling everything. NOW." },
+    { speaker: 'user', text: "Sir, that's a serious concern and you have every right to be upset. Before any cancellation — let me read out the exact charges with dates so you know what you're cancelling. If even one charge looks wrong, I'll process the refund immediately.", transcribeMs: 2200 },
+    { speaker: 'card', card: { kind: 'feedback', label: 'Q2 — Refund threat (calm decisive)',
+        content: 'Empathy + ownership + actionable next step. This is the textbook V&A pressure-drill response.',
+        metrics: [{ v: '93', l: 'Content', tone: 'good' }, { v: '124', l: 'Pace WPM', tone: 'good' }, { v: '0', l: 'Fillers', tone: 'good' }],
+    } },
+    { speaker: 'ai', text: "Hmph. Fine. Read them out then. — Mock complete. Tap End for the report." },
+  ],
+};
 
 function startMock() {
   showView('mock');
   mockStarted = true;
-  currentQIdx = 0;
   timerStart = Date.now();
   startTimer();
-  loadQuestion(0);
+  setupMockUi();
+  // Defer slightly so DOM is laid out
+  setTimeout(() => runMockTranscript(), 250);
 }
 
-function loadQuestion(idx) {
+function setupMockUi() {
   const c = COMPANIES[currentCompany];
-  if (!c || !c.questions[idx]) {
-    // End of mock
-    setTimeout(() => endMock(), 600);
-    return;
-  }
+  if (!c) return;
   const persona = window.JBIQ_PERSONAS[c.persona];
   document.getElementById('mock_persona_name').textContent = persona.name;
-  document.getElementById('mock_qnum').textContent = `Question ${idx+1} of ${c.questions.length}`;
-  const q = c.questions[idx];
-  document.getElementById('mock_q').textContent = q.q;
-  document.getElementById('mock_prompt').textContent = q.prompt;
-
-  // Pressure drill?
-  const overlay = document.getElementById('pressure_overlay');
-  if (q.pressure) {
-    overlay.classList.add('show');
-    setTimeout(() => overlay.classList.remove('show'), 2500);
-  } else {
-    overlay.classList.remove('show');
-  }
-
-  // Speak the question
-  const v = ensureMockVoice();
-  if (v) v.speak(q.q, 'en-IN');
-
-  currentQIdx = idx;
+  const n2 = document.getElementById('mock_persona_name_2');
+  if (n2) n2.textContent = persona.name;
+  const role = document.getElementById('mock_persona_role');
+  if (role) role.textContent = persona.title;
+  const qpill = document.getElementById('mock_qnum_pill');
+  if (qpill) qpill.textContent = (MOCK_TRANSCRIPTS[currentCompany] || []).filter(t => t.speaker === 'ai').length + ' Qs';
 }
 
-function handleMockTranscript(text, lang) {
-  // Compute cheap delivery metrics
-  const fillerWords = (text.toLowerCase().match(/\b(um|uh|like|you know|actually|basically)\b/g) || []).length;
-  const words = text.trim().split(/\s+/).filter(Boolean).length;
-  const pace = Math.round(words * 60 / 8); // assume ~8 sec utterance for demo
-  const conf = Math.max(40, Math.min(95, 80 - fillerWords * 8 + (pace > 110 && pace < 160 ? 10 : 0)));
-
-  const fillerEl = document.getElementById('df_fillers');
-  const paceEl = document.getElementById('df_pace');
-  const confEl = document.getElementById('df_conf');
-  fillerEl.textContent = `Fillers: ${fillerWords}`;
-  fillerEl.className = 'df-pill ' + (fillerWords > 2 ? 'warn' : 'good');
-  paceEl.textContent = `Pace: ${pace} wpm`;
-  paceEl.className = 'df-pill ' + (pace > 110 && pace < 160 ? 'good' : 'warn');
-  confEl.textContent = `Confidence: ${conf}`;
-  confEl.className = 'df-pill ' + (conf > 70 ? 'good' : 'warn');
-
-  // Move to next question
-  setTimeout(() => loadQuestion(currentQIdx + 1), 1000);
-}
-
-function skipQuestion() {
-  loadQuestion(currentQIdx + 1);
-}
-function replayQuestion() {
-  const c = COMPANIES[currentCompany];
-  const v = ensureMockVoice();
-  if (!c || !v) return;
-  v.speak(c.questions[currentQIdx].q, 'en-IN');
+function runMockTranscript() {
+  const transcript = MOCK_TRANSCRIPTS[currentCompany] || MOCK_TRANSCRIPTS['tech-mahindra'];
+  const chatEl = document.getElementById('mockChat');
+  if (!chatEl) return;
+  if (mockRunner) mockRunner.stop();
+  ensureMockVoice();
+  mockRunner = window.GC.createTranscript({
+    transcript,
+    chatEl,
+    voice: mockVoice,
+    speakerLabel: window.JBIQ_PERSONAS[(COMPANIES[currentCompany] || {}).persona]?.name || 'Interviewer',
+    onComplete: () => {
+      // Show end CTA
+      // (User can tap End top-left to go to report)
+    },
+  });
+  mockRunner.start();
 }
 
 function endMock() {
+  if (mockRunner) mockRunner.stop();
   if (mockVoice) mockVoice.stop();
   stopTimer();
   showView('report');
 }
-
-document.getElementById('mock_mic').addEventListener('click', () => {
-  const v = ensureMockVoice();
-  if (!v) return;
-  if (v.isRecording) v.stopRecording();
-  else v.startRecording();
-});
 
 /* Timer */
 function startTimer() {
@@ -1487,45 +1473,56 @@ function playPep() {
   }
   pepVoice.speak("Hey Rohit — you've done eight mocks. You scored 72 yesterday. The customer roleplay was your best. Tomorrow, lead with empathy. Drink water. Smile at the door. You've got this.", 'en-IN');
 }
-// Warm-up: launch a single-question micro-mock instead of an alert.
-// Reuses the live mock UI for visual consistency.
+// Warm-up: launch a tiny canned mock for the chosen warm-up question.
 function warmupQ(n) {
-  const questions = [
-    {
-      q: "Tell me about yourself in 60 seconds.",
-      prompt: "Use STAR if you're sharing a story. 60 seconds.",
+  const warmupBase = {
+    1: {
       persona: 'interviewer_formal_ops',
+      transcript: [
+        { speaker: 'ai',   text: "Tell me about yourself in 60 seconds." },
+        { speaker: 'user', text: "I'm Rohit, BCom from Hardoi, 14 months at Reliance Trends in Lucknow. Customer-facing sales — 80 walk-ins a day, returns, complaints. Looking to scale that experience into a structured BPO role." },
+        { speaker: 'card', card: { kind: 'feedback', label: 'Warm-up — Tell me about yourself',
+            content: 'Strong, specific intro. Numbers anchor credibility. Ready for the real mock.',
+            metrics: [{ v: '85', l: 'Content', tone: 'good' }, { v: '142', l: 'Pace WPM', tone: 'good' }, { v: '0', l: 'Fillers', tone: 'good' }],
+        } },
+      ],
     },
-    {
-      q: "Why do you want to join this company?",
-      prompt: "Avoid 'great brand'. Be specific.",
+    2: {
       persona: 'interviewer_bored_hr',
+      transcript: [
+        { speaker: 'ai',   text: "Why do you want to join this company?" },
+        { speaker: 'user', text: "I researched the BFSI process specifically. The 6-week voice training programme is longer than industry average — that matters for someone making a transition from retail. The 18-month path to Ops Lead is faster than competitors." },
+        { speaker: 'card', card: { kind: 'feedback', label: 'Warm-up — Why this company',
+            content: 'Specific reasons — exactly what kills the "great brand" trap.',
+            metrics: [{ v: '88', l: 'Content', tone: 'good' }, { v: '132', l: 'Pace WPM', tone: 'good' }, { v: '0', l: 'Fillers', tone: 'good' }],
+        } },
+      ],
     },
-    {
-      q: "A customer is shouting at you about a wrong charge. What do you do?",
-      prompt: "Empathy first. Solution second.",
+    3: {
       persona: 'interviewer_hostile_customer',
+      transcript: [
+        { speaker: 'ai',   text: "A customer is shouting at you about a wrong charge. What do you do?" },
+        { speaker: 'user', text: "I would say — sir, I completely understand your frustration. Before any cancellation, let me read out the exact charges with dates so you know what you're disputing. If even one charge is wrong, I'll process the refund immediately." },
+        { speaker: 'card', card: { kind: 'phrase', label: 'Saved opener',
+            content: 'Empathy + ownership + actionable step. The textbook V&A pressure response.',
+            keyPhrase: 'I completely understand your frustration. Let me read out the exact charges.',
+        } },
+      ],
     },
-  ];
-  const item = questions[n - 1];
+  };
+  const item = warmupBase[n];
   if (!item) return;
-  // Set up a one-shot mock with this single question
-  const warmupCompany = {
+  // Save warm-up as a one-shot company so existing flow works
+  MOCK_TRANSCRIPTS['__warmup'] = item.transcript;
+  COMPANIES['__warmup'] = {
     name: 'Warm-up',
     role: 'Single-question voice mock',
     persona: item.persona,
-    questions: [{ q: item.q, prompt: item.prompt }],
+    questions: [{ q: item.transcript[0].text, prompt: 'Quick warm-up' }],
   };
-  COMPANIES['__warmup'] = warmupCompany;
   currentCompany = '__warmup';
-  // Reset/destroy any prior mock voice so persona swap takes effect
   if (mockVoice) { try { mockVoice.stop(); } catch (e) {} mockVoice = null; }
-  showView('mock');
-  mockStarted = true;
-  currentQIdx = 0;
-  timerStart = Date.now();
-  startTimer();
-  loadQuestion(0);
+  startMock();
 }
 
 /* =========================================================================
