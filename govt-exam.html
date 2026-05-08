@@ -829,12 +829,12 @@ function showView(name) {
  * ========================================================================= */
 const DISCOVERY_FLOW = [
   {
-    ai: "Theek hai — let's figure this out together. Pehle yeh batao: aapko life mein kya chahiye? Money, stability, posting near home?",
+    ai: "Theek hai. Bansal mein 3 mahine ho gaye, lekin abhi tak focus nahi mila — that's normal. Let's reverse-engineer this. Pehle yeh batao: aapko life mein kya chahiye? Money, stability, posting near home?",
     speaker: 'JBIQ',
     chips: [
       { text: "Stability + good salary",   key: 'stability_salary' },
       { text: "Money matters most",        key: 'money' },
-      { text: "Ghar ke paas posting",       key: 'near_home' },
+      { text: "Ghar ke paas posting (Bihar)", key: 'near_home' },
       { text: "Power · prestige",           key: 'prestige' },
     ],
   },
@@ -1050,8 +1050,9 @@ function startDiscovery() {
   const chat = document.getElementById('discChat');
   chat.innerHTML = '';
 
-  // Sneha's opener (pre-populated as her question)
-  appendUserBubble("Mujhe samajh nahi aa raha kaunsa exam dena hai. Koi seedha bata de.");
+  // Sneha's opener (pre-populated, grounded in JCS doc — Patna BCom grad,
+  // family pressure for SSC/IBPS, currently at Bansal Classes ₹6,500/mo)
+  appendUserBubble("Ghar mein sab bol rahe hain government job. Bansal Classes ja rahi hoon ₹6,500 ka, lekin samajh nahi aa raha kaunsa exam dena hai.");
 
   // JBIQ first question
   setTimeout(() => askDiscoveryQ(0), 600);

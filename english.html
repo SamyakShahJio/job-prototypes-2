@@ -1603,25 +1603,25 @@ function ensureAvatarVoice() {
 }
 
 const SARAH_TRANSCRIPT = [
-  { speaker: 'ai', text: "Hi Pooja! How's your day going?" },
-  { speaker: 'user', text: "Tough day at the BPO. A customer shouted at me." },
-  { speaker: 'ai', text: "Sorry to hear that. \"Tough day\" is fine — but listen to this." },
+  { speaker: 'ai', text: "Hi Pooja! How was your shift today?" },
+  { speaker: 'user', text: "Tough one. Bajaj Finance customer shouted at me. English call aaya, dimaag blank ho gaya." },
+  { speaker: 'ai', text: "Happens. Hindi-to-English switch is the hardest moment. Quick fix on the phrase you used —" },
   { speaker: 'card', card: {
       kind: 'tip',
       label: 'Phrase tip',
-      content: 'In English, we usually add "I had…" before "tough day".',
-      better: 'I had a tough day at the BPO.',
+      content: '"Dimaag blank ho gaya" is fine for friends. For your TL or in a review, English speakers say:',
+      better: "I went blank for a moment.",
   } },
-  { speaker: 'ai', text: "What did the customer say to you?" },
+  { speaker: 'ai', text: "What did the customer say that triggered it?" },
   { speaker: 'user', text: "He said I was useless and wanted to speak to my manager." },
-  { speaker: 'ai', text: "Ouch. That stings. How did you respond to him?" },
+  { speaker: 'ai', text: "Classic V&A pressure moment. How did you respond to him?" },
   { speaker: 'user', text: "I just kept saying sorry, sir, sorry, sir." },
-  { speaker: 'ai', text: "Apologizing is OK, but doing it five times weakens you. Let me show you a stronger reply." },
+  { speaker: 'ai', text: "Apologizing five times weakens you. Customer hears panic, not control. Let me show you what works on Bajaj escalations." },
   { speaker: 'card', card: {
       kind: 'correction',
       label: 'Better response',
       before: 'I am sorry, sir. Sorry, sir. Sorry, sorry.',
-      after: 'I completely understand your frustration, sir. Let me look into this right away.',
+      after: 'I completely understand your frustration, sir. Let me pull up your account right now and look into this.',
   } },
   { speaker: 'user', text: "That sounds much calmer. Can I save this?" },
   { speaker: 'ai', text: "Already done. It's in your phrasebook for tomorrow's recall." },
@@ -1629,12 +1629,11 @@ const SARAH_TRANSCRIPT = [
       kind: 'phrase',
       label: 'Saved to your phrasebook',
       content: '"I completely understand your frustration."',
-      why: 'This single phrase de-escalates ~80% of angry customer calls. Lead with it before any solution.',
-      actions: [{ label: 'Play again', action: 'play' }],
+      why: 'This single phrase de-escalates ~80% of angry Bajaj Finance customer calls. Lead with it, then say "let me pull up your account" to buy yourself 15 seconds.',
       keyPhrase: 'I completely understand your frustration.',
   } },
   { speaker: 'user', text: "Thank you, Sarah. This helped a lot." },
-  { speaker: 'ai', text: "Glad to help, Pooja. Tomorrow morning I'll quiz you on this — three customer calls, three minutes. Same time. You've got this." },
+  { speaker: 'ai', text: "Glad to help, Pooja. Tomorrow morning I'll quiz you on this — three angry-customer calls, three minutes. Same time. You've got this." },
 ];
 
 function startSarahDemo() {

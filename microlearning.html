@@ -991,15 +991,16 @@ function startChat() {
   showView('chat');
   const chat = document.getElementById('ml_chat');
   chat.innerHTML = '';
-  // JBIQ opener
-  appendAIBubble("Bata — kya stuck hai? Be specific. \"Mera thumbnail click nahi ho raha\" — that kind of thing.");
-  setTimeout(() => ensureMLVoice().speak("Bata — kya stuck hai? Be specific.", 'en-IN'), 200);
-  // Suggestion chips
+  // JBIQ opener — grounded in Rahul's actual situation (Indore food delivery
+  // rider running a YouTube Shorts channel on Indore street food, wants ₹50K/mo)
+  appendAIBubble("Hey Rahul. Indore street food channel chal raha hai. Bata — kal kya stuck hai?");
+  setTimeout(() => { try { ensureMLVoice().speak("Hey Rahul. Bata — kal kya stuck hai?", 'en-IN'); } catch (e) {} }, 200);
+  // Suggestion chips reflecting his real pain points (from JCS doc § Day in life)
   setTimeout(() => appendChips([
-    { text: "Thumbnail click nahi ho raha", key: 'thumbnail' },
-    { text: "Titles boring hain", key: 'title' },
-    { text: "Views drop ho rahe hain", key: 'views' },
-    { text: "ChatGPT se kuch acha nahi nikalta", key: 'chatgpt' },
+    { text: "Thumbnail click nahi ho raha — 80K views ka idea, mera 2K", key: 'thumbnail' },
+    { text: "Titles boring lagte hain", key: 'title' },
+    { text: "Views drop ho rahe hain pichhle 3 videos mein", key: 'views' },
+    { text: "ChatGPT se thumbnails ke liye kuch acha nahi nikalta", key: 'chatgpt' },
   ], handleProblem), 700);
 }
 
