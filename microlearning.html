@@ -11,7 +11,15 @@
 <style>
   body { background: var(--white); }
   .phone-frame { background: var(--white); }
-  :root { --vert-accent: var(--surface-bold); --vert-accent-light: var(--primary-20); --vert-accent-dark: var(--icon-medium); }
+  /* Microlearning vertical = sparkle teal accent (calm, growth-tinted) */
+  :root {
+    --v-accent: var(--sparkle-60);          /* #1e7b74 — dark teal */
+    --v-accent-soft: var(--sparkle-20);      /* #e8faf7 */
+    --v-accent-deep: var(--sparkle-70);      /* #0e5c4f */
+    --vert-accent: var(--v-accent);
+    --vert-accent-light: var(--v-accent-soft);
+    --vert-accent-dark: var(--v-accent-deep);
+  }
 
   /* ============= TOP BAR ============== */
   .top-bar {
@@ -991,16 +999,17 @@ function startChat() {
   showView('chat');
   const chat = document.getElementById('ml_chat');
   chat.innerHTML = '';
-  // JBIQ opener — grounded in Rahul's actual situation (Indore food delivery
-  // rider running a YouTube Shorts channel on Indore street food, wants ₹50K/mo)
-  appendAIBubble("Hey Rahul. Indore street food channel chal raha hai. Bata — kal kya stuck hai?");
-  setTimeout(() => { try { ensureMLVoice().speak("Hey Rahul. Bata — kal kya stuck hai?", 'en-IN'); } catch (e) {} }, 200);
-  // Suggestion chips reflecting his real pain points (from JCS doc § Day in life)
+  // JBIQ opener — Rahul's actual 6:30 AM beat from JCS doc §3:
+  // "Scrolls Shorts feed for ideas. Sees a creator with 80K views on a
+  // thumbnail he himself wouldn't click. Saves it."
+  appendAIBubble("Hey Rahul. Subah waala thumbnail jo tune saved kiya — 80K views waala — woh kyun click hua aur tera 2K pe atak gaya, that's today's question. Specific bata — kya stuck hai?");
+  setTimeout(() => { try { ensureMLVoice().speak("Hey Rahul. Bata — kya stuck hai?", 'en-IN'); } catch (e) {} }, 200);
+  // Suggestion chips reflecting his actual JCS-doc Day-in-life moments
   setTimeout(() => appendChips([
-    { text: "Thumbnail click nahi ho raha — 80K views ka idea, mera 2K", key: 'thumbnail' },
-    { text: "Titles boring lagte hain", key: 'title' },
-    { text: "Views drop ho rahe hain pichhle 3 videos mein", key: 'views' },
-    { text: "ChatGPT se thumbnails ke liye kuch acha nahi nikalta", key: 'chatgpt' },
+    { text: "Saved waala thumbnail vs mera — kya difference hai", key: 'thumbnail' },
+    { text: "1 PM Canva pe 'hook' ka matlab nahi samajh aaya", key: 'title' },
+    { text: "8:30 PM ChatGPT se title nahi nikla — kaise prompt karu?", key: 'chatgpt' },
+    { text: "Pichhle 3 videos pe views drop", key: 'views' },
   ], handleProblem), 700);
 }
 

@@ -11,7 +11,15 @@
 <style>
   body { background: var(--white); }
   .phone-frame { background: var(--white); }
-  :root { --vert-accent: var(--surface-bold); --vert-accent-light: var(--primary-20); --vert-accent-dark: var(--icon-medium); }
+  /* Govt-exam vertical = secondary gold accent (gravitas) */
+  :root {
+    --v-accent: var(--secondary-60);          /* #ac660c — dark gold/rust */
+    --v-accent-soft: var(--secondary-20);     /* #fef7e9 */
+    --v-accent-deep: var(--secondary-70);     /* #7f4b10 */
+    --vert-accent: var(--v-accent);
+    --vert-accent-light: var(--v-accent-soft);
+    --vert-accent-dark: var(--v-accent-deep);
+  }
 
   /* ============= TOP BAR ============== */
   .top-bar {
@@ -829,13 +837,13 @@ function showView(name) {
  * ========================================================================= */
 const DISCOVERY_FLOW = [
   {
-    ai: "Theek hai. Bansal mein 3 mahine ho gaye, lekin abhi tak focus nahi mila — that's normal. Let's reverse-engineer this. Pehle yeh batao: aapko life mein kya chahiye? Money, stability, posting near home?",
+    ai: "Pehle 45% pe aata hu — for SSC CGL Tier 1 with 3 months of prep, that's actually on track. Not great, not bad — at-percentile. The bigger question is the right exam. Pehle yeh batao: kya chahiye life mein? Money, stability, ghar ke paas posting?",
     speaker: 'JBIQ',
     chips: [
-      { text: "Stability + good salary",   key: 'stability_salary' },
-      { text: "Money matters most",        key: 'money' },
-      { text: "Ghar ke paas posting (Bihar)", key: 'near_home' },
-      { text: "Power · prestige",           key: 'prestige' },
+      { text: "Stability + good salary",        key: 'stability_salary' },
+      { text: "Money zyada matter karta hai",   key: 'money' },
+      { text: "Ghar ke paas posting (Bihar)",   key: 'near_home' },
+      { text: "Power · prestige (UPSC dream)",  key: 'prestige' },
     ],
   },
 ];
@@ -1050,9 +1058,9 @@ function startDiscovery() {
   const chat = document.getElementById('discChat');
   chat.innerHTML = '';
 
-  // Sneha's opener (pre-populated, grounded in JCS doc — Patna BCom grad,
-  // family pressure for SSC/IBPS, currently at Bansal Classes ₹6,500/mo)
-  appendUserBubble("Ghar mein sab bol rahe hain government job. Bansal Classes ja rahi hoon ₹6,500 ka, lekin samajh nahi aa raha kaunsa exam dena hai.");
+  // Sneha's actual 11:30 PM moment from JCS doc §3 — three-year anxiety,
+  // family pressure, no benchmark. Plus her 8:30 PM mock-test 45% confusion.
+  appendUserBubble("Aaj mock test mein 45% aaye. Pata bhi nahi achhe hain ya kharab. Bansal Classes 3 mahine ho gaye, family bol rahi government job, lekin teen saal lag gaye toh? Koi seedha bata de — mera kya scene hai.");
 
   // JBIQ first question
   setTimeout(() => askDiscoveryQ(0), 600);

@@ -70,12 +70,17 @@
   --secondary: var(--secondary-50);
   --sparkle: var(--sparkle-50);
 
-  /* Vertical accent — single token for all 4 use cases.
-     Intentionally identical: the JCS vertical has ONE accent (purple-dark).
-     Use cases differ in content + voice, not in color palette. */
-  --vertical-accent: var(--surface-bold);
-  --vertical-accent-soft: var(--primary-20);
-  --vertical-accent-deep: var(--icon-medium);
+  /* Vertical accents — subtle differentiation per use case, all JDS tokens.
+     Default is surface-bold (purple-dark = JCS vertical accent).
+     Each use case page can override --v-accent / --v-accent-soft / --v-accent-deep
+     in :root to get a slightly different signature without bright pastels. */
+  --v-accent:      var(--surface-bold);   /* primary accent */
+  --v-accent-soft: var(--primary-20);     /* tinted background */
+  --v-accent-deep: var(--icon-medium);    /* deepest hue */
+  /* Backwards-compat: */
+  --vertical-accent: var(--v-accent);
+  --vertical-accent-soft: var(--v-accent-soft);
+  --vertical-accent-deep: var(--v-accent-deep);
 
   /* ===== Radii ===== */
   --radius-sm: 8px;

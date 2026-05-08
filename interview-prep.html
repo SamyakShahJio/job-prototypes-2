@@ -13,7 +13,15 @@
   .phone-frame { background: var(--white); }
 
   /* Vertical accent: interview = purple */
-  :root { --vert-accent: var(--surface-bold); --vert-accent-light: var(--primary-20); --vert-accent-dark: var(--icon-medium); }
+  /* Interview vertical = surface-bold deep purple (serious, evaluative) */
+  :root {
+    --v-accent: var(--surface-bold);          /* #3900ad — deep purple */
+    --v-accent-soft: var(--primary-20);        /* #e8e8fc */
+    --v-accent-deep: var(--icon-medium);       /* #170054 */
+    --vert-accent: var(--v-accent);
+    --vert-accent-light: var(--v-accent-soft);
+    --vert-accent-dark: var(--v-accent-deep);
+  }
 
   /* ============= TOP BAR ============== */
   .top-bar {

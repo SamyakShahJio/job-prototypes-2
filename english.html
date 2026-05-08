@@ -9,6 +9,12 @@
 <link rel="stylesheet" href="shared/ambient-glow.css">
 <link rel="stylesheet" href="shared/guided-chat.css">
 <style>
+  /* English vertical = primary JBIQ blue (the flagship) */
+  :root {
+    --v-accent: var(--primary-50);            /* #3535f3 */
+    --v-accent-soft: var(--primary-20);        /* #e8e8fc */
+    --v-accent-deep: var(--surface-bold);      /* #3900ad */
+  }
   body { background: var(--white); }
   .phone-frame { background: var(--white); }
 
@@ -1602,38 +1608,38 @@ function ensureAvatarVoice() {
   return avatarVoice;
 }
 
+// Sarah's transcript is grounded in Pooja's actual day-in-life from
+// JCS_Vertical_Pack_v9 §3 (Day in Their Lives — Pooja, 10:30 AM + 11:30 PM beats).
 const SARAH_TRANSCRIPT = [
-  { speaker: 'ai', text: "Hi Pooja! How was your shift today?" },
-  { speaker: 'user', text: "Tough one. Bajaj Finance customer shouted at me. English call aaya, dimaag blank ho gaya." },
-  { speaker: 'ai', text: "Happens. Hindi-to-English switch is the hardest moment. Quick fix on the phrase you used —" },
-  { speaker: 'card', card: {
-      kind: 'tip',
-      label: 'Phrase tip',
-      content: '"Dimaag blank ho gaya" is fine for friends. For your TL or in a review, English speakers say:',
-      better: "I went blank for a moment.",
-  } },
-  { speaker: 'ai', text: "What did the customer say that triggered it?" },
-  { speaker: 'user', text: "He said I was useless and wanted to speak to my manager." },
-  { speaker: 'ai', text: "Classic V&A pressure moment. How did you respond to him?" },
-  { speaker: 'user', text: "I just kept saying sorry, sir, sorry, sir." },
-  { speaker: 'ai', text: "Apologizing five times weakens you. Customer hears panic, not control. Let me show you what works on Bajaj escalations." },
+  { speaker: 'ai', text: "Hey Pooja. Long shift?" },
+  { speaker: 'user', text: "Bahut. 10:30 ka call abhi tak dimaag mein hai. Customer bola 'I want to escalate'. Maine 'sir please' 6 baar bola, fir transfer kar diya." },
+  { speaker: 'ai', text: "Saath hu. 'Sir please' is what 9 out of 10 agents do under pressure — and it doesn't de-escalate. Let me show you what actually works on 'I want to escalate'." },
   { speaker: 'card', card: {
       kind: 'correction',
-      label: 'Better response',
-      before: 'I am sorry, sir. Sorry, sir. Sorry, sorry.',
-      after: 'I completely understand your frustration, sir. Let me pull up your account right now and look into this.',
+      label: '"Sir please ×6" → something that holds the call',
+      before: 'Sir please. Sir please. Sir please. (transferred)',
+      after: 'I completely understand. Before I escalate, give me 30 seconds — let me try to fix it for you first.',
   } },
-  { speaker: 'user', text: "That sounds much calmer. Can I save this?" },
-  { speaker: 'ai', text: "Already done. It's in your phrasebook for tomorrow's recall." },
+  { speaker: 'ai', text: "80% of 'escalate' demands resolve in 30 seconds if you ask for them. Try the phrase out loud right now — I'm listening." },
+  { speaker: 'user', text: "I completely understand. Before I escalate, give me 30 seconds — let me try to fix it for you first." },
+  { speaker: 'ai', text: "Pace was clear. One thing — slight hesitation before 'escalate'. Say it like a stated fact, not a question." },
+  { speaker: 'card', card: {
+      kind: 'tip',
+      label: 'Pacing tip',
+      content: "Don't pause before 'escalate'. Confidence is in the steady flow.",
+      better: 'Before I escalate, give me 30 seconds.',
+  } },
+  { speaker: 'user', text: "11:30 ho gaye. Mujhe course nahi chahiye, practice chahiye thi." },
+  { speaker: 'ai', text: "Yehi to practice hai. Saved this one as your Bajaj-Finance escalation play. Tomorrow morning, first thing — three 'I want to escalate' calls, three minutes." },
   { speaker: 'card', card: {
       kind: 'phrase',
-      label: 'Saved to your phrasebook',
-      content: '"I completely understand your frustration."',
-      why: 'This single phrase de-escalates ~80% of angry Bajaj Finance customer calls. Lead with it, then say "let me pull up your account" to buy yourself 15 seconds.',
-      keyPhrase: 'I completely understand your frustration.',
+      label: 'Saved · Bajaj Finance escalation play',
+      content: '"I completely understand. Before I escalate, give me 30 seconds."',
+      why: 'Buys you time AND signals control. Customer hears: "she\'s on it" — not "she\'s panicking".',
+      keyPhrase: 'Before I escalate, give me 30 seconds.',
   } },
-  { speaker: 'user', text: "Thank you, Sarah. This helped a lot." },
-  { speaker: 'ai', text: "Glad to help, Pooja. Tomorrow morning I'll quiz you on this — three angry-customer calls, three minutes. Same time. You've got this." },
+  { speaker: 'user', text: "Thanks Sarah. Kal subah pakka." },
+  { speaker: 'ai', text: "Pakka. Sleep — you've got this. By Friday this'll feel different." },
 ];
 
 function startSarahDemo() {
