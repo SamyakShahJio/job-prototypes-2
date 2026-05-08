@@ -107,7 +107,7 @@ window.JBIQ_PERSONAS = {
   // ============= MICRO-LEARNING — COACH (faceless) =============
   microlearning_coach: {
     id: 'microlearning_coach',
-    speaker: 'diya',
+    speaker: 'shreya',           // Energetic peer-like female — Sarvam Bulbul-v2 valid voice
     model: 'bulbul:v2',
     pitch: 0,
     pace: 1.05,

@@ -30,10 +30,11 @@
   }
   .top-bar .greeting {
     flex: 1; min-width: 0;
-    font-size: var(--text-small);
+    font-size: 13px;
     color: var(--text-low);
     font-weight: 500;
   }
+
   /* ============= BODY SCROLL ============= */
   .body-scroll {
     flex: 1;
@@ -82,11 +83,8 @@
     border: none;
     background: var(--surface-bold);
     color: var(--text-on-bold);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; flex-shrink: 0;
     transition: transform 0.15s;
   }
   .chat-dock-mic:hover { transform: scale(1.05); }
@@ -106,230 +104,120 @@
   .chat-dock-inner.has-text .chat-dock-mic { display: none; }
   .chat-dock-inner.has-text .chat-dock-send { display: flex; }
 
-  /* ============= HERO (voice-first) ============= */
-  .hero {
-    padding: var(--space-3) var(--space-4) var(--space-5);
-    text-align: center;
+  /* ============= HERO BAND — soft lavender wash ============= */
+  .hero-band {
+    background:
+      radial-gradient(120% 80% at 80% 0%, var(--primary-20) 0%, rgba(232,232,252,0) 65%),
+      radial-gradient(100% 70% at 0% 30%, rgba(231,233,255,0.7) 0%, rgba(255,255,255,0) 60%),
+      var(--surface-default);
+    padding: 4px var(--space-4) 18px;
   }
-  .hero h1 {
-    font-size: 24px;
-    line-height: 1.15;
+  .hero-band h1 {
+    font-size: 26px;
+    line-height: 1.1;
     font-weight: 900;
     color: var(--text-high);
-    letter-spacing: -0.4px;
-    margin-bottom: 4px;
+    letter-spacing: -0.6px;
+    margin-bottom: 6px;
   }
-  .hero p {
+  .hero-band h1 .accent { color: var(--surface-bold); }
+  .hero-band p {
     font-size: 13px;
     line-height: 1.4;
     color: var(--text-low);
-    font-weight: 400;
-    margin-bottom: var(--space-4);
-  }
-  /* Slightly smaller voice hero so the 4 use case cards fit on first scroll */
-  .voice-hero .voice-stage {
-    width: 140px;
-    height: 140px;
+    font-weight: 500;
   }
 
-  /* Voice hero — JDS HelloJio orb as primary CTA */
-  .voice-hero {
-    border: none;
-    background: transparent;
-    cursor: pointer;
-    padding: 0;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-    transition: transform 0.18s ease;
-  }
-  .voice-hero:hover { transform: scale(1.02); }
-  .voice-hero:active { transform: scale(0.98); }
-  .voice-hero .voice-stage {
-    width: 180px;
-    height: 180px;
-  }
-  .voice-hero-label {
-    font-size: var(--text-h3);
-    font-weight: 700;
-    color: var(--text-high);
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .voice-hero-label .mic-pill {
-    width: 36px; height: 36px;
-    border-radius: 50%;
+  /* ============= PRIORITY (TOMORROW) CARD ============= */
+  .priority-card {
+    margin: 14px var(--space-4) 0;
     background: var(--surface-bold);
     color: var(--text-on-bold);
-    display: flex; align-items: center; justify-content: center;
-  }
-  .voice-hero-hint {
-    font-size: var(--text-small);
-    color: var(--text-low);
-    margin-top: 4px;
-  }
-
-  /* ============= SITUATION CHIPS ============= */
-  .section-h {
-    font-size: var(--text-tiny);
-    font-weight: 700;
-    color: var(--text-low);
-    letter-spacing: 0.6px;
-    text-transform: uppercase;
-    padding: 0 var(--space-4);
-    margin: var(--space-5) 0 var(--space-3);
-  }
-
-  .situation-row {
-    display: flex;
-    gap: 10px;
-    overflow-x: auto;
-    padding: 0 var(--space-4) 4px;
-    scroll-behavior: smooth;
-  }
-  .situation-row::-webkit-scrollbar { display: none; }
-
-  .situation-chip {
-    flex-shrink: 0;
-    border: 1px solid var(--stroke-subtle);
-    border-radius: 14px;
-    padding: 12px 14px;
-    background: var(--surface-default);
-    cursor: pointer;
-    transition: all 0.15s;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-    text-decoration: none;
-    color: inherit;
-    min-width: 160px;
-    max-width: 200px;
-    text-align: left;
-    font-family: var(--font);
-  }
-  .situation-chip:hover {
-    border-color: var(--surface-bold);
-    transform: translateY(-2px);
-  }
-  .situation-chip:active { transform: scale(0.97); }
-  .situation-chip .sc-icon {
-    width: 32px; height: 32px;
-    border-radius: 10px;
-    background: var(--primary-20);
-    color: var(--surface-bold);
+    border-radius: 20px;
+    padding: 14px 16px;
     display: flex;
     align-items: center;
-    justify-content: center;
+    gap: 12px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    box-shadow: 0 8px 24px rgba(57,0,173,0.18);
+    position: relative;
+    overflow: hidden;
+  }
+  .priority-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(80% 60% at 100% 0%, rgba(255,255,255,0.14) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .priority-card:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(57,0,173,0.25); }
+  .priority-card:active { transform: scale(0.98); }
+  .priority-icon {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.15);
+    color: #ffffff;
+    display: flex; align-items: center; justify-content: center;
     flex-shrink: 0;
   }
-  .situation-chip .sc-text {
-    font-size: var(--text-small);
-    font-weight: 700;
-    color: var(--text-high);
-    line-height: 1.25;
+  .priority-body {
+    flex: 1; min-width: 0;
+    position: relative;
   }
-  .situation-chip .sc-quote {
-    font-size: var(--text-tiny);
-    font-weight: 400;
-    color: var(--text-low);
-    font-style: italic;
-    line-height: 1.3;
-  }
-
-  /* ============= "FOR YOU" CARDS ============= */
-  .for-you-stack {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding: 0 var(--space-4);
-  }
-  .fy-card {
-    border: 1px solid var(--stroke-subtle);
-    border-radius: 18px;
-    padding: 16px;
-    background: var(--surface-default);
-    text-decoration: none;
-    color: inherit;
-    cursor: pointer;
-    transition: all 0.15s;
-    display: block;
-  }
-  .fy-card:hover {
-    border-color: var(--surface-bold);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
-  }
-  .fy-card .fy-tag {
+  .priority-tag {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    padding: 3px 9px;
-    background: var(--surface-ghost);
-    color: var(--text-low);
-    border-radius: var(--radius-pill);
-    font-size: var(--text-tiny);
+    font-size: 10px;
     font-weight: 700;
-    letter-spacing: 0.4px;
+    letter-spacing: 0.5px;
     text-transform: uppercase;
-    margin-bottom: 8px;
+    color: rgba(255,255,255,0.85);
+    margin-bottom: 2px;
   }
-  .fy-card.fy-priority {
-    background: var(--surface-bold);
-    color: var(--text-on-bold);
-    border-color: var(--surface-bold);
-  }
-  .fy-card.fy-priority .fy-tag {
-    background: rgba(255,255,255,0.2);
-    color: var(--text-on-bold);
-  }
-  .fy-card.fy-priority .fy-tag .live-dot {
+  .priority-tag .live-dot {
     width: 6px; height: 6px;
     border-radius: 50%;
-    background: var(--text-on-bold);
+    background: #ffffff;
     animation: livePulse 1.6s ease-in-out infinite;
   }
   @keyframes livePulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
-  .fy-card h2 {
-    font-size: var(--text-h2);
+  .priority-card h2 {
+    font-size: 15.5px;
     font-weight: 800;
     line-height: 1.2;
     letter-spacing: -0.2px;
-    margin-bottom: 4px;
+    margin-bottom: 3px;
   }
-  .fy-card .fy-meta {
-    font-size: var(--text-small);
-    line-height: 1.4;
+  .priority-card .priority-meta {
+    font-size: 12px;
+    line-height: 1.35;
     opacity: 0.85;
+    font-weight: 500;
   }
-  .fy-card .fy-cta {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    margin-top: 12px;
-    font-size: var(--text-small);
-    font-weight: 700;
+  .priority-arrow {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    color: #ffffff;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    position: relative;
   }
 
-  /* ============= 4 USE CASE CARDS — horizontal carousel ============= */
-  .vertical-carousel {
-    display: flex;
+  /* ============= 4 USE CASE CARDS — 2×2 GRID ============= */
+  .vertical-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 10px;
-    overflow-x: auto;
-    padding: 0 var(--space-4) 4px;
-    scroll-behavior: smooth;
-    scroll-snap-type: x mandatory;
+    padding: 16px var(--space-4) 0;
   }
-  .vertical-carousel::-webkit-scrollbar { display: none; }
   .uc-card {
-    flex-shrink: 0;
-    width: 200px;
-    scroll-snap-align: start;
+    aspect-ratio: 1 / 0.95;
     border: 1px solid var(--stroke-subtle);
-    border-radius: 16px;
+    border-radius: 18px;
     padding: 14px;
     background: var(--surface-default);
     text-decoration: none;
@@ -337,8 +225,19 @@
     cursor: pointer;
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    transition: all 0.15s;
+    justify-content: space-between;
+    gap: 8px;
+    transition: all 0.18s;
+    position: relative;
+    overflow: hidden;
+  }
+  .uc-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(120% 80% at 100% 0%, var(--uc-tint, var(--primary-20)) 0%, transparent 55%);
+    opacity: 0.7;
+    pointer-events: none;
   }
   .uc-card:hover {
     border-color: var(--surface-bold);
@@ -346,43 +245,105 @@
     box-shadow: var(--shadow-md);
   }
   .uc-card:active { transform: scale(0.98); }
+
   .uc-card .uc-icon-wrap {
     width: 36px; height: 36px;
-    border-radius: 10px;
-    background: var(--primary-20);
-    color: var(--surface-bold);
+    border-radius: 11px;
+    background: var(--uc-icon-bg, var(--primary-20));
+    color: var(--uc-icon-color, var(--surface-bold));
     display: flex; align-items: center; justify-content: center;
-    margin-bottom: 2px;
+    position: relative;
   }
-  .uc-card .uc-tag {
-    display: inline-block;
-    font-size: 10px;
-    font-weight: 700;
-    color: var(--surface-bold);
-    background: var(--primary-20);
-    padding: 3px 8px;
-    border-radius: var(--radius-pill);
-    letter-spacing: 0.3px;
-    text-transform: uppercase;
-    align-self: flex-start;
+  .uc-card .uc-title {
+    position: relative;
   }
   .uc-card h2 {
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 800;
     line-height: 1.15;
     color: var(--text-high);
-    letter-spacing: -0.2px;
-    margin: 0;
+    letter-spacing: -0.1px;
+    margin: 0 0 3px;
   }
   .uc-card .uc-quote {
     font-size: 11px;
+    line-height: 1.3;
+    color: var(--text-low);
+    font-weight: 500;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Per-vertical tints (all from JDS palette, monochromatic-ish) */
+  .uc-card.uc-micro    { --uc-tint: rgba(231,233,255,0.65); --uc-icon-bg: var(--surface-ghost-icon); --uc-icon-color: var(--surface-bold); }
+  .uc-card.uc-english  { --uc-tint: rgba(232,250,247,0.85); --uc-icon-bg: var(--sparkle-20); --uc-icon-color: var(--sparkle-50); }
+  .uc-card.uc-interview{ --uc-tint: rgba(232,232,252,0.7); --uc-icon-bg: var(--primary-20); --uc-icon-color: var(--surface-bold); }
+  .uc-card.uc-govt     { --uc-tint: rgba(254,247,233,0.9); --uc-icon-bg: var(--secondary-20); --uc-icon-color: var(--secondary-60); }
+
+  /* ============= CONTINUE STRIP ============= */
+  .section-h {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-low);
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    padding: 0 var(--space-4);
+    margin: 22px 0 10px;
+  }
+  .continue-row {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 0 var(--space-4) 4px;
+    scroll-behavior: smooth;
+  }
+  .continue-row::-webkit-scrollbar { display: none; }
+  .continue-card {
+    flex-shrink: 0;
+    min-width: 220px;
+    max-width: 240px;
+    border: 1px solid var(--stroke-subtle);
+    border-radius: 14px;
+    padding: 12px 14px;
+    background: var(--surface-default);
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .continue-card:hover {
+    border-color: var(--surface-bold);
+    transform: translateY(-2px);
+  }
+  .continue-card .cc-tag {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    color: var(--text-low);
+    margin-bottom: 2px;
+  }
+  .continue-card h3 {
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 1.2;
+    color: var(--text-high);
+    letter-spacing: -0.1px;
+  }
+  .continue-card .cc-meta {
+    font-size: 11px;
     line-height: 1.35;
     color: var(--text-low);
-    font-style: italic;
+    font-weight: 500;
   }
 
   /* ============= BOTTOM SAFE PADDING ============= */
-  .body-scroll-pad { height: 24px; }
+  .body-scroll-pad { height: 18px; }
 
   /* ============= VOICE OVERLAY ============= */
   .voice-overlay {
@@ -460,9 +421,7 @@
     border: none;
     background: var(--surface-bold);
     color: var(--text-on-bold);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: flex; align-items: center; justify-content: center;
     cursor: pointer;
     transition: all 0.15s;
   }
@@ -493,132 +452,100 @@
     <button class="back-btn" onclick="window.history.length > 1 ? window.history.back() : null" aria-label="Back">
       <span data-icon="chevron-left" data-size="20"></span>
     </button>
-    <div class="greeting" id="greeting">Good evening</div>
-    
+    <div class="greeting" id="greeting">Good evening, Samyak</div>
   </div>
 
   <div class="body-scroll">
 
-    <!-- Hero: short, no big orb -->
-    <div class="hero">
-      <h1>Jobs · Careers · Skills</h1>
-      <p>Pick a goal, say what you need, or jump back where you left off.</p>
+    <!-- Hero band: lavender wash, single tight intro -->
+    <div class="hero-band">
+      <h1>Jobs · Careers · <span class="accent">Skills</span></h1>
+      <p>Tell me what you're working on — or pick a path below.</p>
     </div>
 
-    <!-- THE 4 USE CASES — horizontal carousel of compact cards -->
-    <div class="section-h">Where do you want to start</div>
-    <div class="vertical-carousel">
+    <!-- Priority card: contextual nudge for tomorrow -->
+    <a class="priority-card" href="interview-prep.html?from=landing&q=tomorrow">
+      <div class="priority-icon">
+        <span data-icon="briefcase" data-size="22"></span>
+      </div>
+      <div class="priority-body">
+        <div class="priority-tag"><span class="live-dot"></span>Tomorrow · 10 AM</div>
+        <h2>Tech Mahindra · V&amp;A round</h2>
+        <div class="priority-meta">Morning-of kit ready · 4 likely Qs · 2-min warmup</div>
+      </div>
+      <div class="priority-arrow">
+        <span data-icon="chevron-right" data-size="16"></span>
+      </div>
+    </a>
 
-      <a class="uc-card" href="microlearning.html?from=landing">
-        <div class="uc-icon-wrap"><span data-icon="brain" data-size="20"></span></div>
-        <span class="uc-tag">Just-in-time</span>
-        <h2>Microlearning</h2>
-        <div class="uc-quote">"Mera thumbnail click kyun nahi ho raha?"</div>
-      </a>
+    <!-- 4 use cases — 2x2 grid, semantic icons + per-vertical tints -->
+    <div class="vertical-grid">
 
-      <a class="uc-card" href="english.html?from=landing">
-        <div class="uc-icon-wrap"><span data-icon="language" data-size="20"></span></div>
-        <span class="uc-tag">Real situations</span>
-        <h2>Speak English</h2>
-        <div class="uc-quote">"Mujhe woh confidence chahiye…"</div>
-      </a>
-
-      <a class="uc-card" href="interview-prep.html?from=landing">
-        <div class="uc-icon-wrap"><span data-icon="mic" data-size="20"></span></div>
-        <span class="uc-tag">Voice mock</span>
-        <h2>Interview Prep</h2>
-        <div class="uc-quote">"V&A round mein freeze ho jaata hoon."</div>
-      </a>
-
-      <a class="uc-card" href="govt-exam.html?from=landing">
-        <div class="uc-icon-wrap"><span data-icon="document" data-size="20"></span></div>
-        <span class="uc-tag">Discovery + Prep</span>
-        <h2>Govt Exam</h2>
-        <div class="uc-quote">"Kaunsa exam dena hai? Koi seedha bata de."</div>
-      </a>
-
-    </div>
-
-    <!-- For You — personalized continuing journeys -->
-    <div class="section-h">For you</div>
-    <div class="for-you-stack">
-
-      <a class="fy-card fy-priority" href="interview-prep.html?from=landing&q=tomorrow">
-        <div class="fy-tag"><span class="live-dot"></span>Tomorrow · 10 AM</div>
-        <h2>Tech Mahindra BPS</h2>
-        <div class="fy-meta">V&A round + HR · Andheri East · You've got this.</div>
-        <div class="fy-cta">Open morning-of kit
-          <span data-icon="chevron-right" data-size="14"></span>
+      <a class="uc-card uc-micro" href="microlearning.html?from=landing">
+        <div class="uc-icon-wrap"><span data-icon="flame-jds" data-size="20"></span></div>
+        <div class="uc-title">
+          <h2>Skill coach</h2>
+          <div class="uc-quote">"Mera thumbnail click kyun nahi ho raha?"</div>
         </div>
       </a>
 
-      <a class="fy-card" href="english.html?from=landing&q=avatar">
-        <div class="fy-tag">Continue · Week 2</div>
-        <h2>Sarah's waiting</h2>
-        <div class="fy-meta">Asking questions in meetings · 12-day streak · ~5 min today</div>
+      <a class="uc-card uc-english" href="english.html?from=landing">
+        <div class="uc-icon-wrap"><span data-icon="conversation" data-size="20"></span></div>
+        <div class="uc-title">
+          <h2>Speak English</h2>
+          <div class="uc-quote">"Sir please bolne ke aage kuch nahi aata."</div>
+        </div>
       </a>
 
-      <a class="fy-card" href="govt-exam.html?from=landing&q=ibps po">
-        <div class="fy-tag">Form opens in 23 days</div>
-        <h2>IBPS PO · 78% covered</h2>
-        <div class="fy-meta">3 quizzes · 8 flashcards · 1 concept ready for your commute</div>
+      <a class="uc-card uc-interview" href="interview-prep.html?from=landing">
+        <div class="uc-icon-wrap"><span data-icon="mic" data-size="20"></span></div>
+        <div class="uc-title">
+          <h2>Interview prep</h2>
+          <div class="uc-quote">"V&amp;A round mein freeze ho jaata hoon."</div>
+        </div>
+      </a>
+
+      <a class="uc-card uc-govt" href="govt-exam.html?from=landing">
+        <div class="uc-icon-wrap"><span data-icon="homework" data-size="20"></span></div>
+        <div class="uc-title">
+          <h2>Govt exam</h2>
+          <div class="uc-quote">"Kaunsa exam dena hai? Koi seedha bata de."</div>
+        </div>
       </a>
 
     </div>
 
-    <!-- Quick situations — secondary, for those who don't know what they want -->
-    <div class="section-h">Or jump in by situation</div>
-    <div class="situation-row">
-
-      <a class="situation-chip" href="interview-prep.html?from=landing&q=tomorrow">
-        <div class="sc-icon"><span data-icon="calendar" data-size="16"></span></div>
-        <div class="sc-text">Interview tomorrow</div>
-        <div class="sc-quote">"Tech Mahindra V&A — kal hai"</div>
+    <!-- Continue strip — small, scrollable, where you left off -->
+    <div class="section-h">Pick up where you left off</div>
+    <div class="continue-row">
+      <a class="continue-card" href="english.html?from=landing&q=avatar">
+        <div class="cc-tag">Sarah · Week 2</div>
+        <h3>Asking questions in meetings</h3>
+        <div class="cc-meta">12-day streak · ~5 min today</div>
       </a>
-
-      <a class="situation-chip" href="english.html?from=landing&q=customer call">
-        <div class="sc-icon"><span data-icon="chat" data-size="16"></span></div>
-        <div class="sc-text">Customer calls scare me</div>
-        <div class="sc-quote">"Sir please bolne se aage nahi jaata"</div>
+      <a class="continue-card" href="govt-exam.html?from=landing&q=ibps po">
+        <div class="cc-tag">IBPS PO · Form in 23d</div>
+        <h3>78% covered</h3>
+        <div class="cc-meta">3 quizzes · 8 flashcards · 1 commute concept</div>
       </a>
-
-      <a class="situation-chip" href="microlearning.html?from=landing&q=youtube views">
-        <div class="sc-icon"><span data-icon="brain" data-size="16"></span></div>
-        <div class="sc-text">YouTube not growing</div>
-        <div class="sc-quote">"Thumbnail click kyun nahi ho raha"</div>
+      <a class="continue-card" href="microlearning.html?from=landing&q=youtube views">
+        <div class="cc-tag">YouTube hooks</div>
+        <h3>Why your thumbnail isn't clicking</h3>
+        <div class="cc-meta">5 patterns · ~6 min</div>
       </a>
-
-      <a class="situation-chip" href="english.html?from=landing&q=avatar">
-        <div class="sc-icon"><span data-icon="language" data-size="16"></span></div>
-        <div class="sc-text">Free practice English</div>
-        <div class="sc-quote">"Just want to chat with someone"</div>
-      </a>
-
-      <a class="situation-chip" href="govt-exam.html?from=landing&q=ibps po">
-        <div class="sc-icon"><span data-icon="stopwatch" data-size="16"></span></div>
-        <div class="sc-text">12-min commute prep</div>
-        <div class="sc-quote">"Bus mein 3 quick quizzes"</div>
-      </a>
-
-      <a class="situation-chip" href="microlearning.html?from=landing&q=chatgpt">
-        <div class="sc-icon"><span data-icon="brain" data-size="16"></span></div>
-        <div class="sc-text">Learn ChatGPT</div>
-        <div class="sc-quote">"Pros use it like a tool"</div>
-      </a>
-
     </div>
 
     <div class="body-scroll-pad"></div>
   </div>
 
-  <!-- Sticky bottom chat dock — type or tap mic, both route the same way -->
+  <!-- Sticky bottom chat dock -->
   <div class="chat-dock">
     <div class="chat-dock-inner" id="chatDockInner">
       <input
         type="text"
         class="chat-dock-input"
         id="chatDockInput"
-        placeholder='Tell me — try "interview tomorrow" or "fix my thumbnails"'
+        placeholder='Ask me anything — try "interview tomorrow"'
         autocomplete="off"
       />
       <button class="chat-dock-mic" id="chatDockMic" aria-label="Open voice">
@@ -671,13 +598,8 @@
   if (h >= 12 && h < 17) g = 'Good afternoon';
   else if (h >= 17 || h < 5) g = 'Good evening';
   const el = document.getElementById('greeting');
-  if (el) el.textContent = g;
+  if (el) el.textContent = g + ', Samyak';
 })();
-
-/* =========================================================================
- * Voice picker — removed (Warm/Calm toggle was always optional). Default
- * orchestrator stays jbiq_warm (set in personas.js).
- * ========================================================================= */
 
 /* =========================================================================
  * Voice overlay + routing
@@ -709,13 +631,11 @@ if (window.JBIQVoice && window.JBIQVoice.prefetch) {
 
 const overlayEl = document.getElementById('voiceOverlay');
 const voGlow = document.getElementById('voGlow');
-const heroStage = document.getElementById('heroStage');
 const voLabel = document.getElementById('voLabel');
 const voSub = document.getElementById('voSub');
 const voTranscript = document.getElementById('voTranscript');
 const voMic = document.getElementById('voMic');
 const voClose = document.getElementById('voClose');
-const voiceHero = document.getElementById('voiceHero');
 
 function setLabel(label, sub) {
   voLabel.textContent = label;
@@ -742,10 +662,8 @@ function ensureVoice() {
 
 function handleState(state) {
   voMic.classList.toggle('recording', state === 'listening');
-  if (heroStage) heroStage.setAttribute('data-state', state);
   if (state === 'listening') setLabel('Listening…', '');
   else if (state === 'thinking') setLabel('Got you. Routing…', '');
-  else if (state === 'speaking') { /* set by handleTranscript */ }
 }
 
 async function handleTranscript(text, lang) {
@@ -777,7 +695,6 @@ function openVoice() {
   overlayEl.classList.add('open');
   setTimeout(() => { ensureVoice().startRecording(); }, 250);
 }
-if (voiceHero) voiceHero.addEventListener('click', openVoice);
 voClose.addEventListener('click', () => {
   if (voice) voice.stop();
   overlayEl.classList.remove('open');
@@ -805,14 +722,12 @@ function dispatchTypedMessage(text) {
   const q = text.trim();
   const route = routeFromTranscript(q);
   if (route) {
-    // Visual feedback before navigating
     chatDockInner.style.borderColor = 'var(--success)';
     setTimeout(() => {
       const params = new URLSearchParams({ from: 'landing-chat', q: q });
       window.location.href = route.target + '?' + params.toString();
     }, 200);
   } else {
-    // No keyword match — open voice overlay with the typed text as transcript
     overlayEl.classList.add('has-transcript');
     voTranscript.textContent = '"' + q + '"';
     setLabel('Got it. Pick a card or use the mic', 'I couldn\'t auto-route that — try saying it another way.');
@@ -833,7 +748,6 @@ chatDockSend.addEventListener('click', () => {
   dispatchTypedMessage(chatDockInput.value);
 });
 chatDockMic.addEventListener('click', () => {
-  // Mic in dock opens the same voice overlay as the hero
   openVoice();
 });
 </script>
