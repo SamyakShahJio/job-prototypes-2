@@ -34,34 +34,77 @@
     color: var(--text-low);
     font-weight: 500;
   }
-  .voice-pref {
-    display: flex; gap: 4px;
-    background: var(--surface-ghost);
-    border-radius: var(--radius-pill);
-    padding: 3px;
-  }
-  .voice-pref button {
-    padding: 5px 10px; border-radius: var(--radius-pill);
-    border: none; background: transparent;
-    font-size: var(--text-tiny);
-    font-weight: 700;
-    color: var(--text-low);
-    cursor: pointer;
-    font-family: var(--font);
-    letter-spacing: 0.3px;
-    text-transform: uppercase;
-  }
-  .voice-pref button.active {
-    background: var(--surface-bold);
-    color: var(--text-on-bold);
-  }
-
   /* ============= BODY SCROLL ============= */
   .body-scroll {
     flex: 1;
     overflow-y: auto;
     overflow-x: hidden;
   }
+
+  /* ============= STICKY BOTTOM CHAT DOCK ============= */
+  .chat-dock {
+    flex-shrink: 0;
+    padding: 10px var(--space-4) calc(10px + env(safe-area-inset-bottom, 0px));
+    background: var(--surface-default);
+    border-top: 1px solid var(--stroke-subtle);
+  }
+  .chat-dock-inner {
+    background: var(--surface-ghost);
+    border: 1px solid var(--stroke-subtle);
+    border-radius: var(--radius-pill);
+    padding: 4px 4px 4px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .chat-dock-inner:focus-within {
+    background: var(--surface-default);
+    border-color: var(--surface-bold);
+  }
+  .chat-dock-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-family: var(--font);
+    font-size: 14px;
+    color: var(--text-high);
+    padding: 8px 0;
+    min-width: 0;
+  }
+  .chat-dock-input::placeholder {
+    color: var(--text-low);
+  }
+  .chat-dock-mic {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    border: none;
+    background: var(--surface-bold);
+    color: var(--text-on-bold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: transform 0.15s;
+  }
+  .chat-dock-mic:hover { transform: scale(1.05); }
+  .chat-dock-mic:active { transform: scale(0.95); }
+  .chat-dock-send {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    border: none;
+    background: var(--surface-bold);
+    color: var(--text-on-bold);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .chat-dock-inner.has-text .chat-dock-mic { display: none; }
+  .chat-dock-inner.has-text .chat-dock-send { display: flex; }
 
   /* ============= HERO (voice-first) ============= */
   .hero {
@@ -456,10 +499,6 @@
       <span data-icon="chevron-left" data-size="20"></span>
     </button>
     <div class="greeting" id="greeting">Good evening</div>
-    <div class="voice-pref" role="group" aria-label="Choose JBIQ voice">
-      <button data-voice="jbiq_warm" class="active">Warm</button>
-      <button data-voice="jbiq_calm">Calm</button>
-    </div>
     <span class="jbiq-pill">JBIQ</span>
   </div>
 
@@ -595,6 +634,25 @@
     <div class="body-scroll-pad"></div>
   </div>
 
+  <!-- Sticky bottom chat dock — type or tap mic, both route the same way -->
+  <div class="chat-dock">
+    <div class="chat-dock-inner" id="chatDockInner">
+      <input
+        type="text"
+        class="chat-dock-input"
+        id="chatDockInput"
+        placeholder='Tell me — try "interview tomorrow" or "fix my thumbnails"'
+        autocomplete="off"
+      />
+      <button class="chat-dock-mic" id="chatDockMic" aria-label="Open voice">
+        <span data-icon="mic" data-size="18"></span>
+      </button>
+      <button class="chat-dock-send" id="chatDockSend" aria-label="Send">
+        <span data-icon="chevron-right" data-size="18"></span>
+      </button>
+    </div>
+  </div>
+
 </div>
 
 <!-- Voice overlay (full-screen) -->
@@ -640,24 +698,9 @@
 })();
 
 /* =========================================================================
- * Voice picker
+ * Voice picker — removed (Warm/Calm toggle was always optional). Default
+ * orchestrator stays jbiq_warm (set in personas.js).
  * ========================================================================= */
-document.querySelectorAll('.voice-pref button').forEach(b => {
-  b.addEventListener('click', () => {
-    document.querySelectorAll('.voice-pref button').forEach(x => x.classList.remove('active'));
-    b.classList.add('active');
-    window.JBIQ_VOICE_PREF = b.getAttribute('data-voice');
-    try { localStorage.setItem('jbiqVoicePref', window.JBIQ_VOICE_PREF); } catch(e) {}
-    if (voice && window.JBIQ_PERSONAS[window.JBIQ_VOICE_PREF]) voice.setPersona(window.JBIQ_VOICE_PREF);
-  });
-});
-try {
-  const saved = localStorage.getItem('jbiqVoicePref');
-  if (saved && window.JBIQ_PERSONAS[saved]) {
-    window.JBIQ_VOICE_PREF = saved;
-    document.querySelectorAll('.voice-pref button').forEach(x => x.classList.toggle('active', x.getAttribute('data-voice') === saved));
-  }
-} catch(e) {}
 
 /* =========================================================================
  * Voice overlay + routing
@@ -770,6 +813,51 @@ voMic.addEventListener('click', () => {
 });
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && overlayEl.classList.contains('open')) voClose.click();
+});
+
+/* =========================================================================
+ * Chat dock — type or tap mic. Both route via the same keyword router.
+ * ========================================================================= */
+const chatDockInput = document.getElementById('chatDockInput');
+const chatDockInner = document.getElementById('chatDockInner');
+const chatDockMic = document.getElementById('chatDockMic');
+const chatDockSend = document.getElementById('chatDockSend');
+
+function dispatchTypedMessage(text) {
+  if (!text || !text.trim()) return;
+  const q = text.trim();
+  const route = routeFromTranscript(q);
+  if (route) {
+    // Visual feedback before navigating
+    chatDockInner.style.borderColor = 'var(--success)';
+    setTimeout(() => {
+      const params = new URLSearchParams({ from: 'landing-chat', q: q });
+      window.location.href = route.target + '?' + params.toString();
+    }, 200);
+  } else {
+    // No keyword match — open voice overlay with the typed text as transcript
+    overlayEl.classList.add('has-transcript');
+    voTranscript.textContent = '"' + q + '"';
+    setLabel('Got it. Pick a card or use the mic', 'I couldn\'t auto-route that — try saying it another way.');
+    overlayEl.classList.add('open');
+  }
+}
+
+chatDockInput.addEventListener('input', () => {
+  chatDockInner.classList.toggle('has-text', !!chatDockInput.value.trim());
+});
+chatDockInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    dispatchTypedMessage(chatDockInput.value);
+  }
+});
+chatDockSend.addEventListener('click', () => {
+  dispatchTypedMessage(chatDockInput.value);
+});
+chatDockMic.addEventListener('click', () => {
+  // Mic in dock opens the same voice overlay as the hero
+  openVoice();
 });
 </script>
 </body>
