@@ -69,19 +69,24 @@
     text-align: center;
   }
   .hero h1 {
-    font-size: 28px;
+    font-size: 24px;
     line-height: 1.15;
     font-weight: 900;
     color: var(--text-high);
-    letter-spacing: -0.5px;
-    margin-bottom: 6px;
+    letter-spacing: -0.4px;
+    margin-bottom: 4px;
   }
   .hero p {
-    font-size: var(--text-body);
+    font-size: 13px;
     line-height: 1.4;
     color: var(--text-low);
     font-weight: 400;
     margin-bottom: var(--space-4);
+  }
+  /* Slightly smaller voice hero so the 4 use case cards fit on first scroll */
+  .voice-hero .voice-stage {
+    width: 140px;
+    height: 140px;
   }
 
   /* Voice hero — JDS HelloJio orb as primary CTA */
@@ -266,37 +271,77 @@
     font-weight: 700;
   }
 
-  /* ============= EXPLORE (slim row) ============= */
-  .explore-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
+  /* ============= 4 USE CASE CARDS (the menu) ============= */
+  .vertical-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
     padding: 0 var(--space-4);
   }
-  .explore-chip {
-    flex: 1 0 calc(50% - 4px);
-    text-align: center;
-    padding: 12px 14px;
-    border-radius: var(--radius-pill);
+  .uc-card {
     border: 1px solid var(--stroke-subtle);
+    border-radius: 18px;
+    padding: 14px;
     background: var(--surface-default);
-    color: var(--text-high);
-    font-size: var(--text-small);
-    font-weight: 700;
     text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
     transition: all 0.15s;
+    min-height: 184px;
+  }
+  .uc-card:hover {
+    border-color: var(--surface-bold);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+  .uc-card:active { transform: scale(0.98); }
+  .uc-card .uc-icon-wrap {
+    width: 40px; height: 40px;
+    border-radius: 12px;
+    background: var(--primary-20);
+    color: var(--surface-bold);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 4px;
+  }
+  .uc-card .uc-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--surface-bold);
+    background: var(--primary-20);
+    padding: 3px 8px;
+    border-radius: var(--radius-pill);
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+  }
+  .uc-card h2 {
+    font-size: 17px;
+    font-weight: 800;
+    line-height: 1.15;
+    color: var(--text-high);
+    letter-spacing: -0.2px;
+    margin: 0;
+  }
+  .uc-card .uc-quote {
+    font-size: 11px;
+    line-height: 1.35;
+    color: var(--text-low);
+    font-style: italic;
+    flex: 1;
+  }
+  .uc-card .uc-cta {
     display: inline-flex;
     align-items: center;
-    justify-content: center;
-    gap: 6px;
+    gap: 4px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-high);
+    margin-top: auto;
   }
-  .explore-chip:hover {
-    background: var(--surface-bold);
-    color: var(--text-on-bold);
-    border-color: var(--surface-bold);
-  }
-  .explore-chip .exp-arrow { opacity: 0.5; transition: transform 0.15s ease; }
-  .explore-chip:hover .exp-arrow { opacity: 1; transform: translateX(2px); }
+  .uc-card:hover .uc-cta { color: var(--surface-bold); }
 
   /* ============= BOTTOM SAFE PADDING ============= */
   .body-scroll-pad { height: 24px; }
@@ -422,8 +467,8 @@
 
     <!-- Hero: voice-first -->
     <div class="hero">
-      <h1>What's on your plate?</h1>
-      <p>From a tough customer call to a govt exam — say it. I'll get you to the right coach.</p>
+      <h1>Jobs · Careers · Skills</h1>
+      <p>Pick a vertical, say what you need, or jump back where you left off.</p>
 
       <button class="voice-hero" id="voiceHero" aria-label="Tap to talk">
         <div class="voice-stage" id="heroStage" data-state="idle">
@@ -436,60 +481,44 @@
           <span class="mic-pill"><span data-icon="mic" data-size="18"></span></span>
           Tap to talk
         </span>
-        <span class="voice-hero-hint">Or pick a moment below</span>
+        <span class="voice-hero-hint">Say "interview tomorrow" or "fix my thumbnails"</span>
       </button>
     </div>
 
-    <!-- Situation chips (entry points by moment, not category) -->
-    <div class="section-h">Why are you here today?</div>
-    <div class="situation-row">
+    <!-- THE 4 USE CASES — primary menu, persona-led -->
+    <div class="section-h">Pick a vertical</div>
+    <div class="vertical-grid">
 
-      <a class="situation-chip" href="interview-prep.html?from=landing&q=tomorrow">
-        <div class="sc-icon"><span data-icon="calendar" data-size="16"></span></div>
-        <div class="sc-text">Interview tomorrow</div>
-        <div class="sc-quote">"Tech Mahindra V&A — kal hai"</div>
+      <a class="uc-card" href="microlearning.html?from=landing">
+        <div class="uc-icon-wrap"><span data-icon="brain" data-size="22"></span></div>
+        <span class="uc-tag">Hard skills · Just-in-time</span>
+        <h2>Microlearning</h2>
+        <div class="uc-quote">"Mera thumbnail click kyun nahi ho raha?"</div>
+        <span class="uc-cta">Open <span data-icon="chevron-right" data-size="14"></span></span>
       </a>
 
-      <a class="situation-chip" href="english.html?from=landing&q=customer call">
-        <div class="sc-icon"><span data-icon="chat" data-size="16"></span></div>
-        <div class="sc-text">Customer calls scare me</div>
-        <div class="sc-quote">"Sir please bolne se aage nahi jaata"</div>
+      <a class="uc-card" href="english.html?from=landing">
+        <div class="uc-icon-wrap"><span data-icon="language" data-size="22"></span></div>
+        <span class="uc-tag">English · Real situations</span>
+        <h2>Speak English</h2>
+        <div class="uc-quote">"Mujhe woh confidence chahiye…"</div>
+        <span class="uc-cta">Open <span data-icon="chevron-right" data-size="14"></span></span>
       </a>
 
-      <a class="situation-chip" href="govt-exam.html?from=landing&q=which exam">
-        <div class="sc-icon"><span data-icon="document" data-size="16"></span></div>
-        <div class="sc-text">Confused about exams</div>
-        <div class="sc-quote">"Mujhe samajh nahi aa raha kaunsa…"</div>
+      <a class="uc-card" href="interview-prep.html?from=landing">
+        <div class="uc-icon-wrap"><span data-icon="mic" data-size="22"></span></div>
+        <span class="uc-tag">Interview · Voice mock</span>
+        <h2>Interview Prep</h2>
+        <div class="uc-quote">"V&A round mein freeze ho jaata hoon."</div>
+        <span class="uc-cta">Open <span data-icon="chevron-right" data-size="14"></span></span>
       </a>
 
-      <a class="situation-chip" href="microlearning.html?from=landing&q=youtube views">
-        <div class="sc-icon"><span data-icon="brain" data-size="16"></span></div>
-        <div class="sc-text">YouTube not growing</div>
-        <div class="sc-quote">"Thumbnail click kyun nahi ho raha"</div>
-      </a>
-
-      <a class="situation-chip" href="english.html?from=landing&q=avatar">
-        <div class="sc-icon"><span data-icon="language" data-size="16"></span></div>
-        <div class="sc-text">Free practice English</div>
-        <div class="sc-quote">"Just want to chat with someone"</div>
-      </a>
-
-      <a class="situation-chip" href="govt-exam.html?from=landing&q=ibps po">
-        <div class="sc-icon"><span data-icon="stopwatch" data-size="16"></span></div>
-        <div class="sc-text">12-min commute prep</div>
-        <div class="sc-quote">"Bus mein 3 quick quizzes"</div>
-      </a>
-
-      <a class="situation-chip" href="microlearning.html?from=landing&q=chatgpt">
-        <div class="sc-icon"><span data-icon="brain" data-size="16"></span></div>
-        <div class="sc-text">Learn ChatGPT</div>
-        <div class="sc-quote">"Pros use it like a tool"</div>
-      </a>
-
-      <a class="situation-chip" href="interview-prep.html?from=landing&q=mock now">
-        <div class="sc-icon"><span data-icon="mic" data-size="16"></span></div>
-        <div class="sc-text">Mock interview now</div>
-        <div class="sc-quote">"5 min · voice-only"</div>
+      <a class="uc-card" href="govt-exam.html?from=landing">
+        <div class="uc-icon-wrap"><span data-icon="document" data-size="22"></span></div>
+        <span class="uc-tag">Govt Exam · Discovery + Prep</span>
+        <h2>Govt Exam</h2>
+        <div class="uc-quote">"Kaunsa exam dena hai? Koi seedha bata de."</div>
+        <span class="uc-cta">Open <span data-icon="chevron-right" data-size="14"></span></span>
       </a>
 
     </div>
@@ -521,21 +550,46 @@
 
     </div>
 
-    <!-- Explore — slim, secondary -->
-    <div class="section-h">Or explore the verticals</div>
-    <div class="explore-row">
-      <a class="explore-chip" href="microlearning.html?from=landing">
-        Microlearning <span class="exp-arrow" data-icon="chevron-right" data-size="14"></span>
+    <!-- Quick situations — secondary, for those who don't know what they want -->
+    <div class="section-h">Or jump in by situation</div>
+    <div class="situation-row">
+
+      <a class="situation-chip" href="interview-prep.html?from=landing&q=tomorrow">
+        <div class="sc-icon"><span data-icon="calendar" data-size="16"></span></div>
+        <div class="sc-text">Interview tomorrow</div>
+        <div class="sc-quote">"Tech Mahindra V&A — kal hai"</div>
       </a>
-      <a class="explore-chip" href="english.html?from=landing">
-        English <span class="exp-arrow" data-icon="chevron-right" data-size="14"></span>
+
+      <a class="situation-chip" href="english.html?from=landing&q=customer call">
+        <div class="sc-icon"><span data-icon="chat" data-size="16"></span></div>
+        <div class="sc-text">Customer calls scare me</div>
+        <div class="sc-quote">"Sir please bolne se aage nahi jaata"</div>
       </a>
-      <a class="explore-chip" href="interview-prep.html?from=landing">
-        Interview <span class="exp-arrow" data-icon="chevron-right" data-size="14"></span>
+
+      <a class="situation-chip" href="microlearning.html?from=landing&q=youtube views">
+        <div class="sc-icon"><span data-icon="brain" data-size="16"></span></div>
+        <div class="sc-text">YouTube not growing</div>
+        <div class="sc-quote">"Thumbnail click kyun nahi ho raha"</div>
       </a>
-      <a class="explore-chip" href="govt-exam.html?from=landing">
-        Govt Exam <span class="exp-arrow" data-icon="chevron-right" data-size="14"></span>
+
+      <a class="situation-chip" href="english.html?from=landing&q=avatar">
+        <div class="sc-icon"><span data-icon="language" data-size="16"></span></div>
+        <div class="sc-text">Free practice English</div>
+        <div class="sc-quote">"Just want to chat with someone"</div>
       </a>
+
+      <a class="situation-chip" href="govt-exam.html?from=landing&q=ibps po">
+        <div class="sc-icon"><span data-icon="stopwatch" data-size="16"></span></div>
+        <div class="sc-text">12-min commute prep</div>
+        <div class="sc-quote">"Bus mein 3 quick quizzes"</div>
+      </a>
+
+      <a class="situation-chip" href="microlearning.html?from=landing&q=chatgpt">
+        <div class="sc-icon"><span data-icon="brain" data-size="16"></span></div>
+        <div class="sc-text">Learn ChatGPT</div>
+        <div class="sc-quote">"Pros use it like a tool"</div>
+      </a>
+
     </div>
 
     <div class="body-scroll-pad"></div>
