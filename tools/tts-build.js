@@ -267,6 +267,13 @@ function extractFromMicrolearning() {
   // PROBLEM_FLOWS has many `text:` fields — these are the coach's lines.
   // Heuristic: extract every `text:` then filter the manifest to dedupe.
   lines.push(...extractTextOnlyFields(src, 'microlearning_coach'));
+  // PROBLEM_FLOWS also has `rootCause:` fields that get spoken on chip pick.
+  const rcRe = /\brootCause:\s*(?:"((?:[^"\\]|\\.)*)"|'((?:[^'\\]|\\.)*)')/g;
+  let m;
+  while ((m = rcRe.exec(src)) !== null) {
+    const raw = m[1] !== undefined ? m[1] : m[2];
+    lines.push({ personaId: 'microlearning_coach', text: decodeJsString(raw) });
+  }
   // Explicit personaId-tagged lines (Bata — kya stuck hai etc.)
   lines.push(...extractPersonaTaggedText(src));
   // Inline ai-tagged lines
@@ -282,6 +289,17 @@ function extractFromGovtExam() {
   const lines = [];
   // DISCOVERY_FLOW + DISCOVERY_BRANCHES have `ai: "..."` fields.
   lines.push(...extractSayFields(src, 'govt_exam_counselor'));
+  // Reality-check objects also have an `end:` field that's spoken on closing.
+  const endRe = /\bend:\s*(?:"((?:[^"\\]|\\.)*)"|'((?:[^'\\]|\\.)*)')/g;
+  let m;
+  while ((m = endRe.exec(src)) !== null) {
+    const raw = m[1] !== undefined ? m[1] : m[2];
+    // Filter out the literal "end" inside JS keywords / unrelated contexts:
+    // we only want longer strings (real spoken lines, > 10 chars).
+    if (raw && raw.length > 10) {
+      lines.push({ personaId: 'govt_exam_counselor', text: decodeJsString(raw) });
+    }
+  }
   // personaId-tagged prefetch lists.
   lines.push(...extractPersonaTaggedText(src));
   // ai-tagged inline transcripts.

@@ -42,8 +42,10 @@
   }
 
   /* ============ Stable hash matching tools/tts-build.js ============
-   * Build script:   sha1(personaId + ':' + normalized).hex.slice(0,16)
-   * Runtime: same.  Uses SubtleCrypto.
+   * Build script:   sha1(personaId + ':' + stripHtml(text)).hex.slice(0,16)
+   * Runtime: must do the IDENTICAL stripping/normalization or every line that
+   * has any markup (<strong>, <br>, etc.) will silently miss the cache and
+   * play nothing.
    */
   const hashCache = new Map();
   async function sha1_16(s) {
@@ -54,8 +56,20 @@
     hashCache.set(s, hex);
     return hex;
   }
+  // MUST stay byte-identical to stripHtml() in tools/tts-build.js. If the two
+  // diverge, cache keys won't match and the runtime will play nothing.
   function normalizeText(s) {
-    return (s || '').replace(/\s+/g, ' ').trim();
+    return (s || '')
+      .replace(/<br\s*\/?>(\s*)/gi, '. ')
+      .replace(/<[^>]+>/g, '')
+      .replace(/&amp;/g, '&')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'")
+      .replace(/&#x27;/g, "'")
+      .replace(/\s+/g, ' ')
+      .trim();
   }
   async function cacheKey(personaId, text) {
     const hash = await sha1_16(personaId + ':' + normalizeText(text));
