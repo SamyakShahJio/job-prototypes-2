@@ -411,6 +411,46 @@
     color: white;
   }
 
+  /* Horizontal carousel wrapper — used for quizzes + flashcards */
+  .prep-carousel {
+    display: flex;
+    gap: 14px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding: 0 var(--space-4) 8px;
+    margin: 0 calc(var(--space-4) * -1) 4px;
+    scroll-padding: 0 var(--space-4);
+  }
+  .prep-carousel::-webkit-scrollbar { display: none; }
+  .prep-carousel > * {
+    flex: 0 0 86%;
+    max-width: 320px;
+    scroll-snap-align: start;
+    margin-bottom: 0;
+  }
+  .prep-carousel-h {
+    display: flex; align-items: baseline; justify-content: space-between;
+    margin-bottom: 8px;
+  }
+  .prep-carousel-h .pch-title {
+    font-size: 13px; font-weight: 800; color: var(--grey-100);
+  }
+  .prep-carousel-h .pch-count {
+    font-size: 11px; font-weight: 700; color: var(--text-low);
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+  }
+  /* Subtle scroll indicators on the edges so the carousel reads as scrollable */
+  .prep-carousel-wrap { position: relative; }
+  .prep-carousel-wrap::after {
+    content: '';
+    position: absolute;
+    right: 0; top: 0; bottom: 8px;
+    width: 28px;
+    background: linear-gradient(to left, var(--white) 0%, rgba(255,255,255,0) 100%);
+    pointer-events: none;
+  }
+
   /* Quiz card */
   .quiz-card {
     background: white;
@@ -635,11 +675,10 @@
     </div>
 
     <div class="view-body">
-      <!-- Life-first prompt -->
+      <!-- Life-first prompt — short, blank-slate -->
       <div class="life-first-card" onclick="startDiscovery()">
         <div class="lf-tag">Tell me what you want</div>
-        <div class="lf-q">Mujhe samajh nahi aa raha kaunsa exam dena hai.</div>
-        <div class="lf-sub">Tap to start a quick chat — I'll figure out what fits your life.</div>
+        <div class="lf-q">I'll find the exam that fits your life.</div>
         <div class="lf-input-fake">
           <span class="lf-placeholder">Or type or speak…</span>
           <div class="lf-mic">
@@ -831,6 +870,31 @@
       <div id="prep_content"></div>
 
     </div>
+
+    <!-- Ask anything dock — converse from daily prep too -->
+    <div class="gc-input-dock">
+      <div class="gc-input-wrap">
+        <div class="gc-input-text">
+          <input type="text" placeholder="Ask about any concept — repo rate, CRR, …" readonly onclick="startDiscovery()">
+        </div>
+        <div class="gc-input-actions">
+          <div class="gc-input-left">
+            <button class="gc-input-icon-btn" aria-label="Add" onclick="startDiscovery()">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20 11h-7V4a1 1 0 00-2 0v7H4a1 1 0 000 2h7v7a1 1 0 002 0v-7h7a1 1 0 000-2z"/></svg>
+            </button>
+          </div>
+          <div class="gc-input-right">
+            <button class="gc-input-icon-btn" aria-label="Mic" onclick="startDiscovery()">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 15a3 3 0 003-3V5a3 3 0 00-6 0v7a3 3 0 003 3zm6-5a1 1 0 00-1 1v1a5 5 0 11-10 0v-1a1 1 0 10-2 0v1a7 7 0 1014 0v-1a1 1 0 00-1-1zm-3 10H9a1 1 0 000 2h6a1 1 0 000-2z"/></svg>
+            </button>
+            <button class="gc-input-speak-btn" onclick="startDiscovery()">
+              <svg viewBox="0 0 24 24"><path d="M12 15a3 3 0 003-3V5a3 3 0 00-6 0v7a3 3 0 003 3zm6-5a1 1 0 00-1 1v1a5 5 0 11-10 0v-1a1 1 0 10-2 0v1a7 7 0 1014 0v-1a1 1 0 00-1-1z"/></svg>
+              <span>Speak</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
 </div>
@@ -855,13 +919,14 @@ function showView(name) {
  * ========================================================================= */
 const DISCOVERY_FLOW = [
   {
-    ai: "Pehle 45% pe aata hu — for SSC CGL Tier 1 with 3 months of prep, that's actually on track. Not great, not bad — at-percentile. The bigger question is the right exam. Pehle yeh batao: kya chahiye life mein? Money, stability, ghar ke paas posting?",
+    // Short, blank-slate opener. The previous Hindi-mixed paragraph dragged.
+    ai: "Tell me what you want. What matters most — money, stability, staying close to home, or prestige?",
     speaker: 'JBIQ',
     chips: [
-      { text: "Stability + good salary",        key: 'stability_salary' },
-      { text: "Money zyada matter karta hai",   key: 'money' },
-      { text: "Ghar ke paas posting (Bihar)",   key: 'near_home' },
-      { text: "Power · prestige (UPSC dream)",  key: 'prestige' },
+      { text: "Stability + good salary",  key: 'stability_salary' },
+      { text: "Money is the priority",    key: 'money' },
+      { text: "Posting close to home",    key: 'near_home' },
+      { text: "Power & prestige",         key: 'prestige' },
     ],
   },
 ];
@@ -872,15 +937,15 @@ const DISCOVERY_BRANCHES = {
     next: 'banking_paths',
   },
   money: {
-    ai: "If money is the priority, banking PO is still your best shot — central govt offers job security AND ₹50K+ start. Want to see the options?",
+    ai: "If money is the priority, banking PO is your best shot — government job security plus ₹50K+ start. Want to see the options?",
     next: 'banking_paths',
   },
   near_home: {
-    ai: "Posting near home? Then state-level exams are best — BPSC for Bihar, you'd stay there. But banking has reasonable transfer policies too. Want both options?",
+    ai: "Posting near home is best served by state-level exams. BPSC for Bihar keeps you there. Banking also has reasonable transfer policies. Want both options?",
     next: 'state_or_banking',
   },
   prestige: {
-    ai: "If prestige is what drives you — UPSC Civil Services is the peak, but it's a 3-5 year commitment with ~0.2% selection. RBI Grade B and SBI PO are the next-best, much more achievable. Which direction?",
+    ai: "If prestige is what drives you — UPSC Civil Services is the peak, but it's a 3-5 year commitment with about 0.2% selection. RBI Grade B and SBI PO are the next-best, much more achievable. Which direction?",
     next: 'upsc_or_banking',
   },
 };
@@ -1387,6 +1452,8 @@ const CONCEPTS = [
     title: 'Repo Rate vs Reverse Repo Rate',
     desc: 'Two opposite-direction tools RBI uses to control money supply. Both impact your home loan EMI and FD interest.',
     diagram: "📈 <strong>Repo Rate</strong> (5.50%): RBI → Banks (RBI lends to banks)<br>📉 <strong>Reverse Repo</strong> (3.35%): Banks → RBI (Banks park money with RBI)<br><br>When repo rate ↓, EMIs ↓, FD rates ↓. When repo ↑, vice versa.",
+    // Natural spoken explanation, written for the ear, not stitched from fields.
+    spoken: "Repo rate and reverse repo rate work in opposite directions. The repo rate, currently 5.5 percent, is what RBI charges banks when they borrow money. The reverse repo rate, currently 3.35 percent, is what RBI pays banks when they park money with it. When repo rate drops, your home loan EMIs drop. When it rises, EMIs rise too.",
   },
 ];
 
@@ -1401,12 +1468,33 @@ function renderPrep() {
   const c = document.getElementById('prep_content');
   c.innerHTML = '';
   if (prepTab === 'quiz') {
-    QUIZZES.forEach((q, i) => c.appendChild(renderQuiz(q, i)));
+    // Horizontal carousel — feels more conversational than a vertical menu.
+    const wrap = document.createElement('div');
+    wrap.className = 'prep-carousel-wrap';
+    const head = document.createElement('div');
+    head.className = 'prep-carousel-h';
+    head.innerHTML = `<div class="pch-title">Today's quizzes</div><div class="pch-count">Swipe →</div>`;
+    const row = document.createElement('div');
+    row.className = 'prep-carousel';
+    QUIZZES.forEach((q, i) => row.appendChild(renderQuiz(q, i)));
+    wrap.appendChild(head);
+    wrap.appendChild(row);
+    c.appendChild(wrap);
   } else if (prepTab === 'flash') {
-    FLASHCARDS.forEach((f, i) => c.appendChild(renderFlashcard(f, i)));
+    const wrap = document.createElement('div');
+    wrap.className = 'prep-carousel-wrap';
+    const head = document.createElement('div');
+    head.className = 'prep-carousel-h';
+    head.innerHTML = `<div class="pch-title">Flashcards</div><div class="pch-count">Tap to flip · Swipe →</div>`;
+    const row = document.createElement('div');
+    row.className = 'prep-carousel';
+    FLASHCARDS.forEach((f, i) => row.appendChild(renderFlashcard(f, i)));
+    wrap.appendChild(head);
+    wrap.appendChild(row);
+    c.appendChild(wrap);
   } else if (prepTab === 'concept') {
     CONCEPTS.forEach((cn, i) => c.appendChild(renderConcept(cn, i)));
-    // Tease the second one
+    // Tease the next concept
     const more = document.createElement('div');
     more.className = 'concept-card';
     more.style.opacity = '0.5';
@@ -1493,7 +1581,10 @@ function speakConcept(idx) {
   if (!conceptVoice) conceptVoice = JBIQVoice.create({ persona: 'govt_exam_counselor' });
   const cn = CONCEPTS[idx];
   if (!cn) return;
-  const text = cn.title + '. ' + cn.desc + ' Repo rate is the rate at which the Reserve Bank of India lends to banks. Reverse repo is when banks park money with RBI. When repo rate drops, your EMIs drop too.';
+  // Speak only the natural title + description. Earlier we glued a hardcoded
+  // explanation onto the end, which sounded stitched-together and robotic.
+  // If a concept needs a long-form spoken version, add a `spoken` field.
+  const text = cn.spoken || (cn.title + '. ' + cn.desc);
   conceptVoice.speak(text, 'en-IN');
 }
 

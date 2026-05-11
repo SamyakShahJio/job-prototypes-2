@@ -1143,6 +1143,22 @@
       <button class="ln-prev" onclick="prevLesson()">← Previous</button>
       <button class="ln-next" onclick="nextLesson()">Next step →</button>
     </div>
+
+    <!-- Ask the coach — available even mid-lesson -->
+    <div class="gc-input-dock gc-input-dock-compact">
+      <div class="gc-input-wrap">
+        <div class="gc-input-text">
+          <input type="text" placeholder="Ask the coach anything…" readonly onclick="startChat()">
+        </div>
+        <div class="gc-input-actions">
+          <div class="gc-input-right">
+            <button class="gc-input-icon-btn" aria-label="Mic" onclick="startChat()">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 15a3 3 0 003-3V5a3 3 0 00-6 0v7a3 3 0 003 3zm6-5a1 1 0 00-1 1v1a5 5 0 11-10 0v-1a1 1 0 10-2 0v1a7 7 0 1014 0v-1a1 1 0 00-1-1zm-3 10H9a1 1 0 000 2h6a1 1 0 000-2z"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- ========================== AI FLUENCY TRACK ========================== -->
@@ -1224,6 +1240,22 @@
         <div class="prompt-result" id="prompt_result">
           <div class="pr-h">✨ ChatGPT response</div>
           <ol id="prompt_titles"></ol>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ask the coach — available on every screen -->
+    <div class="gc-input-dock gc-input-dock-compact">
+      <div class="gc-input-wrap">
+        <div class="gc-input-text">
+          <input type="text" placeholder="Ask the coach anything…" readonly onclick="startChat()">
+        </div>
+        <div class="gc-input-actions">
+          <div class="gc-input-right">
+            <button class="gc-input-icon-btn" aria-label="Mic" onclick="startChat()">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 15a3 3 0 003-3V5a3 3 0 00-6 0v7a3 3 0 003 3zm6-5a1 1 0 00-1 1v1a5 5 0 11-10 0v-1a1 1 0 10-2 0v1a7 7 0 1014 0v-1a1 1 0 00-1-1zm-3 10H9a1 1 0 000 2h6a1 1 0 000-2z"/></svg>
+            </button>
+          </div>
         </div>
       </div>
     </div>
