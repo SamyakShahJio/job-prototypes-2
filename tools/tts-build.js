@@ -191,8 +191,10 @@ function extractFromEnglish() {
   // sarah_avatar.
   lines.push(...extractAiText(src, 'sarah_avatar'));
 
-  // The agent lines in situational call-center role-plays are also Sarah
-  // (she's role-playing the agent). Already covered by the regex above.
+  // Better-answer lines on coaching cards — spoken by Sarah on Listen tap.
+  lines.push(...extractBetterFields(src, 'sarah_avatar'));
+  // Pronunciation "suggested" string — also Sarah voicing the correct read.
+  lines.push(...extractSuggestedFields(src, 'sarah_avatar'));
 
   // Inline filler / non-ai speakers (customer / manager / colleague) — these
   // are voiced by the "other side" of the role-play, which is JBIQ's faceless
@@ -205,6 +207,32 @@ function extractFromEnglish() {
   }
 
   return lines;
+}
+
+// Extract `better: "..."` and `better: '...'` strings (model answers in
+// feedback cards). Each company's mock has its own persona — caller passes it.
+function extractBetterFields(src, personaId) {
+  const out = [];
+  const re = /\bbetter:\s*(?:"((?:[^"\\]|\\.)*)"|'((?:[^'\\]|\\.)*)')/g;
+  let m;
+  while ((m = re.exec(src)) !== null) {
+    const raw = m[1] !== undefined ? m[1] : m[2];
+    if (raw && raw.length > 15) out.push({ personaId, text: decodeJsString(raw) });
+  }
+  return out;
+}
+
+// Extract pronunciation { suggested: '...' } strings — these are spoken by
+// the Listen button on pronunciation cards.
+function extractSuggestedFields(src, personaId) {
+  const out = [];
+  const re = /\bsuggested:\s*(?:"((?:[^"\\]|\\.)*)"|'((?:[^'\\]|\\.)*)')/g;
+  let m;
+  while ((m = re.exec(src)) !== null) {
+    const raw = m[1] !== undefined ? m[1] : m[2];
+    if (raw) out.push({ personaId, text: decodeJsString(raw) });
+  }
+  return out;
 }
 
 function extractFromInterview() {
@@ -245,6 +273,9 @@ function extractFromInterview() {
     }
     const block = src.substring(startIdx, i - 1);
     lines.push(...extractAiText(block, c.personaId));
+    // `better: '...'` model-answer lines are spoken by the "Listen" button
+    // on each feedback card. They're voiced as the interviewer's persona.
+    lines.push(...extractBetterFields(block, c.personaId));
   }
 
   // Also grab `personaId:` tagged prefetch lists.

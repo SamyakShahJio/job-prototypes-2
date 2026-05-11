@@ -198,23 +198,149 @@
 .rich-card--correction .rc-icon { background: rgba(250,47,64,0.10); color: var(--error); }
 .rich-card--correction .rc-label { color: var(--error); }
 .rich-card .rc-before {
+  display: flex; flex-direction: column; gap: 2px;
   font-size: 12px;
   color: var(--text-low);
-  text-decoration: line-through;
-  font-style: italic;
-  padding: 6px 10px;
+  padding: 8px 10px;
   background: var(--surface-ghost);
-  border-radius: 8px;
+  border-radius: 10px;
+}
+.rich-card .rc-before .rc-row-label {
+  font-size: 10px; font-weight: 800; letter-spacing: 0.4px;
+  text-transform: uppercase; color: var(--text-low);
+  opacity: 0.7;
+}
+.rich-card .rc-before .rc-row-text {
+  font-style: italic;
+  text-decoration: line-through;
+  text-decoration-color: rgba(0,0,0,0.3);
 }
 .rich-card .rc-after {
+  display: flex; flex-direction: column; gap: 2px;
   background: rgba(37,171,33,0.10);
   color: #15791a;
   font-weight: 600;
   font-size: 13px;
   padding: 9px 12px;
   border-radius: 10px;
-  font-style: italic;
 }
+.rich-card .rc-after .rc-row-label {
+  font-size: 10px; font-weight: 800; letter-spacing: 0.4px;
+  text-transform: uppercase; color: #15791a;
+  opacity: 0.7;
+}
+.rich-card .rc-after .rc-row-text { font-style: italic; }
+
+/* Voice-coaching notes — pace, fillers, confidence, pronunciation in one compact list */
+.rich-card .rc-notes {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex; flex-direction: column;
+  gap: 4px;
+}
+.rich-card .rc-note {
+  display: flex; align-items: flex-start; gap: 8px;
+  font-size: 12px; line-height: 1.4;
+  color: var(--text-high);
+}
+.rich-card .rc-note-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--text-low);
+  margin-top: 6px; flex-shrink: 0;
+}
+.rich-card .rc-note.good   .rc-note-dot { background: var(--success); }
+.rich-card .rc-note.bad    .rc-note-dot { background: var(--error); }
+.rich-card .rc-note.warn   .rc-note-dot { background: var(--warning); }
+.rich-card .rc-note.good   { color: #15791a; }
+.rich-card .rc-note.bad    { color: var(--error); }
+.rich-card .rc-note.warn   { color: var(--secondary-60); }
+
+/* Better-answer block — model answer with inline Listen button */
+.rich-card .rc-better-block {
+  background: rgba(53,53,243,0.06);
+  border-left: 3px solid var(--surface-bold);
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+.rich-card .rc-better-block .rc-better-h {
+  font-size: 10px; font-weight: 800; letter-spacing: 0.4px;
+  text-transform: uppercase;
+  color: var(--surface-bold);
+  margin-bottom: 6px;
+}
+.rich-card .rc-better-block .rc-better-row {
+  display: flex; align-items: center; gap: 10px;
+}
+.rich-card .rc-better-block .rc-better-text {
+  flex: 1; min-width: 0;
+  font-size: 13px; font-weight: 600; font-style: italic;
+  color: var(--text-high);
+  line-height: 1.35;
+}
+.rich-card .rc-better-block .rc-better-play {
+  flex-shrink: 0;
+  display: inline-flex; align-items: center; gap: 5px;
+  background: var(--surface-bold);
+  color: white;
+  border: none;
+  border-radius: 999px;
+  padding: 5px 10px;
+  font-family: var(--font);
+  font-size: 10px; font-weight: 800;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform 0.15s, background 0.15s;
+}
+.rich-card .rc-better-block .rc-better-play:hover { background: var(--primary-70); }
+.rich-card .rc-better-block .rc-better-play:active { transform: scale(0.95); }
+
+/* Pronunciation feedback — "You said X, try Y" */
+.rich-card .rc-pron {
+  background: linear-gradient(180deg, rgba(255,255,255,0.04) 0%, rgba(53,53,243,0.06) 100%);
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+.rich-card .rc-pron-h {
+  font-size: 10px; font-weight: 800; letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--surface-bold);
+  margin-bottom: 6px;
+}
+.rich-card .rc-pron-wrong {
+  font-size: 12px; line-height: 1.4;
+  color: var(--error);
+  margin-bottom: 4px;
+}
+.rich-card .rc-pron-wrong em {
+  font-style: italic;
+  text-decoration: line-through;
+  text-decoration-color: rgba(250,47,64,0.5);
+}
+.rich-card .rc-pron-right {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 13px;
+  color: var(--success);
+}
+.rich-card .rc-pron-right strong { color: #15791a; }
+.rich-card .rc-pron-play {
+  flex-shrink: 0;
+  display: inline-flex; align-items: center; gap: 5px;
+  background: var(--success);
+  color: white;
+  border: none;
+  border-radius: 999px;
+  padding: 5px 10px;
+  font-family: var(--font);
+  font-size: 10px; font-weight: 800;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+.rich-card .rc-pron-play:hover { filter: brightness(1.05); }
+.rich-card .rc-pron-play:active { transform: scale(0.95); }
 
 /* Variant: phrase saved (success accent) */
 .rich-card--phrase .rc-icon { background: rgba(37,171,33,0.12); color: var(--success); }

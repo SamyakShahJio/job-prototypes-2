@@ -1362,6 +1362,15 @@ const SCENARIO_SCRIPTS = {
       { word: "Patience",      meaning: "Calm willingness to wait",             example: '"Thank you for your patience, sir."' },
       { word: "Escalate",      meaning: "Pass a problem to a senior",           example: '"Before I escalate, give me 30 seconds."' },
     ],
+    coaching: {
+      notes: [
+        { tone: 'good', text: 'Pace held steady at ~130 wpm — exactly right for an angry caller.' },
+        { tone: 'bad',  text: 'You sounded slightly underconfident on "resolve this today". Drop the rising tone — it makes it sound like a question.' },
+        { tone: 'warn', text: 'One filler ("you know") slipped in. Replace with a half-second pause; it sounds more authoritative.' },
+      ],
+      pronunciation: { you: "frus-trAY-tion", suggested: "frus-TRAY-shun (stress on the middle syllable)" },
+      better: "I completely understand your frustration, sir. Let me look into this right away — I'll have an answer for you in two minutes.",
+    },
     listen: [
       { speaker: 'customer', text: "I've been on hold for 30 minutes! This is unacceptable!" },
       { speaker: 'agent', text: "I completely understand your frustration, sir. I'm so sorry for the long wait." },
@@ -1398,6 +1407,15 @@ const SCENARIO_SCRIPTS = {
       { word: "Responsibilities",  meaning: "Things you\'re accountable for",     example: '"I\'ve taken on additional responsibilities."' },
       { word: "Revisit",           meaning: "Look at again, professionally",      example: '"Can we revisit my package?"' },
     ],
+    coaching: {
+      notes: [
+        { tone: 'good', text: 'Calm tone — you didn\'t plead. You stated.' },
+        { tone: 'bad',  text: 'You spoke a bit too fast (~160 wpm). For a raise conversation, slow down to 130. Pauses feel powerful.' },
+        { tone: 'warn', text: '"Discuss compensation" was rushed — you swallowed "compensation". Open your mouth wider for the long vowels: com-pen-SAY-shun.' },
+      ],
+      pronunciation: { you: "com-pen-suh-shun", suggested: "com-pen-SAY-shun" },
+      better: "Sir, I'd like to discuss my contribution this year. Based on my impact — I closed eighteen accounts last quarter and took on two new responsibilities — I'd like to revisit my compensation.",
+    },
     listen: [
       { speaker: 'agent', text: "Sir, I'd like to discuss my contribution this year." },
       { speaker: 'manager', text: "Sure, what's on your mind?" },
@@ -1699,6 +1717,15 @@ const SCENARIO_SCRIPTS = {
       { word: "What got you into", meaning: "Asking how someone started an interest", example: '"What got you into photography?"' },
       { word: "Curious",     meaning: "Wanting to know more",             example: '"I\'m curious to hear more about that."' },
     ],
+    coaching: {
+      notes: [
+        { tone: 'good', text: 'Casual tone — exactly right for a first message. You didn\'t over-formalize.' },
+        { tone: 'warn', text: 'Slightly under-confident on the question — your voice trailed off. End "What got you into Y?" on a clear, even tone.' },
+        { tone: 'bad',  text: 'You repeated "same here" twice in 5 seconds. Once is charming; twice is filler.' },
+      ],
+      pronunciation: { you: "kyoor-ee-ous", suggested: "KYOOR-ee-uhs (3 quick syllables, stress on the first)" },
+      better: "Hey — your bio mentioned hiking, same here. What got you into trail running? I'd love to hear about your favourite route.",
+    },
     listen: [
       { speaker: 'agent', text: "Hey, your bio mentioned hiking — same here. What got you into it?" },
       { speaker: 'match', text: "Started during the lockdown. You?" },
@@ -1883,8 +1910,9 @@ function buildPracticeTranscript(sc, mode) {
 
   if (mode === 'practice') {
     // Live conversational roleplay. Sarah opens with a setup line, asks the
-    // signature open question, the user answers, Sarah gives a feedback card,
-    // then closes with a save-to-phrasebook line.
+    // signature open question, the user answers, Sarah gives a rich feedback
+    // card (pace / fillers / confidence / pronunciation), and offers a
+    // Listen-able "better way" model answer.
     const f = (sc.free && sc.free[0]) || { ai: "Let's practice. What would you say in this scenario?" };
     transcript.push({
       speaker: 'ai',
@@ -1895,18 +1923,32 @@ function buildPracticeTranscript(sc, mode) {
       ? `I would say — "${sc.keyPhrases[0]}" and then offer to look into it.`
       : "I would lead with empathy and offer to help.");
     transcript.push({ speaker: 'user', text: demoAnswer });
+
+    // Use scenario-specific coaching when defined, else fall back to a
+    // sensible default with pace / fillers / one pronunciation flag.
+    const coaching = sc.coaching || {
+      notes: [
+        { tone: 'good', text: 'Pace was good — you stayed steady, not rushed.' },
+        { tone: 'warn', text: 'One filler ("um") on the opener. Drop it and the line lands stronger.' },
+        { tone: 'warn', text: 'Slight under-confidence dip on the second phrase. Try landing it like a stated fact, not a question.' },
+      ],
+      pronunciation: null,
+      better: (sc.keyPhrases && sc.keyPhrases[0]) || demoAnswer,
+    };
     transcript.push({
       speaker: 'card',
       card: {
-        kind: 'phrase',
-        label: 'Strong response',
-        content: 'Empathy first, solution second — exactly the right move. Saved to your phrasebook.',
-        keyPhrase: (sc.keyPhrases && sc.keyPhrases[0]) || '',
+        kind: 'feedback',
+        label: 'How that landed',
+        content: 'Empathy first, solution second — the right structure. Here\'s the line-by-line.',
+        notes: coaching.notes,
+        pronunciation: coaching.pronunciation,
+        better: coaching.better,
       },
     });
     transcript.push({
       speaker: 'ai',
-      text: "Good run. Switch to Quick recap when you want the 3-line takeaway, or Quick phrases to drill specific lines.",
+      text: "Good run. Switch to Quick recap for the 3-line takeaway, or Quick phrases to drill specific lines.",
     });
   } else if (mode === 'recap') {
     // Three-bullet summary card + one closing line.

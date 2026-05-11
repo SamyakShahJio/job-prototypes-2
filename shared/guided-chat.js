@@ -56,16 +56,66 @@
     score:      '<svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14"><path d="M21.37 9.61a1.964 1.964 0 00-1.52-1.284l-4.235-.646-1.899-4.087a1.917 1.917 0 00-3.434 0L8.38 7.68l-4.273.646a1.964 1.964 0 00-1.52 1.283 1.91 1.91 0 00.447 1.901l3.124 3.213-.74 4.553a1.91 1.91 0 002.88 2.07l3.788-2.091 3.788 2.09a1.9 1.9 0 002.88-2.033l-.74-4.552 3.123-3.213a1.91 1.91 0 00.333-1.93z"/></svg>',
   };
 
+  // Tiny play-icon SVG, reused on every Listen button inside a card.
+  const PLAY_SVG = '<svg viewBox="0 0 24 24" fill="currentColor" width="11" height="11"><path d="M8 5v14l11-7z"/></svg>';
+  function esc(s) { return (s == null ? '' : String(s)).replace(/"/g, '&quot;'); }
+
   function buildCardHtml(card) {
     const kind = card.kind || 'tip';
     const icon = card.icon || ICONS[kind] || ICONS.tip;
     let html = `<div class="rich-card rich-card--${kind}">`;
     html += `<div class="rc-h"><div class="rc-icon">${icon}</div><div class="rc-label">${card.label || kind}</div></div>`;
     if (card.content) html += `<div class="rc-content">${card.content}</div>`;
-    if (card.before)  html += `<div class="rc-before">${card.before}</div>`;
-    if (card.after)   html += `<div class="rc-after">${card.after}</div>`;
-    if (card.better)  html += `<div class="rc-better">"${card.better}"</div>`;
-    if (card.why)     html += `<div class="rc-meta">${card.why}</div>`;
+
+    // Voice-coaching notes (compact list, one per critique aspect). Each note
+    // can carry { tone: 'good'|'bad'|'warn', text: 'Pace was good — 138 wpm' }
+    // or just be a plain string. Rendered above the better-answer block.
+    if (card.notes && card.notes.length) {
+      html += '<ul class="rc-notes">';
+      card.notes.forEach(n => {
+        const tone = typeof n === 'object' ? (n.tone || '') : '';
+        const text = typeof n === 'object' ? (n.text || '') : n;
+        html += `<li class="rc-note ${tone}"><span class="rc-note-dot"></span>${text}</li>`;
+      });
+      html += '</ul>';
+    }
+
+    if (card.before) html += `<div class="rc-before"><span class="rc-row-label">You said</span><span class="rc-row-text">${card.before}</span></div>`;
+    if (card.after)  html += `<div class="rc-after"><span class="rc-row-label">Better</span><span class="rc-row-text">${card.after}</span></div>`;
+
+    // "Better answer" block — now with an inline Listen button so the coach
+    // can speak the model line. The button uses data-rc-play same as keyPhrase.
+    if (card.better) {
+      html += `
+        <div class="rc-better-block">
+          <div class="rc-better-h"><span>Hear how this could be better</span></div>
+          <div class="rc-better-row">
+            <span class="rc-better-text">"${card.better}"</span>
+            <button class="rc-better-play" data-rc-play="${esc(card.better)}" title="Listen">
+              ${PLAY_SVG}<span>Listen</span>
+            </button>
+          </div>
+        </div>`;
+    }
+
+    // Pronunciation feedback — { you: 'wrong-attempt', suggested: 'correct-version' }
+    // Modelled on the old english.ts pronunciation card pattern.
+    if (card.pronunciation) {
+      const p = card.pronunciation;
+      html += `
+        <div class="rc-pron">
+          <div class="rc-pron-h">Pronunciation check</div>
+          <div class="rc-pron-wrong">You said: <em>"${p.you || ''}"</em></div>
+          <div class="rc-pron-right">
+            <span>Try: <strong>"${p.suggested || ''}"</strong></span>
+            <button class="rc-pron-play" data-rc-play="${esc(p.suggested || '')}">
+              ${PLAY_SVG}<span>Listen</span>
+            </button>
+          </div>
+        </div>`;
+    }
+
+    if (card.why)    html += `<div class="rc-meta">${card.why}</div>`;
     if (card.scoreNum != null) {
       html += `<div class="rc-score-num">${card.scoreNum}</div>`;
       html += `<div class="rc-score-l">${card.scoreLabel || 'Score'}</div>`;
@@ -79,7 +129,7 @@
       html += `</div>`;
     }
     if (card.keyPhrase) {
-      html += `<div class="rc-key-phrase"><span>"${card.keyPhrase}"</span><button class="rc-key-play" data-rc-play="${(card.keyPhrase || '').replace(/"/g, '&quot;')}"><svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12"><path d="M8 5v14l11-7z"/></svg></button></div>`;
+      html += `<div class="rc-key-phrase"><span>"${card.keyPhrase}"</span><button class="rc-key-play" data-rc-play="${esc(card.keyPhrase)}">${PLAY_SVG}</button></div>`;
     }
     if (card.actions && card.actions.length) {
       html += `<div class="rc-actions">`;
