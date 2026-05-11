@@ -201,6 +201,96 @@
     margin-top: 6px;
   }
 
+  /* Word of the Day — colored hero card with Listen + Practice buttons */
+  .wod-hero {
+    margin: var(--space-5) var(--space-4) 0;
+    border-radius: 22px;
+    padding: 20px 18px 16px;
+    background: linear-gradient(135deg, #3900ad 0%, #6464ff 60%, #f7ab20 200%);
+    color: white;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 10px 28px rgba(57,0,173,0.22);
+  }
+  .wod-hero::before {
+    content: '';
+    position: absolute;
+    right: -40px; top: -40px;
+    width: 180px; height: 180px;
+    background: radial-gradient(circle, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0) 70%);
+    pointer-events: none;
+  }
+  .wod-h-row {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 10px;
+    position: relative;
+  }
+  .wod-tag {
+    font-size: 10px; font-weight: 800; letter-spacing: 0.6px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    background: rgba(255,255,255,0.18);
+    border-radius: var(--radius-pill);
+    color: white;
+  }
+  .wod-level {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.4px;
+    color: rgba(255,255,255,0.85);
+  }
+  .wod-word {
+    font-size: 34px; font-weight: 900; letter-spacing: -0.6px;
+    line-height: 1; margin-bottom: 4px;
+    position: relative;
+  }
+  .wod-pronounce {
+    font-size: 12px; font-weight: 500;
+    color: rgba(255,255,255,0.75);
+    font-family: 'Georgia', serif; font-style: italic;
+    margin-bottom: 10px;
+  }
+  .wod-meaning {
+    font-size: 13px; line-height: 1.4; color: rgba(255,255,255,0.92);
+    margin-bottom: 4px;
+  }
+  .wod-meaning strong { color: white; }
+  .wod-example {
+    font-size: 12px; line-height: 1.4;
+    color: rgba(255,255,255,0.78);
+    margin-bottom: 14px;
+    font-style: italic;
+  }
+  .wod-example em {
+    background: rgba(255,255,255,0.18);
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-style: normal;
+    font-weight: 600;
+    color: white;
+  }
+  .wod-actions {
+    display: flex; gap: 8px;
+    position: relative;
+  }
+  .wod-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: var(--radius-pill);
+    padding: 8px 14px;
+    color: white;
+    font-family: var(--font);
+    font-size: 12px; font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .wod-btn:hover { background: rgba(255,255,255,0.25); }
+  .wod-btn-primary {
+    background: white;
+    color: var(--surface-bold);
+    border-color: white;
+  }
+  .wod-btn-primary:hover { background: var(--primary-20); color: var(--surface-bold); }
+
   /* Section headers */
   .section-h {
     font-size: 11px; font-weight: 700; color: var(--grey-60);
@@ -571,6 +661,111 @@
     font-size: 11px; color: var(--grey-60); margin-top: 2px;
   }
   .pathway-week.current .pw-meta { color: var(--primary); font-weight: 600; }
+  .pathway-week .pw-content {
+    display: flex; align-items: center; gap: 8px;
+    cursor: pointer;
+    transition: transform 0.15s, border-color 0.15s;
+  }
+  .pathway-week .pw-content:hover {
+    border-color: var(--surface-bold);
+    transform: translateX(2px);
+  }
+  .pathway-week .pw-content > div:first-child { flex: 1; min-width: 0; }
+  .pathway-week .pw-chev {
+    color: var(--grey-60);
+    flex-shrink: 0;
+  }
+  .pathway-week.current .pw-chev { color: var(--primary); }
+
+  /* Week detail — hero + lesson list */
+  .week-hero {
+    margin: var(--space-3) var(--space-4) 0;
+    border-radius: 20px;
+    padding: 18px;
+    background: linear-gradient(135deg, var(--primary-20) 0%, white 70%);
+    border: 1px solid var(--stroke-subtle);
+  }
+  .week-hero .wh-tag {
+    font-size: 10px; font-weight: 800; letter-spacing: 0.5px;
+    color: var(--surface-bold);
+    margin-bottom: 8px;
+  }
+  .week-hero .wh-title {
+    font-size: 20px; font-weight: 900; color: var(--text-high);
+    letter-spacing: -0.3px; line-height: 1.2; margin-bottom: 6px;
+  }
+  .week-hero .wh-sub {
+    font-size: 13px; line-height: 1.45; color: var(--text-low);
+    margin-bottom: 14px;
+  }
+  .week-hero .wh-progress {
+    height: 6px;
+    background: rgba(57,0,173,0.12);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .week-hero .wh-fill {
+    height: 100%;
+    background: var(--surface-bold);
+    border-radius: 3px;
+    transition: width 0.4s;
+  }
+
+  .week-lessons {
+    padding: 0 var(--space-4);
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .lesson-row {
+    display: flex; align-items: center; gap: 12px;
+    background: white;
+    border: 1px solid var(--stroke-subtle);
+    border-radius: 14px;
+    padding: 12px 14px;
+    transition: all 0.15s;
+  }
+  .lesson-row:hover { border-color: var(--surface-bold); }
+  .lesson-row.done .lr-num {
+    background: var(--success); border-color: var(--success);
+    color: white;
+  }
+  .lesson-row.current {
+    border-color: var(--surface-bold);
+    background: linear-gradient(0deg, white 0%, var(--primary-20) 200%);
+  }
+  .lesson-row.current .lr-num {
+    background: var(--surface-bold); border-color: var(--surface-bold);
+    color: white;
+  }
+  .lesson-row .lr-num {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--surface-ghost);
+    border: 1.5px solid var(--stroke-subtle);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 800; color: var(--text-low);
+    flex-shrink: 0;
+  }
+  .lesson-row .lr-text { flex: 1; min-width: 0; }
+  .lesson-row .lr-name {
+    font-size: 13px; font-weight: 700; color: var(--text-high);
+    line-height: 1.25;
+  }
+  .lesson-row .lr-meta {
+    font-size: 11px; font-weight: 500; color: var(--text-low);
+    margin-top: 2px;
+  }
+  .lesson-row .lr-status {
+    color: var(--success);
+    flex-shrink: 0;
+  }
+  .lesson-row.current .lr-status { color: var(--surface-bold); }
+  .lesson-row .lr-go {
+    background: var(--surface-bold); color: white;
+    border: none; border-radius: var(--radius-pill);
+    padding: 6px 12px;
+    font-family: var(--font); font-size: 11px; font-weight: 700;
+    cursor: pointer;
+  }
+  .lesson-row .lr-go:hover { background: var(--primary-70); }
 
   .word-of-day {
     margin: 16px var(--space-4) 0;
@@ -711,16 +906,26 @@
         </div>
       </div>
 
-      <!-- Phrasebook teaser -->
-      <div class="phrasebook-teaser" onclick="showView('pathway')">
-        <div class="pb-h">
-          <div class="pb-icon">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h12a4 4 0 014 4v12H4V4z" opacity="0.5"/><path d="M8 8h8M8 12h8M8 16h5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-          </div>
-          <div class="pb-title">Word of the day</div>
+      <!-- Word of the Day — colored hero card with Listen + Practice -->
+      <div class="wod-hero">
+        <div class="wod-h-row">
+          <div class="wod-tag">Word of the day</div>
+          <div class="wod-level">A2 · ADJECTIVE</div>
         </div>
-        <div class="pb-q">Apart</div>
-        <div class="pb-meta"><strong>"Set apart"</strong> — different in a good way, special.<br>e.g. "What sets us <em>apart</em> is our 24-hour service."</div>
+        <div class="wod-word">Apart</div>
+        <div class="wod-pronounce">/əˈpɑːrt/</div>
+        <div class="wod-meaning"><strong>"Set apart"</strong> — different in a good way, special.</div>
+        <div class="wod-example">"What sets us <em>apart</em> is our 24-hour service."</div>
+        <div class="wod-actions">
+          <button class="wod-btn wod-btn-primary" onclick="listenWordOfDay()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 15a3 3 0 003-3V5a3 3 0 00-6 0v7a3 3 0 003 3zm6-5a1 1 0 00-1 1v1a5 5 0 11-10 0v-1a1 1 0 10-2 0v1a7 7 0 1014 0v-1a1 1 0 00-1-1z"/></svg>
+            <span>Listen</span>
+          </button>
+          <button class="wod-btn" onclick="practiceWordOfDay()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7L8 5z"/></svg>
+            <span>Practice in a sentence</span>
+          </button>
+        </div>
       </div>
     </div>
 
@@ -871,9 +1076,10 @@
     </div>
 
     <div class="practice-modes">
-      <button class="mode-tab active" data-mode="listen" onclick="setMode('listen')">Listen</button>
-      <button class="mode-tab" data-mode="repeat" onclick="setMode('repeat')">Repeat with me</button>
-      <button class="mode-tab" data-mode="free" onclick="setMode('free')">Free practice</button>
+      <button class="mode-tab active" data-mode="practice" onclick="setMode('practice')">Practice with me</button>
+      <button class="mode-tab" data-mode="recap" onclick="setMode('recap')">Quick recap</button>
+      <button class="mode-tab" data-mode="phrases" onclick="setMode('phrases')">Quick phrases</button>
+      <button class="mode-tab" data-mode="vocab" onclick="setMode('vocab')">Quick vocab</button>
     </div>
 
     <!-- Canned demo transcript — auto-plays on mode switch, no mic needed -->
@@ -1005,56 +1211,8 @@
       </div>
 
       <div class="section-h">12-week pathway</div>
-      <div class="pathway-list">
-        <div class="pathway-week done">
-          <div class="pw-num">1</div>
-          <div class="pw-content">
-            <div class="pw-title">Agreeing in meetings</div>
-            <div class="pw-meta">5 lessons · Done last week</div>
-          </div>
-        </div>
-        <div class="pathway-week current">
-          <div class="pw-num">2</div>
-          <div class="pw-content">
-            <div class="pw-title">Asking questions</div>
-            <div class="pw-meta">3 of 5 lessons · 2 days to go</div>
-          </div>
-        </div>
-        <div class="pathway-week">
-          <div class="pw-num">3</div>
-          <div class="pw-content">
-            <div class="pw-title">Giving opinions</div>
-            <div class="pw-meta">5 lessons · Starts next week</div>
-          </div>
-        </div>
-        <div class="pathway-week">
-          <div class="pw-num">4</div>
-          <div class="pw-content">
-            <div class="pw-title">Handling disagreement</div>
-            <div class="pw-meta">5 lessons · 4 weeks away</div>
-          </div>
-        </div>
-        <div class="pathway-week">
-          <div class="pw-num">5</div>
-          <div class="pw-content">
-            <div class="pw-title">Sound of "v" vs "w"</div>
-            <div class="pw-meta">Pronunciation gym · 4 lessons</div>
-          </div>
-        </div>
-        <div class="pathway-week">
-          <div class="pw-num">6</div>
-          <div class="pw-content">
-            <div class="pw-title">Small talk at work</div>
-            <div class="pw-meta">5 lessons · Coming up</div>
-          </div>
-        </div>
-        <div class="pathway-week">
-          <div class="pw-num">7</div>
-          <div class="pw-content">
-            <div class="pw-title">Customer call confidence</div>
-            <div class="pw-meta">8 lessons · Includes BPO V&A</div>
-          </div>
-        </div>
+      <div class="pathway-list" id="pathway_list">
+        <!-- Filled by renderPathway() from WEEKS — clickable -->
       </div>
     </div>
 
@@ -1063,6 +1221,43 @@
       <div class="gc-input-wrap">
         <div class="gc-input-text">
           <input type="text" placeholder="Ask Sarah anything…" readonly onclick="showView('home')">
+        </div>
+        <div class="gc-input-actions">
+          <div class="gc-input-right">
+            <button class="gc-input-icon-btn" aria-label="Mic" onclick="showView('home')">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 15a3 3 0 003-3V5a3 3 0 00-6 0v7a3 3 0 003 3zm6-5a1 1 0 00-1 1v1a5 5 0 11-10 0v-1a1 1 0 10-2 0v1a7 7 0 1014 0v-1a1 1 0 00-1-1zm-3 10H9a1 1 0 000 2h6a1 1 0 000-2z"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================== WEEK DETAIL — drilled-in lesson list ========================== -->
+  <div class="view" id="view-week-detail">
+    <div class="top-bar">
+      <button class="icon-btn" onclick="showView('pathway')" aria-label="Back">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <div class="title-area">
+        <div class="t1" id="wd_title">Week 2</div>
+        <div class="t2" id="wd_sub">3 of 5 lessons done</div>
+      </div>
+    </div>
+
+    <div class="view-body">
+      <div class="week-hero" id="wd_hero"></div>
+      <div class="section-h">Lessons this week</div>
+      <div class="week-lessons" id="wd_lessons"></div>
+    </div>
+
+    <!-- Ask Sarah anything — sticky on week detail too -->
+    <div class="gc-input-dock">
+      <div class="gc-input-wrap">
+        <div class="gc-input-text">
+          <input type="text" placeholder="Ask Sarah anything about this week…" readonly onclick="showView('home')">
         </div>
         <div class="gc-input-actions">
           <div class="gc-input-right">
@@ -1127,7 +1322,7 @@ const PACKS = {
   dating: {
     name: 'Dating',
     scenarios: [
-      { id: 'first-message', title: 'Sending the first message', meta: '3 turns · 2 min', done: false },
+      { id: 'first-message', title: 'Sending the first message', meta: '3 turns · 2 min', done: false, lead: true },
       { id: 'first-date', title: 'First date small talk', meta: '6 turns · 5 min', done: false },
       { id: 'compliment', title: 'Giving a compliment', meta: '3 turns · 2 min', done: false },
       { id: 'no-thanks', title: 'Saying "no thanks" politely', meta: '4 turns · 3 min', done: false },
@@ -1156,6 +1351,17 @@ const SCENARIO_SCRIPTS = {
       "I'll make sure this is resolved today.",
       "Thank you for your patience, sir.",
     ],
+    recap: [
+      "Lead with empathy in the first 5 words — <strong>before</strong> any solution.",
+      "Replace \"sir please\" with a specific action: <strong>\"let me look into this right away.\"</strong>",
+      "End every reply with a clear next step the customer can hold you to.",
+    ],
+    vocab: [
+      { word: "Frustration",   meaning: "Strong annoyance from being blocked", example: '"I completely understand your frustration."' },
+      { word: "Resolve",       meaning: "Fix or settle a problem",              example: '"I will resolve this within the hour."' },
+      { word: "Patience",      meaning: "Calm willingness to wait",             example: '"Thank you for your patience, sir."' },
+      { word: "Escalate",      meaning: "Pass a problem to a senior",           example: '"Before I escalate, give me 30 seconds."' },
+    ],
     listen: [
       { speaker: 'customer', text: "I've been on hold for 30 minutes! This is unacceptable!" },
       { speaker: 'agent', text: "I completely understand your frustration, sir. I'm so sorry for the long wait." },
@@ -1181,6 +1387,17 @@ const SCENARIO_SCRIPTS = {
       "I've taken on additional responsibilities this quarter.",
       "I'm hoping we can revisit my package.",
     ],
+    recap: [
+      "Frame the ask as <strong>impact first, money second</strong> — never the other way.",
+      "Use specific numbers: <strong>\"I closed 18 accounts last quarter\"</strong>, not \"I worked hard\".",
+      "Calm tone, not pleading. You're stating a position, not asking for a favour.",
+    ],
+    vocab: [
+      { word: "Contribution",      meaning: "What you've added to the team",      example: '"I\'d like to discuss my contribution this year."' },
+      { word: "Compensation",      meaning: "Total pay package, formal word",     example: '"I\'d like to discuss compensation."' },
+      { word: "Responsibilities",  meaning: "Things you\'re accountable for",     example: '"I\'ve taken on additional responsibilities."' },
+      { word: "Revisit",           meaning: "Look at again, professionally",      example: '"Can we revisit my package?"' },
+    ],
     listen: [
       { speaker: 'agent', text: "Sir, I'd like to discuss my contribution this year." },
       { speaker: 'manager', text: "Sure, what's on your mind?" },
@@ -1204,6 +1421,17 @@ const SCENARIO_SCRIPTS = {
       "Here's what happened — and here's how I'm fixing it.",
       "It won't happen again.",
     ],
+    recap: [
+      "Open with <strong>\"I need to bring something to your attention\"</strong> — direct, not anxious.",
+      "Lead with the <strong>fix</strong>, not the apology. Managers want to hear the path forward.",
+      "Don\'t over-explain. Three sentences max: what happened, what's the fix, what's next.",
+    ],
+    vocab: [
+      { word: "Attention",  meaning: "Notice or awareness, formal",      example: '"I need to bring something to your attention."' },
+      { word: "Error",      meaning: "Mistake, formal word",             example: '"I made an error in the report."' },
+      { word: "Fix",        meaning: "Plan to resolve the issue",        example: '"Here is the fix."' },
+      { word: "Accountable",meaning: "Taking responsibility for outcome", example: '"I\'m accountable for this miss."' },
+    ],
     listen: [
       { speaker: 'agent', text: "Ma'am, I need to bring something to your attention." },
       { speaker: 'manager', text: "Yes, go ahead." },
@@ -1222,6 +1450,17 @@ const SCENARIO_SCRIPTS = {
     title: 'Lunch chat',
     pack: 'Office',
     keyPhrases: [ "How was your weekend?", "Any plans this evening?", "Did you watch the game last night?" ],
+    recap: [
+      "Keep it light and short — <strong>2 sentences each turn</strong>, no more.",
+      "Find <strong>common ground fast</strong> (family, weather, sport, food) — then ride that thread.",
+      "Don\'t correct grammar in your own head. Flow beats perfection over lunch.",
+    ],
+    vocab: [
+      { word: "Weekend",       meaning: "Saturday and Sunday",            example: '"How was your weekend?"' },
+      { word: "Relaxed",       meaning: "Calm, taking it easy",           example: '"Spent the weekend relaxed at home."' },
+      { word: "Plans",         meaning: "Things you intend to do later",  example: '"Any plans this evening?"' },
+      { word: "Common ground", meaning: "Shared interest, an opening",    example: '"We found common ground over cricket."' },
+    ],
     listen: [
       { speaker: 'colleague', text: "Hey! Want to grab lunch?" },
       { speaker: 'agent', text: "Sure! How was your weekend?" },
@@ -1346,6 +1585,17 @@ const SCENARIO_SCRIPTS = {
   },
   'in-laws': {
     title: 'Talking to in-laws in English',
+    recap: [
+      "Use <strong>warm openers</strong> — \"it's lovely to see you\" instead of just \"hi\".",
+      "Compliment something <strong>specific</strong> (meal, home, photos) before any other talk.",
+      "If they ask about work or money, keep the answer <strong>short and confident</strong> — no long stories.",
+    ],
+    vocab: [
+      { word: "Lovely",   meaning: "Warm-friendly word for nice/pleasant", example: '"It\'s lovely to finally meet you."' },
+      { word: "Aunty",    meaning: "Respectful address for older woman",   example: '"How was your day, aunty?"' },
+      { word: "Hospitality", meaning: "The way someone hosts you",         example: '"Thank you for your hospitality."' },
+      { word: "Mention",  meaning: "Say or refer to something briefly",    example: '"My husband mentioned your trip."' },
+    ],
     pack: 'Family / In-Laws',
     keyPhrases: [ "It's so nice to see you.", "Thank you for the lovely meal.", "I really appreciate your help with the kids." ],
     listen: [
@@ -1438,6 +1688,17 @@ const SCENARIO_SCRIPTS = {
     title: 'Sending the first message',
     pack: 'Dating',
     keyPhrases: [ "Hey, your bio mentioned X — same here.", "What got you into Y?", "Would love to hear more about that." ],
+    recap: [
+      "<strong>Specificity beats \"hi\"</strong> every time. Pick one thing from their bio.",
+      "End with an <strong>open question</strong>, not a statement — gives them an easy reply.",
+      "Keep it 2 sentences max. Cool, casual, curious.",
+    ],
+    vocab: [
+      { word: "Bio",         meaning: "Short description on a profile", example: '"Your bio mentioned hiking."' },
+      { word: "Same here",   meaning: "Casual way to say \"me too\"",    example: '"Same here — love trail running."' },
+      { word: "What got you into", meaning: "Asking how someone started an interest", example: '"What got you into photography?"' },
+      { word: "Curious",     meaning: "Wanting to know more",             example: '"I\'m curious to hear more about that."' },
+    ],
     listen: [
       { speaker: 'agent', text: "Hey, your bio mentioned hiking — same here. What got you into it?" },
       { speaker: 'match', text: "Started during the lockdown. You?" },
@@ -1523,7 +1784,7 @@ const SCENARIO_SCRIPTS = {
  * ========================================================================= */
 let currentPackId = null;
 let currentScenarioId = null;
-let currentMode = 'listen';
+let currentMode = 'practice';
 
 function openPack(packId) {
   currentPackId = packId;
@@ -1589,83 +1850,115 @@ function setMode(mode) {
   renderPractice();
 }
 
+// Default recap text derived from a scenario when the scenario doesn't
+// declare its own. Each recap is 3 bullets — short, scannable.
+function defaultRecap(sc) {
+  const phrases = sc.keyPhrases || [];
+  return [
+    `Lead with empathy: <strong>"${phrases[0] || 'I hear you.'}"</strong>`,
+    "Slow your pace — confidence reads in the steady flow, not in the words.",
+    "End with a clear next step so the other person knows you're on it.",
+  ];
+}
+
+// Default vocab: pull notable words from key phrases. Each scenario can
+// override with its own `vocab: [{word, meaning, example}]`.
+function defaultVocab(sc) {
+  return [
+    { word: "Address", meaning: "To deal with or pay attention to (a problem)", example: '"Let me address that right away."' },
+    { word: "Acknowledge", meaning: "To accept that something is true or exists", example: '"I acknowledge there\'s been a delay."' },
+    { word: "Resolve", meaning: "To fix or settle (a problem)", example: '"I\'ll resolve this within the hour."' },
+    { word: "Apologize", meaning: "To say sorry — formally", example: '"I sincerely apologize for the inconvenience."' },
+  ];
+}
+
 // Build a canned transcript for a given scenario × mode.
+// Modes:
+//   practice — live roleplay with Sarah (was 'free')
+//   recap    — 3-bullet quick summary
+//   phrases  — scenario key phrases as Listen-able cards
+//   vocab    — vocab cards (word + meaning + example)
 function buildPracticeTranscript(sc, mode) {
   const transcript = [];
 
-  // Always lead with a Rich UI card showing the key phrases (with play buttons)
-  // Only the first key-phrase becomes a 'practice' card; the rest are listed in content.
-  if (sc.keyPhrases && sc.keyPhrases.length) {
+  if (mode === 'practice') {
+    // Live conversational roleplay. Sarah opens with a setup line, asks the
+    // signature open question, the user answers, Sarah gives a feedback card,
+    // then closes with a save-to-phrasebook line.
+    const f = (sc.free && sc.free[0]) || { ai: "Let's practice. What would you say in this scenario?" };
+    transcript.push({
+      speaker: 'ai',
+      text: "Let's run this one live. I'll play the other person — you respond naturally.",
+    });
+    transcript.push({ speaker: 'ai', text: f.ai });
+    const demoAnswer = f.demoAnswer || (sc.keyPhrases && sc.keyPhrases.length
+      ? `I would say — "${sc.keyPhrases[0]}" and then offer to look into it.`
+      : "I would lead with empathy and offer to help.");
+    transcript.push({ speaker: 'user', text: demoAnswer });
     transcript.push({
       speaker: 'card',
       card: {
-        kind: 'practice',
-        label: 'Key phrases for this scenario',
-        content: sc.keyPhrases.slice(1).map(p => `• "${p}"`).join('<br>'),
-        keyPhrase: sc.keyPhrases[0],
+        kind: 'phrase',
+        label: 'Strong response',
+        content: 'Empathy first, solution second — exactly the right move. Saved to your phrasebook.',
+        keyPhrase: (sc.keyPhrases && sc.keyPhrases[0]) || '',
       },
     });
-  }
-
-  if (mode === 'listen') {
-    // Show the dialogue between agent and the other party.
-    sc.listen.forEach(line => {
-      // 'agent' = the user (Pooja). Map other speakers to AI bubbles.
-      transcript.push({
-        speaker: line.speaker === 'agent' ? 'user' : 'ai',
-        text: line.text,
-      });
+    transcript.push({
+      speaker: 'ai',
+      text: "Good run. Switch to Quick recap when you want the 3-line takeaway, or Quick phrases to drill specific lines.",
+    });
+  } else if (mode === 'recap') {
+    // Three-bullet summary card + one closing line.
+    const bullets = (sc.recap && sc.recap.length ? sc.recap : defaultRecap(sc));
+    transcript.push({
+      speaker: 'ai',
+      text: "Here's the 3-line recap for this scenario. Tap the play icon to hear each rule.",
     });
     transcript.push({
       speaker: 'card',
       card: {
         kind: 'tip',
-        label: 'Listen mode',
-        content: 'Listen to a sample dialogue. Switch to <strong>Repeat with me</strong> to practice each phrase, or <strong>Free practice</strong> to apply it.',
+        label: 'Quick recap · 3 rules',
+        content: bullets.map(b => `• ${b}`).join('<br>'),
       },
     });
-  } else if (mode === 'repeat') {
-    // For each of the first 3 key phrases: AI says it as instruction, user repeats, AI feedback card
-    sc.keyPhrases.slice(0, 3).forEach((phrase, i) => {
-      transcript.push({ speaker: 'ai',   text: `Repeat after me: "${phrase}"` });
-      transcript.push({ speaker: 'user', text: phrase });
+  } else if (mode === 'phrases') {
+    // One card per key phrase, with a Listen button (rich-card practice variant
+    // already has a play button bound to voice.speak).
+    transcript.push({
+      speaker: 'ai',
+      text: "Tap any phrase to hear it aloud. These are the ones to memorise for this scenario.",
+    });
+    const phrases = sc.keyPhrases || [];
+    phrases.forEach((phrase, i) => {
       transcript.push({
         speaker: 'card',
         card: {
-          kind: 'tip',
-          label: `Phrase ${i + 1} · Pacing`,
-          content: 'Good pace. Slight pause after the pronoun makes it feel more natural and confident.',
+          kind: 'practice',
+          label: `Phrase ${i + 1}`,
+          keyPhrase: phrase,
         },
       });
     });
+  } else if (mode === 'vocab') {
+    // Vocab cards — word, meaning, example.
+    const vocab = (sc.vocab && sc.vocab.length ? sc.vocab : defaultVocab(sc));
     transcript.push({
       speaker: 'ai',
-      text: "Lovely. All three phrases saved to your phrasebook. Try Free practice next.",
+      text: "The words that carry this scenario. Tap any example to hear Sarah say it.",
     });
-  } else if (mode === 'free') {
-    // AI asks the open question, "Pooja" answers, AI gives feedback Rich UI card
-    if (sc.free && sc.free[0]) {
-      const f = sc.free[0];
-      // Build a canned answer using the strongest matching key phrase if available
-      const demoAnswer = f.demoAnswer || (sc.keyPhrases && sc.keyPhrases.length
-        ? `I would say — "${sc.keyPhrases[0]}" and then offer to look into the issue.`
-        : "I would lead with empathy and offer to resolve.");
-      transcript.push({ speaker: 'ai',   text: f.ai });
-      transcript.push({ speaker: 'user', text: demoAnswer });
+    vocab.forEach(v => {
       transcript.push({
         speaker: 'card',
         card: {
           kind: 'phrase',
-          label: 'Strong response',
-          content: 'Empathy first, solution second — exactly the right move. Saved to your phrasebook.',
-          keyPhrase: sc.keyPhrases ? sc.keyPhrases[0] : '',
+          label: v.word.toUpperCase(),
+          content: '<strong>Meaning:</strong> ' + v.meaning,
+          keyPhrase: v.example.replace(/^"|"$/g, ''),
         },
       });
-      transcript.push({
-        speaker: 'ai',
-        text: "Done. Your phrasebook for this scenario is now full. See you tomorrow at the same time.",
-      });
-    }
+    });
   }
 
   return transcript;
@@ -1685,6 +1978,174 @@ function renderPractice() {
     speakerLabel: 'Sarah',
   });
   setTimeout(() => practiceRunner.start(), 150);
+}
+
+/* =========================================================================
+ * 12-WEEK PATHWAY — clickable weeks with drillable lesson detail
+ * ========================================================================= */
+const WEEKS = [
+  { n: 1, status: 'done', title: 'Agreeing in meetings',
+    meta: '5 lessons · Done last week', done: 5, total: 5,
+    hero: 'Done! You can agree, disagree-softly, and back someone up cleanly. Watch for it next stand-up.',
+    lessons: [
+      { name: 'Yes-and pattern',                  meta: '2 min · Phrase: "Yes — and what if we also..."', done: true },
+      { name: 'Backing up a teammate',            meta: '3 min · Phrase: "I\'d add to what Priya said"', done: true },
+      { name: 'Soft disagreement opener',         meta: '2 min · Phrase: "I see it slightly differently"', done: true },
+      { name: 'When you don\'t fully understand', meta: '2 min · Phrase: "Just to make sure I follow..."', done: true },
+      { name: 'Wrap-up + summarising',            meta: '3 min · Phrase: "So the takeaway is..."', done: true },
+    ],
+  },
+  { n: 2, status: 'current', title: 'Asking questions',
+    meta: '3 of 5 lessons · 2 days to go', done: 3, total: 5,
+    hero: 'This week: turn vague confusion into a sharp question. Practice each lesson once, then use it tomorrow.',
+    lessons: [
+      { name: 'Clarifying questions',         meta: '2 min · "Could you say more about...?"', done: true },
+      { name: 'When-you-don\'t-know-the-word', meta: '2 min · "What\'s the word for...?"', done: true },
+      { name: 'Polite follow-ups',            meta: '3 min · "Sorry, just one more — ...?"', done: true },
+      { name: 'Asking for time',              meta: '2 min · "Could I get back to you on this?"', done: false, current: true },
+      { name: 'The one question that ends a meeting', meta: '3 min · "What would good look like by Friday?"', done: false },
+    ],
+  },
+  { n: 3, status: 'upcoming', title: 'Giving opinions',
+    meta: '5 lessons · Starts next week', done: 0, total: 5,
+    hero: 'Hedge less, commit more. Phrases that make your opinion land without sounding aggressive.',
+    lessons: [
+      { name: 'The "I think" upgrade',         meta: '2 min · "I think" → "From what I\'ve seen..."' },
+      { name: 'Owning a strong opinion',       meta: '3 min · "My view on this is..."' },
+      { name: 'Disagreeing with data',         meta: '3 min · "The numbers suggest a different read"' },
+      { name: 'Yielding gracefully',           meta: '2 min · "Fair point — that changes my view"' },
+      { name: 'The summary opinion',           meta: '3 min · "If I had to pick, I\'d go with..."' },
+    ],
+  },
+  { n: 4, status: 'upcoming', title: 'Handling disagreement',
+    meta: '5 lessons · 4 weeks away', done: 0, total: 5,
+    hero: 'Disagreement is where careers are made or lost. Learn to do it without burning bridges.',
+    lessons: [
+      { name: 'The "yes-but" trap',            meta: '2 min · Replace with "yes-and-also"' },
+      { name: 'Pushing back without heat',     meta: '3 min · "Help me see how this works when..."' },
+      { name: 'Standing firm under pressure',  meta: '3 min · "I hear you. My read is different."' },
+      { name: 'Apologising without grovelling', meta: '2 min · "I got that wrong. Here\'s the fix."' },
+      { name: 'Closing a heated discussion',   meta: '3 min · "Let\'s take an action and revisit"' },
+    ],
+  },
+  { n: 5, status: 'upcoming', title: 'Sound of "v" vs "w"',
+    meta: 'Pronunciation gym · 4 lessons', done: 0, total: 4,
+    hero: 'The single sound that makes Indian English readable to global ears. Practice + Sarah\'s ear.',
+    lessons: [
+      { name: 'Lip shape for /v/', meta: '2 min · Teeth on lower lip' },
+      { name: 'Lip shape for /w/', meta: '2 min · Round lips, no teeth' },
+      { name: 'Drill: very vs wary', meta: '3 min · 5 minimal pairs' },
+      { name: 'In sentences',       meta: '3 min · "We were very weary..."' },
+    ],
+  },
+  { n: 6, status: 'upcoming', title: 'Small talk at work',
+    meta: '5 lessons · Coming up', done: 0, total: 5,
+    hero: 'The "weekend was good" loop is a dead end. Five openers that actually keep a conversation going.',
+    lessons: [
+      { name: 'Three openers that aren\'t weather', meta: '2 min · Project / weekend recommendation / city' },
+      { name: 'The follow-up question',           meta: '2 min · Mirror + curiosity' },
+      { name: 'Exit politely',                    meta: '2 min · "Anyway, I should jump on a call"' },
+      { name: 'Coffee-machine bonding',           meta: '3 min · Sport / food / a small complaint' },
+      { name: 'Remembering a name',               meta: '3 min · Use it in your second sentence' },
+    ],
+  },
+  { n: 7, status: 'upcoming', title: 'Customer call confidence',
+    meta: '8 lessons · Includes BPO V&A', done: 0, total: 8,
+    hero: 'V&A round prep. From "sir please" to phrases that hold the call. Used by 200K agents.',
+    lessons: [
+      { name: 'Empathy in 5 words', meta: '2 min · "I completely understand your frustration"' },
+      { name: 'De-escalation pivots', meta: '3 min · "Before I escalate, give me 30 seconds"' },
+      { name: 'Promising and delivering', meta: '3 min · "I\'ll call you back at 3 PM"' },
+      { name: 'The refund dance', meta: '3 min · Acknowledge → investigate → resolve' },
+      { name: 'Hostile customer pressure', meta: '3 min · Calm voice + slow pace' },
+      { name: 'Hold + transfer scripts', meta: '2 min · No more dead air' },
+      { name: 'Closing the call cleanly', meta: '2 min · "Anything else I can help with?"' },
+      { name: 'Recording your own call', meta: '5 min · Listen back · pick 1 fix' },
+    ],
+  },
+];
+
+function renderPathway() {
+  const list = document.getElementById('pathway_list');
+  if (!list) return;
+  list.innerHTML = '';
+  WEEKS.forEach(w => {
+    const div = document.createElement('div');
+    div.className = 'pathway-week ' + (w.status === 'done' ? 'done' : (w.status === 'current' ? 'current' : ''));
+    div.onclick = () => openWeek(w.n);
+    div.innerHTML = `
+      <div class="pw-num">${w.n}</div>
+      <div class="pw-content">
+        <div class="pw-title">${w.title}</div>
+        <div class="pw-meta">${w.meta}</div>
+      </div>
+      <div class="pw-chev"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></div>
+    `;
+    list.appendChild(div);
+  });
+}
+// Render once on load + every time the pathway view opens.
+document.addEventListener('DOMContentLoaded', renderPathway);
+
+let currentWeek = null;
+function openWeek(n) {
+  const w = WEEKS.find(x => x.n === n);
+  if (!w) return;
+  currentWeek = w;
+  document.getElementById('wd_title').textContent = 'Week ' + w.n + ' · ' + w.title;
+  document.getElementById('wd_sub').textContent = (w.done || 0) + ' of ' + w.total + ' lessons · ' + (w.status === 'done' ? 'Done' : w.status === 'current' ? 'In progress' : 'Locked');
+  // Hero strip
+  const hero = document.getElementById('wd_hero');
+  hero.innerHTML = `
+    <div class="wh-tag">${w.status === 'done' ? '✓ COMPLETE' : w.status === 'current' ? '· IN PROGRESS' : '· UP NEXT'}</div>
+    <div class="wh-title">${w.title}</div>
+    <div class="wh-sub">${w.hero}</div>
+    <div class="wh-progress"><div class="wh-fill" style="width: ${Math.round((w.done || 0) / w.total * 100)}%"></div></div>
+  `;
+  // Lessons
+  const lessons = document.getElementById('wd_lessons');
+  lessons.innerHTML = '';
+  (w.lessons || []).forEach((l, i) => {
+    const row = document.createElement('div');
+    row.className = 'lesson-row' + (l.done ? ' done' : '') + (l.current ? ' current' : '');
+    row.innerHTML = `
+      <div class="lr-num">${i + 1}</div>
+      <div class="lr-text">
+        <div class="lr-name">${l.name}</div>
+        <div class="lr-meta">${l.meta}</div>
+      </div>
+      <div class="lr-status">
+        ${l.done
+          ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+          : l.current
+            ? '<button class="lr-go">Continue</button>'
+            : '<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>'}
+      </div>
+    `;
+    lessons.appendChild(row);
+  });
+  showView('week-detail');
+}
+
+/* =========================================================================
+ * WORD OF THE DAY — Listen + Practice handlers
+ * ========================================================================= */
+let wodVoice = null;
+function ensureWodVoice() {
+  if (wodVoice) return wodVoice;
+  wodVoice = JBIQVoice.create({ persona: 'sarah_avatar' });
+  return wodVoice;
+}
+function listenWordOfDay() {
+  ensureWodVoice().speak("Apart. Adjective. Set apart means different in a good way, special. For example: what sets us apart is our 24-hour service.", 'en-IN');
+}
+function practiceWordOfDay() {
+  // Jump into Sarah's avatar with a phrasebook hint loaded; for the canned
+  // demo, just route to the avatar view.
+  showView('avatar');
+  setTimeout(() => {
+    ensureAvatarVoice().speak("Let's practice the word \"apart\". Try a sentence using \"sets us apart\" — about your team, your work, anything you care about.", 'en-IN');
+  }, 400);
 }
 
 /* =========================================================================
@@ -1717,36 +2178,41 @@ function ensureAvatarVoice() {
 
 // Sarah's transcript is grounded in Pooja's actual day-in-life from
 // JCS_Vertical_Pack_v9 §3 (Day in Their Lives — Pooja, 10:30 AM + 11:30 PM beats).
+// "New to the office" role-play. Sarah coaches the user (a fresh joiner)
+// through the three things people ask on day one: tell-me-about-yourself,
+// why-this-team, and the "any questions?" callback. Replaces the long BPO
+// escalation flow — that scenario is now in Scenarios > Customer Service.
 const SARAH_TRANSCRIPT = [
-  { speaker: 'ai', text: "Hey Pooja. Long shift?" },
-  { speaker: 'user', text: "Bahut. 10:30 ka call abhi tak dimaag mein hai. Customer bola 'I want to escalate'. Maine 'sir please' 6 baar bola, fir transfer kar diya." },
-  { speaker: 'ai', text: "Saath hu. 'Sir please' is what 9 out of 10 agents do under pressure — and it doesn't de-escalate. Let me show you what actually works on 'I want to escalate'." },
+  { speaker: 'ai', text: "Hey Pooja. First day at the new office tomorrow — let's run the three intros people will ask you. I'll play your team lead." },
+  { speaker: 'user', text: "Okay, ready." },
+  { speaker: 'ai', text: "\"Hi, you must be the new joiner. Tell me a bit about yourself.\"" },
+  { speaker: 'user', text: "Hi sir. I'm Pooja. I just finished BCom from Pune. I'm excited to be here." },
   { speaker: 'card', card: {
       kind: 'correction',
-      label: '"Sir please ×6" → something that holds the call',
-      before: 'Sir please. Sir please. Sir please. (transferred)',
-      after: 'I completely understand. Before I escalate, give me 30 seconds — let me try to fix it for you first.',
+      label: 'Two quick fixes on your intro',
+      before: "Hi sir. I'm Pooja. I just finished BCom from Pune. I'm excited to be here.",
+      after: "Hi Arjun. I'm Pooja, BCom from Pune. I led the student finance club last year — I want to bring that energy here.",
   } },
-  { speaker: 'ai', text: "80% of 'escalate' demands resolve in 30 seconds if you ask for them. Try the phrase out loud right now — I'm listening." },
-  { speaker: 'user', text: "I completely understand. Before I escalate, give me 30 seconds — let me try to fix it for you first." },
-  { speaker: 'ai', text: "Pace was clear. One thing — slight hesitation before 'escalate'. Say it like a stated fact, not a question." },
-  { speaker: 'card', card: {
-      kind: 'tip',
-      label: 'Pacing tip',
-      content: "Don't pause before 'escalate'. Confidence is in the steady flow.",
-      better: 'Before I escalate, give me 30 seconds.',
-  } },
-  { speaker: 'user', text: "11:30 ho gaye. Mujhe course nahi chahiye, practice chahiye thi." },
-  { speaker: 'ai', text: "Yehi to practice hai. Saved this one as your Bajaj-Finance escalation play. Tomorrow morning, first thing — three 'I want to escalate' calls, three minutes." },
+  { speaker: 'ai', text: "Drop 'sir' — in most offices it sounds too formal for a team lead. And add one specific thing you'll bring to the role. Try again." },
+  { speaker: 'user', text: "Hi Arjun. I'm Pooja, BCom from Pune. I led our student finance club last year, and I want to bring that energy here." },
+  { speaker: 'ai', text: "Much better. Calm, specific, no 'sir'. Now the second one — they'll ask 'why this team?' Most people fumble this. Listen, then say it back." },
   { speaker: 'card', card: {
       kind: 'phrase',
-      label: 'Saved · Bajaj Finance escalation play',
-      content: '"I completely understand. Before I escalate, give me 30 seconds."',
-      why: 'Buys you time AND signals control. Customer hears: "she\'s on it" — not "she\'s panicking".',
-      keyPhrase: 'Before I escalate, give me 30 seconds.',
+      label: 'Phrase to try: why this team',
+      content: "\"I researched the team's work on payments. The way you scaled UPI integration in 6 months is exactly the pace I want to learn.\"",
+      keyPhrase: "I researched the team's work on payments — the way you scaled UPI integration in 6 months is exactly the pace I want to learn.",
   } },
-  { speaker: 'user', text: "Thanks Sarah. Kal subah pakka." },
-  { speaker: 'ai', text: "Pakka. Sleep — you've got this. By Friday this'll feel different." },
+  { speaker: 'user', text: "I researched the team's work on payments. The way you scaled UPI integration in 6 months is exactly the pace I want to learn." },
+  { speaker: 'ai', text: "Crisp. Pace was clear. One last landmine — when they ask 'any questions?', everyone says no. Wrong move. Ask one specific question back." },
+  { speaker: 'card', card: {
+      kind: 'phrase',
+      label: 'Saved · The one question that makes you memorable',
+      content: '"What would success look like in my first 3 months?"',
+      why: "Shows you're thinking about outcomes, not just tasks. Most candidates miss this — you won't.",
+      keyPhrase: 'What would success look like in my first 3 months?',
+  } },
+  { speaker: 'user', text: "What would success look like in my first 3 months?" },
+  { speaker: 'ai', text: "Locked in. Three things saved to your phrasebook — intro, why-this-team, the question back. Tomorrow morning: take a breath at the door. You've got this." },
 ];
 
 function startSarahDemo() {
