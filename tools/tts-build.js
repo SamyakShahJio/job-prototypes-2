@@ -355,9 +355,13 @@ function synthesize(personaId, text) {
   const persona = PERSONAS[personaId];
   if (!persona) throw new Error('Unknown persona: ' + personaId);
 
+  // eleven_flash_v2_5 — half the credit cost vs eleven_multilingual_v2 with
+  // very similar quality. Switching here so the key's remaining credits go
+  // further (we hit quota on v2 mid-build last time).
+  const modelId = process.env.ELEVENLABS_MODEL || 'eleven_flash_v2_5';
   const body = JSON.stringify({
     text,
-    model_id: 'eleven_multilingual_v2',
+    model_id: modelId,
     voice_settings: {
       stability: persona.stability,
       similarity_boost: persona.similarityBoost,

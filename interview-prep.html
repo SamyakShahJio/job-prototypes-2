@@ -347,6 +347,71 @@
     animation: livePulse 1.6s ease-in-out infinite;
   }
 
+  /* Feedback timing toggle on cheatsheet — two-card segmented picker */
+  .feedback-toggle {
+    background: var(--surface-ghost);
+    border-radius: 14px;
+    padding: 12px;
+    margin-top: 12px;
+  }
+  .feedback-toggle .ft-h {
+    font-size: 11px; font-weight: 800; letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--vert-accent-dark);
+    margin-bottom: 8px;
+  }
+  .feedback-toggle .ft-row {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+  }
+  .feedback-toggle .ft-opt {
+    background: white;
+    border: 1.5px solid var(--stroke-subtle);
+    border-radius: 12px;
+    padding: 10px 12px;
+    cursor: pointer;
+    font-family: var(--font);
+    text-align: left;
+    transition: all 0.15s;
+    display: flex; flex-direction: column; gap: 2px;
+  }
+  .feedback-toggle .ft-opt:hover { border-color: var(--surface-bold); }
+  .feedback-toggle .ft-opt.active {
+    border-color: var(--surface-bold);
+    background: var(--primary-20);
+  }
+  .feedback-toggle .ft-opt-title {
+    font-size: 12px; font-weight: 800; color: var(--text-high);
+  }
+  .feedback-toggle .ft-opt-sub {
+    font-size: 10.5px; color: var(--text-low); font-weight: 500;
+  }
+
+  /* Post-report CTAs — row of pill buttons below 'Run another mock' */
+  .report-next-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 12px;
+  }
+  .report-cta {
+    background: white;
+    border: 1px solid var(--stroke-subtle);
+    border-radius: 12px;
+    padding: 10px 12px;
+    cursor: pointer;
+    font-family: var(--font);
+    font-size: 12px; font-weight: 700;
+    color: var(--text-high);
+    display: flex; align-items: center; gap: 8px;
+    text-align: left;
+    transition: all 0.15s;
+  }
+  .report-cta:hover {
+    border-color: var(--surface-bold);
+    color: var(--surface-bold);
+  }
+  .report-cta [data-icon] { line-height: 0; flex-shrink: 0; color: var(--surface-bold); }
+
   /* ============= LIVE MOCK CALL — canned demo transcript ============== */
   .mock-view { background: var(--surface-default); color: var(--text-high); }
   .view.mock-view.active { background: var(--surface-default); }
@@ -757,6 +822,22 @@
     <div class="wizard-footer">
       <button class="btn-go" id="wiz_go" onclick="wizardNext()" disabled>Next →</button>
     </div>
+
+    <!-- Ask anything — sticky on setup wizard too -->
+    <div class="gc-input-dock">
+      <div class="gc-input-wrap">
+        <div class="gc-input-text">
+          <input type="text" placeholder="Ask about any company or round…" readonly onclick="showView('home')">
+        </div>
+        <div class="gc-input-actions">
+          <div class="gc-input-right">
+            <button class="gc-input-icon-btn" aria-label="Mic" onclick="showView('home')">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 15a3 3 0 003-3V5a3 3 0 00-6 0v7a3 3 0 003 3zm6-5a1 1 0 00-1 1v1a5 5 0 11-10 0v-1a1 1 0 10-2 0v1a7 7 0 1014 0v-1a1 1 0 00-1-1zm-3 10H9a1 1 0 000 2h6a1 1 0 000-2z"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- ========================== CHEAT SHEET ========================== -->
@@ -832,17 +913,48 @@
         </ul>
       </div>
 
+      <!-- Feedback timing — user picks how they want coaching during the mock -->
+      <div class="feedback-toggle">
+        <div class="ft-h">Feedback timing</div>
+        <div class="ft-row">
+          <button class="ft-opt active" data-fb-mode="per-q" onclick="setFeedbackMode('per-q')">
+            <span class="ft-opt-title">After each question</span>
+            <span class="ft-opt-sub">Score + tip after every answer</span>
+          </button>
+          <button class="ft-opt" data-fb-mode="end" onclick="setFeedbackMode('end')">
+            <span class="ft-opt-title">Only at the end</span>
+            <span class="ft-opt-sub">Run the full mock first, then see the report</span>
+          </button>
+        </div>
+      </div>
+
       <button class="start-mock-btn" onclick="startMock()">
         <span class="live-dot"></span>
         Start mock — voice on
       </button>
+    </div>
+
+    <!-- Ask anything — sticky on the prep screen too -->
+    <div class="gc-input-dock">
+      <div class="gc-input-wrap">
+        <div class="gc-input-text">
+          <input type="text" placeholder="Ask about this round, or any interview question…" readonly onclick="showView('home')">
+        </div>
+        <div class="gc-input-actions">
+          <div class="gc-input-right">
+            <button class="gc-input-icon-btn" aria-label="Mic" onclick="showView('home')">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 15a3 3 0 003-3V5a3 3 0 00-6 0v7a3 3 0 003 3zm6-5a1 1 0 00-1 1v1a5 5 0 11-10 0v-1a1 1 0 10-2 0v1a7 7 0 1014 0v-1a1 1 0 00-1-1zm-3 10H9a1 1 0 000 2h6a1 1 0 000-2z"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
   <!-- ========================== LIVE MOCK CALL (canned demo transcript) ========================== -->
   <div class="view mock-view" id="view-mock">
     <div class="mock-top">
-      <button class="mt-end" onclick="endMock()">End</button>
+      <button class="mt-end" onclick="endMock()" title="Exit early">Done</button>
       <div class="mt-mid">
         <div class="mt-name"><span class="live-dot"></span><span id="mock_persona_name">Rajesh Kumar</span></div>
         <div class="mt-timer" id="mock_timer">00:00</div>
@@ -962,6 +1074,43 @@
         <button class="start-mock-btn" style="margin-top: 16px;" onclick="showView('cheatsheet')">
           Run another mock — fix the gap
         </button>
+
+        <!-- After-mock CTAs — distinct from "run another" so users see ways
+             to keep momentum without immediately doing another mock -->
+        <div class="report-next-row">
+          <button class="report-cta" onclick="setMockReminder()">
+            <span data-icon="bell" data-size="16"></span>
+            <span>Remind me tomorrow</span>
+          </button>
+          <button class="report-cta" onclick="addToPlan()">
+            <span data-icon="calendar-week" data-size="16"></span>
+            <span>Get on a plan</span>
+          </button>
+          <button class="report-cta" onclick="shareReport()">
+            <span data-icon="whatsapp" data-size="16"></span>
+            <span>Share with friend</span>
+          </button>
+          <button class="report-cta" onclick="startMock()">
+            <span data-icon="refresh" data-size="16"></span>
+            <span>Start over</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ask anything — keep the entry point sticky everywhere -->
+    <div class="gc-input-dock">
+      <div class="gc-input-wrap">
+        <div class="gc-input-text">
+          <input type="text" placeholder="Ask about this mock, or anything else…" readonly onclick="showView('home')">
+        </div>
+        <div class="gc-input-actions">
+          <div class="gc-input-right">
+            <button class="gc-input-icon-btn" aria-label="Mic" onclick="showView('home')">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 15a3 3 0 003-3V5a3 3 0 00-6 0v7a3 3 0 003 3zm6-5a1 1 0 00-1 1v1a5 5 0 11-10 0v-1a1 1 0 10-2 0v1a7 7 0 1014 0v-1a1 1 0 00-1-1zm-3 10H9a1 1 0 000 2h6a1 1 0 000-2z"/></svg>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -1086,6 +1235,22 @@
         </ul>
       </div>
     </div>
+
+    <!-- Ask anything — sticky on the morning-of kit too -->
+    <div class="gc-input-dock">
+      <div class="gc-input-wrap">
+        <div class="gc-input-text">
+          <input type="text" placeholder="Ask me anything before you go in…" readonly onclick="showView('home')">
+        </div>
+        <div class="gc-input-actions">
+          <div class="gc-input-right">
+            <button class="gc-input-icon-btn" aria-label="Mic" onclick="showView('home')">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 15a3 3 0 003-3V5a3 3 0 00-6 0v7a3 3 0 003 3zm6-5a1 1 0 00-1 1v1a5 5 0 11-10 0v-1a1 1 0 10-2 0v1a7 7 0 1014 0v-1a1 1 0 00-1-1zm-3 10H9a1 1 0 000 2h6a1 1 0 000-2z"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
 </div>
@@ -1112,6 +1277,156 @@ function showView(name) {
 /* =========================================================================
  * COMPANIES + INTERVIEW SCRIPTS
  * ========================================================================= */
+// Per-company report data — distinct scores, strongest answer, focus area,
+// and seeded variation when the user re-runs. Each call to getReport()
+// returns either the canonical first-run report or a "second-run / start-
+// over" variation (different headline + score + next-step).
+const REPORTS = {
+  'tech-mahindra': {
+    headline: "Solid mock — top quartile of your last 8",
+    sub:      "Pace was good. Empathy could go up. One filler-heavy moment.",
+    overall:  72,
+    criteria: [
+      { name: 'Content',    score: 82, tone: 'strong' },
+      { name: 'Clarity',    score: 75 },
+      { name: 'Pace',       score: 88, tone: 'strong' },
+      { name: 'Confidence', score: 68 },
+      { name: 'Empathy',    score: 56, tone: 'weak' },
+    ],
+    strongest: {
+      q: "Why BPO?",
+      a: "My customer-handling experience at Reliance Trends taught me people-first communication. I want to scale that — turning every customer call into a moment they remember well. BPO gives me that volume.",
+    },
+    nextStep: "Empathy was 56 — your answers were correct but skipped acknowledging customer feeling. Tomorrow: <strong>Lead every customer-roleplay with \"I completely understand…\"</strong> and the score jumps.",
+    // What changes on a re-run / "Start over" — different signature gaps.
+    variants: [
+      { headline: "Improved — empathy up 14 points", sub: "Pace held. Confidence dipped on Q4. STAR structure was tighter.",
+        overall: 78,
+        criteria: [
+          { name: 'Content',    score: 84, tone: 'strong' },
+          { name: 'Clarity',    score: 80, tone: 'strong' },
+          { name: 'Pace',       score: 86, tone: 'strong' },
+          { name: 'Confidence', score: 64, tone: 'weak' },
+          { name: 'Empathy',    score: 76 },
+        ],
+        nextStep: "Confidence dipped to 64 on the pressure-drill Q. Tomorrow: practice that one question 3 times, then move on. Confidence is reps." },
+      { headline: "Strong run — recommended for the real interview", sub: "All five criteria above 75 for the first time. STAR landed clean.",
+        overall: 85,
+        criteria: [
+          { name: 'Content',    score: 88, tone: 'strong' },
+          { name: 'Clarity',    score: 85, tone: 'strong' },
+          { name: 'Pace',       score: 90, tone: 'strong' },
+          { name: 'Confidence', score: 80, tone: 'strong' },
+          { name: 'Empathy',    score: 82, tone: 'strong' },
+        ],
+        nextStep: "You're match-ready. Sleep well tonight. Morning of: warm up with one 2-minute question, then go in." },
+    ],
+  },
+  'concentrix': {
+    headline: "Pulled the bored HR in — clean 3-question mock",
+    sub:      "Specificity carried it. \"6 weeks longer training\" was the line that woke her up.",
+    overall:  78,
+    criteria: [
+      { name: 'Content',    score: 84, tone: 'strong' },
+      { name: 'Engagement', score: 82, tone: 'strong' },
+      { name: 'Specificity',score: 88, tone: 'strong' },
+      { name: 'Tone match', score: 70 },
+      { name: 'Story arc',  score: 66 },
+    ],
+    strongest: {
+      q: "Why this company?",
+      a: "Concentrix's Powai office is closer to my Andheri PG, the day-shift roles fit my evening study schedule, and your customer voice training programme is 6 weeks longer than industry average.",
+    },
+    nextStep: "Tone match was 70 — when she's low-energy, you don't have to mirror it, but you do have to acknowledge it. Open with <strong>\"I know it's late in the day, I'll keep this tight.\"</strong> and her engagement doubles.",
+    variants: [
+      { headline: "Tighter — bored HR is interested now", sub: "Engagement up. Story arc improved. Tone match still a hair below where it could be.",
+        overall: 82,
+        criteria: [
+          { name: 'Content',    score: 86, tone: 'strong' },
+          { name: 'Engagement', score: 88, tone: 'strong' },
+          { name: 'Specificity',score: 90, tone: 'strong' },
+          { name: 'Tone match', score: 74 },
+          { name: 'Story arc',  score: 78, tone: 'strong' },
+        ],
+        nextStep: "Story arc up to 78 — STAR is working. Next stretch: practice the same question with two completely different stories so you don't lean on one." },
+    ],
+  },
+  'hdfc': {
+    headline: "Sales TL liked your style — high energy run",
+    sub:      "Concrete numbers (₹3-4 lakh upsell, 18K Insta followers) carried it.",
+    overall:  85,
+    criteria: [
+      { name: 'Energy',      score: 92, tone: 'strong' },
+      { name: 'Closing',     score: 88, tone: 'strong' },
+      { name: 'Specificity', score: 90, tone: 'strong' },
+      { name: 'Objection handling', score: 78 },
+      { name: 'Listening',   score: 72 },
+    ],
+    strongest: {
+      q: "Have you sold anything before?",
+      a: "At Reliance I drove ₹3-4 lakh in incremental sales last quarter just by upselling layered products at the till. I also run a small Instagram page reselling thrift clothes — 18K followers, 60-70 sales a month at margin.",
+    },
+    nextStep: "Listening was 72 — when the TL says \"think about it\", don't push, ask. Add the <strong>\"what's the one thing\"</strong> question to every objection. Numbers stay, asks land softer.",
+    variants: [
+      { headline: "TL is sold — ready for the field-call mock", sub: "Listening jumped. Objection handling sharper. Energy held.",
+        overall: 89,
+        criteria: [
+          { name: 'Energy',      score: 92, tone: 'strong' },
+          { name: 'Closing',     score: 90, tone: 'strong' },
+          { name: 'Specificity', score: 90, tone: 'strong' },
+          { name: 'Objection handling', score: 86, tone: 'strong' },
+          { name: 'Listening',   score: 84, tone: 'strong' },
+        ],
+        nextStep: "Next stretch: a live field-call mock where the customer hesitates twice. Practice the \"one thing\" question landing both times." },
+    ],
+  },
+  'bajaj': {
+    headline: "Hostile customer drill — held the line",
+    sub:      "Pivot from \"selling\" to \"removing you\" disarmed the anger. Refund offer was the clincher.",
+    overall:  88,
+    criteria: [
+      { name: 'De-escalation', score: 95, tone: 'strong' },
+      { name: 'Empathy',       score: 90, tone: 'strong' },
+      { name: 'Composure',     score: 88, tone: 'strong' },
+      { name: 'Solution clarity', score: 86, tone: 'strong' },
+      { name: 'Pace under pressure', score: 76 },
+    ],
+    strongest: {
+      q: "You charged my card for fees I never agreed to.",
+      a: "Sir, that's a serious concern and you have every right to be upset. Before any cancellation — let me read out the exact charges with dates so you know what you're cancelling. If even one charge looks wrong, I'll process the refund immediately.",
+    },
+    nextStep: "Pace under pressure was 76 — when the customer escalates, your words speed up. Tomorrow: practice with a 2-second pause after each customer outburst. Same content, just slower.",
+    variants: [
+      { headline: "Cool under fire — interviewer reviewer would hire", sub: "Pace held steady this time. De-escalation now your signature strength.",
+        overall: 92,
+        criteria: [
+          { name: 'De-escalation', score: 96, tone: 'strong' },
+          { name: 'Empathy',       score: 92, tone: 'strong' },
+          { name: 'Composure',     score: 92, tone: 'strong' },
+          { name: 'Solution clarity', score: 90, tone: 'strong' },
+          { name: 'Pace under pressure', score: 86, tone: 'strong' },
+        ],
+        nextStep: "You've made this drill a strength. Add a tougher scenario next: a customer who is rude AND wrong on the facts. Same de-escalation moves, harder to keep composure." },
+    ],
+  },
+};
+
+// State: how many times have we run this company's mock? Used to pick a
+// variant for the report (so re-runs and "Start over" feel different).
+const MOCK_RUNS = {};
+
+function getReport(companyId) {
+  const base = REPORTS[companyId];
+  if (!base) return REPORTS['tech-mahindra'];
+  const runIdx = (MOCK_RUNS[companyId] || 1) - 1;  // first call = run 1 → idx 0
+  if (runIdx === 0) return base;
+  const variants = base.variants || [];
+  const v = variants[Math.min(runIdx - 1, variants.length - 1)];
+  if (!v) return base;
+  // Merge variant on top of base so we don't lose strongest/criteria names
+  return Object.assign({}, base, v);
+}
+
 const COMPANIES = {
   'tech-mahindra': {
     name: 'Tech Mahindra BPS',
@@ -1386,7 +1701,7 @@ const MOCK_TRANSCRIPTS = {
           { v: '0', l: 'Fillers', tone: 'good' },
         ],
     } },
-    { speaker: 'ai', text: "That's the mock. You're well-prepared. Tap End to see the full report." },
+    { speaker: 'ai', text: "That's the mock. You're well-prepared. Generating your report…" },
   ],
 
   'concentrix': [
@@ -1408,7 +1723,7 @@ const MOCK_TRANSCRIPTS = {
         content: 'Reframing retail as voice-equivalent skill is sharp.',
         keyPhrase: 'The empathy and de-escalation are the same skills, just on a different channel.',
     } },
-    { speaker: 'ai', text: "Alright, that's it from my side. Tap End to see the full report." },
+    { speaker: 'ai', text: "Alright, that's it from my side. Generating your report…" },
   ],
 
   'hdfc': [
@@ -1430,7 +1745,7 @@ const MOCK_TRANSCRIPTS = {
         content: 'The one-thing question is a classic — works in sales and in interviews.',
         keyPhrase: "What's the one thing holding you back?",
     } },
-    { speaker: 'ai', text: "I like your style. Tap End for the report." },
+    { speaker: 'ai', text: "I like your style. Generating your report…" },
   ],
 
   'bajaj': [
@@ -1446,9 +1761,34 @@ const MOCK_TRANSCRIPTS = {
         content: 'Empathy + ownership + actionable next step. This is the textbook V&A pressure-drill response.',
         metrics: [{ v: '93', l: 'Content', tone: 'good' }, { v: '124', l: 'Pace WPM', tone: 'good' }, { v: '0', l: 'Fillers', tone: 'good' }],
     } },
-    { speaker: 'ai', text: "Hmph. Fine. Read them out then. — Mock complete. Tap End for the report." },
+    { speaker: 'ai', text: "Hmph. Fine. Read them out then. — Mock complete. Generating your report…" },
   ],
 };
+
+// Toast helper for the report CTAs (Plan / Remind / Share).
+function reportToast(text) {
+  const t = document.createElement('div');
+  t.style.cssText = 'position:fixed;bottom:96px;left:50%;transform:translateX(-50%);background:var(--surface-bold);color:var(--text-on-bold);padding:10px 16px;border-radius:999px;font-family:var(--font);font-size:13px;font-weight:600;z-index:200;box-shadow:var(--shadow-md);opacity:0;transition:opacity .25s ease';
+  t.textContent = text;
+  document.body.appendChild(t);
+  requestAnimationFrame(() => t.style.opacity = '1');
+  setTimeout(() => t.style.opacity = '0', 2200);
+  setTimeout(() => t.remove(), 2600);
+}
+function setMockReminder() { reportToast("Reminder set — same mock, tomorrow 8 PM."); }
+function addToPlan() { reportToast("Added to your weekly plan — 3 mocks across the week."); }
+function shareReport() {
+  const company = (COMPANIES[currentCompany] || {}).name || 'mock';
+  reportToast("Opening WhatsApp share — " + company + " report.");
+}
+
+// Setup-screen toggle: per-question feedback vs end-of-mock feedback.
+function setFeedbackMode(mode) {
+  feedbackMode = mode;
+  document.querySelectorAll('[data-fb-mode]').forEach(b => {
+    b.classList.toggle('active', b.dataset.fbMode === mode);
+  });
+}
 
 function startMock() {
   showView('mock');
@@ -1473,8 +1813,17 @@ function setupMockUi() {
   if (qpill) qpill.textContent = (MOCK_TRANSCRIPTS[currentCompany] || []).filter(t => t.speaker === 'ai').length + ' Qs';
 }
 
+// Setting: 'per-q' shows feedback cards after each answer (default); 'end'
+// hides inline feedback and shows it all at once on the report.
+let feedbackMode = 'per-q';
+
 function runMockTranscript() {
-  const transcript = MOCK_TRANSCRIPTS[currentCompany] || MOCK_TRANSCRIPTS['tech-mahindra'];
+  let transcript = MOCK_TRANSCRIPTS[currentCompany] || MOCK_TRANSCRIPTS['tech-mahindra'];
+  // If user picked "feedback at the end", strip the inline feedback cards
+  // so the chat is just Q + A and the analysis lives only in the report.
+  if (feedbackMode === 'end') {
+    transcript = transcript.filter(t => t.speaker !== 'card');
+  }
   const chatEl = document.getElementById('mockChat');
   if (!chatEl) return;
   if (mockRunner) mockRunner.stop();
@@ -1484,9 +1833,11 @@ function runMockTranscript() {
     chatEl,
     voice: mockVoice,
     speakerLabel: window.JBIQ_PERSONAS[(COMPANIES[currentCompany] || {}).persona]?.name || 'Interviewer',
+    // When the transcript ends naturally, auto-navigate to the report
+    // after a short pause. Eliminates the confusing two-End-button UX —
+    // the top-bar Done is now only for early exit.
     onComplete: () => {
-      // Show end CTA
-      // (User can tap End top-left to go to report)
+      setTimeout(() => endMock(), 2200);
     },
   });
   mockRunner.start();
@@ -1496,7 +1847,55 @@ function endMock() {
   if (mockRunner) mockRunner.stop();
   if (mockVoice) mockVoice.stop();
   stopTimer();
+  // Bump the run counter for this company so getReport() can return a
+  // distinct variant when the user starts the same mock over.
+  MOCK_RUNS[currentCompany] = (MOCK_RUNS[currentCompany] || 0) + 1;
+  renderReport();
   showView('report');
+}
+
+function renderReport() {
+  const report = getReport(currentCompany);
+  const company = COMPANIES[currentCompany] || COMPANIES['tech-mahindra'];
+
+  // Title in top bar
+  const t2 = document.querySelector('#view-report .title-area .t2');
+  if (t2) t2.textContent = company.name + ' · run ' + (MOCK_RUNS[currentCompany] || 1);
+
+  // Overall score + headline
+  const num = document.querySelector('#view-report .sn-v');
+  if (num) num.textContent = report.overall;
+  const arc = document.querySelector('#view-report .report-score circle:last-of-type');
+  if (arc) {
+    const total = 276; // 2 * pi * r ≈ 276 for r=44
+    const offset = total * (1 - report.overall / 100);
+    arc.setAttribute('stroke-dashoffset', offset.toFixed(1));
+  }
+  const headline = document.querySelector('#view-report .report-headline');
+  if (headline) headline.textContent = report.headline;
+  const sub = document.querySelector('#view-report .report-sub');
+  if (sub) sub.textContent = report.sub;
+
+  // Criteria — rebuilt from the company-specific list
+  const critWrap = document.querySelector('#view-report .criteria-list');
+  if (critWrap) {
+    critWrap.innerHTML = report.criteria.map(c => `
+      <div class="criterion${c.tone ? ' ' + c.tone : ''}">
+        <div class="cr-h"><div class="cr-name">${c.name}</div><div class="cr-score">${c.score}</div></div>
+        <div class="cr-bar"><div class="cr-fill" style="width: ${c.score}%"></div></div>
+      </div>
+    `).join('');
+  }
+
+  // Strongest answer
+  const adQ = document.querySelector('#view-report .answer-dna .ad-q');
+  const adA = document.querySelector('#view-report .answer-dna .ad-a');
+  if (adQ) adQ.textContent = 'Q: ' + report.strongest.q;
+  if (adA) adA.textContent = '"' + report.strongest.a + '"';
+
+  // One thing to fix
+  const nsText = document.querySelector('#view-report .next-step-card .ns-text');
+  if (nsText) nsText.innerHTML = report.nextStep;
 }
 
 /* Timer */
