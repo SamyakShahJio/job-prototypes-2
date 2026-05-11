@@ -108,6 +108,30 @@
     display: flex; align-items: center; justify-content: center;
     flex-shrink: 0;
   }
+  /* Quick-pick suggestion chips inside the hero — span tracks */
+  .what-card .wc-suggestions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 12px;
+    position: relative;
+  }
+  .what-card .wc-chip {
+    background: white;
+    border: 1px solid rgba(0,0,0,0.06);
+    color: var(--surface-bold);
+    border-radius: var(--radius-pill);
+    padding: 6px 10px;
+    font-family: var(--font);
+    font-size: 11px; font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .what-card .wc-chip:hover {
+    background: var(--surface-bold);
+    color: white;
+    border-color: var(--surface-bold);
+  }
 
   /* Section */
   .section-h {
@@ -174,6 +198,7 @@
     border-radius: 10px;
     display: flex; align-items: center; justify-content: center;
     margin-bottom: 8px;
+    color: var(--surface-bold);
   }
   .skill-badge .sb-name {
     font-size: 12px; font-weight: 800; color: var(--grey-100);
@@ -182,6 +207,57 @@
   .skill-badge .sb-meta {
     font-size: 10px; font-weight: 600; color: var(--vert-accent-dark);
   }
+
+  /* New layout: skills-grid (2 columns, badges have a sub-chiplet action row) */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .skills-grid .skill-badge {
+    width: 100%;
+    padding: 12px;
+  }
+  .skill-badge .sb-row {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 10px;
+  }
+  .skill-badge .sb-row .sb-emoji {
+    width: 32px; height: 32px; flex-shrink: 0;
+    margin-bottom: 0;
+  }
+  .skill-badge .sb-info { flex: 1; min-width: 0; }
+  .skill-badge .sb-actions {
+    display: flex; flex-wrap: wrap; gap: 6px;
+  }
+  .skill-badge .sb-chip {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: var(--surface-ghost);
+    border: 1px solid var(--stroke-subtle);
+    border-radius: 999px;
+    padding: 4px 9px 4px 7px;
+    color: var(--text-high);
+    font-family: var(--font);
+    font-size: 11px; font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .skill-badge .sb-chip:hover {
+    background: var(--surface-default);
+    border-color: var(--surface-bold);
+    color: var(--surface-bold);
+  }
+  .skill-badge .sb-chip-wa {
+    background: #25d366;
+    border-color: #25d366;
+    color: white;
+  }
+  .skill-badge .sb-chip-wa:hover {
+    background: #1ebe57;
+    border-color: #1ebe57;
+    color: white;
+  }
+  .skill-badge .sb-chip [data-icon] { line-height: 0; }
 
   /* Money tracker */
   .money-tracker {
@@ -434,13 +510,175 @@
     line-height: 1.3; margin-bottom: 10px;
   }
   .lesson-card .lc-image {
-    width: 100%; height: 160px;
+    width: 100%; height: 120px;
     border-radius: 14px;
     background: var(--surface-ghost);
     display: flex; align-items: center; justify-content: center;
     margin-bottom: 12px;
     font-size: 60px;
   }
+  /* Icon variant — replaces giant emoji with a clean centered SVG */
+  .lesson-card .lc-image-icon {
+    background: linear-gradient(135deg, var(--primary-20) 0%, var(--surface-ghost-icon) 100%);
+    color: var(--surface-bold);
+  }
+  .lesson-card .lc-image-icon svg {
+    width: 56px; height: 56px;
+  }
+
+  /* Video placeholder — looks like a YouTube tile, plays a fake "playing" state */
+  .lc-video { margin-bottom: 12px; }
+  .lc-video-thumb {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 14px;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    background:
+      linear-gradient(135deg, #2a0d6e 0%, #3900ad 60%, #6464ff 100%);
+    padding: 0;
+    text-align: left;
+    transition: transform 0.15s;
+  }
+  .lc-video-thumb:hover { transform: translateY(-1px); }
+  .lc-video-thumb:active { transform: scale(0.98); }
+  .lc-video-overlay {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(60% 50% at 50% 50%, rgba(255,255,255,0.12) 0%, transparent 70%),
+      linear-gradient(to top, rgba(0,0,0,0.4) 0%, transparent 60%);
+  }
+  .lc-video-icon {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.95);
+    color: #3900ad;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+    transition: transform 0.15s, opacity 0.15s;
+  }
+  .lc-video-thumb:hover .lc-video-icon { transform: translate(-50%, -50%) scale(1.05); }
+  .lc-video-meta {
+    position: absolute;
+    bottom: 10px; left: 12px; right: 12px;
+    display: flex; justify-content: space-between; align-items: flex-end;
+    gap: 10px;
+    color: white;
+  }
+  .lc-video-pill {
+    background: rgba(0,0,0,0.55);
+    border-radius: 999px;
+    padding: 4px 9px;
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.5px;
+    color: white;
+  }
+  .lc-video-caption {
+    font-size: 12px; font-weight: 700;
+    text-align: right;
+    max-width: 65%;
+    line-height: 1.2;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.4);
+  }
+  /* "Playing" state — show progress + a stop icon */
+  .lc-video-thumb.playing .lc-video-icon {
+    background: #fa2f40; color: white;
+  }
+  .lc-video-thumb.playing::after {
+    content: '';
+    position: absolute;
+    left: 0; bottom: 0;
+    height: 3px; width: 0;
+    background: #25d366;
+    animation: videoProgress 6s linear forwards;
+  }
+  @keyframes videoProgress { to { width: 100%; } }
+
+  /* Course-complete celebration + next-step CTA */
+  .lc-celebrate {
+    width: 72px; height: 72px;
+    border-radius: 50%;
+    background: var(--success);
+    color: white;
+    display: flex; align-items: center; justify-content: center;
+    margin: 4px auto 14px;
+    box-shadow: 0 8px 24px rgba(37,171,33,0.25);
+  }
+  .lc-next-cta {
+    background: linear-gradient(180deg, #ffffff 0%, var(--primary-20) 100%);
+    border-color: var(--primary-30);
+  }
+  .lc-next-h {
+    font-size: 13px; font-weight: 800;
+    color: var(--surface-bold);
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .lc-next-primary {
+    display: flex; align-items: center; gap: 12px;
+    width: 100%;
+    background: var(--surface-bold);
+    color: white;
+    border: none;
+    border-radius: 14px;
+    padding: 14px 16px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.15s;
+    font-family: var(--font);
+    margin-bottom: 10px;
+  }
+  .lc-next-primary:hover { background: var(--primary-70); transform: translateY(-1px); }
+  .lc-next-primary-icon {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.18);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .lc-next-primary-label {
+    display: block;
+    font-size: 14px; font-weight: 800;
+  }
+  .lc-next-primary-sub {
+    display: block;
+    font-size: 11px; opacity: 0.85;
+    margin-top: 2px;
+  }
+  .lc-next-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .lc-next-chip {
+    display: flex; align-items: center; gap: 8px;
+    background: white;
+    border: 1px solid var(--stroke-subtle);
+    border-radius: 12px;
+    padding: 10px 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: var(--font);
+    font-size: 12px; font-weight: 700;
+    color: var(--text-high);
+    text-align: left;
+  }
+  .lc-next-chip:hover { border-color: var(--surface-bold); color: var(--surface-bold); }
+  .lc-next-chip-ghost {
+    grid-column: span 2;
+    background: transparent;
+    border-color: transparent;
+    justify-content: center;
+    color: var(--text-low);
+  }
+  .lc-next-chip-ghost:hover { color: var(--surface-bold); }
+  .lc-next-chip [data-icon] { line-height: 0; flex-shrink: 0; }
   .lesson-card .lc-text {
     font-size: 13px; line-height: 1.55; color: var(--grey-80);
     margin-bottom: 12px;
@@ -644,11 +882,11 @@
     </div>
 
     <div class="view-body">
-      <!-- What card -->
+      <!-- Ask Me Anything card — blank-slate entry, no thumbnail-only framing -->
       <div class="what-card" onclick="startChat()">
-        <div class="wc-tag">Tell me your problem</div>
-        <div class="wc-q">Mera thumbnail click kyun nahi ho raha?</div>
-        <div class="wc-sub">Tap to start a chat — I'll find the root cause and fix it in 10 mins.</div>
+        <div class="wc-tag">Ask me anything</div>
+        <div class="wc-q">What's stuck, or what do you want to get better at?</div>
+        <div class="wc-sub">I'll find the root cause and a 10-minute fix — across YouTube, Office, or your shop.</div>
         <div class="wc-input">
           <span class="wc-placeholder">Or type or speak…</span>
           <div class="wc-mic">
@@ -658,34 +896,41 @@
             </svg>
           </div>
         </div>
+        <!-- Quick suggestions — one per track, so users see the breadth -->
+        <div class="wc-suggestions">
+          <button class="wc-chip" onclick="event.stopPropagation(); startChatWith('thumbnail')">YouTube thumbnail</button>
+          <button class="wc-chip" onclick="event.stopPropagation(); startChatWith('excel')">Excel VLOOKUP</button>
+          <button class="wc-chip" onclick="event.stopPropagation(); startChatWith('whatsapp_campaign')">WhatsApp campaign</button>
+          <button class="wc-chip" onclick="event.stopPropagation(); startChatWith('chatgpt')">ChatGPT prompts</button>
+        </div>
       </div>
 
-      <!-- Sub-tracks -->
+      <!-- Sub-tracks — each track has a distinct semantic icon -->
       <div class="section-h">Sub-tracks</div>
       <div class="subtracks">
         <div class="subtrack st-creator" onclick="startSubtrack('creator')">
-          <div class="st-emoji"><span data-icon="brain" data-size="20"></span></div>
+          <div class="st-emoji"><span data-icon="video" data-size="20"></span></div>
           <div>
             <div class="st-name">Creator</div>
             <div class="st-meta">Hooks · Titles · Thumbnails · Edits</div>
           </div>
         </div>
         <div class="subtrack st-shopkeeper" onclick="startSubtrack('shop')">
-          <div class="st-emoji"><span data-icon="document" data-size="20"></span></div>
+          <div class="st-emoji"><span data-icon="whatsapp" data-size="20"></span></div>
           <div>
             <div class="st-name">Shopkeeper</div>
-            <div class="st-meta">WhatsApp · POS · Inventory</div>
+            <div class="st-meta">WhatsApp · Inventory · POS</div>
           </div>
         </div>
         <div class="subtrack st-office" onclick="startSubtrack('office')">
-          <div class="st-emoji"><span data-icon="document" data-size="20"></span></div>
+          <div class="st-emoji"><span data-icon="briefcase" data-size="20"></span></div>
           <div>
             <div class="st-name">Office</div>
             <div class="st-meta">Excel · Email · Slides</div>
           </div>
         </div>
         <div class="subtrack st-ai-fluency" onclick="showView('ai-fluency')">
-          <div class="st-emoji"><span data-icon="brain" data-size="20"></span></div>
+          <div class="st-emoji"><span data-icon="sparkles" data-size="20"></span></div>
           <div>
             <div class="st-name">AI Fluency</div>
             <div class="st-meta">ChatGPT · Image gen · Voice</div>
@@ -704,28 +949,88 @@
         </div>
       </div>
 
-      <!-- Earned skills -->
+      <!-- Earned skills — each badge has its own row of sub-chiplet actions -->
       <div class="section-h">Skills you've earned</div>
-      <div class="skills-strip">
+      <div class="skills-grid">
         <div class="skill-badge">
-          <div class="sb-emoji"><span data-icon="star" data-size="20"></span></div>
-          <div class="sb-name">Thumbnail Hooks</div>
-          <div class="sb-meta">Earned · Apr 28</div>
+          <div class="sb-row">
+            <div class="sb-emoji"><span data-icon="thumbnail" data-size="20"></span></div>
+            <div class="sb-info">
+              <div class="sb-name">Thumbnail Hooks</div>
+              <div class="sb-meta">Earned · Apr 28</div>
+            </div>
+          </div>
+          <div class="sb-actions">
+            <button class="sb-chip sb-chip-wa" onclick="shareSkillOnWhatsApp('Thumbnail Hooks')">
+              <span data-icon="whatsapp" data-size="13"></span><span>Share</span>
+            </button>
+            <button class="sb-chip" onclick="launchCourse('yt-hook-patterns')">
+              <span data-icon="play" data-size="13"></span><span>Replay</span>
+            </button>
+            <button class="sb-chip" onclick="setCourseReminder()">
+              <span data-icon="bell" data-size="13"></span><span>Practice</span>
+            </button>
+          </div>
         </div>
         <div class="skill-badge">
-          <div class="sb-emoji"><span data-icon="document" data-size="20"></span></div>
-          <div class="sb-name">Title Writing</div>
-          <div class="sb-meta">Earned · Apr 22</div>
+          <div class="sb-row">
+            <div class="sb-emoji"><span data-icon="document" data-size="20"></span></div>
+            <div class="sb-info">
+              <div class="sb-name">Title Writing</div>
+              <div class="sb-meta">Earned · Apr 22</div>
+            </div>
+          </div>
+          <div class="sb-actions">
+            <button class="sb-chip sb-chip-wa" onclick="shareSkillOnWhatsApp('Title Writing')">
+              <span data-icon="whatsapp" data-size="13"></span><span>Share</span>
+            </button>
+            <button class="sb-chip" onclick="launchCourse('yt-titles')">
+              <span data-icon="play" data-size="13"></span><span>Replay</span>
+            </button>
+            <button class="sb-chip" onclick="setCourseReminder()">
+              <span data-icon="bell" data-size="13"></span><span>Practice</span>
+            </button>
+          </div>
         </div>
         <div class="skill-badge">
-          <div class="sb-emoji"><span data-icon="chat" data-size="20"></span></div>
-          <div class="sb-name">ChatGPT Prompting</div>
-          <div class="sb-meta">Earned · Apr 15</div>
+          <div class="sb-row">
+            <div class="sb-emoji"><span data-icon="sparkles" data-size="20"></span></div>
+            <div class="sb-info">
+              <div class="sb-name">ChatGPT Prompting</div>
+              <div class="sb-meta">Earned · Apr 15</div>
+            </div>
+          </div>
+          <div class="sb-actions">
+            <button class="sb-chip sb-chip-wa" onclick="shareSkillOnWhatsApp('ChatGPT Prompting')">
+              <span data-icon="whatsapp" data-size="13"></span><span>Share</span>
+            </button>
+            <button class="sb-chip" onclick="launchCourse('ai-prompts')">
+              <span data-icon="play" data-size="13"></span><span>Replay</span>
+            </button>
+            <button class="sb-chip" onclick="setCourseReminder()">
+              <span data-icon="bell" data-size="13"></span><span>Practice</span>
+            </button>
+          </div>
         </div>
         <div class="skill-badge">
-          <div class="sb-emoji"><span data-icon="brain" data-size="20"></span></div>
-          <div class="sb-name">CapCut Cuts</div>
-          <div class="sb-meta">Earned · Apr 8</div>
+          <div class="sb-row">
+            <div class="sb-emoji"><span data-icon="video" data-size="20"></span></div>
+            <div class="sb-info">
+              <div class="sb-name">CapCut Cuts</div>
+              <div class="sb-meta">Earned · Apr 8</div>
+            </div>
+          </div>
+          <div class="sb-actions">
+            <button class="sb-chip sb-chip-wa" onclick="shareSkillOnWhatsApp('CapCut Cuts')">
+              <span data-icon="whatsapp" data-size="13"></span><span>Share</span>
+            </button>
+            <button class="sb-chip" onclick="showToast('CapCut course coming soon')">
+              <span data-icon="play" data-size="13"></span><span>Replay</span>
+            </button>
+            <button class="sb-chip" onclick="setCourseReminder()">
+              <span data-icon="bell" data-size="13"></span><span>Practice</span>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -960,6 +1265,7 @@ function showMlThinking(label, ms) {
 }
 
 const PROBLEM_FLOWS = {
+  // ============ Creator track ============
   thumbnail: {
     rootCause: "Likely your hook isn't visible in the thumbnail. The first 3 frames matter — face + text + tension.",
     plan: [
@@ -972,13 +1278,13 @@ const PROBLEM_FLOWS = {
     courseId: 'yt-hook-patterns',
   },
   title: {
-    rootCause: "Your titles are likely descriptive, not curious. Curiosity > description.",
+    rootCause: "Your titles are likely descriptive, not curious. Curiosity beats description.",
     plan: [
       "What makes a title curious (gap, surprise, stakes)",
-      "10 title patterns that work in Hindi/English mix",
+      "10 title patterns that work in Hindi-English mix",
       "Title-thumbnail consistency check",
       "Run ChatGPT prompt to generate 10 titles",
-      "Pick top 2, A/B test on next video",
+      "Pick top 2, A B test on next video",
     ],
     courseId: 'yt-titles',
   },
@@ -986,7 +1292,7 @@ const PROBLEM_FLOWS = {
     rootCause: "Three usual suspects — your hook, your title, or your thumbnail. Let me rank them by impact for your channel.",
     plan: [
       "First-3-second hook diagnosis",
-      "Title vs Thumbnail mismatch check",
+      "Title vs thumbnail mismatch check",
       "Audience retention curve read",
       "One-skill-at-a-time fix plan",
       "Re-test on next 3 videos",
@@ -994,16 +1300,76 @@ const PROBLEM_FLOWS = {
     courseId: 'yt-hook-patterns',
   },
   chatgpt: {
-    rootCause: "Most people give ChatGPT a sentence. Pros give it a structure: role + task + format + constraints.",
+    rootCause: "Most people give ChatGPT a sentence. Pros give it a structure — role plus task plus format plus constraints.",
     plan: [
       "The 4-part prompt formula",
-      "Role-setting (\"You are a YouTube growth strategist\")",
-      "Task + format (\"Give me 10 titles in this format…\")",
-      "Constraints (\"…each under 60 chars, in Hindi-English mix\")",
+      "Role-setting (You are a YouTube growth strategist)",
+      "Task plus format (Give me 10 titles in this format)",
+      "Constraints (each under 60 chars, Hindi-English mix)",
       "Hands-on: write your own prompt for your real channel",
     ],
     courseId: 'ai-prompts',
   },
+
+  // ============ Office track ============
+  excel: {
+    rootCause: "VLOOKUP and pivot tables are the two skills that save 80 percent of Excel time. Most people Google syntax every time — let me show you the pattern.",
+    plan: [
+      "VLOOKUP in plain English — when, why, how",
+      "Common errors and how to read them",
+      "Pivot tables — drag, drop, done",
+      "INDEX-MATCH (the modern VLOOKUP)",
+      "Hands-on: clean a real expense sheet",
+    ],
+    courseId: 'office-excel',
+  },
+  email: {
+    rootCause: "Most office emails fail because they bury the ask. One-line subject, one-line ask, then context. Reverse pyramid wins.",
+    plan: [
+      "Subject lines that get opened",
+      "Reverse pyramid structure (ask first, context after)",
+      "Tone — formal vs friendly vs urgent",
+      "Templates: status update, escalation, apology",
+      "Hands-on: rewrite one of your sent emails",
+    ],
+    courseId: 'office-email',
+  },
+  slides: {
+    rootCause: "One idea per slide, six words max per bullet. Most decks fail because every slide screams. Let it breathe.",
+    plan: [
+      "The 6-by-6 rule (max 6 lines, max 6 words)",
+      "Title-as-takeaway pattern",
+      "Color and contrast for clarity",
+      "Build animations — only where they help",
+      "Hands-on: rewrite a 12-slide deck into 6",
+    ],
+    courseId: 'office-slides',
+  },
+
+  // ============ Shop track ============
+  whatsapp_campaign: {
+    rootCause: "WhatsApp open rates are 90 percent — but only if you send to the right list at the right time. Generic broadcasts burn your number.",
+    plan: [
+      "Segmenting your customer list",
+      "Message timing windows that work",
+      "Broadcast vs Group vs Status — which when",
+      "Templates: promo, restock, reminder",
+      "Hands-on: send 1 segmented campaign",
+    ],
+    courseId: 'shop-whatsapp',
+  },
+  inventory: {
+    rootCause: "Stockouts and overstock both kill margin. The fix is a 2-number system — par level and reorder level. Simpler than it sounds.",
+    plan: [
+      "Par level vs reorder level",
+      "Top 20 SKUs that drive 80 percent of revenue",
+      "Free Google Sheet template",
+      "Weekly stock-take in 15 minutes",
+      "Hands-on: set par levels for your top 10 items",
+    ],
+    courseId: 'shop-inventory',
+  },
+
   default: {
     rootCause: "Got it — let me find the right starting point for that.",
     plan: [
@@ -1021,18 +1387,37 @@ function startChat() {
   showView('chat');
   const chat = document.getElementById('ml_chat');
   chat.innerHTML = '';
-  // JBIQ opener — Rahul's actual 6:30 AM beat from JCS doc §3:
-  // "Scrolls Shorts feed for ideas. Sees a creator with 80K views on a
-  // thumbnail he himself wouldn't click. Saves it."
-  appendAIBubble("Hey Rahul. Subah waala thumbnail jo tune saved kiya — 80K views waala — woh kyun click hua aur tera 2K pe atak gaya, that's today's question. Specific bata — kya stuck hai?");
-  setTimeout(() => { try { ensureMLVoice().speak("Hey Rahul. Bata — kya stuck hai?", 'en-IN'); } catch (e) {} }, 200);
-  // Suggestion chips reflecting his actual JCS-doc Day-in-life moments
+  // Generic, track-agnostic blank-slate opener. The suggestions span
+  // every track so the user can land here from anywhere.
+  appendAIBubble("Ask me anything — what's stuck, what you want to learn, or where you want to get better.");
+  setTimeout(() => { try { ensureMLVoice().speak("Ask me anything. What do you want to learn?", 'en-IN'); } catch (e) {} }, 200);
   setTimeout(() => appendChips([
-    { text: "Saved waala thumbnail vs mera — kya difference hai", key: 'thumbnail' },
-    { text: "1 PM Canva pe 'hook' ka matlab nahi samajh aaya", key: 'title' },
-    { text: "8:30 PM ChatGPT se title nahi nikla — kaise prompt karu?", key: 'chatgpt' },
-    { text: "Pichhle 3 videos pe views drop", key: 'views' },
+    { text: "My YouTube thumbnail isn't clicking", key: 'thumbnail' },
+    { text: "Excel formula stuck (VLOOKUP)", key: 'excel' },
+    { text: "WhatsApp campaign for my shop", key: 'whatsapp_campaign' },
+    { text: "ChatGPT prompting — make it actually useful", key: 'chatgpt' },
   ], handleProblem), 700);
+}
+
+// Used by the home-card suggestion chips — pre-pick a problem and jump
+// straight into the diagnosis.
+function startChatWith(problemKey) {
+  showView('chat');
+  const chat = document.getElementById('ml_chat');
+  chat.innerHTML = '';
+  const labels = {
+    thumbnail:         "My YouTube thumbnail isn't clicking",
+    excel:             "Excel formula stuck (VLOOKUP)",
+    email:             "My office emails get ignored",
+    slides:            "My slides look cluttered",
+    whatsapp_campaign: "WhatsApp campaign for my shop",
+    inventory:         "Stockouts + overstock both happening",
+    chatgpt:           "ChatGPT prompting — make it actually useful",
+    title:             "My YouTube titles are boring",
+    views:             "Views are dropping on recent videos",
+  };
+  appendAIBubble("Ask me anything — what's stuck, what you want to learn, or where you want to get better.");
+  setTimeout(() => handleProblem({ text: labels[problemKey] || 'Help me with this', key: problemKey }), 350);
 }
 
 function handleProblem(chip) {
@@ -1084,22 +1469,42 @@ function appendChips(chips, onPick) { return window.GC.appendChips(document.getE
 // (Mic + text input removed — chat is fully chip-driven canned demo.)
 
 function startSubtrack(track) {
-  // For demo, route to chat with a prefilled subtrack-flavored opener
   showView('chat');
   const chat = document.getElementById('ml_chat');
   chat.innerHTML = '';
-  const openers = {
-    creator: "Creator track. Tell me what's stuck — hooks? titles? thumbnails? edits?",
-    shop: "Shopkeeper track. WhatsApp campaigns? Inventory? POS? What's broken?",
-    office: "Office track. Excel formula stuck? Email stuck? Slides ugly? Specific kar.",
+
+  // Per-track opener line + chip set. Each track surfaces only its own
+  // problem flows so the suggestions stay relevant.
+  const OPENERS = {
+    creator: "Creator track. Tell me what's stuck — hooks, titles, thumbnails, or edits?",
+    shop:    "Shop track. WhatsApp campaigns, inventory, or your POS — what's broken?",
+    office:  "Office track. Excel, email, or slides — what's eating your time?",
   };
-  appendAIBubble(openers[track] || PROBLEM_FLOWS.default.rootCause);
-  setTimeout(() => ensureMLVoice().speak(openers[track] || "Tell me what's stuck", 'en-IN'), 200);
-  setTimeout(() => appendChips([
-    { text: "Thumbnail click nahi ho raha", key: 'thumbnail' },
-    { text: "Titles boring hain", key: 'title' },
-    { text: "Views drop ho rahe hain", key: 'views' },
-  ], handleProblem), 700);
+  const CHIPS = {
+    creator: [
+      { text: "Thumbnail not clicking",                key: 'thumbnail' },
+      { text: "Titles are boring",                     key: 'title' },
+      { text: "ChatGPT prompts aren't useful",         key: 'chatgpt' },
+      { text: "Views dropping on recent videos",       key: 'views' },
+    ],
+    shop: [
+      { text: "WhatsApp campaign not converting",      key: 'whatsapp_campaign' },
+      { text: "Stockouts + overstock both happening",  key: 'inventory' },
+      { text: "Need a fast way to track sales",        key: 'inventory' },
+    ],
+    office: [
+      { text: "VLOOKUP / pivot table stuck",           key: 'excel' },
+      { text: "My emails get ignored",                 key: 'email' },
+      { text: "My slides look cluttered",              key: 'slides' },
+    ],
+  };
+
+  const opener = OPENERS[track] || PROBLEM_FLOWS.default.rootCause;
+  const chips  = CHIPS[track]   || CHIPS.creator;
+
+  appendAIBubble(opener);
+  setTimeout(() => { try { ensureMLVoice().speak(opener, 'en-IN'); } catch (e) {} }, 200);
+  setTimeout(() => appendChips(chips, handleProblem), 700);
 }
 
 function continueCourse() {
@@ -1110,125 +1515,220 @@ function continueCourse() {
 /* =========================================================================
  * COURSE PLAYER — swipeable card carousel with do-alongs
  * ========================================================================= */
+// Course steps now use `icon:` (JDS icon name) instead of `emoji:` (raw glyph).
+// Each step can also declare `video:` — either a YouTube embed ID for live demo
+// content, or null for a placeholder "tutorial video" card.
 const COURSES = {
   'yt-hook-patterns': {
     title: "YouTube Hook Patterns",
+    nextCourseId: 'yt-titles',
     steps: [
-      {
-        title: "What makes a hook?",
-        emoji: "🎯",
+      { title: "What makes a hook?",                icon: 'hook',      video: 'placeholder',
         text: "<strong>Hook = curiosity gap.</strong> First 3 seconds either tease something the viewer doesn't know yet, or shock them. \"Most people miss this\" is a hook. \"Today I'll show you 5 tips\" is not.",
         doalong: "Open your last video. Watch the first 3 seconds. Where's the gap?",
-        cta: "I checked — let's go",
-      },
-      {
-        title: "3 hook patterns that work in 2026",
-        emoji: "🪝",
+        cta: "I checked — let's go" },
+      { title: "3 hook patterns that work in 2026", icon: 'flame-jds', video: 'placeholder',
         text: "<strong>1. The wrong assumption</strong> — \"Everyone says do X. They're wrong.\"<br><strong>2. The micro-stakes</strong> — \"This 1-second mistake cost me 40K views.\"<br><strong>3. The contrast</strong> — \"Watch this video for 10 seconds. Then watch yours.\"",
         doalong: "Pick one pattern. Write it for your next video right now.",
-        cta: "Done — show me what's next",
-      },
-      {
-        title: "Hook + thumbnail = 1 idea",
-        emoji: "🖼️",
+        cta: "Done — show me what's next" },
+      { title: "Hook + thumbnail = 1 idea",         icon: 'thumbnail', video: 'placeholder',
         text: "Your <strong>hook</strong> and your <strong>thumbnail</strong> should mean the same thing. If your thumbnail says \"how I made ₹50K\", your first sentence shouldn't be \"hi guys welcome back.\" It should be \"This video made me ₹52,400.\"",
         doalong: "Your last 3 thumbnails — do they match your first sentence?",
-        cta: "Match check done",
-      },
-      {
-        title: "A/B mini-test (10 mins)",
-        emoji: "🔬",
+        cta: "Match check done" },
+      { title: "A/B mini-test (10 mins)",           icon: 'split',
         text: "<strong>The 3-thumbnail test:</strong> Make 3 thumbnails for the same video. Ask 5 friends — \"Which one would you click?\" Pick the winner. Use that. Pure speed > perfect alone.",
         doalong: "Make 3 thumbnails for your next video. Send to 5 people. Pick the winner.",
-        cta: "On it",
-      },
-      {
-        title: "The redo move",
-        emoji: "🔁",
+        cta: "On it" },
+      { title: "The redo move",                     icon: 'refresh',
         text: "<strong>Re-upload trick:</strong> Pick your best-performing video from 6 months ago. Make a new thumbnail using your new hook pattern. Re-upload. Watch what happens. Most creators 2x their views.",
         doalong: "Pick the video. Make the new thumbnail. Re-upload by tomorrow.",
-        cta: "Got it. Done.",
-      },
+        cta: "Got it. Done." },
     ],
   },
   'yt-titles': {
     title: "YouTube Title Writing",
+    nextCourseId: 'ai-prompts',
     steps: [
-      {
-        title: "Curiosity > description",
-        emoji: "T",
+      { title: "Curiosity > description",          icon: 'document',  video: 'placeholder',
         text: "<strong>Boring titles describe. Good titles tease.</strong> \"My day in Indore\" describes. \"What ₹500 buys you in Indore — went horribly wrong\" teases. The second one creates a gap the viewer needs filled.",
         doalong: "Open your last 3 video titles. Are they descriptions or teases?",
-        cta: "Checked",
-      },
-      {
-        title: "5 patterns that work",
-        emoji: "P",
+        cta: "Checked" },
+      { title: "5 patterns that work",             icon: 'list',
         text: "<strong>1. Wrong assumption</strong> — \"Everyone says X. They're wrong.\"<br><strong>2. Stakes</strong> — \"This 5-minute mistake cost me 40K views.\"<br><strong>3. Gap</strong> — \"Most thumbnail tutorials skip this one thing.\"<br><strong>4. Number</strong> — \"3 hooks I steal from MrBeast.\"<br><strong>5. Contrast</strong> — \"Watch mine for 10 sec. Then watch yours.\"",
         doalong: "Pick one pattern. Write a title for your next video using it.",
-        cta: "Title written",
-      },
-      {
-        title: "Title-thumbnail must match",
-        emoji: "M",
+        cta: "Title written" },
+      { title: "Title-thumbnail must match",       icon: 'thumbnail',
         text: "<strong>If your thumbnail says \"how I made ₹50K\", your title can't say \"my journey as a creator\".</strong> The thumbnail and title together must mean the same thing — that's where most creators lose CTR.",
         doalong: "Pick your latest video. Do the thumbnail and title say the same thing?",
-        cta: "Match check done",
-      },
-      {
-        title: "Length sweet spot: 50-60 chars",
-        emoji: "L",
+        cta: "Match check done" },
+      { title: "Length sweet spot: 50-60 chars",   icon: 'chevron-right',
         text: "On YouTube, anything over 60 characters gets cut on mobile. Your most important word should be in the first 30 chars. <strong>\"Best ₹100 Indore street food — I tried 7 places\"</strong> beats <strong>\"Today I went to Indore and tried street food on a budget of ₹100 across multiple places\"</strong>.",
         doalong: "Trim your latest title to under 60 chars. What's the most important word?",
-        cta: "Trimmed",
-      },
-      {
-        title: "A/B test 3 titles, pick winner",
-        emoji: "AB",
+        cta: "Trimmed" },
+      { title: "A/B test 3 titles, pick winner",   icon: 'split',
         text: "<strong>Don't guess.</strong> Write 3 titles. Send them to 5 friends with the same thumbnail — \"which would you click?\" Pick the winner. Use it. <strong>Speed > perfect alone.</strong>",
         doalong: "Write 3 titles for your next video. Send to 5 people. Pick winner.",
-        cta: "Done. On to the next video.",
-      },
+        cta: "Done. On to the next video." },
     ],
   },
   'ai-prompts': {
     title: "ChatGPT Prompting Basics",
+    nextCourseId: 'yt-hook-patterns',
     steps: [
-      {
-        title: "The 4-part formula",
-        emoji: "1",
+      { title: "The 4-part formula",               icon: 'sparkles',  video: 'placeholder',
         text: "Most people give ChatGPT a sentence. Pros give it <strong>4 parts</strong>: <strong>Role</strong> (\"You are a YouTube growth strategist\"), <strong>Task</strong> (\"Give me 10 titles for…\"), <strong>Format</strong> (\"each under 60 chars\"), <strong>Constraints</strong> (\"in Hindi-English mix, surprising tone\"). All 4 = better outputs.",
         doalong: "Write a 4-part prompt for your next video right now.",
-        cta: "Prompt written",
-      },
-      {
-        title: "Role-setting changes everything",
-        emoji: "2",
+        cta: "Prompt written" },
+      { title: "Role-setting changes everything",  icon: 'chat',
         text: "<strong>\"Tell me about thumbnails\"</strong> → boring generic answer.<br><strong>\"You are a top YouTube creator with 100M views. Tell me what most thumbnails get wrong.\"</strong> → specific, sharp.<br>Adding a role makes ChatGPT sample from a smaller, better part of its training.",
         doalong: "Run the same question with and without a role. Compare answers.",
-        cta: "Compared",
-      },
-      {
-        title: "Format = control",
-        emoji: "3",
+        cta: "Compared" },
+      { title: "Format = control",                 icon: 'list',
         text: "<strong>Tell ChatGPT exactly how to format the answer.</strong> \"Give me 10 titles, each under 60 chars, separated by newlines, no quotes, no numbering.\" → exactly that. Without format hints, you get markdown lists, intros, and \"hope this helps!\" garbage.",
         doalong: "Write a prompt that asks for exactly 10 titles, no intro, no numbering.",
-        cta: "Format set",
-      },
-      {
-        title: "Constraints make it real",
-        emoji: "4",
+        cta: "Format set" },
+      { title: "Constraints make it real",         icon: 'check-circle',
         text: "<strong>\"Give me 10 titles\"</strong> → too generic.<br><strong>\"Give me 10 clickable titles for a video about Indore street food, in Hindi-English mix, surprising tone, each under 60 chars.\"</strong> → usable.<br>The more specific the constraints, the more usable the output.",
         doalong: "Add 3 constraints to your prompt. Re-run.",
-        cta: "Re-run done",
-      },
-      {
-        title: "Hands-on: your real prompt",
-        emoji: "5",
+        cta: "Re-run done" },
+      { title: "Hands-on: your real prompt",       icon: 'send',
         text: "Now write the prompt for YOUR next video using all 4 parts. Then go to the AI Fluency track \"ChatGPT for YouTube titles\" lesson — there's a hands-on field there to test it live.",
         doalong: "Write the full 4-part prompt for your real next video. Save it.",
-        cta: "Saved. Open hands-on practice.",
-      },
+        cta: "Saved. Open hands-on practice." },
+    ],
+  },
+
+  // ============ OFFICE TRACK COURSES ============
+  'office-excel': {
+    title: "Excel: VLOOKUP + Pivot Tables",
+    nextCourseId: 'office-email',
+    steps: [
+      { title: "VLOOKUP in plain English",         icon: 'excel',     video: 'placeholder',
+        text: "<strong>VLOOKUP = look up a value in column 1, return a value from column N.</strong> Think customer ID → customer name. The syntax: <strong>=VLOOKUP(what_you_have, where_to_look, which_column, FALSE)</strong>. The FALSE means exact match — always use FALSE unless you know what you're doing.",
+        doalong: "Open a sheet with two tabs. Write a VLOOKUP that pulls a name from an ID.",
+        cta: "Wrote it" },
+      { title: "Common errors and what they mean", icon: 'check-circle',
+        text: "<strong>#N/A</strong> — value not found. Usually a typo or a number stored as text.<br><strong>#REF!</strong> — column number is wrong or the lookup range got cut.<br><strong>#NAME?</strong> — you misspelled VLOOKUP.<br>The fix is almost always: re-check the first argument matches what's in column 1.",
+        doalong: "Trigger a #N/A on purpose. Then fix it.",
+        cta: "Fixed" },
+      { title: "Pivot tables in 30 seconds",       icon: 'list',      video: 'placeholder',
+        text: "<strong>Pivot tables = drag and drop summary.</strong> Highlight your data, Insert → PivotTable. Drag a field into <strong>Rows</strong> (what you want to group by), drag another into <strong>Values</strong> (what you want to count/sum). That's it — you just built a report.",
+        doalong: "Take any sales sheet. Build a pivot: rows = product, values = sum of sales.",
+        cta: "Done" },
+      { title: "INDEX-MATCH: the modern VLOOKUP",  icon: 'sparkles',
+        text: "<strong>VLOOKUP can only look right.</strong> If your lookup column is to the right of what you want to return, VLOOKUP breaks. <strong>INDEX-MATCH</strong> looks in any direction. Syntax: <strong>=INDEX(return_column, MATCH(what_you_have, lookup_column, 0))</strong>. Once you know it, you stop using VLOOKUP.",
+        doalong: "Convert your VLOOKUP from step 1 into INDEX-MATCH.",
+        cta: "Converted" },
+      { title: "Hands-on: clean a real sheet",     icon: 'briefcase',
+        text: "Take your messiest expense or sales sheet. Apply: VLOOKUP to merge two tabs, a pivot to summarize, and one INDEX-MATCH where VLOOKUP wouldn't work. <strong>15 minutes max.</strong>",
+        doalong: "Pick the sheet. Set a 15-min timer. Go.",
+        cta: "Cleaned" },
+    ],
+  },
+  'office-email': {
+    title: "Email That Gets Replies",
+    nextCourseId: 'office-slides',
+    steps: [
+      { title: "Subject lines that get opened",    icon: 'mail',      video: 'placeholder',
+        text: "<strong>Lead with the outcome, not the request.</strong> \"Need approval for Q3 budget\" beats \"Quick question\". \"Status update — project XYZ on track\" beats \"Update\". The subject is your headline — make it specific and outcome-led.",
+        doalong: "Rewrite the subject of your last 3 sent emails.",
+        cta: "Rewrote" },
+      { title: "Reverse pyramid — ask first",      icon: 'chevron-up',
+        text: "<strong>One-line ask. Then context.</strong> \"Can you approve the attached budget by Friday?\" → THEN three lines of context. Most office emails bury the ask in paragraph 4. Readers skim — give them the ask immediately, let them choose to read the context.",
+        doalong: "Open a sent email. Move the ask to line 1.",
+        cta: "Restructured" },
+      { title: "Tone: formal vs friendly vs urgent", icon: 'chat',
+        text: "<strong>Mirror the recipient.</strong> Formal: \"Could you please review by EOD\". Friendly: \"Mind taking a look when you get a sec?\". Urgent: \"Need this by 5pm to avoid blocking shipping\". <strong>Wrong tone = wrong response speed.</strong> Read their last email before you reply.",
+        doalong: "Pick 3 recipients. What tone fits each?",
+        cta: "Tagged" },
+      { title: "3 templates for hard emails",      icon: 'document',  video: 'placeholder',
+        text: "<strong>Status update:</strong> \"Where we are, what's next, what I need from you.\"<br><strong>Escalation:</strong> \"Here's the issue, here's what I tried, here's what I need.\"<br><strong>Apology:</strong> \"Specific mistake, specific fix, specific prevention.\"<br>Memorize the shape — fill it for any situation.",
+        doalong: "Draft one status update for your manager. Use the template.",
+        cta: "Drafted" },
+      { title: "Hands-on: rewrite a real email",   icon: 'send',
+        text: "Pick a sent email from this week that you wish had landed better. Rewrite it in 5 minutes using the reverse pyramid + the right tone + a clear subject. Send only if it's clearly better.",
+        doalong: "Pick the email. 5-min timer. Rewrite. Send.",
+        cta: "Sent" },
+    ],
+  },
+  'office-slides': {
+    title: "Slides That Don't Suck",
+    nextCourseId: 'office-excel',
+    steps: [
+      { title: "The 6-by-6 rule",                  icon: 'slides',    video: 'placeholder',
+        text: "<strong>Max 6 lines per slide. Max 6 words per line.</strong> If you can't say it that tight, you don't understand it yet. Walls of text kill attention. Slides are a backing track for your voice, not a script.",
+        doalong: "Open your last deck. Count words on the busiest slide.",
+        cta: "Counted" },
+      { title: "Title-as-takeaway",                icon: 'check-circle',
+        text: "<strong>The title is the takeaway, not the topic.</strong> Bad: \"Q3 Revenue\". Good: \"Q3 revenue up 14% — driven by enterprise renewals\". If someone only reads titles, they should still get your story.",
+        doalong: "Rewrite the titles of your last 5 slides as takeaways.",
+        cta: "Rewrote" },
+      { title: "Color, contrast, hierarchy",       icon: 'star',
+        text: "<strong>One accent color. White space is your friend.</strong> Pick 2 fonts max (one for titles, one for body). Bold what matters, dim what doesn't. Most decks fail because every slide screams — let them breathe.",
+        doalong: "Pick one slide. Strip everything that isn't critical. How much is left?",
+        cta: "Stripped" },
+      { title: "Build animations — only where they help", icon: 'play', video: 'placeholder',
+        text: "<strong>Animate to reveal logic, not to decorate.</strong> Build up a chart bar-by-bar to walk through reasoning. Don't fly text in from the left because it's fun. Every animation must answer: \"Does this help the audience follow the argument?\"",
+        doalong: "Pick a slide with animations. Cut every animation that's decorative.",
+        cta: "Cut" },
+      { title: "Hands-on: 12 slides → 6",          icon: 'split',
+        text: "Take a 12-slide deck. Merge, cut, simplify. End at 6 slides. <strong>Every cut slide makes your story sharper.</strong> If you can't cut to 6, the story isn't tight enough yet.",
+        doalong: "Open the deck. Cut to 6 slides in 20 minutes.",
+        cta: "Done" },
+    ],
+  },
+
+  // ============ SHOP TRACK COURSES ============
+  'shop-whatsapp': {
+    title: "WhatsApp for Your Shop",
+    nextCourseId: 'shop-inventory',
+    steps: [
+      { title: "Segment, don't blast",             icon: 'whatsapp',  video: 'placeholder',
+        text: "<strong>A broadcast to 500 unsegmented contacts = ignored.</strong> Split your list into 3-5 tags: regulars, festival-only, recent buyers, dormant. Each gets a different message. Same message, different segments → 4x response rate.",
+        doalong: "Tag your top 50 contacts into 3 groups.",
+        cta: "Tagged" },
+      { title: "Timing windows that convert",      icon: 'stopwatch',
+        text: "<strong>Best windows for shop campaigns:</strong> Tue-Thu 11am-1pm, Sat 4-6pm. Avoid Monday mornings (inbox overflow) and Sunday evenings (family time). Test 2 windows for 4 weeks, keep the winner.",
+        doalong: "Schedule next week's campaign in the right window.",
+        cta: "Scheduled" },
+      { title: "Broadcast vs Group vs Status",     icon: 'list',
+        text: "<strong>Broadcast:</strong> 1-to-many, looks personal (best for promos). <strong>Group:</strong> many-to-many, builds community (best for VIP regulars). <strong>Status:</strong> passive, no obligation (best for daily restock updates). Each does ONE thing well.",
+        doalong: "Map your next 3 messages to the right channel.",
+        cta: "Mapped" },
+      { title: "Promo / restock / reminder templates", icon: 'document', video: 'placeholder',
+        text: "<strong>Promo:</strong> Specific offer + deadline + one image. <strong>Restock:</strong> Item back in stock + price + reserve link. <strong>Reminder:</strong> One personal line + one nudge. <strong>Keep it under 4 lines.</strong> Memorize the shape.",
+        doalong: "Write one of each — promo, restock, reminder.",
+        cta: "Written" },
+      { title: "Hands-on: send 1 segmented campaign", icon: 'send',
+        text: "Pick your top 30 contacts. Tag them into 2 segments. Send a tailored message to each. Track responses for 48 hours. <strong>If response rate doubles, you've found your model.</strong>",
+        doalong: "Set up + send today. Check responses in 48h.",
+        cta: "Sent" },
+    ],
+  },
+  'shop-inventory': {
+    title: "Stock That Doesn't Run Out",
+    nextCourseId: 'shop-whatsapp',
+    steps: [
+      { title: "Par level + reorder level",        icon: 'inventory', video: 'placeholder',
+        text: "<strong>Par level = how much you want on the shelf at all times.</strong> <strong>Reorder level = the trigger to refill.</strong> When stock drops below reorder level, refill back to par level. Two numbers, total clarity. No spreadsheet wizardry needed.",
+        doalong: "Pick your bestseller. What's the par level? Reorder level?",
+        cta: "Set" },
+      { title: "The 20% that drives 80%",          icon: 'flame-jds',
+        text: "<strong>Pareto applies to your stock too.</strong> 20% of your SKUs drive 80% of revenue. Find them. Manage them tight. The other 80% can be looser — review them quarterly, not weekly. Don't waste attention on slow movers.",
+        doalong: "List your top 5 SKUs by revenue. That's your tight-management list.",
+        cta: "Listed" },
+      { title: "The free Google Sheet template",   icon: 'excel',     video: 'placeholder',
+        text: "<strong>3 columns: Item, Par, Reorder.</strong> One row per SKU. Update once a week, takes 15 minutes. Color-code: green = above reorder, yellow = at reorder, red = below par. <strong>One glance, full status.</strong>",
+        doalong: "Build the sheet. Add your top 20 SKUs.",
+        cta: "Built" },
+      { title: "The 15-min weekly stock-take",     icon: 'stopwatch',
+        text: "<strong>Same time, same day, every week.</strong> Walk the shop. Count the top 20. Update the sheet. Place orders for anything below reorder level. Done in 15 minutes. <strong>Consistency beats elaborate systems.</strong>",
+        doalong: "Schedule the recurring stock-take in your calendar.",
+        cta: "Scheduled" },
+      { title: "Hands-on: set par levels for top 10", icon: 'check-circle',
+        text: "Take your top 10 SKUs. Set par level (peak weekly demand × 1.5) and reorder level (par × 0.4). Write them in the sheet. <strong>That's your inventory system — done.</strong>",
+        doalong: "Set par + reorder for 10 SKUs. 10 minutes.",
+        cta: "Done" },
     ],
   },
 };
@@ -1255,6 +1755,27 @@ function renderCourseStep() {
     seg.className = 'seg' + (i < currentStepIdx ? ' done' : (i === currentStepIdx ? ' current' : ''));
     prog.appendChild(seg);
   });
+
+  // Build step icon (SVG via JDS lib — falls back to play if unknown)
+  const iconName = step.icon || 'play';
+  const iconHtml = (window.JDS && window.JDS.icon)
+    ? window.JDS.icon(iconName, { size: 32 })
+    : '';
+
+  // Inline video block — placeholder card. Each lesson can mark a step with
+  // `video: 'placeholder'` (or a future YouTube ID) to show a tutorial clip.
+  const videoHtml = step.video ? `
+    <div class="lc-video">
+      <button class="lc-video-thumb" onclick="playLessonVideo(this)">
+        <div class="lc-video-overlay"></div>
+        <div class="lc-video-icon">${(window.JDS && window.JDS.icon) ? window.JDS.icon('play', { size: 28 }) : '▶'}</div>
+        <div class="lc-video-meta">
+          <div class="lc-video-pill">TUTORIAL · 2:18</div>
+          <div class="lc-video-caption">${step.title}</div>
+        </div>
+      </button>
+    </div>` : '';
+
   // Card
   const stack = document.getElementById('lesson_stack');
   stack.innerHTML = '';
@@ -1263,7 +1784,8 @@ function renderCourseStep() {
   card.innerHTML = `
     <div class="lc-step">Step ${currentStepIdx+1} of ${course.steps.length}</div>
     <div class="lc-title">${step.title}</div>
-    <div class="lc-image">${step.emoji}</div>
+    <div class="lc-image lc-image-icon">${iconHtml}</div>
+    ${videoHtml}
     <div class="lc-text">${step.text}</div>
     ${step.doalong ? `
       <div class="lc-doalong">
@@ -1274,6 +1796,14 @@ function renderCourseStep() {
     ` : ''}
   `;
   stack.appendChild(card);
+}
+
+// Lesson video placeholder click — shows a "playing" state on the card.
+// For a real prototype, swap this for a YouTube iframe or HTML5 <video>.
+function playLessonVideo(btnEl) {
+  btnEl.classList.add('playing');
+  // Auto-clear after 6s so the demo looks like it's been watched
+  setTimeout(() => btnEl.classList.remove('playing'), 6000);
 }
 
 function nextLesson() {
@@ -1304,31 +1834,79 @@ function showToast(text) {
   setTimeout(() => { t.style.opacity = '0'; t.style.transition = 'opacity 0.3s'; }, 1800);
   setTimeout(() => t.remove(), 2200);
 }
-// Replace course-complete alert with a proper completion screen
+// Course complete — celebration + CTA card (next course / reminder / plan / share).
 function showCourseComplete() {
   const course = COURSES[currentCourseId];
+  const nextId = course.nextCourseId;
+  const nextCourse = nextId ? COURSES[nextId] : null;
   const stack = document.getElementById('lesson_stack');
   stack.innerHTML = '';
+
+  // Celebration card
   const card = document.createElement('div');
   card.className = 'lesson-card fade-in-up';
   card.style.textAlign = 'center';
   card.innerHTML = `
-    <div style="width:64px;height:64px;border-radius:50%;background:var(--success);color:white;display:flex;align-items:center;justify-content:center;margin:8px auto 16px">
-      <svg viewBox="0 0 24 24" fill="none" width="32" height="32"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="lc-celebrate">
+      <svg viewBox="0 0 24 24" fill="none" width="36" height="36">
+        <path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
     </div>
-    <div class="lc-title" style="margin-bottom:8px">Course complete</div>
-    <div class="lc-text" style="margin-bottom:16px">${course.title} · 5/5 steps · Skill badge added to your portfolio.</div>
-    <div class="lc-doalong">
-      <div class="lc-doalong-h">3-Day redo nudge set</div>
-      <div class="lc-doalong-task">Same task, no hints — Tuesday 8pm.</div>
-      <button class="lc-doalong-cta" onclick="showView('home')">Back to home</button>
-    </div>
+    <div class="lc-title" style="margin-bottom:6px">Course complete</div>
+    <div class="lc-text" style="margin-bottom:4px">${course.title}</div>
+    <div class="lc-text" style="margin-bottom:16px; opacity:0.7; font-size:13px">${course.steps.length}/${course.steps.length} steps · Skill badge added to your portfolio</div>
   `;
   stack.appendChild(card);
+
+  // What's next — CTA card with 4 actions
+  const ctaCard = document.createElement('div');
+  ctaCard.className = 'lesson-card lc-next-cta fade-in-up';
+  ctaCard.innerHTML = `
+    <div class="lc-next-h">What's next?</div>
+    ${nextCourse ? `
+      <button class="lc-next-primary" onclick="launchCourse('${nextId}')">
+        <span class="lc-next-primary-icon">${(window.JDS && window.JDS.icon) ? window.JDS.icon('play', { size: 18 }) : '▶'}</span>
+        <span>
+          <span class="lc-next-primary-label">Start the next course</span>
+          <span class="lc-next-primary-sub">${nextCourse.title} · ~${nextCourse.steps.length * 2} min</span>
+        </span>
+      </button>
+    ` : ''}
+    <div class="lc-next-row">
+      <button class="lc-next-chip" onclick="setCourseReminder()">
+        <span>${(window.JDS && window.JDS.icon) ? window.JDS.icon('bell', { size: 16 }) : '🔔'}</span>
+        <span>Remind me in 3 days to redo</span>
+      </button>
+      <button class="lc-next-chip" onclick="addToWeeklyPlan()">
+        <span>${(window.JDS && window.JDS.icon) ? window.JDS.icon('calendar-week', { size: 16 }) : '📅'}</span>
+        <span>Add to my weekly plan</span>
+      </button>
+      <button class="lc-next-chip" onclick="shareSkillOnWhatsApp('${course.title.replace(/'/g, "\\'")}')">
+        <span>${(window.JDS && window.JDS.icon) ? window.JDS.icon('whatsapp', { size: 16 }) : '📤'}</span>
+        <span>Share badge on WhatsApp</span>
+      </button>
+      <button class="lc-next-chip lc-next-chip-ghost" onclick="showView('home')">
+        <span>Back to home</span>
+      </button>
+    </div>
+  `;
+  stack.appendChild(ctaCard);
+
   // Update progress to fully done
   const prog = document.getElementById('course_progress');
   if (prog) Array.from(prog.children).forEach(seg => { seg.className = 'seg done'; });
   document.getElementById('course_meta').textContent = 'Complete';
+}
+
+function setCourseReminder() {
+  showToast("Reminder set for 3 days — same skill, no hints.");
+}
+function addToWeeklyPlan() {
+  showToast("Added to your weekly plan — Tuesday at 8 PM.");
+}
+function shareSkillOnWhatsApp(courseTitle) {
+  // In a real build this would open wa.me with a prefilled message.
+  showToast("Opening WhatsApp share — " + courseTitle);
 }
 
 /* =========================================================================

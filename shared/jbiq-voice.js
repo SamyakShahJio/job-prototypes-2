@@ -206,6 +206,54 @@
     });
   }
 
+  /* ============ Browser-native TTS fallback ============
+   * Used when a line has no pre-generated MP3 in TTS_CACHE (e.g. when the
+   * build script hit an API quota). Falls back to SpeechSynthesis on
+   * Chrome / Edge / Safari. Lower quality than ElevenLabs but keeps the demo
+   * functional. Silently no-ops if SpeechSynthesis isn't supported.
+   */
+  function pickBrowserVoice(langHint) {
+    if (!('speechSynthesis' in window)) return null;
+    const voices = window.speechSynthesis.getVoices();
+    if (!voices.length) return null;
+    const lang = (langHint || 'en-IN').toLowerCase();
+    return voices.find(v => v.lang && v.lang.toLowerCase() === lang)
+        || voices.find(v => v.lang && v.lang.toLowerCase().startsWith('en-in'))
+        || voices.find(v => v.lang && v.lang.toLowerCase().startsWith('en'))
+        || voices[0];
+  }
+
+  function speakWithBrowserTTS(text, langHint, onEnded, onStart) {
+    return new Promise((resolve) => {
+      if (!('speechSynthesis' in window) || !window.SpeechSynthesisUtterance) {
+        if (onEnded) try { onEnded(); } catch (e) {}
+        resolve();
+        return;
+      }
+      const fire = () => {
+        try { window.speechSynthesis.cancel(); } catch (e) {}
+        const u = new SpeechSynthesisUtterance(normalizeText(text));
+        u.lang = langHint || 'en-IN';
+        const v = pickBrowserVoice(langHint);
+        if (v) u.voice = v;
+        u.rate = 1.0;
+        u.pitch = 1.0;
+        u.onstart = () => { if (onStart) try { onStart(); } catch (e) {} };
+        u.onend = () => { if (onEnded) try { onEnded(); } catch (e) {} ; resolve(); };
+        u.onerror = () => { if (onEnded) try { onEnded(); } catch (e) {} ; resolve(); };
+        try { window.speechSynthesis.speak(u); } catch (e) { resolve(); }
+      };
+      if (window.speechSynthesis.getVoices().length === 0) {
+        // Voices populate async on some browsers — wait one tick.
+        const onVoices = () => { window.speechSynthesis.removeEventListener('voiceschanged', onVoices); fire(); };
+        window.speechSynthesis.addEventListener('voiceschanged', onVoices);
+        setTimeout(() => { window.speechSynthesis.removeEventListener('voiceschanged', onVoices); fire(); }, 300);
+      } else {
+        fire();
+      }
+    });
+  }
+
   /* ============ Browser-native STT (Web Speech API, on-device) ============
    * No external API. Chrome/Edge support it; Firefox/Safari desktop don't.
    * For unsupported browsers, fall back to the text input dock.
@@ -291,8 +339,12 @@
         const key = await cacheKey(persona.id || 'jbiq_warm', text);
         const filename = (window.TTS_CACHE || {})[key];
         if (!filename) {
-          console.warn('[JBIQVoice] no cached audio for', persona.id, '·', (text || '').slice(0, 70));
-          notifyState('idle');
+          // No pre-generated MP3 — fall back to the browser's on-device TTS
+          // (SpeechSynthesis). Lower quality than ElevenLabs, but the demo
+          // stays functional. Most useful when the build script hit an API
+          // quota and couldn't generate every line.
+          console.info('[JBIQVoice] using browser-TTS fallback for', persona.id, '·', (text || '').slice(0, 70));
+          await speakWithBrowserTTS(text, langHint, () => notifyState('idle'), () => notifyState('speaking'));
           return;
         }
         notifyState('speaking');
