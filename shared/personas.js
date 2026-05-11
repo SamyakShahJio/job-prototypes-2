@@ -1,32 +1,43 @@
-/* Voice Cast Registry — Sarvam Bulbul-v2 voices
+/* Voice Cast Registry — ElevenLabs voices
  *
  * One source of truth for every voice in the JCS prototype suite.
  * Per MultimodalUX deck POV: "Two voices, you pick" for the JBIQ orchestrator.
  * Per JCS doc: distinct personas for English Avatar friend/teacher and Interview
  * personas (bored HR / formal Ops / friendly TL / hostile customer).
+ *
+ * ARCHITECTURE: Audio for every line is pre-generated at build time
+ * (tools/tts-build.js) and shipped as static MP3 files in assets/audio/.
+ * Runtime makes ZERO API calls. window.TTS_CACHE (tts-cache.js) maps
+ * `personaId:sha1(text)` → audio filename. Perceived latency: instant.
+ *
+ * Voice IDs are ElevenLabs canonical default voice IDs (eleven_multilingual_v2
+ * model). For a brand-aligned Indian-accent pass, replace with custom cloned
+ * voices from the user's ElevenLabs voice library.
  */
 
 window.JBIQ_PERSONAS = {
   // ============= JBIQ ORCHESTRATOR (faceless ambient glow) =============
   jbiq_warm: {
     id: 'jbiq_warm',
-    speaker: 'anushka',
-    model: 'bulbul:v2',
-    pitch: 0,
-    pace: 1.0,
+    voiceId: 'EXAVITQu4vr4xnSDxMaL',   // Sarah — soft warm female
+    model: 'eleven_multilingual_v2',
+    stability: 0.5,
+    similarityBoost: 0.75,
+    style: 0.2,
     name: 'JBIQ',
-    description: 'Warm Indian female — the default JBIQ voice across all use cases',
+    description: 'Warm female — the default JBIQ voice across all use cases',
     visual: 'ambient-glow',
     fillerPhrase: 'Ek second…',
   },
   jbiq_calm: {
     id: 'jbiq_calm',
-    speaker: 'manisha',
-    model: 'bulbul:v2',
-    pitch: 0,
-    pace: 0.95,
+    voiceId: 'XrExE9yKIg1WjnnlVkGX',   // Matilda — warm, slightly slower
+    model: 'eleven_multilingual_v2',
+    stability: 0.65,
+    similarityBoost: 0.75,
+    style: 0.1,
     name: 'JBIQ',
-    description: 'Calm Indian female — alternate JBIQ voice (slow & steady)',
+    description: 'Calm female — alternate JBIQ voice (slow & steady)',
     visual: 'ambient-glow',
     fillerPhrase: 'Hmm, ek minute…',
   },
@@ -34,25 +45,27 @@ window.JBIQ_PERSONAS = {
   // ============= ENGLISH LEARNING — AI AVATAR (lipsync) =============
   sarah_avatar: {
     id: 'sarah_avatar',
-    speaker: 'arya',             // Bulbul-v2 most natural / modern English female cadence
-    model: 'bulbul:v2',
-    pitch: -1,                    // Slightly lower pitch — warmer, less peppy
-    pace: 1.0,
+    voiceId: 'EXAVITQu4vr4xnSDxMaL',   // Sarah — soft female, clean English
+    model: 'eleven_multilingual_v2',
+    stability: 0.55,
+    similarityBoost: 0.8,
+    style: 0.3,
     name: 'Sarah',
     title: 'Your English coach',
-    description: 'Modern Indian female English — friendly tutor for free-form practice',
+    description: 'Modern female English — friendly tutor for free-form practice',
     visual: 'avatar-lipsync',
     avatarColor: '#3535f3',
     fillerPhrase: 'Mmm, let me think…',
   },
 
-  // ============= INTERVIEW PREP — ROLE-PLAY PERSONAS (faceless + identity card) =============
+  // ============= INTERVIEW PREP — ROLE-PLAY PERSONAS =============
   interviewer_bored_hr: {
     id: 'interviewer_bored_hr',
-    speaker: 'manisha',
-    model: 'bulbul:v2',
-    pitch: 0,
-    pace: 0.95,
+    voiceId: 'Xb7hH8MSUJpSbSDYk0k2',   // Alice — British female, slightly cool
+    model: 'eleven_multilingual_v2',
+    stability: 0.75,                    // higher stability = flatter, less expressive
+    similarityBoost: 0.6,
+    style: 0.0,                          // zero style = monotone-leaning
     name: 'Priya Mehra',
     title: 'HR · Concentrix',
     archetype: 'Bored HR',
@@ -63,10 +76,11 @@ window.JBIQ_PERSONAS = {
   },
   interviewer_formal_ops: {
     id: 'interviewer_formal_ops',
-    speaker: 'abhilash',
-    model: 'bulbul:v2',
-    pitch: 0,
-    pace: 0.95,
+    voiceId: 'nPczCjzI2devNBz1zQrb',   // Brian — deep, authoritative male
+    model: 'eleven_multilingual_v2',
+    stability: 0.6,
+    similarityBoost: 0.75,
+    style: 0.15,
     name: 'Rajesh Kumar',
     title: 'Ops Manager · Tech Mahindra BPS',
     archetype: 'Formal Ops Manager',
@@ -77,10 +91,11 @@ window.JBIQ_PERSONAS = {
   },
   interviewer_friendly_tl: {
     id: 'interviewer_friendly_tl',
-    speaker: 'karun',
-    model: 'bulbul:v2',
-    pitch: 0,
-    pace: 1.0,
+    voiceId: 'TX3LPaxmHKxFdv7VOQHJ',   // Liam — warm young adult male
+    model: 'eleven_multilingual_v2',
+    stability: 0.5,
+    similarityBoost: 0.75,
+    style: 0.35,                         // warm expressive
     name: 'Arjun Singh',
     title: 'Team Lead · HDFC Sales',
     archetype: 'Friendly TL',
@@ -91,10 +106,11 @@ window.JBIQ_PERSONAS = {
   },
   interviewer_hostile_customer: {
     id: 'interviewer_hostile_customer',
-    speaker: 'hitesh',
-    model: 'bulbul:v2',
-    pitch: 0,
-    pace: 1.05,
+    voiceId: 'cjVigY5qzO86Huf0OWal',   // Eric — assertive business-y male
+    model: 'eleven_multilingual_v2',
+    stability: 0.4,                      // lower stability = more variation = more emotion
+    similarityBoost: 0.75,
+    style: 0.55,                         // high style = expressive (angry)
     name: 'Mr. Sharma',
     title: 'Angry customer · Bajaj Finance',
     archetype: 'Hostile Customer (V&A pressure drill)',
@@ -107,13 +123,14 @@ window.JBIQ_PERSONAS = {
   // ============= MICRO-LEARNING — COACH (faceless) =============
   microlearning_coach: {
     id: 'microlearning_coach',
-    speaker: 'shreya',           // Energetic peer-like female — Sarvam Bulbul-v2 valid voice
-    model: 'bulbul:v2',
-    pitch: 0,
-    pace: 1.05,
+    voiceId: 'cgSgspJ2msm6clMCkdW9',   // Jessica — expressive young female
+    model: 'eleven_multilingual_v2',
+    stability: 0.45,
+    similarityBoost: 0.75,
+    style: 0.4,
     name: 'JBIQ',
     title: 'Your skill coach',
-    description: 'Energetic Indian female — peer-like, hype-without-hype',
+    description: 'Energetic female — peer-like, hype-without-hype',
     visual: 'ambient-glow',
     accentColor: '#25ab21',
     fillerPhrase: 'Chalo dekhte hain…',
@@ -122,10 +139,11 @@ window.JBIQ_PERSONAS = {
   // ============= GOVT EXAM PREP — COUNSELOR (faceless) =============
   govt_exam_counselor: {
     id: 'govt_exam_counselor',
-    speaker: 'manisha',
-    model: 'bulbul:v2',
-    pitch: 0,
-    pace: 0.95,
+    voiceId: 'FGY2WhTYpPnrIDTdsKH5',   // Laura — calm professional female
+    model: 'eleven_multilingual_v2',
+    stability: 0.6,
+    similarityBoost: 0.75,
+    style: 0.2,
     name: 'JBIQ',
     title: 'Your exam mentor',
     description: 'Calm professional female — reassuring mentor tone for exam stress',
