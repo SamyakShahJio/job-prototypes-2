@@ -496,15 +496,15 @@
     <button class="back-btn" onclick="window.history.length > 1 ? window.history.back() : null" aria-label="Back">
       <span data-icon="chevron-left" data-size="20"></span>
     </button>
-    <div class="greeting" id="greeting">Welcome to JBIQ</div>
+    <div class="greeting" id="greeting">Welcome</div>
   </div>
 
   <div class="body-scroll">
 
     <!-- Hero band: lavender wash, single tight intro -->
     <div class="hero-band">
-      <h1>Hi, I'm <span class="accent">JBIQ</span>.</h1>
-      <p>I help with jobs, careers, and the skills to get there. Tell me what's going on — or pick a starting point below.</p>
+      <h1>Jobs · Careers · <span class="accent">Skills</span></h1>
+      <p>Pick a starting point below, or tell me what you're working on.</p>
     </div>
 
     <!-- Intro card removed per feedback — the 4 vertical cards below speak
@@ -618,9 +618,9 @@
   let g = 'Good morning';
   if (h >= 12 && h < 17) g = 'Good afternoon';
   else if (h >= 17 || h < 5) g = 'Good evening';
-  // Zero-state: no name known yet, keep the greeting role-agnostic.
+  // Zero-state: no name known yet, no JBIQ self-mention.
   const el = document.getElementById('greeting');
-  if (el) el.textContent = 'Welcome to JBIQ';
+  if (el) el.textContent = 'Welcome';
 })();
 
 /* =========================================================================
