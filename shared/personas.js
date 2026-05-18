@@ -42,7 +42,9 @@ window.JBIQ_PERSONAS = {
     fillerPhrase: 'Hmm, ek minute…',
   },
 
-  // ============= ENGLISH LEARNING — AI AVATAR (lipsync) =============
+  // ============= ENGLISH LEARNING — AI AVATARS (cast of 4) =============
+  // Sarah — the polished English coach (default). Cleans your grammar,
+  // marks pronunciation, runs IELTS-style practice. Existing voice kept.
   sarah_avatar: {
     id: 'sarah_avatar',
     voiceId: 'EXAVITQu4vr4xnSDxMaL',   // Sarah — soft female, clean English
@@ -51,11 +53,59 @@ window.JBIQ_PERSONAS = {
     similarityBoost: 0.8,
     style: 0.3,
     name: 'Sarah',
-    title: 'Your English coach',
-    description: 'Modern female English — friendly tutor for free-form practice',
+    title: 'English coach',
+    description: 'Polished English coach — IELTS-friendly, grammar + pronunciation',
     visual: 'avatar-lipsync',
     avatarColor: '#3535f3',
     fillerPhrase: 'Mmm, let me think…',
+  },
+  // Emma — the English friend. Casual register, no judgment, chats about
+  // life. The "just want to talk in English without being corrected" avatar.
+  emma_avatar: {
+    id: 'emma_avatar',
+    voiceId: 'XB0fDUnXU5powFXDhCwa',   // Charlotte — warm British female
+    model: 'eleven_multilingual_v2',
+    stability: 0.5,
+    similarityBoost: 0.75,
+    style: 0.45,                          // more expressive, friendlier
+    name: 'Emma',
+    title: 'English friend',
+    description: 'Casual chat partner — no grammar police, just conversation',
+    visual: 'avatar-lipsync',
+    avatarColor: '#1eccb0',
+    fillerPhrase: 'Ahh okay, so…',
+  },
+  // Jay — the slang teacher. Hinglish + Indian-English colloquialisms,
+  // office-floor expressions, what the cool kids actually say.
+  jay_avatar: {
+    id: 'jay_avatar',
+    voiceId: 'TX3LPaxmHKxFdv7VOQHJ',   // Liam — casual American male
+    model: 'eleven_multilingual_v2',
+    stability: 0.5,
+    similarityBoost: 0.7,
+    style: 0.55,
+    name: 'Jay',
+    title: 'Slang & street English',
+    description: 'Hinglish + casual English — phrases that actually get used',
+    visual: 'avatar-lipsync',
+    avatarColor: '#f7ab20',
+    fillerPhrase: 'Yo, so basically…',
+  },
+  // Mr. Jonas — the interview English coach. Business register, formal,
+  // gets you ready for HR rounds and panel interviews specifically.
+  jonas_avatar: {
+    id: 'jonas_avatar',
+    voiceId: 'JBFqnCBsd6RMkjVDRZzb',   // George — refined male
+    model: 'eleven_multilingual_v2',
+    stability: 0.65,
+    similarityBoost: 0.75,
+    style: 0.2,
+    name: 'Mr. Jonas',
+    title: 'Interview English coach',
+    description: 'Formal business English — interview-ready phrases and tone',
+    visual: 'avatar-lipsync',
+    avatarColor: '#3900ad',
+    fillerPhrase: 'Let me give that some thought…',
   },
 
   // ============= INTERVIEW PREP — ROLE-PLAY PERSONAS =============

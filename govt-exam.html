@@ -668,7 +668,7 @@
         </svg>
       </button>
       <div class="title-area">
-        <div class="t1">Govt Exam Prep</div>
+        <div class="t1">Govt Exam · Discovery + Prep</div>
         <div class="t2">Find your exam · Prep on your commute</div>
       </div>
       
@@ -777,11 +777,18 @@
       </div>
     </div>
 
-    <!-- Ask anything dock — converse from home -->
+    <!-- Ask anything dock with suggested chips — second entry point at the bottom -->
     <div class="gc-input-dock">
+      <div class="dock-chips" role="list">
+        <button class="dock-chip" onclick="startDiscovery()">Help me pick an exam</button>
+        <button class="dock-chip" onclick="startPath('banking')">Banking (IBPS / SBI)</button>
+        <button class="dock-chip" onclick="startPath('admin')">SSC / UPSC</button>
+        <button class="dock-chip" onclick="startPath('state')">State-level (BPSC / UPPSC)</button>
+        <button class="dock-chip" onclick="showView('daily')">Today's commute prep</button>
+      </div>
       <div class="gc-input-wrap">
         <div class="gc-input-text">
-          <input type="text" placeholder="Ask about any exam — IBPS, SSC, RBI…" readonly>
+          <input type="text" placeholder="Tell me what you want — exam, eligibility, salary…" readonly>
         </div>
         <div class="gc-input-actions">
           <div class="gc-input-left">

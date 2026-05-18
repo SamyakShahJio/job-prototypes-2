@@ -500,6 +500,31 @@
     padding: 22px;
     margin-bottom: 14px;
   }
+  /* In-chat variant — course step rendered inline as a chat message */
+  .lesson-card--in-chat {
+    margin: 8px 12px 14px;
+    padding: 18px;
+  }
+  .lesson-card--in-chat .lc-image { height: 100px; }
+  .lc-continue-row {
+    margin-top: 14px;
+    display: flex;
+    justify-content: flex-end;
+  }
+  .lc-continue-btn {
+    background: var(--surface-bold);
+    color: var(--text-on-bold);
+    border: none;
+    border-radius: 999px;
+    padding: 10px 18px;
+    font-family: var(--font);
+    font-size: 13px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: transform 0.15s, background 0.15s;
+  }
+  .lc-continue-btn:hover { background: var(--primary-70); }
+  .lc-continue-btn:active { transform: scale(0.96); }
   .lesson-card .lc-step {
     font-size: 11px; font-weight: 700; color: var(--vert-accent-dark);
     letter-spacing: 0.4px; text-transform: uppercase;
@@ -875,38 +900,35 @@
         </svg>
       </button>
       <div class="title-area">
-        <div class="t1">Microlearning</div>
+        <div class="t1">Micro Learning</div>
         <div class="t2">Got 10 min? Learn one thing well.</div>
       </div>
       
     </div>
 
     <div class="view-body">
-      <!-- Ask Me Anything card — blank-slate entry, no thumbnail-only framing -->
-      <div class="what-card" onclick="startChat()">
-        <div class="wc-tag">Ask me anything</div>
-        <div class="wc-q">What's stuck, or what do you want to get better at?</div>
-        <div class="wc-sub">I'll find the root cause and a 10-minute fix — across YouTube, Office, or your shop.</div>
-        <div class="wc-input">
-          <span class="wc-placeholder">Or type or speak…</span>
-          <div class="wc-mic">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 15a3 3 0 003-3V6a3 3 0 00-6 0v6a3 3 0 003 3z"/>
-              <path d="M19 11v1a7 7 0 01-14 0v-1" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
-            </svg>
-          </div>
-        </div>
-        <!-- Quick suggestions — one per track, so users see the breadth -->
-        <div class="wc-suggestions">
-          <button class="wc-chip" onclick="event.stopPropagation(); startChatWith('thumbnail')">YouTube thumbnail</button>
-          <button class="wc-chip" onclick="event.stopPropagation(); startChatWith('excel')">Excel VLOOKUP</button>
-          <button class="wc-chip" onclick="event.stopPropagation(); startChatWith('whatsapp_campaign')">WhatsApp campaign</button>
-          <button class="wc-chip" onclick="event.stopPropagation(); startChatWith('chatgpt')">ChatGPT prompts</button>
+      <!-- Money tracker — moved to top as proof-of-value -->
+      <div class="money-tracker money-tracker--top">
+        <div class="mt-icon"><span data-icon="star" data-size="22"></span></div>
+        <div class="mt-text">
+          <div class="mt-amount">+ ₹4,200 this month</div>
+          <div class="mt-sub">Thumbnail Hooks skill — your videos earned this from improved CTR.</div>
         </div>
       </div>
 
-      <!-- Sub-tracks — each track has a distinct semantic icon -->
-      <div class="section-h">Sub-tracks</div>
+      <!-- Continue where you left off — promoted to top (after money) -->
+      <div class="section-h">Continue where you left off</div>
+      <div class="inprogress-card" onclick="continueCourse()">
+        <div class="ip-thumb"><span data-icon="play" data-size="22"></span></div>
+        <div class="ip-text">
+          <div class="ip-title">YouTube Hook Patterns</div>
+          <div class="ip-meta">Step 3 of 5 · ~6 mins to finish</div>
+          <div class="ip-progress"><div class="ip-fill" style="width: 60%"></div></div>
+        </div>
+      </div>
+
+      <!-- Categories (renamed from Sub-tracks) — each category has a distinct semantic icon -->
+      <div class="section-h">Categories</div>
       <div class="subtracks">
         <div class="subtrack st-creator" onclick="startSubtrack('creator')">
           <div class="st-emoji"><span data-icon="video" data-size="20"></span></div>
@@ -929,23 +951,12 @@
             <div class="st-meta">Excel · Email · Slides</div>
           </div>
         </div>
-        <div class="subtrack st-ai-fluency" onclick="showView('ai-fluency')">
+        <div class="subtrack st-ai-fluency" onclick="startSubtrack('ai_fluency')">
           <div class="st-emoji"><span data-icon="sparkles" data-size="20"></span></div>
           <div>
             <div class="st-name">AI Fluency</div>
             <div class="st-meta">ChatGPT · Image gen · Voice</div>
           </div>
-        </div>
-      </div>
-
-      <!-- In-progress course -->
-      <div class="section-h">Continue where you left off</div>
-      <div class="inprogress-card" onclick="continueCourse()">
-        <div class="ip-thumb"><span data-icon="brain" data-size="22"></span></div>
-        <div class="ip-text">
-          <div class="ip-title">YouTube Hook Patterns</div>
-          <div class="ip-meta">Step 3 of 5 · ~6 mins to finish</div>
-          <div class="ip-progress"><div class="ip-fill" style="width: 60%"></div></div>
         </div>
       </div>
 
@@ -1034,21 +1045,19 @@
         </div>
       </div>
 
-      <!-- Money tracker -->
-      <div class="money-tracker">
-        <div class="mt-icon"><span data-icon="star" data-size="22"></span></div>
-        <div class="mt-text">
-          <div class="mt-amount">+ ₹4,200 this month</div>
-          <div class="mt-sub">Thumbnail Hooks skill — your videos earned this from improved CTR.</div>
-        </div>
-      </div>
     </div>
 
-    <!-- Ask anything dock — converse from home -->
+    <!-- Ask-me-anything dock with suggested chips — single entry point at the bottom -->
     <div class="gc-input-dock">
+      <div class="dock-chips" role="list">
+        <button class="dock-chip" onclick="startChatWith('thumbnail')">YouTube thumbnail</button>
+        <button class="dock-chip" onclick="startChatWith('excel')">Excel VLOOKUP</button>
+        <button class="dock-chip" onclick="startChatWith('whatsapp_campaign')">WhatsApp campaign</button>
+        <button class="dock-chip" onclick="startChatWith('chatgpt')">ChatGPT prompts</button>
+      </div>
       <div class="gc-input-wrap">
         <div class="gc-input-text">
-          <input type="text" placeholder="Ask the coach anything…" readonly>
+          <input type="text" placeholder="Ask me anything — what's stuck?" readonly onclick="startChat()">
         </div>
         <div class="gc-input-actions">
           <div class="gc-input-left">
@@ -1079,7 +1088,7 @@
         </svg>
       </button>
       <div class="title-area">
-        <div class="t1">Skill coach</div>
+        <div class="t1">Micro Learning</div>
         <div class="t2">Tell me what's stuck</div>
       </div>
     </div>
@@ -1113,53 +1122,9 @@
     </div>
   </div>
 
-  <!-- ========================== COURSE PLAYER ========================== -->
-  <div class="view" id="view-course">
-    <div class="top-bar">
-      <button class="icon-btn" onclick="showView('home')" aria-label="Back">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-          <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-        </svg>
-      </button>
-      <div class="title-area">
-        <div class="t1" id="course_title">YouTube Hook Patterns</div>
-        <div class="t2" id="course_meta">Step 3 of 5 · ~6 mins</div>
-      </div>
-    </div>
-
-    <div class="course-progress" id="course_progress">
-      <div class="seg done"></div>
-      <div class="seg done"></div>
-      <div class="seg current"></div>
-      <div class="seg"></div>
-      <div class="seg"></div>
-    </div>
-
-    <div class="lesson-stack" id="lesson_stack">
-      <!-- Filled by JS -->
-    </div>
-
-    <div class="lesson-nav">
-      <button class="ln-prev" onclick="prevLesson()">← Previous</button>
-      <button class="ln-next" onclick="nextLesson()">Next step →</button>
-    </div>
-
-    <!-- Ask the coach — available even mid-lesson -->
-    <div class="gc-input-dock gc-input-dock-compact">
-      <div class="gc-input-wrap">
-        <div class="gc-input-text">
-          <input type="text" placeholder="Ask the coach anything…" readonly onclick="startChat()">
-        </div>
-        <div class="gc-input-actions">
-          <div class="gc-input-right">
-            <button class="gc-input-icon-btn" aria-label="Mic" onclick="startChat()">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 15a3 3 0 003-3V5a3 3 0 00-6 0v7a3 3 0 003 3zm6-5a1 1 0 00-1 1v1a5 5 0 11-10 0v-1a1 1 0 10-2 0v1a7 7 0 1014 0v-1a1 1 0 00-1-1zm-3 10H9a1 1 0 000 2h6a1 1 0 000-2z"/></svg>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <!-- Course Player view removed — courses now render inline inside view-chat
+       as lesson-cards. The user can scroll up in the chat to see the original
+       diagnosis conversation. Back-button on the chat returns to home. -->
 
   <!-- ========================== AI FLUENCY TRACK ========================== -->
   <div class="view" id="view-ai-fluency">
@@ -1490,9 +1455,16 @@ function showTrailer(flow) {
   chat.scrollTop = chat.scrollHeight;
 }
 
-function launchCourse(courseId) {
-  showView('course');
-  loadCourse(courseId);
+// Launch a course INSIDE the chat — one continuous scroll. The earlier
+// problem-diagnosis conversation stays above; course steps are appended as
+// rich lesson cards. Replaces the old separate view-course screen.
+function launchCourse(courseId, startIdx) {
+  if (document.querySelector('.view.active')?.id !== 'view-chat') {
+    showView('chat');
+  }
+  currentCourseId = courseId;
+  currentStepIdx = typeof startIdx === 'number' ? startIdx : 0;
+  appendCourseStep();
 }
 
 function appendAIBubble(text)  { return window.GC.appendAi(document.getElementById('ml_chat'), text, 'JBIQ'); }
@@ -1508,9 +1480,10 @@ function startSubtrack(track) {
   // Per-track opener line + chip set. Each track surfaces only its own
   // problem flows so the suggestions stay relevant.
   const OPENERS = {
-    creator: "Creator track. Tell me what's stuck — hooks, titles, thumbnails, or edits?",
-    shop:    "Shop track. WhatsApp campaigns, inventory, or your POS — what's broken?",
-    office:  "Office track. Excel, email, or slides — what's eating your time?",
+    creator:     "Creator track. Tell me what's stuck — hooks, titles, thumbnails, or edits?",
+    shop:        "Shop track. WhatsApp campaigns, inventory, or your POS — what's broken?",
+    office:      "Office track. Excel, email, or slides — what's eating your time?",
+    ai_fluency:  "AI Fluency. ChatGPT, image gen, voice — which one do you want to get sharper at?",
   };
   const CHIPS = {
     creator: [
@@ -1529,6 +1502,11 @@ function startSubtrack(track) {
       { text: "My emails get ignored",                 key: 'email' },
       { text: "My slides look cluttered",              key: 'slides' },
     ],
+    ai_fluency: [
+      { text: "ChatGPT prompts aren't useful",         key: 'chatgpt' },
+      { text: "Image gen for thumbnails",              key: 'chatgpt' },
+      { text: "Read my YouTube analytics with AI",     key: 'chatgpt' },
+    ],
   };
 
   const opener = OPENERS[track] || PROBLEM_FLOWS.default.rootCause;
@@ -1540,8 +1518,13 @@ function startSubtrack(track) {
 }
 
 function continueCourse() {
-  loadCourse('yt-hook-patterns', 2); // Step 3 (0-indexed = 2)
-  showView('course');
+  // Coming from the home "Continue where you left off" card — clear any
+  // stale chat and drop the user straight into the next course card. No
+  // opener; they know what they were doing.
+  showView('chat');
+  const chat = document.getElementById('ml_chat');
+  if (chat) chat.innerHTML = '';
+  launchCourse('yt-hook-patterns', 2);
 }
 
 /* =========================================================================
@@ -1767,35 +1750,27 @@ const COURSES = {
 let currentCourseId = 'yt-hook-patterns';
 let currentStepIdx = 0;
 
+// Legacy helper — kept as a thin wrapper so older call sites still work.
+// (Was used by view-course; now everything goes through launchCourse().)
 function loadCourse(courseId, startIdx) {
-  currentCourseId = courseId;
-  currentStepIdx = startIdx || 0;
-  renderCourseStep();
+  launchCourse(courseId, startIdx);
 }
 
-function renderCourseStep() {
+// Append the current course step as an inline card in #ml_chat. Each step
+// gets its own card, stacked under the previous chat content. Scroll up at
+// any time to see the original "what's stuck?" conversation that led here.
+function appendCourseStep() {
   const course = COURSES[currentCourseId];
   if (!course) return;
   const step = course.steps[currentStepIdx];
-  document.getElementById('course_title').textContent = course.title;
-  document.getElementById('course_meta').textContent = `Step ${currentStepIdx+1} of ${course.steps.length}`;
-  // Progress
-  const prog = document.getElementById('course_progress');
-  prog.innerHTML = '';
-  course.steps.forEach((s, i) => {
-    const seg = document.createElement('div');
-    seg.className = 'seg' + (i < currentStepIdx ? ' done' : (i === currentStepIdx ? ' current' : ''));
-    prog.appendChild(seg);
-  });
+  const chat = document.getElementById('ml_chat');
+  if (!chat) return;
 
-  // Build step icon (SVG via JDS lib — falls back to play if unknown)
   const iconName = step.icon || 'play';
   const iconHtml = (window.JDS && window.JDS.icon)
     ? window.JDS.icon(iconName, { size: 32 })
     : '';
 
-  // Inline video block — placeholder card. Each lesson can mark a step with
-  // `video: 'placeholder'` (or a future YouTube ID) to show a tutorial clip.
   const videoHtml = step.video ? `
     <div class="lc-video">
       <button class="lc-video-thumb" onclick="playLessonVideo(this)">
@@ -1808,13 +1783,11 @@ function renderCourseStep() {
       </button>
     </div>` : '';
 
-  // Card
-  const stack = document.getElementById('lesson_stack');
-  stack.innerHTML = '';
+  const isLast = currentStepIdx >= course.steps.length - 1;
   const card = document.createElement('div');
-  card.className = 'lesson-card fade-in-up';
+  card.className = 'lesson-card lesson-card--in-chat fade-in-up';
   card.innerHTML = `
-    <div class="lc-step">Step ${currentStepIdx+1} of ${course.steps.length}</div>
+    <div class="lc-step">${course.title} · Step ${currentStepIdx + 1} of ${course.steps.length}</div>
     <div class="lc-title">${step.title}</div>
     <div class="lc-image lc-image-icon">${iconHtml}</div>
     ${videoHtml}
@@ -1826,15 +1799,18 @@ function renderCourseStep() {
         <button class="lc-doalong-cta" onclick="markDoalong()">${step.cta || 'Done'}</button>
       </div>
     ` : ''}
+    <div class="lc-continue-row">
+      <button class="lc-continue-btn" onclick="nextLesson()">${isLast ? 'Finish course →' : 'Continue →'}</button>
+    </div>
   `;
-  stack.appendChild(card);
+  chat.appendChild(card);
+  chat.scrollTop = chat.scrollHeight;
 }
 
 // Lesson video placeholder click — shows a "playing" state on the card.
 // For a real prototype, swap this for a YouTube iframe or HTML5 <video>.
 function playLessonVideo(btnEl) {
   btnEl.classList.add('playing');
-  // Auto-clear after 6s so the demo looks like it's been watched
   setTimeout(() => btnEl.classList.remove('playing'), 6000);
 }
 
@@ -1842,18 +1818,12 @@ function nextLesson() {
   const course = COURSES[currentCourseId];
   if (currentStepIdx < course.steps.length - 1) {
     currentStepIdx++;
-    renderCourseStep();
-    document.getElementById('lesson_stack').scrollTop = 0;
+    appendCourseStep();
   } else {
     showCourseComplete();
   }
 }
-function prevLesson() {
-  if (currentStepIdx > 0) {
-    currentStepIdx--;
-    renderCourseStep();
-  }
-}
+// prevLesson removed — users scroll up in the chat to revisit prior steps.
 function markDoalong() {
   // Inline confirmation toast — no alert
   showToast("Nice — step marked complete.");
@@ -1866,17 +1836,16 @@ function showToast(text) {
   setTimeout(() => { t.style.opacity = '0'; t.style.transition = 'opacity 0.3s'; }, 1800);
   setTimeout(() => t.remove(), 2200);
 }
-// Course complete — celebration + CTA card (next course / reminder / plan / share).
+// Course complete — celebration + CTA card appended inline to the chat.
 function showCourseComplete() {
   const course = COURSES[currentCourseId];
   const nextId = course.nextCourseId;
   const nextCourse = nextId ? COURSES[nextId] : null;
-  const stack = document.getElementById('lesson_stack');
-  stack.innerHTML = '';
+  const chat = document.getElementById('ml_chat');
+  if (!chat) return;
 
-  // Celebration card
   const card = document.createElement('div');
-  card.className = 'lesson-card fade-in-up';
+  card.className = 'lesson-card lesson-card--in-chat fade-in-up';
   card.style.textAlign = 'center';
   card.innerHTML = `
     <div class="lc-celebrate">
@@ -1888,11 +1857,10 @@ function showCourseComplete() {
     <div class="lc-text" style="margin-bottom:4px">${course.title}</div>
     <div class="lc-text" style="margin-bottom:16px; opacity:0.7; font-size:13px">${course.steps.length}/${course.steps.length} steps · Skill badge added to your portfolio</div>
   `;
-  stack.appendChild(card);
+  chat.appendChild(card);
 
-  // What's next — CTA card with 4 actions
   const ctaCard = document.createElement('div');
-  ctaCard.className = 'lesson-card lc-next-cta fade-in-up';
+  ctaCard.className = 'lesson-card lesson-card--in-chat lc-next-cta fade-in-up';
   ctaCard.innerHTML = `
     <div class="lc-next-h">What's next?</div>
     ${nextCourse ? `
@@ -1906,15 +1874,15 @@ function showCourseComplete() {
     ` : ''}
     <div class="lc-next-row">
       <button class="lc-next-chip" onclick="setCourseReminder()">
-        <span>${(window.JDS && window.JDS.icon) ? window.JDS.icon('bell', { size: 16 }) : '🔔'}</span>
+        <span data-icon="bell" data-size="16"></span>
         <span>Remind me in 3 days to redo</span>
       </button>
       <button class="lc-next-chip" onclick="addToWeeklyPlan()">
-        <span>${(window.JDS && window.JDS.icon) ? window.JDS.icon('calendar-week', { size: 16 }) : '📅'}</span>
+        <span data-icon="calendar-week" data-size="16"></span>
         <span>Add to my weekly plan</span>
       </button>
       <button class="lc-next-chip" onclick="shareSkillOnWhatsApp('${course.title.replace(/'/g, "\\'")}')">
-        <span>${(window.JDS && window.JDS.icon) ? window.JDS.icon('whatsapp', { size: 16 }) : '📤'}</span>
+        <span data-icon="whatsapp" data-size="16"></span>
         <span>Share badge on WhatsApp</span>
       </button>
       <button class="lc-next-chip lc-next-chip-ghost" onclick="showView('home')">
@@ -1922,12 +1890,9 @@ function showCourseComplete() {
       </button>
     </div>
   `;
-  stack.appendChild(ctaCard);
-
-  // Update progress to fully done
-  const prog = document.getElementById('course_progress');
-  if (prog) Array.from(prog.children).forEach(seg => { seg.className = 'seg done'; });
-  document.getElementById('course_meta').textContent = 'Complete';
+  chat.appendChild(ctaCard);
+  if (window.JDS && window.JDS.renderIcons) window.JDS.renderIcons(ctaCard);
+  chat.scrollTop = chat.scrollHeight;
 }
 
 function setCourseReminder() {

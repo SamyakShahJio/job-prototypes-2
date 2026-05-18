@@ -159,7 +159,10 @@
     function appendAi(text) {
       const wrap = document.createElement('div');
       wrap.className = 'gc-msg gc-msg-ai';
-      wrap.innerHTML = `<div class="gc-bubble gc-bubble-ai"><div class="gc-speaker"><span class="gc-speaker-dot"></span>${speakerLabel}</div><span class="gc-bubble-text"></span></div>`;
+      // Speaker label removed — AI bubbles are anonymous now (no "JBIQ" /
+      // "Sarah" / "Priya" pill above each bubble). The bubble shape itself
+      // identifies who's speaking.
+      wrap.innerHTML = `<div class="gc-bubble gc-bubble-ai"><span class="gc-bubble-text"></span></div>`;
       chatEl.appendChild(wrap);
       const target = wrap.querySelector('.gc-bubble-text');
       if (window.MM && window.MM.streamText) {
@@ -335,7 +338,8 @@
     function appendAi(text) {
       const wrap = document.createElement('div');
       wrap.className = 'gc-msg gc-msg-ai';
-      wrap.innerHTML = `<div class="gc-bubble gc-bubble-ai"><div class="gc-speaker"><span class="gc-speaker-dot"></span>${speakerLabel}</div><span class="gc-bubble-text"></span></div>`;
+      // Anonymous AI bubble (speaker pill removed app-wide).
+      wrap.innerHTML = `<div class="gc-bubble gc-bubble-ai"><span class="gc-bubble-text"></span></div>`;
       chatEl.appendChild(wrap);
       const target = wrap.querySelector('.gc-bubble-text');
       if (window.MM && window.MM.streamText) {
@@ -454,10 +458,12 @@
   /* ========== Helpers for chip-based chats (govt-exam, microlearning) ========== */
 
   // Append an AI message bubble (with streaming text) to a chat container.
-  function chatAppendAi(chatEl, text, speakerLabel = 'JBIQ') {
+  // speakerLabel arg is kept for backwards compatibility but ignored — AI
+  // bubbles render anonymously across the entire app.
+  function chatAppendAi(chatEl, text, _speakerLabel) {
     const wrap = document.createElement('div');
     wrap.className = 'gc-msg gc-msg-ai';
-    wrap.innerHTML = `<div class="gc-bubble gc-bubble-ai"><div class="gc-speaker"><span class="gc-speaker-dot"></span>${speakerLabel}</div><span class="gc-bubble-text"></span></div>`;
+    wrap.innerHTML = `<div class="gc-bubble gc-bubble-ai"><span class="gc-bubble-text"></span></div>`;
     chatEl.appendChild(wrap);
     const target = wrap.querySelector('.gc-bubble-text');
     if (window.MM && window.MM.streamText) {

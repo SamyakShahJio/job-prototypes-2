@@ -623,6 +623,41 @@
   position: relative;
   z-index: 80;
 }
+
+/* Suggested-prompt chips row, sits inside .gc-input-dock just above the input.
+ * Horizontal scroll on overflow, monochromatic ghost styling that matches
+ * the dock's ghost surface. Used as a single entry-point pattern with the
+ * input + mic below. */
+.dock-chips {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding: 6px 4px 8px;
+  margin: 0 -4px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.dock-chips::-webkit-scrollbar { display: none; }
+.dock-chip {
+  flex: 0 0 auto;
+  background: var(--surface-ghost);
+  border: 1px solid var(--stroke-subtle);
+  color: var(--text-high);
+  border-radius: 999px;
+  padding: 7px 12px;
+  font-family: var(--font);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s;
+}
+.dock-chip:hover {
+  background: var(--surface-default);
+  border-color: var(--surface-bold);
+  color: var(--surface-bold);
+}
+.dock-chip:active { transform: scale(0.96); }
 .gc-input-wrap {
   background: var(--surface-ghost);          /* #eeeeef */
   border-radius: var(--radius-xl);            /* 20px → matches OG --radius-xl */

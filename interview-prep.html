@@ -766,11 +766,18 @@
       </div>
     </div>
 
-    <!-- Ask anything dock — converse from home -->
+    <!-- Ask anything dock with suggested chips — second entry point at the bottom -->
     <div class="gc-input-dock">
+      <div class="dock-chips" role="list">
+        <button class="dock-chip" onclick="quickStart('tech-mahindra')">Tech Mahindra mock</button>
+        <button class="dock-chip" onclick="quickStart('concentrix')">Concentrix HR</button>
+        <button class="dock-chip" onclick="quickStart('hdfc')">HDFC Sales</button>
+        <button class="dock-chip" onclick="quickStart('bajaj')">Bajaj pressure drill</button>
+        <button class="dock-chip" onclick="showView('morning')">Tomorrow's kit</button>
+      </div>
       <div class="gc-input-wrap">
         <div class="gc-input-text">
-          <input type="text" placeholder="Ask about any company or round…" readonly>
+          <input type="text" placeholder="Tell me what you want — company, role, or round…" readonly>
         </div>
         <div class="gc-input-actions">
           <div class="gc-input-left">
