@@ -68,6 +68,10 @@
     position: relative;
     overflow: hidden;
   }
+  /* Heading-only variant: no input below, so tighter padding. */
+  .life-first-card--heading-only { padding: 16px 18px; }
+  .life-first-card--heading-only .lf-q { margin-bottom: 0; }
+  .life-first-card--heading-only .lf-tag { margin-bottom: 8px; }
   .life-first-card::after {
     content: '';
     position: absolute;
@@ -675,19 +679,11 @@
     </div>
 
     <div class="view-body">
-      <!-- Life-first prompt — short, blank-slate -->
-      <div class="life-first-card" onclick="startDiscovery()">
+      <!-- Life-first prompt — heading-only. The duplicate text input was
+           removed; the bottom dock is the only entry point now. -->
+      <div class="life-first-card life-first-card--heading-only" onclick="startDiscovery()">
         <div class="lf-tag">Tell me what you want</div>
         <div class="lf-q">I'll find the exam that fits your life.</div>
-        <div class="lf-input-fake">
-          <span class="lf-placeholder">Or type or speak…</span>
-          <div class="lf-mic">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 15a3 3 0 003-3V6a3 3 0 00-6 0v6a3 3 0 003 3z"/>
-              <path d="M19 11v1a7 7 0 01-14 0v-1" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
-            </svg>
-          </div>
-        </div>
       </div>
 
       <!-- Path-first cards -->

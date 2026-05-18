@@ -672,33 +672,24 @@
     body { background: var(--surface-moderate); }
   }
 
-  /* ============= ZERO-STATE styles (interview) ============= */
+  /* ============= ZERO-STATE styles (interview) — compact ============= */
   .zero-hero-card {
-    margin: 14px var(--space-4) 8px;
-    padding: 18px;
-    border-radius: 22px;
-    background:
-      radial-gradient(80% 60% at 100% 0%, var(--primary-20) 0%, transparent 60%),
-      linear-gradient(180deg, var(--surface-default) 0%, var(--surface-ghost-icon) 100%);
+    margin: 10px var(--space-4) 4px;
+    padding: 12px 14px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, var(--primary-20) 0%, var(--surface-ghost-icon) 100%);
     border: 1px solid var(--stroke-subtle);
+    display: flex; flex-direction: column; gap: 2px;
   }
   .zero-hero-card .zh-tag {
-    display: inline-block;
-    font-size: 10px; font-weight: 800; letter-spacing: 0.5px;
-    color: var(--surface-bold);
-    background: var(--white);
-    padding: 4px 10px;
-    border-radius: var(--radius-pill);
-    margin-bottom: 12px;
-    text-transform: uppercase;
+    display: none;  /* compacted */
   }
   .zero-hero-card .zh-title {
-    font-size: 20px; font-weight: 900; letter-spacing: -0.3px;
-    color: var(--text-high); line-height: 1.2;
-    margin-bottom: 8px;
+    font-size: 15px; font-weight: 800; letter-spacing: -0.2px;
+    color: var(--surface-bold); line-height: 1.25;
   }
   .zero-hero-card .zh-sub {
-    font-size: 13px; line-height: 1.45;
+    font-size: 12px; line-height: 1.4;
     color: var(--text-low); font-weight: 500;
   }
 
