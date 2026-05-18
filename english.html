@@ -935,10 +935,10 @@
         <!-- Filled by renderWordOfDay() — supports cycling through a queue -->
       </div>
 
-      <!-- Talk with AI — 4 avatars in a horizontal carousel + See more -->
+      <!-- Talk with AI — 4 avatars in a horizontal carousel. No "See more"
+           because the carousel already shows the full cast. -->
       <div class="section-row">
         <div class="section-h-inline">Talk with AI</div>
-        <button class="section-more" onclick="showAvatarList()">See more →</button>
       </div>
       <div class="avatars-row" id="avatars_row">
         <!-- Filled by renderAvatars() -->
@@ -1468,8 +1468,19 @@ const SCENARIO_SCRIPTS = {
   },
   'cooler': {
     title: 'Water-cooler small talk',
-    pack: 'Office',
+    pack: 'Workplace English',
     keyPhrases: [ "How's your day going?", "Crazy weather, isn't it?", "Any plans for the weekend?" ],
+    recap: [
+      "Water-cooler talk is <strong>2 sentences each turn</strong>. More than that and you're hijacking.",
+      "Always <strong>return the question</strong>: \"Yours?\" / \"What about you?\". It's the rhythm everyone expects.",
+      "Find one thing to <strong>follow up on next time</strong> — \"how was the trip you mentioned?\" makes you memorable.",
+    ],
+    vocab: [
+      { word: "Drenched",    meaning: "Soaked through with water", example: '"Got drenched in the rain."' },
+      { word: "Pretty busy", meaning: "Casual: quite busy",         example: '"Pretty busy, yours?"' },
+      { word: "Heading out", meaning: "Casual: leaving / going",    example: '"Heading out for lunch — coming?"' },
+      { word: "Catching up", meaning: "Talking to update each other", example: '"Just catching up with Priya."' },
+    ],
     listen: [
       { speaker: 'colleague', text: "Hey! How's your day going?" },
       { speaker: 'agent', text: "Pretty busy! Yours? Crazy weather, isn't it?" },
@@ -1506,6 +1517,17 @@ const SCENARIO_SCRIPTS = {
     title: 'Politely refusing escalation',
     pack: 'Customer Service',
     keyPhrases: [ "I understand you'd like to speak to my manager.", "I can absolutely escalate this if needed.", "But first, let me see if I can resolve it for you." ],
+    recap: [
+      "Acknowledge the demand BEFORE you redirect — <strong>\"I understand you'd like to speak to my manager\"</strong> buys you 5 seconds.",
+      "Use the word <strong>\"absolutely\"</strong> — it commits to the escalation while keeping the door open to fix it first.",
+      "Ask <strong>\"what's the issue?\"</strong> right after — most callers stop demanding the manager once they're heard.",
+    ],
+    vocab: [
+      { word: "Escalate",  meaning: "Pass to a senior", example: '"I can absolutely escalate this."' },
+      { word: "Resolve",   meaning: "Fix or settle",    example: '"Let me see if I can resolve it for you."' },
+      { word: "Redirect",  meaning: "Send a conversation elsewhere", example: '"I\'ll redirect you in a moment."' },
+      { word: "Absolutely", meaning: "Without doubt — commits you firmly", example: '"I can absolutely help with that."' },
+    ],
     listen: [
       { speaker: 'customer', text: "I want to speak to your manager. Now." },
       { speaker: 'agent', text: "I understand you'd like to speak to my manager. I can absolutely escalate this if needed. But first, let me see if I can resolve it for you. What's the issue?" },
@@ -1519,6 +1541,15 @@ const SCENARIO_SCRIPTS = {
     free: [
       { ai: "Customer demands manager. How do you redirect without dismissing them?", expects: ['understand', 'absolutely', 'first', 'resolve', 'try', 'help'] },
     ],
+    coaching: {
+      notes: [
+        { tone: 'good', text: '"I understand you\'d like to speak to my manager" acknowledges the demand — that\'s exactly what de-escalates.' },
+        { tone: 'warn', text: 'Slight rush on "absolutely escalate" — you swallowed "absolutely". Say it slowly: ab-so-LUTE-ly.' },
+        { tone: 'good', text: 'Closing with "what\'s the issue?" hands them the floor. 80% of callers stop demanding the manager from this question alone.' },
+      ],
+      pronunciation: { you: "ab-so-loot-lee (rushed)", suggested: "ab-so-LUTE-ly (stress on syllable three)" },
+      better: "I completely understand — you'd like to speak to my manager, and I can absolutely escalate this if it comes to that. Before I do, give me thirty seconds — what's the issue? Most of the time I can sort it from here.",
+    },
   },
   'callback': {
     title: 'Promising a callback',
@@ -1542,6 +1573,17 @@ const SCENARIO_SCRIPTS = {
     title: 'Disputing a wrong charge',
     pack: 'Customer Service',
     keyPhrases: [ "I see the charge you're referring to.", "Let me investigate this for you.", "I'll process the refund right away." ],
+    recap: [
+      "Confirm you can SEE the charge before promising anything — <strong>\"I see the charge you're referring to\"</strong> kills the worry they're not believed.",
+      "Use <strong>\"investigate\"</strong> not \"check\" — it sounds methodical, not casual.",
+      "Always give a <strong>timeline</strong> with the refund (\"5-7 business days\") — vagueness creates a callback.",
+    ],
+    vocab: [
+      { word: "Investigate",  meaning: "Methodically look into",     example: '"Let me investigate this for you."' },
+      { word: "Refund",       meaning: "Money returned",              example: '"I\'ll process the refund right away."' },
+      { word: "Duplicate",    meaning: "An exact copy / a doubled charge", example: '"This looks like a duplicate charge."' },
+      { word: "Business days", meaning: "Working days (excludes weekends)", example: '"Expect it within 5-7 business days."' },
+    ],
     listen: [
       { speaker: 'customer', text: "You charged me ₹2,500 for something I didn't order!" },
       { speaker: 'agent', text: "I completely understand your frustration, sir. I see the charge you're referring to. Let me investigate this for you." },
@@ -1555,6 +1597,15 @@ const SCENARIO_SCRIPTS = {
     free: [
       { ai: "Customer claims a wrong charge. They're agitated. What's your first response?", expects: ['understand', 'frustration', 'see', 'investigate', 'right away', 'sorry'] },
     ],
+    coaching: {
+      notes: [
+        { tone: 'good', text: 'You confirmed you could SEE the charge before promising a refund. That single line drops blood pressure on the call.' },
+        { tone: 'bad',  text: 'You said "I\'ll check" — change to "I\'ll investigate". \'Check\' sounds casual; \'investigate\' sounds methodical, which is what an upset customer wants to hear.' },
+        { tone: 'good', text: 'Closing with a concrete timeline (5-7 business days) prevents a follow-up call. Always end with one.' },
+      ],
+      pronunciation: { you: "in-VES-tih-gate (clipped)", suggested: "in-VES-tuh-gate — open vowel on the third syllable" },
+      better: "I completely understand — let me look at this with you. Yes, I see the charge for two thousand five hundred rupees on the fifteenth. Let me investigate — this looks like a duplicate charge. I'll process the refund right away, you'll see it within five to seven business days.",
+    },
   },
   'in-laws': {
     title: 'Talking to in-laws in English',
@@ -1589,6 +1640,17 @@ const SCENARIO_SCRIPTS = {
     title: 'Helping kids with English homework',
     pack: 'Family / In-Laws',
     keyPhrases: [ "Read it out loud to me.", "Try the sentence again, slowly.", "That's a great answer!" ],
+    recap: [
+      "<strong>Ask them to read aloud</strong> before you explain. Kids learn pronunciation in the act of reading, not in listening to you.",
+      "Use <strong>specific praise</strong>: \"That's a great answer because…\" — generic \"good job\" doesn't teach.",
+      "When they're stuck, <strong>slow down — don't translate to Hindi yet</strong>. Translation kills English processing.",
+    ],
+    vocab: [
+      { word: "Out loud",      meaning: "Audibly, not in your head", example: '"Read this out loud."' },
+      { word: "Slowly",        meaning: "Not in a rush",             example: '"Try the sentence again, slowly."' },
+      { word: "Connecting word", meaning: "Word that links ideas (and, but, because)", example: '"\\"Because\\" is a connecting word."' },
+      { word: "Well done",     meaning: "Praise — informal but warm", example: '"Well done, you got it!"' },
+    ],
     listen: [
       { speaker: 'kid', text: "Mummy, what is 'because'?" },
       { speaker: 'agent', text: "It's a connecting word. Read it out loud to me, the whole sentence." },
@@ -1607,6 +1669,17 @@ const SCENARIO_SCRIPTS = {
     title: 'Family budget discussion',
     pack: 'Family / In-Laws',
     keyPhrases: [ "Let's go through the expenses for this month.", "We saved a bit on groceries this time.", "Should we cut back on something?" ],
+    recap: [
+      "Open with <strong>\"let's go through\"</strong> — collaborative, not accusatory. \"Why did you spend so much?\" loses every time.",
+      "<strong>Lead with what went RIGHT</strong> (\"we saved on groceries\") before raising what to cut.",
+      "Phrase cuts as <strong>questions</strong>, not orders: \"should we cut back on...?\" beats \"stop spending on...\".",
+    ],
+    vocab: [
+      { word: "Go through",  meaning: "Review carefully",        example: '"Let\'s go through the expenses."' },
+      { word: "Expenses",    meaning: "Money spent (formal)",     example: '"Our expenses were high this month."' },
+      { word: "Cut back",    meaning: "Reduce / spend less on",   example: '"Should we cut back on eating out?"' },
+      { word: "Eating out",  meaning: "Restaurants / food orders", example: '"We can cut back on eating out."' },
+    ],
     listen: [
       { speaker: 'agent', text: "Let's go through the expenses for this month." },
       { speaker: 'spouse', text: "Sure. Where did most of it go?" },
@@ -1697,6 +1770,17 @@ const SCENARIO_SCRIPTS = {
     title: 'First date small talk',
     pack: 'Dating',
     keyPhrases: [ "How was your week?", "What do you do for fun?", "I'd love to hear more about that." ],
+    recap: [
+      "Keep it light for the first 10 minutes — <strong>weather, weekend, food</strong>. Don't lead with deep questions.",
+      "Use <strong>\"I'd love to hear more about that\"</strong> when they say something interesting — it asks for depth without prying.",
+      "<strong>End each turn with an open question</strong>. \"Yours?\" / \"What about you?\" keeps the rhythm 50-50.",
+    ],
+    vocab: [
+      { word: "What do you do for fun", meaning: "Casual ask about hobbies", example: '"What do you do for fun outside work?"' },
+      { word: "Pick up on",  meaning: "Notice and follow up on a detail", example: '"I picked up on what you said about photography."' },
+      { word: "Down for",    meaning: "Casual: open to something",         example: '"I\'m down for a second round of coffee."' },
+      { word: "Tell me more", meaning: "Invitation to elaborate",          example: '"Tell me more about that trip."' },
+    ],
     listen: [
       { speaker: 'date', text: "Hi! Did you find this place easily?" },
       { speaker: 'agent', text: "Yes, thanks. How was your week?" },
@@ -2233,152 +2317,8 @@ function renderPractice() {
   setTimeout(() => practiceRunner.start(), 150);
 }
 
-/* =========================================================================
- * 12-WEEK PATHWAY — clickable weeks with drillable lesson detail
- * ========================================================================= */
-const WEEKS = [
-  { n: 1, status: 'done', title: 'Agreeing in meetings',
-    meta: '5 lessons · Done last week', done: 5, total: 5,
-    hero: 'Done! You can agree, disagree-softly, and back someone up cleanly. Watch for it next stand-up.',
-    lessons: [
-      { name: 'Yes-and pattern',                  meta: '2 min · Phrase: "Yes — and what if we also..."', done: true },
-      { name: 'Backing up a teammate',            meta: '3 min · Phrase: "I\'d add to what Priya said"', done: true },
-      { name: 'Soft disagreement opener',         meta: '2 min · Phrase: "I see it slightly differently"', done: true },
-      { name: 'When you don\'t fully understand', meta: '2 min · Phrase: "Just to make sure I follow..."', done: true },
-      { name: 'Wrap-up + summarising',            meta: '3 min · Phrase: "So the takeaway is..."', done: true },
-    ],
-  },
-  { n: 2, status: 'current', title: 'Asking questions',
-    meta: '3 of 5 lessons · 2 days to go', done: 3, total: 5,
-    hero: 'This week: turn vague confusion into a sharp question. Practice each lesson once, then use it tomorrow.',
-    lessons: [
-      { name: 'Clarifying questions',         meta: '2 min · "Could you say more about...?"', done: true },
-      { name: 'When-you-don\'t-know-the-word', meta: '2 min · "What\'s the word for...?"', done: true },
-      { name: 'Polite follow-ups',            meta: '3 min · "Sorry, just one more — ...?"', done: true },
-      { name: 'Asking for time',              meta: '2 min · "Could I get back to you on this?"', done: false, current: true },
-      { name: 'The one question that ends a meeting', meta: '3 min · "What would good look like by Friday?"', done: false },
-    ],
-  },
-  { n: 3, status: 'upcoming', title: 'Giving opinions',
-    meta: '5 lessons · Starts next week', done: 0, total: 5,
-    hero: 'Hedge less, commit more. Phrases that make your opinion land without sounding aggressive.',
-    lessons: [
-      { name: 'The "I think" upgrade',         meta: '2 min · "I think" → "From what I\'ve seen..."' },
-      { name: 'Owning a strong opinion',       meta: '3 min · "My view on this is..."' },
-      { name: 'Disagreeing with data',         meta: '3 min · "The numbers suggest a different read"' },
-      { name: 'Yielding gracefully',           meta: '2 min · "Fair point — that changes my view"' },
-      { name: 'The summary opinion',           meta: '3 min · "If I had to pick, I\'d go with..."' },
-    ],
-  },
-  { n: 4, status: 'upcoming', title: 'Handling disagreement',
-    meta: '5 lessons · 4 weeks away', done: 0, total: 5,
-    hero: 'Disagreement is where careers are made or lost. Learn to do it without burning bridges.',
-    lessons: [
-      { name: 'The "yes-but" trap',            meta: '2 min · Replace with "yes-and-also"' },
-      { name: 'Pushing back without heat',     meta: '3 min · "Help me see how this works when..."' },
-      { name: 'Standing firm under pressure',  meta: '3 min · "I hear you. My read is different."' },
-      { name: 'Apologising without grovelling', meta: '2 min · "I got that wrong. Here\'s the fix."' },
-      { name: 'Closing a heated discussion',   meta: '3 min · "Let\'s take an action and revisit"' },
-    ],
-  },
-  { n: 5, status: 'upcoming', title: 'Sound of "v" vs "w"',
-    meta: 'Pronunciation gym · 4 lessons', done: 0, total: 4,
-    hero: 'The single sound that makes Indian English readable to global ears. Practice + Sarah\'s ear.',
-    lessons: [
-      { name: 'Lip shape for /v/', meta: '2 min · Teeth on lower lip' },
-      { name: 'Lip shape for /w/', meta: '2 min · Round lips, no teeth' },
-      { name: 'Drill: very vs wary', meta: '3 min · 5 minimal pairs' },
-      { name: 'In sentences',       meta: '3 min · "We were very weary..."' },
-    ],
-  },
-  { n: 6, status: 'upcoming', title: 'Small talk at work',
-    meta: '5 lessons · Coming up', done: 0, total: 5,
-    hero: 'The "weekend was good" loop is a dead end. Five openers that actually keep a conversation going.',
-    lessons: [
-      { name: 'Three openers that aren\'t weather', meta: '2 min · Project / weekend recommendation / city' },
-      { name: 'The follow-up question',           meta: '2 min · Mirror + curiosity' },
-      { name: 'Exit politely',                    meta: '2 min · "Anyway, I should jump on a call"' },
-      { name: 'Coffee-machine bonding',           meta: '3 min · Sport / food / a small complaint' },
-      { name: 'Remembering a name',               meta: '3 min · Use it in your second sentence' },
-    ],
-  },
-  { n: 7, status: 'upcoming', title: 'Customer call confidence',
-    meta: '8 lessons · Includes BPO V&A', done: 0, total: 8,
-    hero: 'V&A round prep. From "sir please" to phrases that hold the call. Used by 200K agents.',
-    lessons: [
-      { name: 'Empathy in 5 words', meta: '2 min · "I completely understand your frustration"' },
-      { name: 'De-escalation pivots', meta: '3 min · "Before I escalate, give me 30 seconds"' },
-      { name: 'Promising and delivering', meta: '3 min · "I\'ll call you back at 3 PM"' },
-      { name: 'The refund dance', meta: '3 min · Acknowledge → investigate → resolve' },
-      { name: 'Hostile customer pressure', meta: '3 min · Calm voice + slow pace' },
-      { name: 'Hold + transfer scripts', meta: '2 min · No more dead air' },
-      { name: 'Closing the call cleanly', meta: '2 min · "Anything else I can help with?"' },
-      { name: 'Recording your own call', meta: '5 min · Listen back · pick 1 fix' },
-    ],
-  },
-];
-
-function renderPathway() {
-  const list = document.getElementById('pathway_list');
-  if (!list) return;
-  list.innerHTML = '';
-  WEEKS.forEach(w => {
-    const div = document.createElement('div');
-    div.className = 'pathway-week ' + (w.status === 'done' ? 'done' : (w.status === 'current' ? 'current' : ''));
-    div.onclick = () => openWeek(w.n);
-    div.innerHTML = `
-      <div class="pw-num">${w.n}</div>
-      <div class="pw-content">
-        <div class="pw-title">${w.title}</div>
-        <div class="pw-meta">${w.meta}</div>
-      </div>
-      <div class="pw-chev"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></div>
-    `;
-    list.appendChild(div);
-  });
-}
-// Render once on load + every time the pathway view opens.
-document.addEventListener('DOMContentLoaded', renderPathway);
-
-let currentWeek = null;
-function openWeek(n) {
-  const w = WEEKS.find(x => x.n === n);
-  if (!w) return;
-  currentWeek = w;
-  document.getElementById('wd_title').textContent = 'Week ' + w.n + ' · ' + w.title;
-  document.getElementById('wd_sub').textContent = (w.done || 0) + ' of ' + w.total + ' lessons · ' + (w.status === 'done' ? 'Done' : w.status === 'current' ? 'In progress' : 'Locked');
-  // Hero strip
-  const hero = document.getElementById('wd_hero');
-  hero.innerHTML = `
-    <div class="wh-tag">${w.status === 'done' ? '✓ COMPLETE' : w.status === 'current' ? '· IN PROGRESS' : '· UP NEXT'}</div>
-    <div class="wh-title">${w.title}</div>
-    <div class="wh-sub">${w.hero}</div>
-    <div class="wh-progress"><div class="wh-fill" style="width: ${Math.round((w.done || 0) / w.total * 100)}%"></div></div>
-  `;
-  // Lessons
-  const lessons = document.getElementById('wd_lessons');
-  lessons.innerHTML = '';
-  (w.lessons || []).forEach((l, i) => {
-    const row = document.createElement('div');
-    row.className = 'lesson-row' + (l.done ? ' done' : '') + (l.current ? ' current' : '');
-    row.innerHTML = `
-      <div class="lr-num">${i + 1}</div>
-      <div class="lr-text">
-        <div class="lr-name">${l.name}</div>
-        <div class="lr-meta">${l.meta}</div>
-      </div>
-      <div class="lr-status">
-        ${l.done
-          ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>'
-          : l.current
-            ? '<button class="lr-go">Continue</button>'
-            : '<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>'}
-      </div>
-    `;
-    lessons.appendChild(row);
-  });
-  showView('week-detail');
-}
+/* Pathway data + renderPathway + openWeek removed — view-pathway and
+ * view-week-detail were deleted; the data is no longer referenced. */
 
 /* =========================================================================
  * WORD OF THE DAY — cyclable queue with Next + Past words

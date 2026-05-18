@@ -849,56 +849,8 @@
     </div>
   </div>
 
-  <!-- ========================== DAILY PREP ========================== -->
-  <div class="view" id="view-daily">
-    <div class="top-bar">
-      <button class="icon-btn" onclick="showView('home')" aria-label="Back">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-          <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-        </svg>
-      </button>
-      <div class="title-area">
-        <div class="t1">Today's prep · IBPS PO</div>
-        <div class="t2">12-min commute · Day 12 streak</div>
-      </div>
-    </div>
-
-    <div class="prep-tabs">
-      <button class="prep-tab active" data-tab="quiz" onclick="setPrepTab('quiz')">3 Quizzes</button>
-      <button class="prep-tab" data-tab="flash" onclick="setPrepTab('flash')">8 Flashcards</button>
-      <button class="prep-tab" data-tab="concept" onclick="setPrepTab('concept')">1 Concept</button>
-    </div>
-
-    <div class="view-body" style="padding-top: var(--space-4); position: relative;">
-      <div id="prep_content"></div>
-
-    </div>
-
-    <!-- Ask anything dock — converse from daily prep too -->
-    <div class="gc-input-dock">
-      <div class="gc-input-wrap">
-        <div class="gc-input-text">
-          <input type="text" placeholder="Ask about any concept — repo rate, CRR, …" readonly onclick="startDiscovery()">
-        </div>
-        <div class="gc-input-actions">
-          <div class="gc-input-left">
-            <button class="gc-input-icon-btn" aria-label="Add" onclick="startDiscovery()">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20 11h-7V4a1 1 0 00-2 0v7H4a1 1 0 000 2h7v7a1 1 0 002 0v-7h7a1 1 0 000-2z"/></svg>
-            </button>
-          </div>
-          <div class="gc-input-right">
-            <button class="gc-input-icon-btn" aria-label="Mic" onclick="startDiscovery()">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 15a3 3 0 003-3V5a3 3 0 00-6 0v7a3 3 0 003 3zm6-5a1 1 0 00-1 1v1a5 5 0 11-10 0v-1a1 1 0 10-2 0v1a7 7 0 1014 0v-1a1 1 0 00-1-1zm-3 10H9a1 1 0 000 2h6a1 1 0 000-2z"/></svg>
-            </button>
-            <button class="gc-input-speak-btn" onclick="startDiscovery()">
-              <svg viewBox="0 0 24 24"><path d="M12 15a3 3 0 003-3V5a3 3 0 00-6 0v7a3 3 0 003 3zm6-5a1 1 0 00-1 1v1a5 5 0 11-10 0v-1a1 1 0 10-2 0v1a7 7 0 1014 0v-1a1 1 0 00-1-1z"/></svg>
-              <span>Speak</span>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <!-- view-daily removed — daily prep now runs inline in the discovery
+       chat via startDailyPrep(). -->
 
 </div>
 
