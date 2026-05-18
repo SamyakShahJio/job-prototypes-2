@@ -240,5 +240,6 @@ window.TTS_CACHE = {
   "govt_exam_counselor:f34cd7896e627638": "f34cd7896e627638.mp3",
   "govt_exam_counselor:2839aa17c5f1c262": "2839aa17c5f1c262.mp3",
   "govt_exam_counselor:b910d4640020fe64": "b910d4640020fe64.mp3",
-  "govt_exam_counselor:ba346de6f5fe46ea": "ba346de6f5fe46ea.mp3"
+  "govt_exam_counselor:ba346de6f5fe46ea": "ba346de6f5fe46ea.mp3",
+  "govt_exam_counselor:4b530793c98ff327": "4b530793c98ff327.mp3"
 };

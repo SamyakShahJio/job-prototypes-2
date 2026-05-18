@@ -722,7 +722,7 @@
       <!-- Tracked exams -->
       <div class="section-h">Your tracked exams</div>
       <div class="tracked-list">
-        <div class="tracked-card" onclick="showView('daily')">
+        <div class="tracked-card" onclick="startDailyPrep()">
           <div class="tc-h">
             <div class="tc-icon">PO</div>
             <div class="tc-name">IBPS PO</div>
@@ -761,7 +761,7 @@
       </div>
 
       <!-- Daily prep -->
-      <div class="daily-prep-card" onclick="showView('daily')">
+      <div class="daily-prep-card" onclick="startDailyPrep()">
         <div class="dp-icon">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2L4 6v6c0 5 3.5 9 8 10 4.5-1 8-5 8-10V6l-8-4z" stroke="currentColor" stroke-width="2"/><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
         </div>
@@ -780,7 +780,7 @@
         <button class="dock-chip" onclick="startPath('banking')">Banking (IBPS / SBI)</button>
         <button class="dock-chip" onclick="startPath('admin')">SSC / UPSC</button>
         <button class="dock-chip" onclick="startPath('state')">State-level (BPSC / UPPSC)</button>
-        <button class="dock-chip" onclick="showView('daily')">Today's commute prep</button>
+        <button class="dock-chip" onclick="startDailyPrep()">Today's commute prep</button>
       </div>
       <div class="gc-input-wrap">
         <div class="gc-input-text">
@@ -1302,7 +1302,7 @@ function showRealityCheck(examId) {
             { text: "Sounds good, see you tomorrow", key: 'done' },
           ], (chip2) => {
             if (chip2.key === 'preview') {
-              setTimeout(() => showView('daily'), 600);
+              setTimeout(() => startDailyPrep(), 600);
             } else {
               appendUserBubble("Sounds good, see you tomorrow");
               setTimeout(() => appendAIBubble("Tomorrow at 8 AM. You've got this. ⭐"), 400);
@@ -1579,6 +1579,133 @@ function renderConcept(cn, idx) {
   return card;
 }
 
+/* =========================================================================
+ * DAILY PREP — IN-CHAT FLOW (replaces the separate view-daily page)
+ * The user lands in discovery chat; quizzes / flashcards / concepts are
+ * rendered as inline message-like cards in the same chat. Scroll up to see
+ * any prior conversation; tap "More questions" at the end to load more.
+ * ========================================================================= */
+function startDailyPrep(initialKind) {
+  showView('discovery');
+  const chat = document.getElementById('discChat');
+  if (!chat) return;
+  chat.innerHTML = '';
+
+  // Intro bubble — sets up what today's prep covers
+  window.GC.appendAi(chat, "Today's prep — 12 minutes for the commute. " + QUIZZES.length + " quizzes, " + FLASHCARDS.length + " flashcards, " + CONCEPTS.length + " concept. Where do you want to start?");
+
+  // Voice it
+  try { ensureDiscVoice().speak("Today's prep, twelve minutes for the commute. Three quizzes, eight flashcards, one concept. Where do you want to start?", 'en-IN'); } catch (e) {}
+
+  // Three picker chips — user picks one, we stream that kind into the chat
+  setTimeout(() => {
+    window.GC.appendChips(chat, [
+      { text: QUIZZES.length    + " Quizzes",     key: 'quiz'    },
+      { text: FLASHCARDS.length + " Flashcards",  key: 'flash'   },
+      { text: CONCEPTS.length   + " Concept",     key: 'concept' },
+    ], (chip) => streamDailyPrep(chip.key));
+  }, 500);
+
+  if (initialKind) setTimeout(() => streamDailyPrep(initialKind), 1400);
+}
+
+// Track how many quizzes/flashcards the user has seen so the "More questions"
+// button can load another batch instead of repeating the same ones.
+const PREP_STATE = { quiz: 0, flash: 0 };
+
+function streamDailyPrep(kind) {
+  const chat = document.getElementById('discChat');
+  if (!chat) return;
+
+  // Echo the user's pick as a user bubble
+  const labels = { quiz: "Start with quizzes", flash: "Start with flashcards", concept: "Show me the concept" };
+  window.GC.appendUser(chat, labels[kind] || kind);
+
+  // Brief AI ack
+  setTimeout(() => {
+    const acks = {
+      quiz:    "Three picked from past papers. Tap the answer.",
+      flash:   "Tap any card to flip it over.",
+      concept: "Listen on the concept card — it's two minutes.",
+    };
+    window.GC.appendAi(chat, acks[kind] || "Here you go.");
+  }, 400);
+
+  // Stream the cards in
+  setTimeout(() => {
+    if (kind === 'quiz') {
+      // Render up to 3 at a time, then offer "More questions"
+      const start = PREP_STATE.quiz;
+      const slice = QUIZZES.slice(start, start + 3);
+      slice.forEach((q, i) => appendChatCard(chat, renderQuiz(q, start + i)));
+      PREP_STATE.quiz += slice.length;
+      if (PREP_STATE.quiz < QUIZZES.length || true) {
+        appendMoreButton(chat, 'quiz', "More questions");
+      }
+      appendKindSwitcher(chat, 'quiz');
+    } else if (kind === 'flash') {
+      const start = PREP_STATE.flash;
+      const slice = FLASHCARDS.slice(start, start + 4);
+      slice.forEach((f, i) => appendChatCard(chat, renderFlashcard(f, start + i)));
+      PREP_STATE.flash += slice.length;
+      if (PREP_STATE.flash < FLASHCARDS.length || true) {
+        appendMoreButton(chat, 'flash', "More flashcards");
+      }
+      appendKindSwitcher(chat, 'flash');
+    } else if (kind === 'concept') {
+      CONCEPTS.forEach((cn, i) => appendChatCard(chat, renderConcept(cn, i)));
+      // Tease the next concept
+      const more = document.createElement('div');
+      more.className = 'concept-card';
+      more.style.opacity = '0.55';
+      more.innerHTML = `<div class="cc-tag">Coming up</div><div class="cc-title">CRR vs SLR — what's actually different?</div><div class="cc-desc">Tomorrow's concept · Will surface based on your weak topics.</div>`;
+      appendChatCard(chat, more);
+      appendKindSwitcher(chat, 'concept');
+    }
+  }, 1000);
+}
+
+// Wrap a quiz/flashcard/concept card so it sits as a "message" in the chat
+// (consistent margins, scrolls into view).
+function appendChatCard(chat, cardEl) {
+  const wrap = document.createElement('div');
+  wrap.className = 'gc-msg gc-msg-card';
+  wrap.appendChild(cardEl);
+  chat.appendChild(wrap);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+// "More questions" / "More flashcards" button at the end of a batch. Loads
+// the next slice; cycles back to start if we've exhausted the bank.
+function appendMoreButton(chat, kind, label) {
+  const wrap = document.createElement('div');
+  wrap.className = 'gc-more-row';
+  const btn = document.createElement('button');
+  btn.className = 'gc-more-btn';
+  btn.textContent = label + ' →';
+  btn.onclick = () => {
+    wrap.remove();
+    // Cycle: if exhausted, reset and start over so the user never sees a dead end
+    if (kind === 'quiz'  && PREP_STATE.quiz  >= QUIZZES.length)    PREP_STATE.quiz  = 0;
+    if (kind === 'flash' && PREP_STATE.flash >= FLASHCARDS.length) PREP_STATE.flash = 0;
+    streamDailyPrep(kind);
+  };
+  wrap.appendChild(btn);
+  chat.appendChild(wrap);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+// Small chip-row after a batch lets the user jump to a different kind without
+// scrolling back up.
+function appendKindSwitcher(chat, currentKind) {
+  const others = [
+    { key: 'quiz',    label: 'Switch to quizzes' },
+    { key: 'flash',   label: 'Switch to flashcards' },
+    { key: 'concept', label: 'Switch to the concept' },
+  ].filter(o => o.key !== currentKind);
+  window.GC.appendChips(chat, others.map(o => ({ text: o.label, key: o.key })), (chip) => streamDailyPrep(chip.key));
+}
+
 let conceptVoice = null;
 function speakConcept(idx) {
   if (!conceptVoice) conceptVoice = JBIQVoice.create({ persona: 'govt_exam_counselor' });
@@ -1665,7 +1792,7 @@ renderPrep();
   if (q.includes('exam') || q.includes('which') || q.includes('kaunsa') || q.includes('discover') || q.includes('tell me')) {
     setTimeout(() => startDiscovery(), 200);
   } else if (q.includes('ibps') || q.includes('po')) {
-    setTimeout(() => showView('daily'), 200);
+    setTimeout(() => startDailyPrep(), 200);
   }
 })();
 </script>

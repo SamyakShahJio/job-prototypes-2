@@ -624,6 +624,40 @@
   z-index: 80;
 }
 
+/* Chat message wrapper for full-width cards (quizzes, flashcards, concepts).
+   The wrapped card stretches to the chat width and scrolls with the thread. */
+.gc-msg-card {
+  margin: 8px 12px 14px;
+}
+.gc-msg-card .quiz-card,
+.gc-msg-card .flashcard,
+.gc-msg-card .concept-card {
+  margin-bottom: 0;
+  width: 100%;
+}
+
+/* "More questions / More flashcards" CTA at the end of a batch */
+.gc-more-row {
+  display: flex;
+  justify-content: center;
+  margin: 6px 12px 14px;
+}
+.gc-more-btn {
+  background: var(--surface-bold);
+  color: var(--text-on-bold);
+  border: none;
+  border-radius: 999px;
+  padding: 9px 18px;
+  font-family: var(--font);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  cursor: pointer;
+  transition: transform 0.15s, background 0.15s;
+}
+.gc-more-btn:hover { background: var(--primary-70); }
+.gc-more-btn:active { transform: scale(0.96); }
+
 /* Suggested-prompt chips row, sits inside .gc-input-dock just above the input.
  * Horizontal scroll on overflow, monochromatic ghost styling that matches
  * the dock's ghost surface. Used as a single entry-point pattern with the
