@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#3900ad">
+<title>Jobs · Careers · Skills — JioBharatIQ</title>
+<link rel="stylesheet" href="../shared/jds-tokens.css">
+<link rel="stylesheet" href="../shared/ambient-glow.css">
+<style>
+  body { background: var(--surface-default); }
+  .phone-frame { background: var(--surface-default); }
+
+  /* ============= HEADER ============= */
+  .top-bar {
+    height: 52px;
+    padding: 0 var(--space-4);
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    flex-shrink: 0;
+    z-index: 5;
+  }
+  .top-bar .back-btn {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--surface-ghost); border: none;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; flex-shrink: 0;
+    color: var(--text-high);
+  }
+  .top-bar .greeting {
+    flex: 1; min-width: 0;
+    font-size: 13px;
+    color: var(--text-low);
+    font-weight: 500;
+  }
+
+  /* ============= BODY SCROLL ============= */
+  .body-scroll {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  /* ============= STICKY BOTTOM CHAT DOCK ============= */
+  .chat-dock {
+    flex-shrink: 0;
+    padding: 10px var(--space-4) calc(10px + env(safe-area-inset-bottom, 0px));
+    background: var(--surface-default);
+    border-top: 1px solid var(--stroke-subtle);
+  }
+  .chat-dock-inner {
+    background: var(--surface-ghost);
+    border: 1px solid var(--stroke-subtle);
+    border-radius: var(--radius-pill);
+    padding: 4px 4px 4px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .chat-dock-inner:focus-within {
+    background: var(--surface-default);
+    border-color: var(--surface-bold);
+  }
+  .chat-dock-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-family: var(--font);
+    font-size: 14px;
+    color: var(--text-high);
+    padding: 8px 0;
+    min-width: 0;
+  }
+  .chat-dock-input::placeholder {
+    color: var(--text-low);
+  }
+  .chat-dock-mic {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    border: none;
+    background: var(--surface-bold);
+    color: var(--text-on-bold);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; flex-shrink: 0;
+    transition: transform 0.15s;
+  }
+  .chat-dock-mic:hover { transform: scale(1.05); }
+  .chat-dock-mic:active { transform: scale(0.95); }
+  .chat-dock-send {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    border: none;
+    background: var(--surface-bold);
+    color: var(--text-on-bold);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .chat-dock-inner.has-text .chat-dock-mic { display: none; }
+  .chat-dock-inner.has-text .chat-dock-send { display: flex; }
+
+  /* ============= HERO BAND — soft lavender wash ============= */
+  .hero-band {
+    background:
+      radial-gradient(120% 80% at 80% 0%, var(--primary-20) 0%, rgba(232,232,252,0) 65%),
+      radial-gradient(100% 70% at 0% 30%, rgba(231,233,255,0.7) 0%, rgba(255,255,255,0) 60%),
+      var(--surface-default);
+    padding: 4px var(--space-4) 18px;
+  }
+  .hero-band h1 {
+    font-size: 26px;
+    line-height: 1.1;
+    font-weight: 900;
+    color: var(--text-high);
+    letter-spacing: -0.6px;
+    margin-bottom: 6px;
+  }
+  .hero-band h1 .accent { color: var(--surface-bold); }
+  .hero-band p {
+    font-size: 13px;
+    line-height: 1.4;
+    color: var(--text-low);
+    font-weight: 500;
+  }
+
+  /* ============= PRIORITY (TOMORROW) CARD ============= */
+  .priority-card {
+    margin: 14px var(--space-4) 0;
+    background: var(--surface-bold);
+    color: var(--text-on-bold);
+    border-radius: 20px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    box-shadow: 0 8px 24px rgba(57,0,173,0.18);
+    position: relative;
+    overflow: hidden;
+  }
+  .priority-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(80% 60% at 100% 0%, rgba(255,255,255,0.14) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .priority-card:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(57,0,173,0.25); }
+  .priority-card:active { transform: scale(0.98); }
+  .priority-icon {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.15);
+    color: #ffffff;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .priority-body {
+    flex: 1; min-width: 0;
+    position: relative;
+  }
+  .priority-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.85);
+    margin-bottom: 2px;
+  }
+  .priority-tag .live-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #ffffff;
+    animation: livePulse 1.6s ease-in-out infinite;
+  }
+  @keyframes livePulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+  .priority-card h2 {
+    font-size: 15.5px;
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -0.2px;
+    margin-bottom: 3px;
+  }
+  .priority-card .priority-meta {
+    font-size: 12px;
+    line-height: 1.35;
+    opacity: 0.85;
+    font-weight: 500;
+  }
+  .priority-arrow {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    color: #ffffff;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    position: relative;
+  }
+
+  /* ============= 4 USE CASE CARDS — 2×2 GRID ============= */
+  .vertical-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 16px var(--space-4) 0;
+  }
+  .uc-card {
+    aspect-ratio: 1 / 0.95;
+    border: 1px solid var(--stroke-subtle);
+    border-radius: 18px;
+    padding: 14px;
+    background: var(--surface-default);
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 8px;
+    transition: all 0.18s;
+    position: relative;
+    overflow: hidden;
+  }
+  .uc-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(120% 80% at 100% 0%, var(--uc-tint, var(--primary-20)) 0%, transparent 55%);
+    opacity: 0.7;
+    pointer-events: none;
+  }
+  .uc-card:hover {
+    border-color: var(--surface-bold);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+  .uc-card:active { transform: scale(0.98); }
+
+  .uc-card .uc-icon-wrap {
+    width: 36px; height: 36px;
+    border-radius: 11px;
+    background: var(--uc-icon-bg, var(--primary-20));
+    color: var(--uc-icon-color, var(--surface-bold));
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+  .uc-card .uc-title {
+    position: relative;
+  }
+  .uc-card h2 {
+    font-size: 15px;
+    font-weight: 800;
+    line-height: 1.15;
+    color: var(--text-high);
+    letter-spacing: -0.1px;
+    margin: 0 0 3px;
+  }
+  .uc-card .uc-quote {
+    font-size: 11px;
+    line-height: 1.3;
+    color: var(--text-low);
+    font-weight: 500;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Per-vertical tints (all from JDS palette, monochromatic-ish) */
+  .uc-card.uc-micro    { --uc-tint: rgba(231,233,255,0.65); --uc-icon-bg: var(--surface-ghost-icon); --uc-icon-color: var(--surface-bold); }
+  .uc-card.uc-english  { --uc-tint: rgba(232,250,247,0.85); --uc-icon-bg: var(--sparkle-20); --uc-icon-color: var(--sparkle-50); }
+  .uc-card.uc-interview{ --uc-tint: rgba(232,232,252,0.7); --uc-icon-bg: var(--primary-20); --uc-icon-color: var(--surface-bold); }
+  .uc-card.uc-govt     { --uc-tint: rgba(254,247,233,0.9); --uc-icon-bg: var(--secondary-20); --uc-icon-color: var(--secondary-60); }
+
+  /* ============= CONTINUE STRIP ============= */
+  .section-h {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-low);
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    padding: 0 var(--space-4);
+    margin: 22px 0 10px;
+  }
+  .continue-row {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 0 var(--space-4) 4px;
+    scroll-behavior: smooth;
+  }
+  .continue-row::-webkit-scrollbar { display: none; }
+  .continue-card {
+    flex-shrink: 0;
+    min-width: 220px;
+    max-width: 240px;
+    border: 1px solid var(--stroke-subtle);
+    border-radius: 14px;
+    padding: 12px 14px;
+    background: var(--surface-default);
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .continue-card:hover {
+    border-color: var(--surface-bold);
+    transform: translateY(-2px);
+  }
+  .continue-card .cc-tag {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    color: var(--text-low);
+    margin-bottom: 2px;
+  }
+  .continue-card h3 {
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 1.2;
+    color: var(--text-high);
+    letter-spacing: -0.1px;
+  }
+  .continue-card .cc-meta {
+    font-size: 11px;
+    line-height: 1.35;
+    color: var(--text-low);
+    font-weight: 500;
+  }
+
+  /* ============= BOTTOM SAFE PADDING ============= */
+  .body-scroll-pad { height: 18px; }
+
+  /* ============= VOICE OVERLAY ============= */
+  .voice-overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--surface-default);
+    z-index: 9999;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 24px;
+  }
+  .voice-overlay.open { display: flex; }
+  .voice-overlay .vo-top {
+    width: 100%;
+    max-width: 390px;
+    padding: 16px 0;
+    display: flex;
+    justify-content: flex-end;
+  }
+  .voice-overlay .vo-close {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    border: none;
+    background: var(--surface-ghost);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .voice-overlay .vo-body {
+    flex: 1;
+    width: 100%;
+    max-width: 390px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 24px;
+  }
+  .voice-overlay .vo-label {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-high);
+    line-height: 1.3;
+  }
+  .voice-overlay .vo-sub {
+    font-size: var(--text-body);
+    color: var(--text-low);
+    line-height: 1.4;
+  }
+  .voice-overlay .vo-transcript {
+    background: var(--surface-ghost);
+    border-radius: 16px;
+    padding: 14px 18px;
+    font-size: var(--text-body);
+    line-height: 1.4;
+    color: var(--text-high);
+    max-width: 320px;
+    margin-top: 8px;
+    display: none;
+  }
+  .voice-overlay.has-transcript .vo-transcript { display: block; }
+  .voice-overlay .vo-bottom {
+    width: 100%;
+    max-width: 390px;
+    padding: 24px 0 max(24px, env(safe-area-inset-bottom, 0px));
+    display: flex;
+    justify-content: center;
+  }
+  .voice-overlay .vo-mic {
+    width: 72px; height: 72px;
+    border-radius: 50%;
+    border: none;
+    background: var(--surface-bold);
+    color: var(--text-on-bold);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .voice-overlay .vo-mic.recording {
+    background: var(--error);
+    animation: pulseRecord 1s ease-in-out infinite;
+  }
+  @keyframes pulseRecord {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(250,47,64,0.6); }
+    50% { box-shadow: 0 0 0 16px rgba(250,47,64,0); }
+  }
+  .voice-overlay .voice-stage {
+    width: 220px;
+    height: 220px;
+  }
+
+  @media (min-width: 600px) {
+    .phone-frame { box-shadow: var(--shadow-lg); border-radius: 32px; margin-top: 24px; height: calc(100vh - 48px); }
+    body { background: var(--surface-moderate); }
+  }
+
+  /* ============= ZERO-STATE: introduction card (replaces priority card) ============= */
+  .zero-intro-card {
+    margin: 14px var(--space-4) 0;
+    background: var(--surface-default);
+    border: 1px solid var(--stroke-subtle);
+    border-radius: 20px;
+    padding: 16px 18px;
+  }
+  .zero-intro-card .zi-h {
+    font-size: 11px; font-weight: 800;
+    color: var(--surface-bold);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .zero-intro-card .zi-rows { display: flex; flex-direction: column; gap: 8px; }
+  .zero-intro-card .zi-row {
+    display: flex; align-items: flex-start; gap: 10px;
+    font-size: 12.5px; line-height: 1.45;
+    color: var(--text-high);
+  }
+  .zero-intro-card .zi-row strong { color: var(--surface-bold); }
+  .zero-intro-card .zi-row [data-icon] {
+    color: var(--surface-bold);
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+
+  /* ============= ZERO-STATE: "not sure where to start" nudge strip ============= */
+  .zero-start-strip {
+    margin: 16px var(--space-4) 0;
+    padding: 14px 16px;
+    background: linear-gradient(135deg, var(--primary-20) 0%, var(--surface-ghost-icon) 100%);
+    border-radius: 16px;
+    border: 1px dashed var(--primary-40);
+  }
+  .zero-start-strip .zss-h {
+    font-size: 13px; font-weight: 800; color: var(--surface-bold);
+    margin-bottom: 4px;
+  }
+  .zero-start-strip .zss-sub {
+    font-size: 12px; line-height: 1.45; color: var(--text-low); font-weight: 500;
+  }
+</style>
+</head>
+<body>
+<div class="phone-frame" id="phoneFrame">
+
+  <!-- Header -->
+  <div class="top-bar">
+    <button class="back-btn" onclick="window.history.length > 1 ? window.history.back() : null" aria-label="Back">
+      <span data-icon="chevron-left" data-size="20"></span>
+    </button>
+    <div class="greeting" id="greeting">Welcome to JBIQ</div>
+  </div>
+
+  <div class="body-scroll">
+
+    <!-- Hero band: lavender wash, single tight intro -->
+    <div class="hero-band">
+      <h1>Hi, I'm <span class="accent">JBIQ</span>.</h1>
+      <p>I help with jobs, careers, and the skills to get there. Tell me what's going on — or pick a starting point below.</p>
+    </div>
+
+    <!-- Zero-state intro card — explains the four things JBIQ can do, no
+         prior-usage assumptions. Replaces the Tomorrow priority card. -->
+    <div class="zero-intro-card">
+      <div class="zi-h">Four ways I can help</div>
+      <div class="zi-rows">
+        <div class="zi-row"><span data-icon="flame-jds" data-size="14"></span><span><strong>Micro Learning</strong> — fix one work problem in 10 minutes</span></div>
+        <div class="zi-row"><span data-icon="conversation" data-size="14"></span><span><strong>English Learning</strong> — speak without freezing</span></div>
+        <div class="zi-row"><span data-icon="mic" data-size="14"></span><span><strong>Interview Prep</strong> — mock interviews with real feedback</span></div>
+        <div class="zi-row"><span data-icon="homework" data-size="14"></span><span><strong>Govt Exam Discovery + Prep</strong> — find the exam, then prep for it</span></div>
+      </div>
+    </div>
+
+    <!-- 4 use cases — 2x2 grid, fresh-eyes copy (no prior-usage references) -->
+    <div class="vertical-grid">
+
+      <a class="uc-card uc-micro" href="microlearning.html?from=landing">
+        <div class="uc-icon-wrap"><span data-icon="flame-jds" data-size="20"></span></div>
+        <div class="uc-title">
+          <h2>Micro Learning</h2>
+          <div class="uc-quote">YouTube, Office, shopkeeping — pick a skill, fix it fast</div>
+        </div>
+      </a>
+
+      <a class="uc-card uc-english" href="english.html?from=landing">
+        <div class="uc-icon-wrap"><span data-icon="conversation" data-size="20"></span></div>
+        <div class="uc-title">
+          <h2>English Learning</h2>
+          <div class="uc-quote">Real situations · Real phrases · Pronunciation help</div>
+        </div>
+      </a>
+
+      <a class="uc-card uc-interview" href="interview-prep.html?from=landing">
+        <div class="uc-icon-wrap"><span data-icon="mic" data-size="20"></span></div>
+        <div class="uc-title">
+          <h2>Interview Prep</h2>
+          <div class="uc-quote">Voice mocks with a real interviewer persona</div>
+        </div>
+      </a>
+
+      <a class="uc-card uc-govt" href="govt-exam.html?from=landing">
+        <div class="uc-icon-wrap"><span data-icon="homework" data-size="20"></span></div>
+        <div class="uc-title">
+          <h2>Government Exam Discovery and Prep</h2>
+          <div class="uc-quote">Help me figure out which exam — then prep me for it</div>
+        </div>
+      </a>
+
+    </div>
+
+    <!-- Zero-state: no "Pick up where you left off" — there's nothing to
+         pick up yet. Replaced with a gentle nudge to start anywhere. -->
+    <div class="zero-start-strip">
+      <div class="zss-h">Not sure where to start?</div>
+      <div class="zss-sub">Tell me a sentence about you — "I'm Pooja, BPO interview tomorrow" or "I just started a YouTube channel" — and I'll route you.</div>
+    </div>
+
+    <div class="body-scroll-pad"></div>
+  </div>
+
+  <!-- Sticky bottom chat dock -->
+  <div class="chat-dock">
+    <div class="chat-dock-inner" id="chatDockInner">
+      <input
+        type="text"
+        class="chat-dock-input"
+        id="chatDockInput"
+        placeholder='Ask me anything — try "interview tomorrow"'
+        autocomplete="off"
+      />
+      <button class="chat-dock-mic" id="chatDockMic" aria-label="Open voice">
+        <span data-icon="mic" data-size="18"></span>
+      </button>
+      <button class="chat-dock-send" id="chatDockSend" aria-label="Send">
+        <span data-icon="chevron-right" data-size="18"></span>
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<!-- Voice overlay (full-screen) -->
+<div class="voice-overlay" id="voiceOverlay" role="dialog" aria-modal="true" aria-label="Voice input">
+  <div class="vo-top">
+    <button class="vo-close" id="voClose" aria-label="Close">
+      <span data-icon="close" data-size="20"></span>
+    </button>
+  </div>
+  <div class="vo-body">
+    <div class="voice-stage" id="voGlow" data-state="idle">
+      <video class="voice-state idle"      src="https://raw.githubusercontent.com/sunit1986/JioBharatIQ_Server/main/assets/states/Light/Idle_state.mp4"      autoplay loop muted playsinline></video>
+      <video class="voice-state listening" src="https://raw.githubusercontent.com/sunit1986/JioBharatIQ_Server/main/assets/states/Light/Listening_state.mp4" autoplay loop muted playsinline></video>
+      <video class="voice-state thinking"  src="https://raw.githubusercontent.com/sunit1986/JioBharatIQ_Server/main/assets/states/Light/Thinking_state.mp4"  autoplay loop muted playsinline></video>
+      <video class="voice-state speaking"  src="https://raw.githubusercontent.com/sunit1986/JioBharatIQ_Server/main/assets/states/Light/Speaking_State.mp4"  autoplay loop muted playsinline></video>
+    </div>
+    <div class="vo-label" id="voLabel">Tell me what you need</div>
+    <div class="vo-sub" id="voSub">Try: "Interview tomorrow" or "I want to learn thumbnails"</div>
+    <div class="vo-transcript" id="voTranscript"></div>
+  </div>
+  <div class="vo-bottom">
+    <button class="vo-mic" id="voMic" aria-label="Start recording">
+      <span data-icon="mic" data-size="28"></span>
+    </button>
+  </div>
+</div>
+
+<script>window.AUDIO_BASE = "../assets/audio/";</script>
+<script src="../shared/icons.js"></script>
+<script src="../shared/personas.js"></script>
+<script src="../shared/tts-cache.js"></script>
+<script src="../shared/jbiq-voice.js"></script>
+<script src="../shared/multimodal.js"></script>
+<script>
+/* =========================================================================
+ * Time-aware greeting
+ * ========================================================================= */
+(function() {
+  const h = new Date().getHours();
+  let g = 'Good morning';
+  if (h >= 12 && h < 17) g = 'Good afternoon';
+  else if (h >= 17 || h < 5) g = 'Good evening';
+  // Zero-state: no name known yet, keep the greeting role-agnostic.
+  const el = document.getElementById('greeting');
+  if (el) el.textContent = 'Welcome to JBIQ';
+})();
+
+/* =========================================================================
+ * Voice overlay + routing
+ * ========================================================================= */
+const ROUTING = [
+  { keywords: ['interview', 'mock', 'concentrix', 'tech mahindra', 'hdfc sales', 'bajaj', 'bpo', 'v&a', 'voice and accent', 'hr round', 'sales role', 'tomorrow'],
+    target: 'interview-prep.html', label: 'Interview Prep', say: "Got it — let's get your interview ready. Opening Interview Prep now." },
+  { keywords: ['english', 'speak', 'fluent', 'duolingo', 'pronunciation', 'grammar', 'customer call', 'customer service', 'situational english', 'conversation', 'sarah', 'practice'],
+    target: 'english.html', label: 'English Learning', say: "I'll set you up with the English coach. Opening now." },
+  { keywords: ['exam', 'ssc', 'ibps', 'rrb', 'banking exam', 'upsc', 'rbi', 'cgl', 'po', 'government job', 'sarkari', 'pyq', 'mock test', 'kaunsa', 'which exam'],
+    target: 'govt-exam.html', label: 'Govt Exam Prep', say: "Sure — let's find the right exam and start prep. Opening Govt Exam now." },
+  { keywords: ['thumbnail', 'youtube', 'creator', 'canva', 'shorts', 'editing', 'chatgpt', 'gemini', 'prompt', 'ai tool', 'capcut', 'photoshop', 'reel', 'micro', 'learn', 'skill', 'hindi', 'shop'],
+    target: 'microlearning.html', label: 'Microlearning', say: "Let's pull up the right micro-skill for you. Opening now." },
+];
+function routeFromTranscript(text) {
+  const lower = (text || '').toLowerCase();
+  for (const r of ROUTING) {
+    for (const k of r.keywords) if (lower.includes(k)) return r;
+  }
+  return null;
+}
+
+// Prefetch routing replies
+if (window.JBIQVoice && window.JBIQVoice.prefetch) {
+  const items = ROUTING.map(r => ({ personaId: window.JBIQ_VOICE_PREF || 'jbiq_warm', text: r.say }));
+  items.push({ personaId: 'jbiq_warm', text: "I heard you — pick a card or try saying it differently." });
+  window.JBIQVoice.prefetch(items);
+}
+
+const overlayEl = document.getElementById('voiceOverlay');
+const voGlow = document.getElementById('voGlow');
+const voLabel = document.getElementById('voLabel');
+const voSub = document.getElementById('voSub');
+const voTranscript = document.getElementById('voTranscript');
+const voMic = document.getElementById('voMic');
+const voClose = document.getElementById('voClose');
+
+function setLabel(label, sub) {
+  voLabel.textContent = label;
+  voSub.textContent = sub || '';
+  voSub.style.display = sub ? 'block' : 'none';
+}
+
+let voice = null;
+function ensureVoice() {
+  if (voice) return voice;
+  voice = JBIQVoice.create({
+    persona: window.JBIQ_VOICE_PREF || 'jbiq_warm',
+    glowEl: voGlow,
+    onTranscript: handleTranscript,
+    onState: handleState,
+    onError: (err) => {
+      console.error(err);
+      setLabel('Mic access needed', 'Please allow microphone access');
+      voMic.classList.remove('recording');
+    },
+  });
+  return voice;
+}
+
+function handleState(state) {
+  voMic.classList.toggle('recording', state === 'listening');
+  if (state === 'listening') setLabel('Listening…', '');
+  else if (state === 'thinking') setLabel('Got you. Routing…', '');
+}
+
+async function handleTranscript(text, lang) {
+  if (!text) {
+    setLabel("Didn't catch that", 'Tap mic to try again');
+    return;
+  }
+  overlayEl.classList.add('has-transcript');
+  voTranscript.textContent = '"' + text + '"';
+  const route = routeFromTranscript(text);
+  if (route) {
+    setLabel('Heading to ' + route.label, 'One moment…');
+    try { await voice.speak(route.say, lang); } catch(e) {}
+    if (window.MM && window.MM.chime) window.MM.chime();
+    setTimeout(() => {
+      const params = new URLSearchParams({ from: 'landing-voice', q: text });
+      window.location.href = route.target + '?' + params.toString();
+    }, 600);
+  } else {
+    setLabel('Got it. Pick a card below', 'Or try saying it again.');
+    try { await voice.speak("I heard you — pick a card or try saying it differently.", lang); } catch(e) {}
+  }
+}
+
+function openVoice() {
+  overlayEl.classList.remove('has-transcript');
+  voTranscript.textContent = '';
+  setLabel('Tell me what you need', 'Try: "Interview tomorrow" or "Customer calls scare me"');
+  overlayEl.classList.add('open');
+  setTimeout(() => { ensureVoice().startRecording(); }, 250);
+}
+voClose.addEventListener('click', () => {
+  if (voice) voice.stop();
+  overlayEl.classList.remove('open');
+  overlayEl.classList.remove('has-transcript');
+});
+voMic.addEventListener('click', () => {
+  const v = ensureVoice();
+  if (v.isRecording) v.stopRecording();
+  else v.startRecording();
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && overlayEl.classList.contains('open')) voClose.click();
+});
+
+/* =========================================================================
+ * Chat dock — type or tap mic. Both route via the same keyword router.
+ * ========================================================================= */
+const chatDockInput = document.getElementById('chatDockInput');
+const chatDockInner = document.getElementById('chatDockInner');
+const chatDockMic = document.getElementById('chatDockMic');
+const chatDockSend = document.getElementById('chatDockSend');
+
+function dispatchTypedMessage(text) {
+  if (!text || !text.trim()) return;
+  const q = text.trim();
+  const route = routeFromTranscript(q);
+  if (route) {
+    chatDockInner.style.borderColor = 'var(--success)';
+    setTimeout(() => {
+      const params = new URLSearchParams({ from: 'landing-chat', q: q });
+      window.location.href = route.target + '?' + params.toString();
+    }, 200);
+  } else {
+    overlayEl.classList.add('has-transcript');
+    voTranscript.textContent = '"' + q + '"';
+    setLabel('Got it. Pick a card or use the mic', 'I couldn\'t auto-route that — try saying it another way.');
+    overlayEl.classList.add('open');
+  }
+}
+
+chatDockInput.addEventListener('input', () => {
+  chatDockInner.classList.toggle('has-text', !!chatDockInput.value.trim());
+});
+chatDockInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    dispatchTypedMessage(chatDockInput.value);
+  }
+});
+chatDockSend.addEventListener('click', () => {
+  dispatchTypedMessage(chatDockInput.value);
+});
+chatDockMic.addEventListener('click', () => {
+  openVoice();
+});
+</script>
+</body>
+</html>

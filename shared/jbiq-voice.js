@@ -139,7 +139,11 @@
 
   function fetchMp3(filename) {
     if (arrayBufferCache.has(filename)) return arrayBufferCache.get(filename);
-    const p = fetch('assets/audio/' + filename).then(r => {
+    // window.AUDIO_BASE lets pages outside the root (e.g. /zero/*.html) point
+    // at the shared audio directory via '../assets/audio/'. Defaults to the
+    // root-relative path so existing pages work unchanged.
+    const base = (typeof window !== 'undefined' && window.AUDIO_BASE) || 'assets/audio/';
+    const p = fetch(base + filename).then(r => {
       if (!r.ok) throw new Error('Audio fetch failed: ' + filename + ' (' + r.status + ')');
       return r.arrayBuffer();
     });
