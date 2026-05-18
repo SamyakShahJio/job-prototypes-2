@@ -320,6 +320,16 @@ function extractFromGovtExam() {
   const lines = [];
   // DISCOVERY_FLOW + DISCOVERY_BRANCHES have `ai: "..."` fields.
   lines.push(...extractSayFields(src, 'govt_exam_counselor'));
+  // CONCEPTS have a `spoken:` field — long-form explanation that speakConcept
+  // plays when the user taps Listen on a concept card.
+  const spokenRe = /\bspoken:\s*(?:"((?:[^"\\]|\\.)*)"|'((?:[^'\\]|\\.)*)')/g;
+  let sm;
+  while ((sm = spokenRe.exec(src)) !== null) {
+    const raw = sm[1] !== undefined ? sm[1] : sm[2];
+    if (raw && raw.length > 20) {
+      lines.push({ personaId: 'govt_exam_counselor', text: decodeJsString(raw) });
+    }
+  }
   // Reality-check objects also have an `end:` field that's spoken on closing.
   const endRe = /\bend:\s*(?:"((?:[^"\\]|\\.)*)"|'((?:[^'\\]|\\.)*)')/g;
   let m;

@@ -1435,9 +1435,29 @@ const CONCEPTS = [
     tag: 'Concept · Banking',
     title: 'Repo Rate vs Reverse Repo Rate',
     desc: 'Two opposite-direction tools RBI uses to control money supply. Both impact your home loan EMI and FD interest.',
-    diagram: "📈 <strong>Repo Rate</strong> (5.50%): RBI → Banks (RBI lends to banks)<br>📉 <strong>Reverse Repo</strong> (3.35%): Banks → RBI (Banks park money with RBI)<br><br>When repo rate ↓, EMIs ↓, FD rates ↓. When repo ↑, vice versa.",
-    // Natural spoken explanation, written for the ear, not stitched from fields.
+    diagram: "<strong>Repo Rate</strong> (5.50%): RBI → Banks (RBI lends to banks)<br><strong>Reverse Repo</strong> (3.35%): Banks → RBI (Banks park money with RBI)<br><br>When repo rate ↓, EMIs ↓, FD rates ↓. When repo ↑, vice versa.",
     spoken: "Repo rate and reverse repo rate work in opposite directions. The repo rate, currently 5.5 percent, is what RBI charges banks when they borrow money. The reverse repo rate, currently 3.35 percent, is what RBI pays banks when they park money with it. When repo rate drops, your home loan EMIs drop. When it rises, EMIs rise too.",
+  },
+  {
+    tag: 'Concept · Banking',
+    title: 'CRR vs SLR — what\'s actually different',
+    desc: 'Two RBI tools that both control how much money banks can lend, but in different forms — cash vs government bonds.',
+    diagram: "<strong>CRR</strong> (4.50%): % of deposits banks keep with RBI <em>as cash</em>. Earns zero interest.<br><strong>SLR</strong> (18.00%): % of deposits banks keep in <em>liquid assets</em> (gold, govt securities). Earns yield.<br><br>Higher CRR or SLR ⇒ less money for banks to lend ⇒ controls inflation.",
+    spoken: "CRR and SLR are two of RBI's tools to control how much banks can lend. CRR, Cash Reserve Ratio, is the percentage of deposits banks must keep with RBI as cash. Currently 4.5 percent. SLR, Statutory Liquidity Ratio, is the percentage banks must keep in liquid assets like gold and government bonds. Currently 18 percent. Both reduce how much banks can lend out, which controls inflation.",
+  },
+  {
+    tag: 'Concept · Macro',
+    title: 'Inflation & Monetary Policy',
+    desc: 'India targets 4% inflation with a band of 2-6%. When inflation rises above 6%, RBI raises repo rate to cool spending.',
+    diagram: "<strong>Inflation high</strong> (above 6%) → RBI <strong>raises repo rate</strong> → loans become expensive → people borrow less → spending drops → prices cool<br><br><strong>Inflation low</strong> (below 2%) → RBI <strong>cuts repo rate</strong> → loans become cheaper → people borrow more → spending rises → growth picks up",
+    spoken: "Inflation is the rate at which prices rise. India targets 4 percent inflation, with a tolerance band of 2 to 6 percent. When inflation goes above 6 percent, RBI raises the repo rate to make borrowing more expensive. People borrow less, spending drops, and prices cool. When inflation falls below 2 percent, RBI cuts the repo rate to stimulate the economy.",
+  },
+  {
+    tag: 'Concept · Markets',
+    title: 'Bonds vs Equities',
+    desc: 'Two ways companies raise money: borrowing (bonds) or selling ownership (equities). Bonds pay fixed interest. Equities give you a share of the profits — and the risk.',
+    diagram: "<strong>Bond</strong>: You <em>lend</em> money to a company or government. You get fixed interest (coupon) + principal back at maturity. Lower risk, lower return.<br><strong>Equity (share)</strong>: You <em>own</em> a piece of the company. You get dividends + price appreciation, or losses if the company falters. Higher risk, higher potential return.",
+    spoken: "Bonds and equities are two ways companies raise money. A bond is when you lend money — you get fixed interest and your principal back at maturity. Lower risk, lower return. An equity, or share, is when you own a piece of the company. You get dividends and price appreciation, or losses if the company falters. Higher risk, higher potential return.",
   },
 ];
 
@@ -1592,7 +1612,11 @@ function startDailyPrep(initialKind) {
 
 // Track how many quizzes/flashcards the user has seen so the "More questions"
 // button can load another batch instead of repeating the same ones.
-const PREP_STATE = { quiz: 0, flash: 0 };
+// Track how many quizzes / flashcards / concepts the user has seen so the
+// "More questions" / "More flashcards" / "More concepts" buttons can load the
+// next slice instead of repeating. All three cycle back to start if exhausted
+// so the user never runs out of content.
+const PREP_STATE = { quiz: 0, flash: 0, concept: 0 };
 
 function streamDailyPrep(kind) {
   const chat = document.getElementById('discChat');
@@ -1612,38 +1636,57 @@ function streamDailyPrep(kind) {
     window.GC.appendAi(chat, acks[kind] || "Here you go.");
   }, 400);
 
-  // Stream the cards in
+  // Stream the cards in. Quiz + flashcard batches render as a SINGLE chat
+  // message containing a horizontal carousel — user swipes through the cards
+  // rather than scrolling past each one stacked vertically.
   setTimeout(() => {
     if (kind === 'quiz') {
-      // Render up to 3 at a time, then offer "More questions"
       const start = PREP_STATE.quiz;
       const slice = QUIZZES.slice(start, start + 3);
-      slice.forEach((q, i) => appendChatCard(chat, renderQuiz(q, start + i)));
+      const items = slice.map((q, i) => renderQuiz(q, start + i));
+      appendChatCarousel(chat, "Today's quizzes", "Swipe →", items);
       PREP_STATE.quiz += slice.length;
-      if (PREP_STATE.quiz < QUIZZES.length || true) {
-        appendMoreButton(chat, 'quiz', "More questions");
-      }
+      appendMoreButton(chat, 'quiz', "More questions");
       appendKindSwitcher(chat, 'quiz');
     } else if (kind === 'flash') {
       const start = PREP_STATE.flash;
       const slice = FLASHCARDS.slice(start, start + 4);
-      slice.forEach((f, i) => appendChatCard(chat, renderFlashcard(f, start + i)));
+      const items = slice.map((f, i) => renderFlashcard(f, start + i));
+      appendChatCarousel(chat, "Flashcards", "Tap to flip · Swipe →", items);
       PREP_STATE.flash += slice.length;
-      if (PREP_STATE.flash < FLASHCARDS.length || true) {
-        appendMoreButton(chat, 'flash', "More flashcards");
-      }
+      appendMoreButton(chat, 'flash', "More flashcards");
       appendKindSwitcher(chat, 'flash');
     } else if (kind === 'concept') {
-      CONCEPTS.forEach((cn, i) => appendChatCard(chat, renderConcept(cn, i)));
-      // Tease the next concept
-      const more = document.createElement('div');
-      more.className = 'concept-card';
-      more.style.opacity = '0.55';
-      more.innerHTML = `<div class="cc-tag">Coming up</div><div class="cc-title">CRR vs SLR — what's actually different?</div><div class="cc-desc">Tomorrow's concept · Will surface based on your weak topics.</div>`;
-      appendChatCard(chat, more);
+      // One concept at a time (they're deeper-dive cards), cycle via "More".
+      const idx = PREP_STATE.concept % CONCEPTS.length;
+      const cn = CONCEPTS[idx];
+      appendChatCard(chat, renderConcept(cn, idx));
+      PREP_STATE.concept += 1;
+      appendMoreButton(chat, 'concept', "More concepts");
       appendKindSwitcher(chat, 'concept');
     }
   }, 1000);
+}
+
+// Append a horizontal carousel of pre-built card elements as a single chat
+// message. Reuses the existing .prep-carousel CSS so quizzes / flashcards get
+// scroll-snap + edge fade for free.
+function appendChatCarousel(chat, title, hint, cardEls) {
+  const wrap = document.createElement('div');
+  wrap.className = 'gc-msg gc-msg-card';
+  wrap.innerHTML = `
+    <div class="prep-carousel-wrap">
+      <div class="prep-carousel-h">
+        <div class="pch-title">${title}</div>
+        <div class="pch-count">${hint}</div>
+      </div>
+      <div class="prep-carousel"></div>
+    </div>
+  `;
+  const row = wrap.querySelector('.prep-carousel');
+  cardEls.forEach(el => row.appendChild(el));
+  chat.appendChild(wrap);
+  chat.scrollTop = chat.scrollHeight;
 }
 
 // Wrap a quiz/flashcard/concept card so it sits as a "message" in the chat
