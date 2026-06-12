@@ -500,7 +500,7 @@
     <div class="view-body">
       <!-- Zero-state welcome — first-time visitor, no prior mock -->
       <div class="zero-hero-card">
-        <div class="zh-title">A real interviewer. A real read. In ~5 minutes.</div>
+        <div class="zh-title">A real interviewer. A real read.</div>
         <div class="zh-sub">Pick a role or company, run a short voice mock, and get a specific report — pace, fillers, pronunciation, and a model answer you can listen to.</div>
       </div>
 
@@ -511,7 +511,7 @@
         </div>
         <div class="pe-text">
           <div class="pe-title">Practice for an interview</div>
-          <div class="pe-sub">Voice mock · ~5 min · Full report at the end</div>
+          <div class="pe-sub">Voice mock · Full report at the end</div>
         </div>
         <span class="pe-arrow"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></span>
       </div>
@@ -659,10 +659,10 @@ function showView(name) {
  * roles. Reports are rendered qualitatively (no numeric score anywhere).
  * ========================================================================= */
 const COMPANIES = {
-  'tech-mahindra': { name: 'Tech Mahindra BPS', logo: 'TM', color: '#cc0000', role: 'BPO Voice · US Banking', meta: 'BPO · V&A round', persona: 'interviewer_formal_ops', round: 'Voice & Accent' },
-  'concentrix':    { name: 'Concentrix',        logo: 'CX', color: '#0077c8', role: 'BPO Voice · Customer Care', meta: 'BPO · Customer voice', persona: 'interviewer_bored_hr', round: 'HR' },
-  'hdfc':          { name: 'HDFC Sales',        logo: 'H',  color: '#cc0000', role: 'Field Sales · Cards & Loans', meta: 'Sales · Field role', persona: 'interviewer_friendly_tl', round: 'Sales pitch' },
-  'bajaj':         { name: 'Bajaj Finance',     logo: 'BF', color: '#003d7a', role: 'Telesales · EMI Cards', meta: 'Sales · Telesales', persona: 'interviewer_hostile_customer', round: 'Pressure drill' },
+  'tech-mahindra': { name: 'Tech Mahindra BPS', logo: 'TM', color: '#cc0000', role: 'BPO Voice · US Banking', meta: 'BPO', persona: 'interviewer_formal_ops', round: 'Voice & Accent' },
+  'concentrix':    { name: 'Concentrix',        logo: 'CX', color: '#0077c8', role: 'BPO Voice · Customer Care', meta: 'BPO', persona: 'interviewer_bored_hr', round: 'HR' },
+  'hdfc':          { name: 'HDFC Sales',        logo: 'H',  color: '#cc0000', role: 'Field Sales · Cards & Loans', meta: 'Sales', persona: 'interviewer_friendly_tl', round: 'Sales pitch' },
+  'bajaj':         { name: 'Bajaj Finance',     logo: 'BF', color: '#003d7a', role: 'Telesales · EMI Cards', meta: 'Sales', persona: 'interviewer_hostile_customer', round: 'Pressure drill' },
 };
 
 // Popular roles → each maps onto the closest canned mock + a default round.
@@ -877,7 +877,9 @@ function prepByRole(id) {
 function prepByCompany(id) {
   resetPrep();
   const c = COMPANIES[id];
-  if (c) { prep.company = c.name; prep.companyId = id; prep.key = id; prep.round = c.round; }
+  // Company sets which mock plays — but NOT the round; the round is chosen
+  // later in the onboarding (a company doesn't dictate the interview round).
+  if (c) { prep.company = c.name; prep.companyId = id; prep.key = id; }
   openChat();
   startOnboarding({ lockCompany: true });
 }
@@ -970,10 +972,9 @@ function appendOnboardCard(opts) {
   card.querySelectorAll('#ob_company_chips .ob-chip').forEach(b => {
     b.addEventListener('click', () => {
       clearChips('ob_company_chips'); b.classList.add('sel');
-      const c = COMPANIES[b.dataset.id];
       compInput.value = b.dataset.label; prep.company = b.dataset.label;
       prep.companyId = b.dataset.id; prep.key = b.dataset.id;
-      if (c) selectRound(c.round);
+      // Round is left for the user to pick — a company doesn't imply a round.
     });
   });
   compInput.addEventListener('input', () => { prep.company = compInput.value.trim(); prep.companyId = null; clearChips('ob_company_chips'); });
