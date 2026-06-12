@@ -236,8 +236,14 @@ function extractSuggestedFields(src, personaId) {
 }
 
 function extractFromInterview() {
-  const src = read('interview-prep.html');
+  const fullSrc = read('interview-prep.html');
   const lines = [];
+
+  // Anchor to the MOCK_TRANSCRIPTS object. Other structures above it
+  // (LOOKING_FOR, REPORT_TEXT) also use `'tech-mahindra': [ ... ]` array
+  // literals, so a naive whole-file search would grab the wrong block.
+  const mtIdx = fullSrc.indexOf('MOCK_TRANSCRIPTS = {');
+  const src = mtIdx >= 0 ? fullSrc.slice(mtIdx) : fullSrc;
 
   // Block-extract each MOCK_TRANSCRIPTS company key, since each block uses
   // a different persona. Keys are quoted with single quotes in the source.

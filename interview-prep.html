@@ -154,21 +154,23 @@
   .cta-card .cc-sub { font-size: 12px; font-weight: 500; color: var(--grey-60); margin-top: 2px; }
   .cta-card .cc-arrow { color: var(--grey-60); }
 
-  /* ============= IN-CHAT ONBOARDING CARD ============== */
+  /* ============= IN-CHAT ONBOARDING CARD (compact) ============== */
   .onboard-card {
     align-self: stretch;
     background: white;
     border: 1px solid var(--stroke-subtle);
-    border-radius: 18px;
-    padding: 16px;
+    border-radius: 16px;
+    padding: 14px;
     margin: 4px 0 8px;
     box-shadow: var(--shadow-sm);
-    display: flex; flex-direction: column; gap: 14px;
+    display: flex; flex-direction: column; gap: 11px;
   }
   .onboard-card.locked { opacity: 0.6; pointer-events: none; }
-  .ob-field { display: flex; flex-direction: column; gap: 7px; }
+  .ob-field { display: flex; flex-direction: column; gap: 6px; }
+  .ob-field.ob-inline { flex-direction: row; align-items: center; justify-content: space-between; gap: 10px; }
+  .ob-field.ob-inline .ob-label { margin: 0; }
   .ob-label {
-    font-size: 12px; font-weight: 700; color: var(--text-high);
+    font-size: 11.5px; font-weight: 700; color: var(--text-high); line-height: 1.2;
     display: flex; align-items: center; gap: 6px;
   }
   .ob-req { color: var(--error); font-weight: 800; }
@@ -177,36 +179,62 @@
     text-transform: none; letter-spacing: 0;
     background: var(--surface-ghost); padding: 2px 7px; border-radius: 999px;
   }
+  /* Quick-pick chips (role / company) — one scrollable line above the text box */
+  .ob-chiprow {
+    display: flex; gap: 6px; overflow-x: auto;
+    padding-bottom: 2px; margin: 0;
+    scrollbar-width: none;
+  }
+  .ob-chiprow::-webkit-scrollbar { display: none; }
+  .ob-chip {
+    flex-shrink: 0;
+    border: 1.5px solid var(--grey-40); background: white;
+    border-radius: 999px; padding: 6px 11px;
+    font-family: var(--font); font-size: 12px; font-weight: 600; color: var(--text-high);
+    cursor: pointer; white-space: nowrap; transition: all 0.12s;
+  }
+  .ob-chip:hover { border-color: var(--vert-accent); }
+  .ob-chip.sel { border-color: var(--vert-accent); background: var(--vert-accent-light); color: var(--vert-accent-dark); font-weight: 700; }
   .ob-input {
     width: 100%;
     border: 1.5px solid var(--grey-40);
-    border-radius: 12px;
-    padding: 11px 13px;
-    font-family: var(--font); font-size: 14px; color: var(--text-high);
+    border-radius: 11px;
+    padding: 9px 12px;
+    font-family: var(--font); font-size: 13.5px; color: var(--text-high);
     background: var(--surface-default);
     transition: border-color 0.15s;
   }
   .ob-input:focus { outline: none; border-color: var(--vert-accent); }
   .ob-input::placeholder { color: var(--grey-60); }
-  .ob-input.prefilled { background: var(--vert-accent-light); border-color: var(--vert-accent); font-weight: 700; color: var(--vert-accent-dark); }
-  .ob-seg { display: flex; flex-wrap: wrap; gap: 7px; }
+  .ob-seg { display: flex; flex-wrap: wrap; gap: 6px; }
   .ob-opt {
     border: 1.5px solid var(--grey-40);
     background: white;
     border-radius: 999px;
-    padding: 8px 14px;
-    font-family: var(--font); font-size: 12.5px; font-weight: 600;
+    padding: 6px 11px;
+    font-family: var(--font); font-size: 12px; font-weight: 600;
     color: var(--text-high);
     cursor: pointer; transition: all 0.12s;
   }
   .ob-opt:hover { border-color: var(--vert-accent); }
   .ob-opt.sel { border-color: var(--vert-accent); background: var(--vert-accent-light); color: var(--vert-accent-dark); font-weight: 700; }
+  /* Optional details tucked behind a toggle so the card stays short */
+  .ob-more {
+    background: none; border: none; padding: 2px 0; cursor: pointer;
+    font-family: var(--font); font-size: 12.5px; font-weight: 700; color: var(--vert-accent);
+    display: flex; align-items: center; gap: 6px; text-align: left;
+  }
+  .ob-more .ob-more-tag { color: var(--text-low); font-weight: 500; }
+  .ob-more .ob-chev { display: inline-flex; transition: transform 0.2s; }
+  .ob-more.open .ob-chev { transform: rotate(180deg); }
+  .ob-more-body { display: flex; flex-direction: column; gap: 11px; }
+  .ob-more-body[hidden] { display: none; }
   .ob-upload {
     border: 1.5px dashed var(--grey-40);
     background: var(--surface-ghost);
-    border-radius: 12px;
-    padding: 11px 13px;
-    font-family: var(--font); font-size: 13px; font-weight: 600;
+    border-radius: 11px;
+    padding: 9px 12px;
+    font-family: var(--font); font-size: 12.5px; font-weight: 600;
     color: var(--text-low);
     cursor: pointer; text-align: left; transition: all 0.15s;
   }
@@ -215,7 +243,7 @@
 
   .start-mock-btn {
     width: 100%;
-    padding: 15px;
+    padding: 13px;
     background: var(--vert-accent);
     color: white;
     border: none; border-radius: var(--radius-pill);
@@ -648,7 +676,7 @@ const MOCK_TRANSCRIPTS = {
           { tone: 'warn', text: 'You stopped a beat early. Add what you\'ll do next so the customer feels momentum.' },
         ],
         better: "Sir, I completely understand your frustration, and I'm sorry for the wait. Let me pull up your account right now and I'll stay on the line until it's sorted." } },
-    { speaker: 'ai', text: "Quick — describe a time you handled a difficult situation. 30 seconds. Go." },
+    { speaker: 'ai', text: "Quick one — describe a time you handled a difficult situation. 30 seconds. Go." },
     { speaker: 'user', text: "Last Diwali rush at Reliance, the POS went down for 40 minutes, queue of 30 customers. I got a paper register from stockroom, manually noted purchases, took photos of barcodes, and my TL processed them when system was back. Zero customer walked out angry.", transcribeMs: 1900 },
     { speaker: 'card', card: { kind: 'feedback', label: 'Q4 — Pressure drill (30 sec)',
         notes: [
@@ -825,6 +853,8 @@ function appendOnboardCard(opts) {
   const expOpts = ['Fresher', '0–1 yr', '1–3 yrs', '3–5 yrs', '5+ yrs'];
   const roundOpts = ['HR', 'Voice & Accent', 'Technical', 'Managerial', 'Sales pitch', 'Pressure drill'];
   const numqOpts = ['3', '5', '7'];
+  const roleChips = Object.entries(POPULAR_ROLES).map(([id, r]) => `<button class="ob-chip" data-id="${id}" data-label="${r.label}">${r.label}</button>`).join('');
+  const compChips = Object.entries(COMPANIES).map(([id, c]) => `<button class="ob-chip" data-id="${id}" data-label="${c.name}">${c.name}</button>`).join('');
 
   const card = document.createElement('div');
   card.className = 'onboard-card';
@@ -832,43 +862,78 @@ function appendOnboardCard(opts) {
   card.innerHTML = `
     <div class="ob-field">
       <label class="ob-label">Role you're preparing for <span class="ob-req">*</span></label>
-      <input class="ob-input ${opts.lockRole ? 'prefilled' : ''}" id="ob_role" placeholder="e.g. BPO voice process, Field sales"
-             value="${opts.lockRole ? prep.role.replace(/"/g, '&quot;') : ''}" ${opts.lockRole ? 'readonly' : ''}>
+      <div class="ob-chiprow" id="ob_role_chips">${roleChips}</div>
+      <input class="ob-input" id="ob_role" placeholder="or type your role">
     </div>
     <div class="ob-field">
       <label class="ob-label">Company <span class="ob-opt-tag">optional</span></label>
-      <input class="ob-input ${opts.lockCompany ? 'prefilled' : ''}" id="ob_company" placeholder="e.g. Tech Mahindra, Concentrix"
-             value="${opts.lockCompany ? prep.company.replace(/"/g, '&quot;') : ''}" ${opts.lockCompany ? 'readonly' : ''}>
+      <div class="ob-chiprow" id="ob_company_chips">${compChips}</div>
+      <input class="ob-input" id="ob_company" placeholder="or type a company">
     </div>
-    <div class="ob-field">
-      <label class="ob-label">Years of experience <span class="ob-opt-tag">optional</span></label>
-      <div class="ob-seg" id="ob_exp">${expOpts.map(v => `<button class="ob-opt" data-v="${v}">${v}</button>`).join('')}</div>
+    <div class="ob-field ob-inline">
+      <label class="ob-label">Questions</label>
+      <div class="ob-seg" id="ob_numq">${numqOpts.map(v => `<button class="ob-opt${v === '5' ? ' sel' : ''}" data-v="${v}">${v}</button>`).join('')}</div>
     </div>
-    <div class="ob-field">
-      <label class="ob-label">Round <span class="ob-opt-tag">optional</span></label>
-      <div class="ob-seg" id="ob_round">${roundOpts.map(v => `<button class="ob-opt${prep.round === v ? ' sel' : ''}" data-v="${v}">${v}</button>`).join('')}</div>
-    </div>
-    <div class="ob-field">
-      <label class="ob-label">How many questions?</label>
-      <div class="ob-seg" id="ob_numq">${numqOpts.map(v => `<button class="ob-opt${v === '5' ? ' sel' : ''}" data-v="${v}">${v} questions</button>`).join('')}</div>
-    </div>
-    <div class="ob-field">
-      <label class="ob-label">Resume <span class="ob-opt-tag">optional · adds context</span></label>
-      <button class="ob-upload" id="ob_resume">+ Upload resume (PDF/DOC)</button>
-      <input type="file" id="ob_resume_file" accept=".pdf,.doc,.docx" hidden>
+    <button class="ob-more" id="ob_more" type="button">
+      <span class="ob-chev"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span>
+      Add experience, round &amp; resume <span class="ob-more-tag">(optional)</span>
+    </button>
+    <div class="ob-more-body" id="ob_more_body" hidden>
+      <div class="ob-field">
+        <label class="ob-label">Years of experience</label>
+        <div class="ob-seg" id="ob_exp">${expOpts.map(v => `<button class="ob-opt" data-v="${v}">${v}</button>`).join('')}</div>
+      </div>
+      <div class="ob-field">
+        <label class="ob-label">Round</label>
+        <div class="ob-seg" id="ob_round">${roundOpts.map(v => `<button class="ob-opt${prep.round === v ? ' sel' : ''}" data-v="${v}">${v}</button>`).join('')}</div>
+      </div>
+      <div class="ob-field">
+        <label class="ob-label">Resume <span class="ob-opt-tag">adds context</span></label>
+        <button class="ob-upload" id="ob_resume" type="button">+ Upload resume (PDF/DOC)</button>
+        <input type="file" id="ob_resume_file" accept=".pdf,.doc,.docx" hidden>
+      </div>
     </div>
     <button class="start-mock-btn" id="ob_start" disabled><span class="live-dot"></span>Start mock — voice on</button>
   `;
   chat.appendChild(card);
   chat.scrollTop = chat.scrollHeight;
 
-  // Wire role/company text inputs
   const roleInput = card.querySelector('#ob_role');
+  const compInput = card.querySelector('#ob_company');
   const startBtn = card.querySelector('#ob_start');
   function refreshStart() { startBtn.disabled = !roleInput.value.trim(); }
-  roleInput.addEventListener('input', () => { prep.role = roleInput.value.trim(); refreshStart(); });
-  card.querySelector('#ob_company').addEventListener('input', (e) => { prep.company = e.target.value.trim(); });
-  if (opts.lockRole) refreshStart();
+
+  // Keep the (hidden) round chips in sync when a role/company implies one.
+  function selectRound(val) {
+    if (!val) return;
+    prep.round = val;
+    card.querySelectorAll('#ob_round .ob-opt').forEach(x => x.classList.toggle('sel', x.dataset.v === val));
+  }
+  function clearChips(rowId) { card.querySelectorAll(`#${rowId} .ob-chip`).forEach(x => x.classList.remove('sel')); }
+
+  // Role: quick-pick chips fill the box (and set which mock plays); typing is free-form.
+  card.querySelectorAll('#ob_role_chips .ob-chip').forEach(b => {
+    b.addEventListener('click', () => {
+      clearChips('ob_role_chips'); b.classList.add('sel');
+      const r = POPULAR_ROLES[b.dataset.id];
+      roleInput.value = b.dataset.label; prep.role = b.dataset.label;
+      if (r) { prep.key = r.key; selectRound(r.round); }
+      refreshStart();
+    });
+  });
+  roleInput.addEventListener('input', () => { prep.role = roleInput.value.trim(); clearChips('ob_role_chips'); refreshStart(); });
+
+  // Company: chips set the company + which mock plays; typing is free-form.
+  card.querySelectorAll('#ob_company_chips .ob-chip').forEach(b => {
+    b.addEventListener('click', () => {
+      clearChips('ob_company_chips'); b.classList.add('sel');
+      const c = COMPANIES[b.dataset.id];
+      compInput.value = b.dataset.label; prep.company = b.dataset.label;
+      prep.companyId = b.dataset.id; prep.key = b.dataset.id;
+      if (c) selectRound(c.round);
+    });
+  });
+  compInput.addEventListener('input', () => { prep.company = compInput.value.trim(); prep.companyId = null; clearChips('ob_company_chips'); });
 
   // Segmented pickers
   function wireSeg(groupId, set) {
@@ -884,6 +949,16 @@ function appendOnboardCard(opts) {
   wireSeg('ob_round', v => prep.round = v);
   wireSeg('ob_numq', v => prep.numQ = parseInt(v, 10));
 
+  // Optional-details toggle keeps the card short by default.
+  const moreBtn = card.querySelector('#ob_more');
+  const moreBody = card.querySelector('#ob_more_body');
+  moreBtn.addEventListener('click', () => {
+    const opening = moreBody.hasAttribute('hidden');
+    if (opening) { moreBody.removeAttribute('hidden'); moreBtn.classList.add('open'); }
+    else { moreBody.setAttribute('hidden', ''); moreBtn.classList.remove('open'); }
+    chat.scrollTop = chat.scrollHeight;
+  });
+
   // Resume upload (optional)
   const upBtn = card.querySelector('#ob_resume');
   const upFile = card.querySelector('#ob_resume_file');
@@ -895,6 +970,21 @@ function appendOnboardCard(opts) {
       upBtn.textContent = '✓ ' + upFile.files[0].name + ' added';
     }
   });
+
+  // Prefill from a catalogue tap (role / company chosen on Home).
+  if (opts.lockRole && prep.role) {
+    roleInput.value = prep.role;
+    const m = [...card.querySelectorAll('#ob_role_chips .ob-chip')].find(x => x.dataset.label === prep.role);
+    if (m) m.classList.add('sel');
+    selectRound(prep.round);
+    refreshStart();
+  }
+  if (opts.lockCompany && prep.company) {
+    compInput.value = prep.company;
+    const m = [...card.querySelectorAll('#ob_company_chips .ob-chip')].find(x => x.dataset.label === prep.company);
+    if (m) m.classList.add('sel');
+    selectRound(prep.round);
+  }
 
   startBtn.addEventListener('click', () => {
     if (!prep.role.trim()) return;
@@ -974,11 +1064,11 @@ function beginMock() {
       content: `${persona.archetype}. Here's what lands in this round:`,
       notes: wants.map(w => ({ tone: 'good', text: w })),
     });
-  }, 500);
+  }, 900);
   setTimeout(() => {
     window.GC.appendAi(chat, `Voice is on. I'll ask ${n} question${n > 1 ? 's' : ''} — answer out loud, or tap "Skip question" to move on. Here's the first one.`);
-  }, 1100);
-  const t = setTimeout(() => runStep(0), 2400);
+  }, 2200);
+  const t = setTimeout(() => runStep(0), 3800);
   mockTimers.push(t);
 }
 
@@ -993,7 +1083,9 @@ function runStep(i) {
 
   // Skip affordance appears inline, contextually under the question.
   const words = step.q.split(/\s+/).length;
-  const speakMs = Math.max(words * 70, 1600);
+  // Deliberate pacing — give the viewer time to read/hear the question before
+  // the answer lands (the old words*70 made it race by too fast to follow).
+  const readMs = Math.min(Math.max(words * 280, 2800), 5500);
   let answered = false;
 
   const skipRow = window.GC.appendChips(chat, [{ text: 'Skip question', _skip: true }], () => {
@@ -1002,7 +1094,7 @@ function runStep(i) {
     cancelStepTimer();
     mockResults.push({ step, answered: false });
     window.GC.appendUser(chat, '<em style="opacity:.7">— skipped —</em>');
-    const nt = setTimeout(() => runStep(i + 1), 700);
+    const nt = setTimeout(() => runStep(i + 1), 1100);
     mockTimers.push(nt);
   });
   // Tag the skip chip so we can style it.
@@ -1014,13 +1106,13 @@ function runStep(i) {
     if (answered) return;
     answered = true;
     if (skipRow && skipRow.parentNode) skipRow.remove();
-    window.GC.status(chat, "you're answering", 1300).then(() => {
+    window.GC.status(chat, "you're answering…", 2000).then(() => {
       window.GC.appendUser(chat, step.a);
       mockResults.push({ step, answered: true });
-      const nt = setTimeout(() => runStep(i + 1), 900);
+      const nt = setTimeout(() => runStep(i + 1), 2400);
       mockTimers.push(nt);
     });
-  }, speakMs + 600);
+  }, readMs);
   mockTimers.push(stepTimer);
   function cancelStepTimer() { clearTimeout(stepTimer); }
 }
@@ -1040,7 +1132,7 @@ function finishMock() {
     chat.appendChild(done);
     chat.scrollTop = chat.scrollHeight;
     done.querySelector('button').addEventListener('click', () => { done.remove(); showReport(); });
-  }, 650);
+  }, 1200);
 }
 
 /* =========================================================================
