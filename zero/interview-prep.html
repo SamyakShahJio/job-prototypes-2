@@ -48,12 +48,6 @@
     font-size: 11px; font-weight: 500; color: var(--grey-60);
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
-  .vert-pill {
-    display: inline-flex; align-items: center; gap: 6px;
-    padding: 4px 10px; border-radius: var(--radius-pill);
-    background: var(--vert-accent-light); color: var(--vert-accent);
-    font-size: 11px; font-weight: 700; letter-spacing: 0.3px; text-transform: uppercase;
-  }
 
   /* ============= VIEW SWITCHING ============== */
   .view {
@@ -64,53 +58,6 @@
     flex: 1; overflow-y: auto; padding: var(--space-3) var(--space-4) var(--space-7);
   }
 
-  /* ============= HOME VIEW ============== */
-  .interview-tomorrow {
-    margin: var(--space-3) 0 var(--space-5);
-    background: var(--surface-bold);
-    border-radius: 22px;
-    padding: 18px;
-    color: white;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-  }
-  .interview-tomorrow::after {
-    content: '';
-    position: absolute;
-    right: -30px; top: -30px;
-    width: 140px; height: 140px;
-    background: radial-gradient(circle, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 70%);
-    pointer-events: none;
-  }
-  .it-tag {
-    display: inline-flex; align-items: center; gap: 6px;
-    padding: 4px 10px; border-radius: var(--radius-pill);
-    background: rgba(255,255,255,0.2);
-    font-size: 11px; font-weight: 700;
-    letter-spacing: 0.4px; text-transform: uppercase;
-    margin-bottom: 10px;
-  }
-  .it-tag .pulse {
-    width: 6px; height: 6px; border-radius: 50%;
-    background: #fff;
-    animation: livePulse 1.6s ease-in-out infinite;
-  }
-  @keyframes livePulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
-  .it-h2 {
-    font-size: 22px; font-weight: 900; line-height: 1.15; letter-spacing: -0.4px;
-    margin-bottom: 6px;
-  }
-  .it-meta {
-    font-size: 13px; font-weight: 500; opacity: 0.9; margin-bottom: 14px;
-  }
-  .it-cta {
-    display: inline-flex; align-items: center; gap: 8px;
-    background: white; color: var(--vert-accent-dark);
-    padding: 10px 16px; border-radius: var(--radius-pill);
-    font-size: 13px; font-weight: 700;
-  }
-
   .section-h {
     font-size: 11px; font-weight: 700; color: var(--grey-60);
     letter-spacing: 0.6px; text-transform: uppercase;
@@ -118,14 +65,47 @@
   }
   .section-h.first { margin-top: var(--space-3); }
 
-  /* Quick start companies */
+  /* ============= HOME — single primary entry ============== */
+  .primary-entry {
+    margin: var(--space-3) 0 var(--space-2);
+    background: var(--surface-bold);
+    border-radius: 22px;
+    padding: 20px;
+    color: white;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    display: flex; align-items: center; gap: 16px;
+    transition: transform 0.15s;
+  }
+  .primary-entry:hover { transform: translateY(-2px); }
+  .primary-entry::after {
+    content: '';
+    position: absolute; right: -30px; top: -30px;
+    width: 150px; height: 150px;
+    background: radial-gradient(circle, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 70%);
+    pointer-events: none;
+  }
+  .primary-entry .pe-icon {
+    width: 52px; height: 52px; border-radius: 16px;
+    background: rgba(255,255,255,0.18);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .primary-entry .pe-text { flex: 1; min-width: 0; }
+  .primary-entry .pe-title {
+    font-size: 19px; font-weight: 900; line-height: 1.15; letter-spacing: -0.4px;
+    margin-bottom: 4px;
+  }
+  .primary-entry .pe-sub { font-size: 12.5px; font-weight: 500; opacity: 0.9; }
+  .primary-entry .pe-arrow { opacity: 0.9; flex-shrink: 0; }
+
+  /* Catalogue rows — prepare by role / by company */
   .companies-row {
     display: flex; gap: 8px;
     overflow-x: auto;
-    padding-bottom: 4px;
+    padding: 0 var(--space-4) 4px;
     margin: 0 calc(var(--space-4) * -1);
-    padding-left: var(--space-4);
-    padding-right: var(--space-4);
   }
   .companies-row::-webkit-scrollbar { display: none; }
   .company-chip {
@@ -136,7 +116,7 @@
     border: 1px solid var(--grey-40);
     cursor: pointer;
     transition: all 0.15s;
-    min-width: 130px;
+    min-width: 142px;
   }
   .company-chip:hover { border-color: var(--vert-accent); }
   .company-chip .c-logo {
@@ -151,11 +131,9 @@
     font-size: 13px; font-weight: 700; color: var(--grey-100);
     line-height: 1.2; margin-bottom: 2px;
   }
-  .company-chip .c-meta {
-    font-size: 11px; font-weight: 500; color: var(--grey-60);
-  }
+  .company-chip .c-meta { font-size: 11px; font-weight: 500; color: var(--grey-60); }
 
-  /* CTA card */
+  /* Last-mock teaser (returning user) */
   .cta-card {
     border: 1px solid var(--grey-40);
     border-radius: 18px;
@@ -168,536 +146,31 @@
   .cta-card:hover { border-color: var(--vert-accent); transform: translateY(-2px); }
   .cta-card .cc-icon {
     width: 44px; height: 44px; border-radius: 12px;
-    background: var(--vert-accent-light);
-    color: var(--vert-accent);
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
+    background: var(--vert-accent-light); color: var(--vert-accent);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
   }
   .cta-card .cc-text { flex: 1; }
-  .cta-card .cc-title {
-    font-size: 14px; font-weight: 700; color: var(--grey-100);
-  }
-  .cta-card .cc-sub {
-    font-size: 12px; font-weight: 500; color: var(--grey-60); margin-top: 2px;
-  }
+  .cta-card .cc-title { font-size: 14px; font-weight: 700; color: var(--grey-100); }
+  .cta-card .cc-sub { font-size: 12px; font-weight: 500; color: var(--grey-60); margin-top: 2px; }
   .cta-card .cc-arrow { color: var(--grey-60); }
 
-  /* Stats */
-  .stats-strip {
-    display: flex; gap: 10px; margin: var(--space-4) 0 0;
-  }
-  .stat-card {
-    flex: 1;
-    background: var(--surface-ghost);
-    border-radius: 14px;
-    padding: 12px;
-    text-align: center;
-  }
-  .stat-card .v {
-    font-size: 22px; font-weight: 900; color: var(--grey-100);
-    line-height: 1;
-  }
-  .stat-card .l {
-    font-size: 10px; font-weight: 600; color: var(--grey-60);
-    margin-top: 6px; letter-spacing: 0.3px;
-  }
-
-  /* ============= SETUP WIZARD ============== */
-  .wizard-step { padding: 0 var(--space-4); }
-  .wizard-step .step-q {
-    font-size: 22px; font-weight: 900; color: var(--grey-100);
-    line-height: 1.2; margin: var(--space-3) 0 var(--space-4);
-  }
-  .wizard-options {
-    display: flex; flex-direction: column; gap: 10px;
-  }
-  .wiz-opt {
-    border: 1.5px solid var(--grey-40);
-    border-radius: 14px;
-    padding: 14px;
-    background: white;
-    cursor: pointer;
-    display: flex; align-items: center; gap: 14px;
-    transition: all 0.15s;
-  }
-  .wiz-opt:hover { border-color: var(--vert-accent); background: var(--vert-accent-light); }
-  .wiz-opt.selected { border-color: var(--vert-accent); background: var(--vert-accent-light); }
-  .wiz-opt .wo-logo {
-    width: 36px; height: 36px; border-radius: 10px;
-    background: var(--vert-accent);
-    color: white;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 14px; font-weight: 800;
-    flex-shrink: 0;
-  }
-  .wiz-opt .wo-text { flex: 1; }
-  .wiz-opt .wo-title {
-    font-size: 14px; font-weight: 700; color: var(--grey-100);
-  }
-  .wiz-opt .wo-meta {
-    font-size: 12px; font-weight: 500; color: var(--grey-60); margin-top: 2px;
-  }
-  .wiz-opt.selected .wo-meta { color: var(--vert-accent-dark); }
-  .wiz-progress {
-    display: flex; gap: 6px; padding: 12px var(--space-4) 0;
-  }
-  .wiz-progress .dot {
-    flex: 1;
-    height: 4px;
-    border-radius: 2px;
-    background: var(--grey-40);
-  }
-  .wiz-progress .dot.done { background: var(--vert-accent); }
-  .wiz-progress .dot.current { background: var(--vert-accent); }
-
-  .wizard-footer {
-    flex-shrink: 0;
-    padding: 16px var(--space-4) calc(16px + env(safe-area-inset-bottom, 0px));
-    background: white;
-    border-top: 1px solid var(--grey-40);
-  }
-  .wizard-footer .btn-go {
-    width: 100%;
-    background: var(--vert-accent);
-    color: white;
-    border: none;
-    padding: 14px;
-    border-radius: var(--radius-pill);
-    font-family: var(--font);
-    font-size: 15px; font-weight: 700;
-    cursor: pointer;
-  }
-  .wizard-footer .btn-go:disabled {
-    opacity: 0.4; cursor: default;
-  }
-
-  /* ============= CHEAT SHEET ============== */
-  .cheat-card {
-    border: 1px solid var(--grey-40);
-    border-radius: 18px;
-    padding: 16px;
-    background: white;
-    margin-bottom: 12px;
-  }
-  .cheat-card .cs-h {
-    display: flex; align-items: center; gap: 8px; margin-bottom: 10px;
-  }
-  .cheat-card .cs-icon {
-    width: 24px; height: 24px; border-radius: 6px;
-    background: var(--vert-accent-light); color: var(--vert-accent);
-    display: flex; align-items: center; justify-content: center;
-  }
-  .cheat-card .cs-title {
-    font-size: 12px; font-weight: 700; color: var(--vert-accent);
-    letter-spacing: 0.4px; text-transform: uppercase;
-  }
-  .cheat-card .cs-list {
-    list-style: none; padding: 0; margin: 0;
-  }
-  .cheat-card .cs-list li {
-    font-size: 13px; line-height: 1.5; color: var(--grey-100);
-    padding: 6px 0;
-    border-bottom: 1px solid var(--grey-20);
-  }
-  .cheat-card .cs-list li:last-child { border-bottom: none; }
-  .cheat-card .cs-list li strong { color: var(--vert-accent-dark); font-weight: 700; }
-
-  .interviewer-card {
-    background: var(--primary-20);
-    border-radius: 18px;
-    padding: 16px;
-    margin-bottom: 12px;
-    display: flex; align-items: center; gap: 14px;
-  }
-  .interviewer-card .ic-glow {
-    width: 64px; height: 64px;
-    border-radius: 50%;
-    background: radial-gradient(circle, var(--vert-accent) 0%, var(--vert-accent-dark) 100%);
-    flex-shrink: 0;
-    box-shadow: 0 0 0 4px rgba(109,23,206,0.15);
-  }
-  .interviewer-card .ic-text { flex: 1; min-width: 0; }
-  .interviewer-card .ic-name {
-    font-size: 16px; font-weight: 800; color: var(--grey-100);
-    line-height: 1.2;
-  }
-  .interviewer-card .ic-role {
-    font-size: 12px; font-weight: 600; color: var(--vert-accent-dark);
-    margin-top: 2px;
-  }
-  .interviewer-card .ic-archetype {
-    font-size: 11px; font-weight: 500; color: var(--grey-80);
-    margin-top: 6px; font-style: italic;
-  }
-
-  .start-mock-btn {
-    width: 100%;
-    padding: 16px;
-    background: var(--vert-accent);
-    color: white;
-    border: none; border-radius: var(--radius-pill);
-    font-family: var(--font); font-size: 16px; font-weight: 800;
-    cursor: pointer;
-    margin-top: 12px;
-    display: flex; align-items: center; justify-content: center; gap: 8px;
-  }
-  .start-mock-btn .live-dot {
-    width: 8px; height: 8px; border-radius: 50%;
-    background: #1eccb0;
-    animation: livePulse 1.6s ease-in-out infinite;
-  }
-
-  /* Feedback timing toggle on cheatsheet — two-card segmented picker */
-  .feedback-toggle {
-    background: var(--surface-ghost);
-    border-radius: 14px;
-    padding: 12px;
-    margin-top: 12px;
-  }
-  .feedback-toggle .ft-h {
-    font-size: 11px; font-weight: 800; letter-spacing: 0.5px;
-    text-transform: uppercase;
-    color: var(--vert-accent-dark);
-    margin-bottom: 8px;
-  }
-  .feedback-toggle .ft-row {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
-  }
-  .feedback-toggle .ft-opt {
-    background: white;
-    border: 1.5px solid var(--stroke-subtle);
-    border-radius: 12px;
-    padding: 10px 12px;
-    cursor: pointer;
-    font-family: var(--font);
-    text-align: left;
-    transition: all 0.15s;
-    display: flex; flex-direction: column; gap: 2px;
-  }
-  .feedback-toggle .ft-opt:hover { border-color: var(--surface-bold); }
-  .feedback-toggle .ft-opt.active {
-    border-color: var(--surface-bold);
-    background: var(--primary-20);
-  }
-  .feedback-toggle .ft-opt-title {
-    font-size: 12px; font-weight: 800; color: var(--text-high);
-  }
-  .feedback-toggle .ft-opt-sub {
-    font-size: 10.5px; color: var(--text-low); font-weight: 500;
-  }
-
-  /* Post-report CTAs — row of pill buttons below 'Run another mock' */
-  .report-next-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    margin-top: 12px;
-  }
-  .report-cta {
-    background: white;
-    border: 1px solid var(--stroke-subtle);
-    border-radius: 12px;
-    padding: 10px 12px;
-    cursor: pointer;
-    font-family: var(--font);
-    font-size: 12px; font-weight: 700;
-    color: var(--text-high);
-    display: flex; align-items: center; gap: 8px;
-    text-align: left;
-    transition: all 0.15s;
-  }
-  .report-cta:hover {
-    border-color: var(--surface-bold);
-    color: var(--surface-bold);
-  }
-  .report-cta [data-icon] { line-height: 0; flex-shrink: 0; color: var(--surface-bold); }
-
-  /* ============= LIVE MOCK CALL — canned demo transcript ============== */
-  .mock-view { background: var(--surface-default); color: var(--text-high); }
-  .view.mock-view.active { background: var(--surface-default); }
-  .mock-top {
-    height: 56px;
-    padding: 0 var(--space-4);
-    display: flex; align-items: center; gap: 10px;
-    flex-shrink: 0;
-    border-bottom: 1px solid var(--stroke-subtle);
-    background: var(--surface-default);
-  }
-  .mock-top .mt-end {
-    background: var(--error); color: white;
-    border: none; border-radius: var(--radius-pill);
-    padding: 7px 14px;
-    font-family: var(--font); font-size: 12px; font-weight: 700;
-    cursor: pointer;
-  }
-  .mock-top .mt-mid { flex: 1; text-align: center; min-width: 0; }
-  .mock-top .mt-name {
-    font-size: 14px; font-weight: 700; color: var(--text-high);
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  }
-  .mock-top .mt-name .live-dot {
-    display: inline-block; width: 6px; height: 6px; border-radius: 50%;
-    background: var(--success); margin-right: 5px;
-    animation: livePulse 1.6s ease-in-out infinite;
-  }
-  .mock-top .mt-timer {
-    font-size: 11px; font-weight: 600; color: var(--text-low);
-    margin-top: 1px;
-    font-variant-numeric: tabular-nums;
-  }
-  .mt-replay {
-    width: 36px; height: 36px;
-    border-radius: 50%;
-    background: var(--surface-ghost);
-    color: var(--text-high);
-    border: none;
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-  }
-
-  /* Persona strip — replaces the big ambient orb */
-  .mock-persona-strip {
-    flex-shrink: 0;
-    padding: 12px var(--space-4);
-    display: flex; align-items: center; gap: 12px;
-    background: var(--surface-default);
-    border-bottom: 1px solid var(--stroke-subtle);
-  }
-  .mps-glow {
-    width: 38px; height: 38px;
-    border-radius: 50%;
-    background: var(--surface-bold);
-    flex-shrink: 0;
-    box-shadow: 0 0 0 4px var(--primary-20);
-  }
-  .mps-text { flex: 1; min-width: 0; }
-  .mps-name {
-    font-size: 14px; font-weight: 800; color: var(--text-high);
-    line-height: 1.1;
-  }
-  .mps-role {
-    font-size: 11px; font-weight: 500; color: var(--text-low);
-    margin-top: 2px;
-  }
-  .mps-q {
-    background: var(--primary-20);
-    color: var(--surface-bold);
-    padding: 5px 10px;
-    border-radius: 999px;
-    font-size: 11px; font-weight: 800;
-    letter-spacing: 0.4px;
-    flex-shrink: 0;
-  }
-
-  /* ============= REPORT CARD ============== */
-  .report-hero {
-    text-align: center;
-    padding: var(--space-5) var(--space-4) var(--space-4);
-  }
-  .report-score {
-    width: 140px; height: 140px;
-    margin: 0 auto var(--space-4);
-    position: relative;
-  }
-  .report-score svg { width: 100%; height: 100%; transform: rotate(-90deg); }
-  .report-score .score-num {
-    position: absolute; inset: 0;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-  }
-  .report-score .sn-v {
-    font-size: 38px; font-weight: 900; color: var(--grey-100);
-    line-height: 1;
-  }
-  .report-score .sn-l {
-    font-size: 11px; font-weight: 600; color: var(--grey-60);
-    letter-spacing: 0.6px; text-transform: uppercase;
-    margin-top: 4px;
-  }
-  .report-headline {
-    font-size: 16px; font-weight: 700; color: var(--grey-100);
-    margin-bottom: 4px;
-  }
-  .report-sub {
-    font-size: 13px; color: var(--grey-80); line-height: 1.4;
-  }
-
-  .criteria-list {
-    background: white;
-    border: 1px solid var(--grey-40);
-    border-radius: 18px;
-    padding: 16px;
-    margin: 0 0 12px;
-  }
-  .criterion {
-    padding: 10px 0;
-    border-bottom: 1px solid var(--grey-20);
-  }
-  .criterion:last-child { border-bottom: none; }
-  .criterion .cr-h {
-    display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 6px;
-  }
-  .criterion .cr-name {
-    font-size: 13px; font-weight: 700; color: var(--grey-100);
-  }
-  .criterion .cr-score {
-    font-size: 13px; font-weight: 800; color: var(--grey-100);
-    font-variant-numeric: tabular-nums;
-  }
-  .criterion .cr-bar {
-    width: 100%; height: 6px;
-    background: var(--grey-20);
-    border-radius: 3px; overflow: hidden;
-  }
-  .criterion .cr-fill {
-    height: 100%; background: var(--vert-accent);
-    border-radius: 3px;
-    transition: width 0.6s ease-out;
-  }
-  .criterion.weak .cr-fill { background: var(--warning); }
-  .criterion.strong .cr-fill { background: var(--success); }
-
-  .answer-dna {
-    background: var(--surface-ghost);
-    border-radius: 18px;
-    padding: 16px;
-    margin-bottom: 12px;
-  }
-  .answer-dna .ad-h {
-    font-size: 11px; font-weight: 700; color: var(--success);
-    letter-spacing: 0.4px; text-transform: uppercase;
-    margin-bottom: 8px;
-  }
-  .answer-dna .ad-q {
-    font-size: 13px; color: var(--grey-80); margin-bottom: 6px;
-  }
-  .answer-dna .ad-a {
-    font-size: 14px; line-height: 1.4; color: var(--grey-100); font-weight: 600;
-    background: white;
-    padding: 12px;
-    border-radius: 10px;
-    border: 1px solid rgba(0,0,0,0.06);
-  }
-
-  .next-step-card {
-    background: var(--surface-ghost);
-    border-radius: 18px;
-    padding: 16px;
-  }
-  .next-step-card .ns-h {
-    font-size: 11px; font-weight: 700; color: var(--surface-bold);
-    letter-spacing: 0.4px; text-transform: uppercase; margin-bottom: 8px;
-  }
-  .next-step-card .ns-text {
-    font-size: 13px; line-height: 1.4; color: var(--grey-100);
-  }
-
-  /* ============= MORNING-OF DASHBOARD ============== */
-  .morning-hero {
-    background: var(--surface-ghost);
-    border-radius: 22px;
-    padding: 18px;
-    margin-bottom: var(--space-3);
-  }
-  .morning-hero .mh-tag {
-    display: inline-flex; padding: 4px 10px;
-    background: white; color: var(--surface-bold);
-    border-radius: var(--radius-pill);
-    font-size: 11px; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase;
-    margin-bottom: 10px;
-  }
-  .morning-hero .mh-title {
-    font-size: 22px; font-weight: 900; color: var(--grey-100);
-    line-height: 1.2; margin-bottom: 4px;
-  }
-  .morning-hero .mh-meta {
-    font-size: 13px; color: var(--icon-medium); font-weight: 600;
-  }
-
-  .check-item {
-    display: flex; align-items: center; gap: 10px;
-    padding: 10px 0;
-    border-bottom: 1px solid var(--grey-20);
-  }
-  .check-item:last-child { border-bottom: none; }
-  .check-item .ci-box {
-    width: 22px; height: 22px;
-    border: 2px solid var(--grey-40); border-radius: 6px;
-    flex-shrink: 0;
-    cursor: pointer;
-  }
-  .check-item.checked .ci-box {
-    background: var(--success);
-    border-color: var(--success);
-    display: flex; align-items: center; justify-content: center;
-    color: white;
-  }
-  .check-item .ci-text {
-    font-size: 13px; color: var(--grey-100); line-height: 1.4;
-  }
-  .check-item.checked .ci-text {
-    color: var(--grey-60); text-decoration: line-through;
-  }
-
-  .audio-pep {
-    background: var(--vert-accent);
-    color: white;
-    border-radius: 18px;
-    padding: 18px;
-    margin-bottom: 12px;
-    display: flex; align-items: center; gap: 14px;
-    cursor: pointer;
-    transition: transform 0.15s;
-  }
-  .audio-pep:hover { transform: translateY(-2px); }
-  .audio-pep .ap-play {
-    width: 48px; height: 48px;
-    background: white; color: var(--vert-accent);
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-  }
-  .audio-pep .ap-text { flex: 1; }
-  .audio-pep .ap-title {
-    font-size: 14px; font-weight: 700; line-height: 1.2;
-  }
-  .audio-pep .ap-sub {
-    font-size: 11px; opacity: 0.85; margin-top: 4px;
-  }
-
-  @media (min-width: 600px) {
-    .phone-frame { box-shadow: var(--shadow-lg); border-radius: 32px; margin-top: 24px; height: calc(100vh - 48px); }
-    body { background: var(--surface-moderate); }
-  }
-
-  /* ============= ZERO-STATE styles (interview) — compact ============= */
+  /* ============= ZERO-STATE WELCOME ============== */
   .zero-hero-card {
-    margin: 10px var(--space-4) 4px;
-    padding: 12px 14px;
+    margin: var(--space-3) 0 var(--space-2);
+    padding: 16px;
     border-radius: 16px;
-    background: linear-gradient(135deg, var(--primary-20) 0%, var(--surface-ghost-icon) 100%);
+    background: linear-gradient(135deg, var(--primary-20) 0%, var(--surface-ghost) 100%);
     border: 1px solid var(--stroke-subtle);
-    display: flex; flex-direction: column; gap: 2px;
-  }
-  .zero-hero-card .zh-tag {
-    display: none;  /* compacted */
+    display: flex; flex-direction: column; gap: 4px;
   }
   .zero-hero-card .zh-title {
-    font-size: 15px; font-weight: 800; letter-spacing: -0.2px;
+    font-size: 16px; font-weight: 800; letter-spacing: -0.2px;
     color: var(--surface-bold); line-height: 1.25;
   }
   .zero-hero-card .zh-sub {
-    font-size: 12px; line-height: 1.4;
-    color: var(--text-low); font-weight: 500;
+    font-size: 12.5px; line-height: 1.45; color: var(--text-low); font-weight: 500;
   }
-
-  /* "After your first mock" preview rows */
-  .zero-preview-list {
-    display: flex; flex-direction: column; gap: 10px;
-    padding: 0 var(--space-4);
-  }
+  .zero-preview-list { display: flex; flex-direction: column; gap: 10px; }
   .zero-preview-row {
     display: flex; gap: 12px;
     background: var(--surface-default);
@@ -706,19 +179,277 @@
     padding: 12px 14px;
   }
   .zero-preview-row .zpr-bullet {
-    flex-shrink: 0;
-    width: 24px; height: 24px;
-    border-radius: 50%;
-    background: var(--primary-20);
-    color: var(--surface-bold);
+    flex-shrink: 0; width: 24px; height: 24px; border-radius: 50%;
+    background: var(--primary-20); color: var(--surface-bold);
     display: flex; align-items: center; justify-content: center;
     font-size: 12px; font-weight: 900;
   }
-  .zero-preview-row .zpr-text {
-    font-size: 12.5px; line-height: 1.45;
-    color: var(--text-high);
-  }
+  .zero-preview-row .zpr-text { font-size: 12.5px; line-height: 1.45; color: var(--text-high); }
   .zero-preview-row .zpr-text strong { color: var(--surface-bold); font-weight: 800; }
+
+  /* ============= IN-CHAT ONBOARDING CARD ============== */
+  .onboard-card {
+    align-self: stretch;
+    background: white;
+    border: 1px solid var(--stroke-subtle);
+    border-radius: 18px;
+    padding: 16px;
+    margin: 4px 0 8px;
+    box-shadow: var(--shadow-sm);
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .onboard-card.locked { opacity: 0.6; pointer-events: none; }
+  .ob-field { display: flex; flex-direction: column; gap: 7px; }
+  .ob-label {
+    font-size: 12px; font-weight: 700; color: var(--text-high);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .ob-req { color: var(--error); font-weight: 800; }
+  .ob-opt-tag {
+    font-size: 10px; font-weight: 600; color: var(--text-low);
+    text-transform: none; letter-spacing: 0;
+    background: var(--surface-ghost); padding: 2px 7px; border-radius: 999px;
+  }
+  .ob-input {
+    width: 100%;
+    border: 1.5px solid var(--grey-40);
+    border-radius: 12px;
+    padding: 11px 13px;
+    font-family: var(--font); font-size: 14px; color: var(--text-high);
+    background: var(--surface-default);
+    transition: border-color 0.15s;
+  }
+  .ob-input:focus { outline: none; border-color: var(--vert-accent); }
+  .ob-input::placeholder { color: var(--grey-60); }
+  .ob-input.prefilled { background: var(--vert-accent-light); border-color: var(--vert-accent); font-weight: 700; color: var(--vert-accent-dark); }
+  .ob-seg { display: flex; flex-wrap: wrap; gap: 7px; }
+  .ob-opt {
+    border: 1.5px solid var(--grey-40);
+    background: white;
+    border-radius: 999px;
+    padding: 8px 14px;
+    font-family: var(--font); font-size: 12.5px; font-weight: 600;
+    color: var(--text-high);
+    cursor: pointer; transition: all 0.12s;
+  }
+  .ob-opt:hover { border-color: var(--vert-accent); }
+  .ob-opt.sel { border-color: var(--vert-accent); background: var(--vert-accent-light); color: var(--vert-accent-dark); font-weight: 700; }
+  .ob-upload {
+    border: 1.5px dashed var(--grey-40);
+    background: var(--surface-ghost);
+    border-radius: 12px;
+    padding: 11px 13px;
+    font-family: var(--font); font-size: 13px; font-weight: 600;
+    color: var(--text-low);
+    cursor: pointer; text-align: left; transition: all 0.15s;
+  }
+  .ob-upload:hover { border-color: var(--vert-accent); color: var(--vert-accent); }
+  .ob-upload.added { border-style: solid; border-color: var(--success); background: #d6f5ec; color: var(--success); }
+
+  .start-mock-btn {
+    width: 100%;
+    padding: 15px;
+    background: var(--vert-accent);
+    color: white;
+    border: none; border-radius: var(--radius-pill);
+    font-family: var(--font); font-size: 15px; font-weight: 800;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .start-mock-btn:disabled { opacity: 0.4; cursor: default; }
+  .start-mock-btn .live-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #1eccb0; animation: livePulse 1.6s ease-in-out infinite;
+  }
+  @keyframes livePulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+  /* ============= IN-CHAT: skip chip, done button ============== */
+  .gc-chips-inline .gc-chip.skip-chip {
+    background: white; border: 1px solid var(--grey-40); color: var(--text-low);
+    font-weight: 600;
+  }
+  .gc-chips-inline .gc-chip.skip-chip:hover { border-color: var(--vert-accent); color: var(--vert-accent); }
+
+  .chat-done {
+    align-self: center;
+    margin: 10px 0 6px;
+    display: flex; flex-direction: column; align-items: center; gap: 4px;
+  }
+  .chat-done-btn {
+    background: var(--vert-accent); color: white;
+    border: none; border-radius: var(--radius-pill);
+    padding: 14px 28px;
+    font-family: var(--font); font-size: 15px; font-weight: 800;
+    cursor: pointer;
+    box-shadow: var(--shadow-md);
+    display: inline-flex; align-items: center; gap: 9px;
+    transition: transform 0.15s;
+  }
+  .chat-done-btn:hover { transform: translateY(-2px); }
+
+  /* ============= IN-CHAT REPORT CARD ============== */
+  .report-card {
+    align-self: stretch;
+    background: white;
+    border: 1px solid var(--stroke-subtle);
+    border-radius: 18px;
+    padding: 18px;
+    margin: 4px 0 8px;
+    box-shadow: var(--shadow-sm);
+  }
+  .report-card .rp-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 10.5px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase;
+    color: var(--vert-accent); background: var(--vert-accent-light);
+    padding: 4px 10px; border-radius: 999px; margin-bottom: 10px;
+  }
+  .report-card .rp-h {
+    font-size: 18px; font-weight: 900; line-height: 1.2; letter-spacing: -0.3px;
+    color: var(--grey-100); margin-bottom: 6px;
+  }
+  .report-card .rp-sub { font-size: 13px; line-height: 1.5; color: var(--grey-80); }
+
+  .rp-sec { margin-top: 16px; }
+  .rp-sec-h {
+    font-size: 11px; font-weight: 800; letter-spacing: 0.4px; text-transform: uppercase;
+    margin-bottom: 9px; display: flex; align-items: center; gap: 6px;
+  }
+  .rp-sec-h.good { color: #15791a; }
+  .rp-sec-h.work { color: var(--secondary-60); }
+  .rp-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
+  .rp-list li {
+    font-size: 13px; line-height: 1.45; color: var(--grey-100);
+    display: flex; gap: 9px; align-items: flex-start;
+  }
+  .rp-list li::before {
+    content: ''; flex-shrink: 0;
+    width: 7px; height: 7px; border-radius: 50%; margin-top: 6px;
+  }
+  .rp-list.good li::before { background: var(--success); }
+  .rp-list.work li::before { background: var(--warning); }
+
+  .rp-fix {
+    margin-top: 14px;
+    background: var(--vert-accent-light);
+    border-radius: 14px;
+    padding: 13px 14px;
+  }
+  .rp-fix-h {
+    font-size: 10.5px; font-weight: 800; letter-spacing: 0.4px; text-transform: uppercase;
+    color: var(--vert-accent-dark); margin-bottom: 6px;
+  }
+  .rp-fix-t { font-size: 13px; line-height: 1.5; color: var(--grey-100); }
+  .rp-fix-t strong { color: var(--vert-accent-dark); }
+
+  /* Detailed feedback expander */
+  .rp-toggle {
+    width: 100%; margin-top: 14px;
+    background: white; border: 1.5px solid var(--grey-40);
+    border-radius: 12px; padding: 12px 14px;
+    font-family: var(--font); font-size: 13px; font-weight: 700; color: var(--text-high);
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: space-between;
+    transition: all 0.15s;
+  }
+  .rp-toggle:hover { border-color: var(--vert-accent); }
+  .rp-toggle .rp-chev { transition: transform 0.2s; color: var(--grey-60); }
+  .rp-toggle.open .rp-chev { transform: rotate(180deg); }
+  .rp-detail { display: none; margin-top: 10px; flex-direction: column; gap: 10px; }
+  .rp-detail.open { display: flex; }
+  .rp-q {
+    border: 1px solid var(--grey-20);
+    border-radius: 14px;
+    padding: 13px;
+    background: var(--surface-ghost);
+  }
+  .rp-q .rpq-label {
+    font-size: 12px; font-weight: 800; color: var(--grey-100); margin-bottom: 8px;
+  }
+  .rp-q .rpq-line {
+    font-size: 12.5px; line-height: 1.45; color: var(--grey-90);
+    display: flex; gap: 8px; align-items: flex-start; padding: 3px 0;
+  }
+  .rp-q .rpq-line .rpq-dot { flex-shrink: 0; width: 6px; height: 6px; border-radius: 50%; margin-top: 6px; }
+  .rp-q .rpq-line.warn .rpq-dot { background: var(--warning); }
+  .rp-q .rpq-line.bad .rpq-dot { background: var(--error); }
+  .rp-q .rpq-line.good .rpq-dot { background: var(--success); }
+  .rp-q .rpq-skip { font-size: 12.5px; font-style: italic; color: var(--text-low); }
+  .rpq-better {
+    margin-top: 10px; background: white; border: 1px solid rgba(0,0,0,0.06);
+    border-radius: 10px; padding: 10px;
+  }
+  .rpq-better-h {
+    font-size: 10px; font-weight: 800; letter-spacing: 0.3px; text-transform: uppercase;
+    color: var(--vert-accent-dark); margin-bottom: 6px;
+  }
+  .rpq-better-row { display: flex; gap: 10px; align-items: flex-start; }
+  .rpq-better-text { flex: 1; font-size: 12.5px; line-height: 1.45; color: var(--grey-100); font-style: italic; }
+  .rpq-listen {
+    flex-shrink: 0; background: var(--vert-accent); color: white; border: none;
+    border-radius: 999px; padding: 6px 12px; font-family: var(--font);
+    font-size: 11px; font-weight: 700; cursor: pointer;
+    display: inline-flex; align-items: center; gap: 5px;
+  }
+
+  /* Report CTAs — plan (primary) + share */
+  .rp-cta-row { display: flex; flex-direction: column; gap: 9px; margin-top: 16px; }
+  .rp-cta {
+    border: 1px solid var(--stroke-subtle); background: white;
+    border-radius: 14px; padding: 13px 14px;
+    font-family: var(--font); font-size: 14px; font-weight: 700; color: var(--text-high);
+    cursor: pointer;
+    display: flex; align-items: center; gap: 11px;
+    transition: all 0.15s;
+  }
+  .rp-cta:hover { border-color: var(--vert-accent); }
+  .rp-cta .rpc-icon { flex-shrink: 0; width: 32px; height: 32px; border-radius: 9px; display: flex; align-items: center; justify-content: center; background: var(--vert-accent-light); color: var(--vert-accent); }
+  .rp-cta .rpc-text { flex: 1; min-width: 0; }
+  .rp-cta .rpc-sub { font-size: 11.5px; font-weight: 500; color: var(--text-low); margin-top: 1px; }
+  .rp-cta.primary { background: var(--vert-accent); border-color: var(--vert-accent); color: white; }
+  .rp-cta.primary .rpc-icon { background: rgba(255,255,255,0.2); color: white; }
+  .rp-cta.primary .rpc-sub { color: rgba(255,255,255,0.85); }
+
+  /* ============= REMINDER BOTTOM SHEET ============== */
+  .sheet-backdrop {
+    position: absolute; inset: 0; z-index: 100;
+    background: rgba(0,0,0,0.45);
+    display: none; align-items: flex-end;
+    opacity: 0; transition: opacity 0.2s ease;
+  }
+  .sheet-backdrop.open { display: flex; opacity: 1; }
+  .sheet {
+    width: 100%;
+    background: white;
+    border-radius: 24px 24px 0 0;
+    padding: 10px var(--space-4) calc(var(--space-5) + env(safe-area-inset-bottom, 0px));
+    transform: translateY(100%); transition: transform 0.28s cubic-bezier(0.2,0.9,0.3,1);
+    max-height: 88%; overflow-y: auto;
+  }
+  .sheet-backdrop.open .sheet { transform: translateY(0); }
+  .sheet-grab { width: 38px; height: 4px; border-radius: 2px; background: var(--grey-40); margin: 0 auto 14px; }
+  .sheet-h { font-size: 19px; font-weight: 900; letter-spacing: -0.3px; color: var(--grey-100); }
+  .sheet-sub { font-size: 13px; color: var(--grey-80); line-height: 1.45; margin-top: 6px; }
+  .sheet-group { margin-top: 18px; }
+  .sheet-group-h { font-size: 11px; font-weight: 800; letter-spacing: 0.4px; text-transform: uppercase; color: var(--text-low); margin-bottom: 10px; }
+  .sheet-opts { display: flex; flex-wrap: wrap; gap: 8px; }
+  .sheet-opt {
+    border: 1.5px solid var(--grey-40); background: white;
+    border-radius: 999px; padding: 9px 15px;
+    font-family: var(--font); font-size: 13px; font-weight: 600; color: var(--text-high);
+    cursor: pointer; transition: all 0.12s;
+  }
+  .sheet-opt.sel { border-color: var(--vert-accent); background: var(--vert-accent-light); color: var(--vert-accent-dark); font-weight: 700; }
+  .sheet-set {
+    width: 100%; margin-top: 22px;
+    background: var(--vert-accent); color: white; border: none;
+    border-radius: var(--radius-pill); padding: 15px;
+    font-family: var(--font); font-size: 15px; font-weight: 800; cursor: pointer;
+  }
+
+  @media (min-width: 600px) {
+    .phone-frame { box-shadow: var(--shadow-lg); border-radius: 32px; margin-top: 24px; height: calc(100vh - 48px); }
+    body { background: var(--surface-moderate); }
+  }
 </style>
 </head>
 <body>
@@ -734,75 +465,47 @@
       </button>
       <div class="title-area">
         <div class="t1">Interview Prep</div>
-        <div class="t2">Mock the call. Kill the V&A.</div>
+        <div class="t2">Mock the call. Get a real read.</div>
       </div>
-      
     </div>
 
     <div class="view-body">
-      <!-- Zero-state welcome — no interview tomorrow, no prior mock. Just
-           a clear "this is what we do" pitch for a first-time visitor. -->
+      <!-- Zero-state welcome — first-time visitor, no prior mock -->
       <div class="zero-hero-card">
-        <div class="zh-tag">First mock</div>
-        <div class="zh-title">A real interviewer. A real grade. In 5 minutes.</div>
-        <div class="zh-sub">Pick a company, run a 5-minute voice mock, get a report with pace, fillers, pronunciation, and a model answer you can listen to.</div>
+        <div class="zh-title">A real interviewer. A real read. In ~5 minutes.</div>
+        <div class="zh-sub">Pick a role or company, run a short voice mock, and get a specific report — pace, fillers, pronunciation, and a model answer you can listen to.</div>
       </div>
 
-      <!-- Quick-start companies -->
-      <div class="section-h">Practise for a company</div>
-      <div class="companies-row">
-        <div class="company-chip" onclick="quickStart('tech-mahindra')">
-          <div class="c-logo" style="background:#cc0000">TM</div>
-          <div class="c-name">Tech Mahindra BPS</div>
-          <div class="c-meta">BPO · V&A round</div>
+      <!-- ONE common entry point -->
+      <div class="primary-entry" onclick="practiceInterview()">
+        <div class="pe-icon">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M12 15a3 3 0 003-3V5a3 3 0 00-6 0v7a3 3 0 003 3zm6-5a1 1 0 00-1 1v1a5 5 0 11-10 0v-1a1 1 0 10-2 0v1a7 7 0 006 6.92V22a1 1 0 002 0v-2.08A7 7 0 0019 13v-1a1 1 0 00-1-1z"/></svg>
         </div>
-        <div class="company-chip" onclick="quickStart('concentrix')">
-          <div class="c-logo" style="background:#0077c8">CX</div>
-          <div class="c-name">Concentrix</div>
-          <div class="c-meta">BPO · Customer voice</div>
+        <div class="pe-text">
+          <div class="pe-title">Practice for an interview</div>
+          <div class="pe-sub">Voice mock · ~5 min · Full report at the end</div>
         </div>
-        <div class="company-chip" onclick="quickStart('hdfc')">
-          <div class="c-logo" style="background:#cc0000">H</div>
-          <div class="c-name">HDFC Sales</div>
-          <div class="c-meta">Sales · Field role</div>
-        </div>
-        <div class="company-chip" onclick="quickStart('bajaj')">
-          <div class="c-logo" style="background:#003d7a">BF</div>
-          <div class="c-name">Bajaj Finance</div>
-          <div class="c-meta">Sales · Telesales</div>
-        </div>
-        <div class="company-chip" onclick="showView('setup')">
-          <div class="c-logo" style="background:var(--grey-80)">+</div>
-          <div class="c-name">Other company</div>
-          <div class="c-meta">Custom mock</div>
-        </div>
+        <span class="pe-arrow"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></span>
       </div>
 
-      <!-- Big CTA -->
-      <div class="section-h">Or jump in</div>
-      <div class="cta-card" onclick="showView('setup')">
-        <div class="cc-icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="9" opacity="0.2"/><path d="M9 9l6 3-6 3V9z"/></svg>
-        </div>
-        <div class="cc-text">
-          <div class="cc-title">Start a mock interview now</div>
-          <div class="cc-sub">5 mins · Voice-only · Real-time feedback</div>
-        </div>
-        <span class="cc-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span>
-      </div>
+      <!-- Catalogue: prepare by role -->
+      <div class="section-h">Prepare by role · popular</div>
+      <div class="companies-row" id="role-row"></div>
 
-      <!-- Zero-state: no mocks done yet, so reframe stats as a preview of
-           what they'll get after their first mock — and a "what you'll see
-           in the report" walkthrough. -->
-      <div class="section-h">After your first mock you'll see</div>
+      <!-- Catalogue: prepare by company -->
+      <div class="section-h">Prepare by company · popular</div>
+      <div class="companies-row" id="company-row"></div>
+
+      <!-- What you'll get after your first mock (no scores) -->
+      <div class="section-h">What you'll get after your first mock</div>
       <div class="zero-preview-list">
         <div class="zero-preview-row">
           <div class="zpr-bullet">1</div>
-          <div class="zpr-text"><strong>An overall score</strong> out of 100, with 5 criteria broken down (Content, Pace, Clarity, Confidence, Empathy)</div>
+          <div class="zpr-text"><strong>A clear read</strong> on what landed and the one thing to fix first — specific, no confusing scores</div>
         </div>
         <div class="zero-preview-row">
           <div class="zpr-bullet">2</div>
-          <div class="zpr-text"><strong>Voice coaching notes</strong> — was your pace too fast, did you fill with "um", did you sound under-confident on a specific phrase</div>
+          <div class="zpr-text"><strong>Voice coaching notes</strong> — was your pace too fast, did you fill with "um", did you sound under-confident on a phrase</div>
         </div>
         <div class="zero-preview-row">
           <div class="zpr-bullet">3</div>
@@ -811,30 +514,26 @@
       </div>
     </div>
 
-    <!-- Ask anything dock with suggested chips — second entry point at the bottom -->
+    <!-- Ask-anything dock — second entry point -->
     <div class="gc-input-dock">
       <div class="dock-chips" role="list">
-        <button class="dock-chip" onclick="quickStart('tech-mahindra')">Tech Mahindra mock</button>
-        <button class="dock-chip" onclick="quickStart('concentrix')">Concentrix HR</button>
-        <button class="dock-chip" onclick="quickStart('hdfc')">HDFC Sales</button>
-        <button class="dock-chip" onclick="quickStart('bajaj')">Bajaj pressure drill</button>
-        <button class="dock-chip" onclick="showView('morning')">Tomorrow's kit</button>
+        <button class="dock-chip" onclick="prepByRole('bpo-voice')">BPO / Voice mock</button>
+        <button class="dock-chip" onclick="prepByRole('field-sales')">Field sales</button>
+        <button class="dock-chip" onclick="prepByCompany('tech-mahindra')">Tech Mahindra</button>
+        <button class="dock-chip" onclick="prepByCompany('concentrix')">Concentrix</button>
       </div>
       <div class="gc-input-wrap">
         <div class="gc-input-text">
-          <input type="text" placeholder="Tell me what you want — company, role, or round…" readonly>
+          <input type="text" placeholder="Tell me the role or company you're prepping for…" readonly onclick="practiceInterview()">
         </div>
         <div class="gc-input-actions">
           <div class="gc-input-left">
-            <button class="gc-input-icon-btn" aria-label="Add" onclick="showView('setup')">
+            <button class="gc-input-icon-btn" aria-label="Add" onclick="practiceInterview()">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20 11h-7V4a1 1 0 00-2 0v7H4a1 1 0 000 2h7v7a1 1 0 002 0v-7h7a1 1 0 000-2z"/></svg>
             </button>
           </div>
           <div class="gc-input-right">
-            <button class="gc-input-icon-btn" aria-label="Mic" onclick="showView('setup')">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 15a3 3 0 003-3V5a3 3 0 00-6 0v7a3 3 0 003 3zm6-5a1 1 0 00-1 1v1a5 5 0 11-10 0v-1a1 1 0 10-2 0v1a7 7 0 1014 0v-1a1 1 0 00-1-1zm-3 10H9a1 1 0 000 2h6a1 1 0 000-2z"/></svg>
-            </button>
-            <button class="gc-input-speak-btn" onclick="showView('setup')">
+            <button class="gc-input-speak-btn" onclick="practiceInterview()">
               <svg viewBox="0 0 24 24"><path d="M12 15a3 3 0 003-3V5a3 3 0 00-6 0v7a3 3 0 003 3zm6-5a1 1 0 00-1 1v1a5 5 0 11-10 0v-1a1 1 0 10-2 0v1a7 7 0 1014 0v-1a1 1 0 00-1-1z"/></svg>
               <span>Speak</span>
             </button>
@@ -844,219 +543,8 @@
     </div>
   </div>
 
-  <!-- ========================== SETUP WIZARD ========================== -->
-  <div class="view" id="view-setup">
-    <div class="top-bar">
-      <button class="icon-btn" onclick="setupBack()" aria-label="Back">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-          <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-        </svg>
-      </button>
-      <div class="title-area">
-        <div class="t1">Set up your mock</div>
-        <div class="t2" id="setup_subtitle">Pick a company</div>
-      </div>
-    </div>
-
-    <div class="wiz-progress" id="wiz_progress">
-      <div class="dot current"></div>
-      <div class="dot"></div>
-      <div class="dot"></div>
-      <div class="dot"></div>
-    </div>
-
-    <div class="view-body">
-      <div class="wizard-step" id="wiz_step">
-        <!-- Populated by JS -->
-      </div>
-    </div>
-
-    <div class="wizard-footer">
-      <button class="btn-go" id="wiz_go" onclick="wizardNext()" disabled>Next →</button>
-    </div>
-
-    <!-- Ask anything — sticky on setup wizard too -->
-    <div class="gc-input-dock">
-      <div class="gc-input-wrap">
-        <div class="gc-input-text">
-          <input type="text" placeholder="Ask about any company or round…" readonly onclick="showView('home')">
-        </div>
-        <div class="gc-input-actions">
-          <div class="gc-input-right">
-            <button class="gc-input-icon-btn" aria-label="Mic" onclick="showView('home')">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 15a3 3 0 003-3V5a3 3 0 00-6 0v7a3 3 0 003 3zm6-5a1 1 0 00-1 1v1a5 5 0 11-10 0v-1a1 1 0 10-2 0v1a7 7 0 1014 0v-1a1 1 0 00-1-1zm-3 10H9a1 1 0 000 2h6a1 1 0 000-2z"/></svg>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ========================== CHEAT SHEET ========================== -->
-  <div class="view" id="view-cheatsheet">
-    <div class="top-bar">
-      <button class="icon-btn" onclick="showView('setup')" aria-label="Back">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-          <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-        </svg>
-      </button>
-      <div class="title-area">
-        <div class="t1" id="cs_title">Tech Mahindra · V&A round</div>
-        <div class="t2">Quick prep before you start</div>
-      </div>
-    </div>
-
-    <div class="view-body">
-      <!-- Interviewer card -->
-      <div class="interviewer-card">
-        <div class="ic-glow" id="cs_glow"></div>
-        <div class="ic-text">
-          <div class="ic-name" id="cs_name">Rajesh Kumar</div>
-          <div class="ic-role" id="cs_role">Ops Manager · Tech Mahindra BPS</div>
-          <div class="ic-archetype" id="cs_arch">Formal · Calm · Authoritative tone</div>
-        </div>
-      </div>
-
-      <!-- About company -->
-      <div class="cheat-card">
-        <div class="cs-h">
-          <div class="cs-icon">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M3 21h18M5 21V8l7-4 7 4v13M9 12h6M9 16h6"/></svg>
-          </div>
-          <div class="cs-title">About the role</div>
-        </div>
-        <ul class="cs-list" id="cs_company">
-          <li><strong>Process:</strong> US Banking · BFSI · Inbound/outbound voice</li>
-          <li><strong>Salary:</strong> ₹22-26K base + ₹2-4K incentive</li>
-          <li><strong>Shifts:</strong> Rotational night shifts (6:30 PM – 3:30 AM IST)</li>
-          <li><strong>Office:</strong> Andheri East · Cab provided</li>
-        </ul>
-      </div>
-
-      <!-- Likely questions -->
-      <div class="cheat-card">
-        <div class="cs-h">
-          <div class="cs-icon">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M9.5 8a2.5 2.5 0 115 0c0 1-.5 1.5-1.5 2.5S12 12 12 13M12 17h.01"/></svg>
-          </div>
-          <div class="cs-title">Likely questions</div>
-        </div>
-        <ul class="cs-list" id="cs_questions">
-          <li>Tell me about yourself in 60 seconds</li>
-          <li>Why BPO / why night shifts?</li>
-          <li>Customer is angry about a wrong charge — what do you do?</li>
-          <li>Why Tech Mahindra over Concentrix?</li>
-          <li>Can you commit to 6 months minimum?</li>
-        </ul>
-      </div>
-
-      <!-- What to remember -->
-      <div class="cheat-card">
-        <div class="cs-h">
-          <div class="cs-icon">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="3" fill="none"/></svg>
-          </div>
-          <div class="cs-title">3 things to remember</div>
-        </div>
-        <ul class="cs-list">
-          <li><strong>Slow down.</strong> Native English speakers won't get you if you race. 130-140 words/min is the sweet spot.</li>
-          <li><strong>Empathy first.</strong> Before solving a customer problem, acknowledge how they feel.</li>
-          <li><strong>STAR for stories.</strong> Situation → Task → Action → Result. Keep it under 90 seconds.</li>
-        </ul>
-      </div>
-
-      <!-- Feedback timing — user picks how they want coaching during the mock -->
-      <div class="feedback-toggle">
-        <div class="ft-h">Feedback timing</div>
-        <div class="ft-row">
-          <button class="ft-opt active" data-fb-mode="per-q" onclick="setFeedbackMode('per-q')">
-            <span class="ft-opt-title">After each question</span>
-            <span class="ft-opt-sub">Score + tip after every answer</span>
-          </button>
-          <button class="ft-opt" data-fb-mode="end" onclick="setFeedbackMode('end')">
-            <span class="ft-opt-title">Only at the end</span>
-            <span class="ft-opt-sub">Run the full mock first, then see the report</span>
-          </button>
-        </div>
-      </div>
-
-      <button class="start-mock-btn" onclick="startMock()">
-        <span class="live-dot"></span>
-        Start mock — voice on
-      </button>
-    </div>
-
-    <!-- Ask anything — sticky on the prep screen too -->
-    <div class="gc-input-dock">
-      <div class="gc-input-wrap">
-        <div class="gc-input-text">
-          <input type="text" placeholder="Ask about this round, or any interview question…" readonly onclick="showView('home')">
-        </div>
-        <div class="gc-input-actions">
-          <div class="gc-input-right">
-            <button class="gc-input-icon-btn" aria-label="Mic" onclick="showView('home')">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 15a3 3 0 003-3V5a3 3 0 00-6 0v7a3 3 0 003 3zm6-5a1 1 0 00-1 1v1a5 5 0 11-10 0v-1a1 1 0 10-2 0v1a7 7 0 1014 0v-1a1 1 0 00-1-1zm-3 10H9a1 1 0 000 2h6a1 1 0 000-2z"/></svg>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ========================== LIVE MOCK CALL (canned demo transcript) ========================== -->
-  <div class="view mock-view" id="view-mock">
-    <div class="mock-top">
-      <button class="mt-end" onclick="endMock()" title="Exit early">Done</button>
-      <div class="mt-mid">
-        <div class="mt-name"><span class="live-dot"></span><span id="mock_persona_name">Rajesh Kumar</span></div>
-        <div class="mt-timer" id="mock_timer">00:00</div>
-      </div>
-      <button class="mt-replay" id="mock_replay_btn" aria-label="Replay demo">
-        <span data-icon="refresh" data-size="18"></span>
-      </button>
-    </div>
-
-    <!-- Persona identity card (replaces ambient glow) -->
-    <div class="mock-persona-strip">
-      <div class="mps-glow" id="mock_glow_mini"></div>
-      <div class="mps-text">
-        <div class="mps-name" id="mock_persona_name_2">Rajesh Kumar</div>
-        <div class="mps-role" id="mock_persona_role">Ops Manager · Tech Mahindra BPS</div>
-      </div>
-      <div class="mps-q" id="mock_qnum_pill">Q 1 / 5</div>
-    </div>
-
-    <!-- Chat thread (auto-plays mock interview transcript) -->
-    <div class="guided-chat" id="mockChat"></div>
-
-    <!-- OG-style chat input dock — always visible (canned demo) -->
-    <div class="gc-input-dock">
-      <div class="gc-input-wrap">
-        <div class="gc-input-text">
-          <input type="text" placeholder="Type your answer or tap mic…" readonly>
-        </div>
-        <div class="gc-input-actions">
-          <div class="gc-input-left">
-            <button class="gc-input-icon-btn" aria-label="Add" onclick="document.getElementById('mock_replay_btn') && document.getElementById('mock_replay_btn').click()">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20 11h-7V4a1 1 0 00-2 0v7H4a1 1 0 000 2h7v7a1 1 0 002 0v-7h7a1 1 0 000-2z"/></svg>
-            </button>
-          </div>
-          <div class="gc-input-right">
-            <button class="gc-input-icon-btn" aria-label="Mic" onclick="if(mockVoice){try{mockVoice.replayLast();}catch(e){}}">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 15a3 3 0 003-3V5a3 3 0 00-6 0v7a3 3 0 003 3zm6-5a1 1 0 00-1 1v1a5 5 0 11-10 0v-1a1 1 0 10-2 0v1a7 7 0 1014 0v-1a1 1 0 00-1-1zm-3 10H9a1 1 0 000 2h6a1 1 0 000-2z"/></svg>
-            </button>
-            <button class="gc-input-speak-btn" onclick="if(mockVoice){try{mockVoice.replayLast();}catch(e){}}">
-              <svg viewBox="0 0 24 24"><path d="M12 15a3 3 0 003-3V5a3 3 0 00-6 0v7a3 3 0 003 3zm6-5a1 1 0 00-1 1v1a5 5 0 11-10 0v-1a1 1 0 10-2 0v1a7 7 0 1014 0v-1a1 1 0 00-1-1z"/></svg>
-              <span>Speak</span>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ========================== REPORT CARD ========================== -->
-  <div class="view" id="view-report">
+  <!-- ========================== UNIFIED CHAT (onboarding → mock → done → report) ========================== -->
+  <div class="view" id="view-chat">
     <div class="top-bar">
       <button class="icon-btn" onclick="showView('home')" aria-label="Back">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
@@ -1064,101 +552,21 @@
         </svg>
       </button>
       <div class="title-area">
-        <div class="t1">Mock report</div>
-        <div class="t2">Tech Mahindra · V&A round · 5 mins</div>
+        <div class="t1" id="chat_title">Set up your mock</div>
+        <div class="t2" id="chat_sub">A few quick details and we begin</div>
       </div>
     </div>
 
-    <div class="view-body">
-      <div class="report-hero">
-        <div class="report-score">
-          <svg viewBox="0 0 100 100">
-            <circle cx="50" cy="50" r="44" fill="none" stroke="#e0e0e0" stroke-width="6"/>
-            <circle cx="50" cy="50" r="44" fill="none" stroke="var(--surface-bold)" stroke-width="6" stroke-dasharray="276" stroke-dashoffset="77" stroke-linecap="round"/>
-          </svg>
-          <div class="score-num">
-            <div class="sn-v">72</div>
-            <div class="sn-l">/ 100</div>
-          </div>
-        </div>
-        <div class="report-headline">Solid mock — top quartile of your last 8</div>
-        <div class="report-sub">Pace was good. Empathy could go up. One filler-heavy moment.</div>
-      </div>
+    <div class="guided-chat" id="chat"></div>
 
-      <div class="section-h" style="padding: 0 var(--space-4)">5 criteria</div>
-      <div style="padding: 0 var(--space-4)">
-        <div class="criteria-list">
-          <div class="criterion strong">
-            <div class="cr-h"><div class="cr-name">Content</div><div class="cr-score">82</div></div>
-            <div class="cr-bar"><div class="cr-fill" style="width: 82%"></div></div>
-          </div>
-          <div class="criterion">
-            <div class="cr-h"><div class="cr-name">Clarity</div><div class="cr-score">75</div></div>
-            <div class="cr-bar"><div class="cr-fill" style="width: 75%"></div></div>
-          </div>
-          <div class="criterion strong">
-            <div class="cr-h"><div class="cr-name">Pace</div><div class="cr-score">88</div></div>
-            <div class="cr-bar"><div class="cr-fill" style="width: 88%"></div></div>
-          </div>
-          <div class="criterion">
-            <div class="cr-h"><div class="cr-name">Confidence</div><div class="cr-score">68</div></div>
-            <div class="cr-bar"><div class="cr-fill" style="width: 68%"></div></div>
-          </div>
-          <div class="criterion weak">
-            <div class="cr-h"><div class="cr-name">Empathy</div><div class="cr-score">56</div></div>
-            <div class="cr-bar"><div class="cr-fill" style="width: 56%"></div></div>
-          </div>
-        </div>
-
-        <!-- Answer DNA -->
-        <div class="answer-dna">
-          <div class="ad-h">⭐ Strongest answer · Saved to Answer DNA</div>
-          <div class="ad-q">Q: Why BPO?</div>
-          <div class="ad-a">"My customer-handling experience at Reliance Trends taught me people-first communication. I want to scale that — turning every customer call into a moment they remember well. BPO gives me that volume."</div>
-        </div>
-
-        <!-- Next step -->
-        <div class="next-step-card">
-          <div class="ns-h">↑ One thing to fix</div>
-          <div class="ns-text">Empathy was 56 — your answers were correct but skipped acknowledging customer feeling. Tomorrow: <strong>Lead every customer-roleplay with "I completely understand…"</strong> and the score jumps.</div>
-        </div>
-
-        <button class="start-mock-btn" style="margin-top: 16px;" onclick="showView('cheatsheet')">
-          Run another mock — fix the gap
-        </button>
-
-        <!-- After-mock CTAs — distinct from "run another" so users see ways
-             to keep momentum without immediately doing another mock -->
-        <div class="report-next-row">
-          <button class="report-cta" onclick="setMockReminder()">
-            <span data-icon="bell" data-size="16"></span>
-            <span>Remind me tomorrow</span>
-          </button>
-          <button class="report-cta" onclick="addToPlan()">
-            <span data-icon="calendar-week" data-size="16"></span>
-            <span>Get on a plan</span>
-          </button>
-          <button class="report-cta" onclick="shareReport()">
-            <span data-icon="whatsapp" data-size="16"></span>
-            <span>Share with friend</span>
-          </button>
-          <button class="report-cta" onclick="startMock()">
-            <span data-icon="refresh" data-size="16"></span>
-            <span>Start over</span>
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Ask anything — keep the entry point sticky everywhere -->
     <div class="gc-input-dock">
       <div class="gc-input-wrap">
         <div class="gc-input-text">
-          <input type="text" placeholder="Ask about this mock, or anything else…" readonly onclick="showView('home')">
+          <input type="text" id="chat_dock_input" placeholder="Set up in the card above to begin…" readonly>
         </div>
         <div class="gc-input-actions">
           <div class="gc-input-right">
-            <button class="gc-input-icon-btn" aria-label="Mic" onclick="showView('home')">
+            <button class="gc-input-icon-btn" aria-label="Replay" onclick="replayLast()">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 15a3 3 0 003-3V5a3 3 0 00-6 0v7a3 3 0 003 3zm6-5a1 1 0 00-1 1v1a5 5 0 11-10 0v-1a1 1 0 10-2 0v1a7 7 0 1014 0v-1a1 1 0 00-1-1zm-3 10H9a1 1 0 000 2h6a1 1 0 000-2z"/></svg>
             </button>
           </div>
@@ -1167,147 +575,38 @@
     </div>
   </div>
 
-  <!-- ========================== MORNING-OF DASHBOARD ========================== -->
-  <div class="view" id="view-morning">
-    <div class="top-bar">
-      <button class="icon-btn" onclick="showView('home')" aria-label="Back">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-          <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-        </svg>
-      </button>
-      <div class="title-area">
-        <div class="t1">Morning-of kit</div>
-        <div class="t2">Everything for tomorrow's interview</div>
-      </div>
-    </div>
+  <!-- ========================== REMINDER BOTTOM SHEET ========================== -->
+  <div class="sheet-backdrop" id="reminderSheet" onclick="if(event.target===this)closeReminderSheet()">
+    <div class="sheet">
+      <div class="sheet-grab"></div>
+      <div class="sheet-h">I'll remind you to practice</div>
+      <div class="sheet-sub">First nudge lands <strong>tomorrow</strong>. Pick when and how often you want me to check in.</div>
 
-    <div class="view-body">
-      <!-- Hero -->
-      <div class="morning-hero">
-        <div class="mh-tag">⏱ 18 hours to go</div>
-        <div class="mh-title">Tech Mahindra BPS · V&A round</div>
-        <div class="mh-meta">Tomorrow 10:00 AM · Andheri East</div>
-      </div>
-
-      <!-- Audio pep -->
-      <div class="audio-pep" onclick="playPep()">
-        <div class="ap-play">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-        </div>
-        <div class="ap-text">
-          <div class="ap-title">10-second pep talk · Tap to play</div>
-          <div class="ap-sub">A reminder of what you've already done well</div>
+      <div class="sheet-group">
+        <div class="sheet-group-h">Time of day</div>
+        <div class="sheet-opts" id="rem-time">
+          <button class="sheet-opt" data-v="Morning (8 AM)">Morning · 8 AM</button>
+          <button class="sheet-opt sel" data-v="Evening (7 PM)">Evening · 7 PM</button>
+          <button class="sheet-opt" data-v="Night (9 PM)">Night · 9 PM</button>
         </div>
       </div>
 
-      <!-- Voice warm-up -->
-      <div class="cheat-card">
-        <div class="cs-h">
-          <div class="cs-icon">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 15a3 3 0 003-3V6a3 3 0 00-6 0v6a3 3 0 003 3z"/></svg>
-          </div>
-          <div class="cs-title">3-question voice warm-up</div>
-        </div>
-        <div style="display:flex;flex-direction:column;gap:10px;margin-top: 6px;">
-          <button class="wiz-opt" style="text-align:left" onclick="warmupQ(1)">
-            <div class="wo-logo">1</div>
-            <div class="wo-text">
-              <div class="wo-title">"Tell me about yourself"</div>
-              <div class="wo-meta">60 seconds · Voice mock</div>
-            </div>
-          </button>
-          <button class="wiz-opt" style="text-align:left" onclick="warmupQ(2)">
-            <div class="wo-logo">2</div>
-            <div class="wo-text">
-              <div class="wo-title">"Why this company?"</div>
-              <div class="wo-meta">45 seconds · Voice mock</div>
-            </div>
-          </button>
-          <button class="wiz-opt" style="text-align:left" onclick="warmupQ(3)">
-            <div class="wo-logo">3</div>
-            <div class="wo-text">
-              <div class="wo-title">"Customer is shouting — what do you do?"</div>
-              <div class="wo-meta">60 seconds · Customer roleplay</div>
-            </div>
-          </button>
+      <div class="sheet-group">
+        <div class="sheet-group-h">How often</div>
+        <div class="sheet-opts" id="rem-freq">
+          <button class="sheet-opt sel" data-v="every day">Every day</button>
+          <button class="sheet-opt" data-v="every other day">Every other day</button>
+          <button class="sheet-opt" data-v="on weekdays">Weekdays</button>
+          <button class="sheet-opt" data-v="once a week">Once a week</button>
         </div>
       </div>
 
-      <!-- Dress code -->
-      <div class="cheat-card">
-        <div class="cs-h">
-          <div class="cs-icon"><span data-icon="document" data-size="14"></span></div>
-          <div class="cs-title">Dress code · BPO formal</div>
-        </div>
-        <ul class="cs-list">
-          <li>Formal shirt (light blue/white) + dark trousers</li>
-          <li>Leather shoes (clean) · No sneakers</li>
-          <li>Tucked in · Belt · Ironed</li>
-        </ul>
-      </div>
-
-      <!-- Documents -->
-      <div class="cheat-card">
-        <div class="cs-h">
-          <div class="cs-icon"><span data-icon="list" data-size="14"></span></div>
-          <div class="cs-title">Documents to carry</div>
-        </div>
-        <div>
-          <div class="check-item"><div class="ci-box" onclick="toggleCheck(this.parentNode)"></div><div class="ci-text">Resume — 2 printed copies</div></div>
-          <div class="check-item"><div class="ci-box" onclick="toggleCheck(this.parentNode)"></div><div class="ci-text">Aadhaar card + photocopy</div></div>
-          <div class="check-item"><div class="ci-box" onclick="toggleCheck(this.parentNode)"></div><div class="ci-text">Latest payslip (Reliance Trends)</div></div>
-          <div class="check-item"><div class="ci-box" onclick="toggleCheck(this.parentNode)"></div><div class="ci-text">Pen, notebook</div></div>
-        </div>
-      </div>
-
-      <!-- Hour-before checklist -->
-      <div class="cheat-card">
-        <div class="cs-h">
-          <div class="cs-icon"><span data-icon="stopwatch" data-size="14"></span></div>
-          <div class="cs-title">In the hour before</div>
-        </div>
-        <div>
-          <div class="check-item"><div class="ci-box" onclick="toggleCheck(this.parentNode)"></div><div class="ci-text">Drink water — your voice will thank you</div></div>
-          <div class="check-item"><div class="ci-box" onclick="toggleCheck(this.parentNode)"></div><div class="ci-text">Replay the 10-sec pep talk above</div></div>
-          <div class="check-item"><div class="ci-box" onclick="toggleCheck(this.parentNode)"></div><div class="ci-text">Practice "Tell me about yourself" once out loud</div></div>
-          <div class="check-item"><div class="ci-box" onclick="toggleCheck(this.parentNode)"></div><div class="ci-text">Smile + deep breath at the door</div></div>
-        </div>
-      </div>
-
-      <!-- Questions to ask back -->
-      <div class="cheat-card">
-        <div class="cs-h">
-          <div class="cs-icon"><span data-icon="chat" data-size="14"></span></div>
-          <div class="cs-title">Ask them back (impress)</div>
-        </div>
-        <ul class="cs-list">
-          <li>"What does success look like in the first 6 months in this role?"</li>
-          <li>"How is the team structure — is there a buddy system for new joiners?"</li>
-          <li>"What's the path from customer agent to Team Lead — typical timeline?"</li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- Ask anything — sticky on the morning-of kit too -->
-    <div class="gc-input-dock">
-      <div class="gc-input-wrap">
-        <div class="gc-input-text">
-          <input type="text" placeholder="Ask me anything before you go in…" readonly onclick="showView('home')">
-        </div>
-        <div class="gc-input-actions">
-          <div class="gc-input-right">
-            <button class="gc-input-icon-btn" aria-label="Mic" onclick="showView('home')">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 15a3 3 0 003-3V5a3 3 0 00-6 0v7a3 3 0 003 3zm6-5a1 1 0 00-1 1v1a5 5 0 11-10 0v-1a1 1 0 10-2 0v1a7 7 0 1014 0v-1a1 1 0 00-1-1zm-3 10H9a1 1 0 000 2h6a1 1 0 000-2z"/></svg>
-            </button>
-          </div>
-        </div>
-      </div>
+      <button class="sheet-set" onclick="confirmReminder()">Set my practice reminder</button>
     </div>
   </div>
 
 </div>
 
-<script>window.AUDIO_BASE = "../assets/audio/";</script>
 <script src="../shared/icons.js"></script>
 <script src="../shared/personas.js"></script>
 <script src="../shared/tts-cache.js"></script>
@@ -1316,817 +615,676 @@
 <script src="../shared/guided-chat.js"></script>
 <script>
 /* =========================================================================
- * VIEW SWITCHING
+ * VIEW SWITCHING — only two pages now: home + the unified chat
  * ========================================================================= */
 function showView(name) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.getElementById('view-' + name).classList.add('active');
-  if (name !== 'mock' && mockVoice) mockVoice.stop();
-  if (name !== 'mock') stopTimer();
-  const body = document.querySelector('#view-' + name + ' .view-body');
-  if (body) body.scrollTop = 0;
+  if (name !== 'chat') {
+    if (mockVoice) { try { mockVoice.stop(); } catch (e) {} }
+    cancelMockTimers();
+  }
 }
 
 /* =========================================================================
- * COMPANIES + INTERVIEW SCRIPTS
+ * DATA — companies (persona + report), canned mock transcripts, popular
+ * roles. Reports are rendered qualitatively (no numeric score anywhere).
  * ========================================================================= */
-// Per-company report data — distinct scores, strongest answer, focus area,
-// and seeded variation when the user re-runs. Each call to getReport()
-// returns either the canonical first-run report or a "second-run / start-
-// over" variation (different headline + score + next-step).
-const REPORTS = {
-  'tech-mahindra': {
-    headline: "Solid mock — top quartile of your last 8",
-    sub:      "Pace was good. Empathy could go up. One filler-heavy moment.",
-    overall:  72,
-    criteria: [
-      { name: 'Content',    score: 82, tone: 'strong' },
-      { name: 'Clarity',    score: 75 },
-      { name: 'Pace',       score: 88, tone: 'strong' },
-      { name: 'Confidence', score: 68 },
-      { name: 'Empathy',    score: 56, tone: 'weak' },
-    ],
-    strongest: {
-      q: "Why BPO?",
-      a: "My customer-handling experience at Reliance Trends taught me people-first communication. I want to scale that — turning every customer call into a moment they remember well. BPO gives me that volume.",
-    },
-    nextStep: "Empathy was 56 — your answers were correct but skipped acknowledging customer feeling. Tomorrow: <strong>Lead every customer-roleplay with \"I completely understand…\"</strong> and the score jumps.",
-    // What changes on a re-run / "Start over" — different signature gaps.
-    variants: [
-      { headline: "Improved — empathy up 14 points", sub: "Pace held. Confidence dipped on Q4. STAR structure was tighter.",
-        overall: 78,
-        criteria: [
-          { name: 'Content',    score: 84, tone: 'strong' },
-          { name: 'Clarity',    score: 80, tone: 'strong' },
-          { name: 'Pace',       score: 86, tone: 'strong' },
-          { name: 'Confidence', score: 64, tone: 'weak' },
-          { name: 'Empathy',    score: 76 },
-        ],
-        nextStep: "Confidence dipped to 64 on the pressure-drill Q. Tomorrow: practice that one question 3 times, then move on. Confidence is reps." },
-      { headline: "Strong run — recommended for the real interview", sub: "All five criteria above 75 for the first time. STAR landed clean.",
-        overall: 85,
-        criteria: [
-          { name: 'Content',    score: 88, tone: 'strong' },
-          { name: 'Clarity',    score: 85, tone: 'strong' },
-          { name: 'Pace',       score: 90, tone: 'strong' },
-          { name: 'Confidence', score: 80, tone: 'strong' },
-          { name: 'Empathy',    score: 82, tone: 'strong' },
-        ],
-        nextStep: "You're match-ready. Sleep well tonight. Morning of: warm up with one 2-minute question, then go in." },
-    ],
-  },
-  'concentrix': {
-    headline: "Pulled the bored HR in — clean 3-question mock",
-    sub:      "Specificity carried it. \"6 weeks longer training\" was the line that woke her up.",
-    overall:  78,
-    criteria: [
-      { name: 'Content',    score: 84, tone: 'strong' },
-      { name: 'Engagement', score: 82, tone: 'strong' },
-      { name: 'Specificity',score: 88, tone: 'strong' },
-      { name: 'Tone match', score: 70 },
-      { name: 'Story arc',  score: 66 },
-    ],
-    strongest: {
-      q: "Why this company?",
-      a: "Concentrix's Powai office is closer to my Andheri PG, the day-shift roles fit my evening study schedule, and your customer voice training programme is 6 weeks longer than industry average.",
-    },
-    nextStep: "Tone match was 70 — when she's low-energy, you don't have to mirror it, but you do have to acknowledge it. Open with <strong>\"I know it's late in the day, I'll keep this tight.\"</strong> and her engagement doubles.",
-    variants: [
-      { headline: "Tighter — bored HR is interested now", sub: "Engagement up. Story arc improved. Tone match still a hair below where it could be.",
-        overall: 82,
-        criteria: [
-          { name: 'Content',    score: 86, tone: 'strong' },
-          { name: 'Engagement', score: 88, tone: 'strong' },
-          { name: 'Specificity',score: 90, tone: 'strong' },
-          { name: 'Tone match', score: 74 },
-          { name: 'Story arc',  score: 78, tone: 'strong' },
-        ],
-        nextStep: "Story arc up to 78 — STAR is working. Next stretch: practice the same question with two completely different stories so you don't lean on one." },
-    ],
-  },
-  'hdfc': {
-    headline: "Sales TL liked your style — high energy run",
-    sub:      "Concrete numbers (₹3-4 lakh upsell, 18K Insta followers) carried it.",
-    overall:  85,
-    criteria: [
-      { name: 'Energy',      score: 92, tone: 'strong' },
-      { name: 'Closing',     score: 88, tone: 'strong' },
-      { name: 'Specificity', score: 90, tone: 'strong' },
-      { name: 'Objection handling', score: 78 },
-      { name: 'Listening',   score: 72 },
-    ],
-    strongest: {
-      q: "Have you sold anything before?",
-      a: "At Reliance I drove ₹3-4 lakh in incremental sales last quarter just by upselling layered products at the till. I also run a small Instagram page reselling thrift clothes — 18K followers, 60-70 sales a month at margin.",
-    },
-    nextStep: "Listening was 72 — when the TL says \"think about it\", don't push, ask. Add the <strong>\"what's the one thing\"</strong> question to every objection. Numbers stay, asks land softer.",
-    variants: [
-      { headline: "TL is sold — ready for the field-call mock", sub: "Listening jumped. Objection handling sharper. Energy held.",
-        overall: 89,
-        criteria: [
-          { name: 'Energy',      score: 92, tone: 'strong' },
-          { name: 'Closing',     score: 90, tone: 'strong' },
-          { name: 'Specificity', score: 90, tone: 'strong' },
-          { name: 'Objection handling', score: 86, tone: 'strong' },
-          { name: 'Listening',   score: 84, tone: 'strong' },
-        ],
-        nextStep: "Next stretch: a live field-call mock where the customer hesitates twice. Practice the \"one thing\" question landing both times." },
-    ],
-  },
-  'bajaj': {
-    headline: "Hostile customer drill — held the line",
-    sub:      "Pivot from \"selling\" to \"removing you\" disarmed the anger. Refund offer was the clincher.",
-    overall:  88,
-    criteria: [
-      { name: 'De-escalation', score: 95, tone: 'strong' },
-      { name: 'Empathy',       score: 90, tone: 'strong' },
-      { name: 'Composure',     score: 88, tone: 'strong' },
-      { name: 'Solution clarity', score: 86, tone: 'strong' },
-      { name: 'Pace under pressure', score: 76 },
-    ],
-    strongest: {
-      q: "You charged my card for fees I never agreed to.",
-      a: "Sir, that's a serious concern and you have every right to be upset. Before any cancellation — let me read out the exact charges with dates so you know what you're cancelling. If even one charge looks wrong, I'll process the refund immediately.",
-    },
-    nextStep: "Pace under pressure was 76 — when the customer escalates, your words speed up. Tomorrow: practice with a 2-second pause after each customer outburst. Same content, just slower.",
-    variants: [
-      { headline: "Cool under fire — interviewer reviewer would hire", sub: "Pace held steady this time. De-escalation now your signature strength.",
-        overall: 92,
-        criteria: [
-          { name: 'De-escalation', score: 96, tone: 'strong' },
-          { name: 'Empathy',       score: 92, tone: 'strong' },
-          { name: 'Composure',     score: 92, tone: 'strong' },
-          { name: 'Solution clarity', score: 90, tone: 'strong' },
-          { name: 'Pace under pressure', score: 86, tone: 'strong' },
-        ],
-        nextStep: "You've made this drill a strength. Add a tougher scenario next: a customer who is rude AND wrong on the facts. Same de-escalation moves, harder to keep composure." },
-    ],
-  },
-};
-
-// State: how many times have we run this company's mock? Used to pick a
-// variant for the report (so re-runs and "Start over" feel different).
-const MOCK_RUNS = {};
-
-function getReport(companyId) {
-  const base = REPORTS[companyId];
-  if (!base) return REPORTS['tech-mahindra'];
-  const runIdx = (MOCK_RUNS[companyId] || 1) - 1;  // first call = run 1 → idx 0
-  if (runIdx === 0) return base;
-  const variants = base.variants || [];
-  const v = variants[Math.min(runIdx - 1, variants.length - 1)];
-  if (!v) return base;
-  // Merge variant on top of base so we don't lose strongest/criteria names
-  return Object.assign({}, base, v);
-}
-
 const COMPANIES = {
-  'tech-mahindra': {
-    name: 'Tech Mahindra BPS',
-    role: 'BPO Voice · US Banking',
-    salary: '₹22-26K base + ₹2-4K incentive',
-    shifts: 'Rotational night shifts (6:30 PM – 3:30 AM IST)',
-    location: 'Andheri East · Cab provided',
-    persona: 'interviewer_formal_ops',
-    questions: [
-      { q: "Hi, I'm Rajesh from Tech Mahindra. Let's start with — tell me about yourself in 60 seconds.", prompt: "Take a breath. Use STAR if you're sharing a story." },
-      { q: "Why BPO — and why specifically the night shift? What's your motivation?", prompt: "Honest is fine. Don't say 'I need money.'" },
-      { q: "A US customer is angry about a 30-minute wait. They're shouting. What's the first thing you say?", prompt: "Empathy first. Solution second.", pressure: false },
-      { q: "Quick — describe a time you handled a difficult situation. 30 seconds.", prompt: "Pressure drill. Time is short. Get to the point.", pressure: true, time: 30 },
-      { q: "Why Tech Mahindra over Concentrix or HDFC?", prompt: "Avoid generic 'great brand.' Be specific." },
-    ],
-  },
-  'concentrix': {
-    name: 'Concentrix',
-    role: 'BPO Voice · Customer Care',
-    salary: '₹20-24K base',
-    shifts: 'Day + evening shifts (mostly)',
-    location: 'Powai · Mumbai',
-    persona: 'interviewer_bored_hr',
-    questions: [
-      { q: "Hi… so… tell me about yourself.", prompt: "She's bored. Don't be boring. Pull her in." },
-      { q: "Why this company. (No 'great brand' please.)", prompt: "Be specific to Concentrix." },
-      { q: "Have you done customer voice work before?", prompt: "Reliance Trends is a YES — frame it that way." },
-    ],
-  },
-  'hdfc': {
-    name: 'HDFC Sales',
-    role: 'Field Sales · Cards & Loans',
-    salary: '₹18K base + commission',
-    shifts: 'Day shift (10 AM - 7 PM)',
-    location: 'Field role · Reports to Bandra branch',
-    persona: 'interviewer_friendly_tl',
-    questions: [
-      { q: "Heya! I'm Arjun, your potential TL. Tell me, why sales over BPO?", prompt: "Friendly TL. Be honest about money + people." },
-      { q: "Have you sold anything before? Even a YouTube channel counts.", prompt: "Reliance Trends sales — frame the experience." },
-      { q: "A customer says 'I'll think about it' for the third time. What do you do?", prompt: "Don't push too hard. Don't give up." },
-    ],
-  },
-  'bajaj': {
-    name: 'Bajaj Finance Sales',
-    role: 'Telesales · EMI Cards',
-    salary: '₹16K base + heavy incentive',
-    shifts: 'Day shift',
-    location: 'Wadala · Mumbai',
-    persona: 'interviewer_hostile_customer',
-    questions: [
-      { q: "(Customer roleplay) Look, I told the last guy — I don't want your card! Stop calling me!", prompt: "Hostile customer. Don't argue. De-escalate.", pressure: true, time: 30 },
-      { q: "(Customer roleplay) You charged my card for fees I never agreed to. I'm cancelling everything. NOW.", prompt: "Pressure drill. Empathy first. Then solve.", pressure: true, time: 30 },
-    ],
-  },
+  'tech-mahindra': { name: 'Tech Mahindra BPS', logo: 'TM', color: '#cc0000', role: 'BPO Voice · US Banking', meta: 'BPO · V&A round', persona: 'interviewer_formal_ops', round: 'Voice & Accent' },
+  'concentrix':    { name: 'Concentrix',        logo: 'CX', color: '#0077c8', role: 'BPO Voice · Customer Care', meta: 'BPO · Customer voice', persona: 'interviewer_bored_hr', round: 'HR' },
+  'hdfc':          { name: 'HDFC Sales',        logo: 'H',  color: '#cc0000', role: 'Field Sales · Cards & Loans', meta: 'Sales · Field role', persona: 'interviewer_friendly_tl', round: 'Sales pitch' },
+  'bajaj':         { name: 'Bajaj Finance',     logo: 'BF', color: '#003d7a', role: 'Telesales · EMI Cards', meta: 'Sales · Telesales', persona: 'interviewer_hostile_customer', round: 'Pressure drill' },
 };
 
-let currentCompany = 'tech-mahindra';
-let currentQIdx = 0;
-let timerInterval = null;
-let timerStart = 0;
+// Popular roles → each maps onto the closest canned mock + a default round.
+const POPULAR_ROLES = {
+  'bpo-voice':        { label: 'BPO / Voice process', meta: 'Inbound & outbound calls', key: 'tech-mahindra', round: 'Voice & Accent' },
+  'customer-support': { label: 'Customer support',    meta: 'Voice & chat care',        key: 'concentrix',    round: 'HR' },
+  'field-sales':      { label: 'Field sales',         meta: 'Cards, loans, FMCG',       key: 'hdfc',          round: 'Sales pitch' },
+  'telesales':        { label: 'Telesales',           meta: 'Phone selling & EMI',      key: 'bajaj',          round: 'Pressure drill' },
+  'collections':      { label: 'Collections',         meta: 'Recovery & negotiation',   key: 'bajaj',          round: 'Pressure drill' },
+  'retail':           { label: 'Retail associate',    meta: 'Store & walk-in sales',    key: 'hdfc',          round: 'HR' },
+};
 
-function quickStart(companyId) {
-  currentCompany = companyId;
-  setupCheatSheet();
-  showView('cheatsheet');
-}
+// What the interviewer is looking for — folded in from the old cheat-sheet.
+const LOOKING_FOR = {
+  'tech-mahindra': ['Clear, unhurried English — around 130–140 words/min', 'Empathy first on customer scenarios, then the fix', 'Specific examples with numbers, in a tight STAR shape'],
+  'concentrix':    ['A reason to wake up — front-load your strongest, most specific point', 'Concrete "why this company" (no "great brand")', 'Calm pace a tired listener can follow'],
+  'hdfc':          ['Energy that matches a sales floor', 'Real numbers — revenue, sales, followers', 'Listening over pushing when a customer hesitates'],
+  'bajaj':         ['Empathy before anything when the customer is hot', 'A concrete next step, not a vague apology', 'A voice that slows down as the customer speeds up'],
+};
 
-/* =========================================================================
- * SETUP WIZARD
- * ========================================================================= */
-let wizStep = 0;
-let wizData = { company: null, role: null, round: null, persona: null };
+// Qualitative end-of-mock summary — no scores, deliberately specific.
+const REPORT_TEXT = {
+  'tech-mahindra': { headline: 'Solid mock — clear, well-paced answers', sub: 'Your pace and structure landed cleanly. Empathy on the customer scenarios is the one thing to push.', fix: 'On customer roleplays, lead with the feeling before the fix — open with <strong>"I completely understand…"</strong> and the whole answer warms up.' },
+  'concentrix':    { headline: 'You pulled a flat interviewer in', sub: 'Specificity carried it — the "6 weeks longer training" line is what woke her up. Tone-matching is the edge to add.', fix: 'When she\'s low-energy, acknowledge it instead of mirroring it — open with <strong>"I know it\'s late in the day, I\'ll keep this tight."</strong>' },
+  'hdfc':          { headline: 'High-energy run — a TL would lean in', sub: 'Concrete numbers made you credible and the energy matched the room. Listening is the next gear.', fix: 'When a customer hesitates, ask <strong>"what\'s the one thing holding you back?"</strong> instead of pushing — softer, and it lands.' },
+  'bajaj':         { headline: 'Held the line under a hostile customer', sub: 'Empathy-first and a concrete next step disarmed the anger. Watch your pace when the call heats up.', fix: 'When the customer escalates, add a <strong>2-second pause</strong> after each outburst — same words, much calmer read.' },
+};
 
-const WIZARD_STEPS = [
-  {
-    title: 'Pick a company',
-    key: 'company',
-    options: [
-      { id: 'tech-mahindra', logo: 'TM', logoColor: '#cc0000', title: 'Tech Mahindra BPS', meta: 'BPO · BFSI · ₹22-26K' },
-      { id: 'concentrix',    logo: 'CX', logoColor: '#0077c8', title: 'Concentrix',          meta: 'BPO · Customer Care · ₹20-24K' },
-      { id: 'hdfc',          logo: 'H',  logoColor: '#cc0000', title: 'HDFC Sales',           meta: 'Field Sales · ₹18K + commission' },
-      { id: 'bajaj',         logo: 'BF', logoColor: '#003d7a', title: 'Bajaj Finance Sales',  meta: 'Telesales · ₹16K + heavy incentive' },
-    ],
-  },
-  {
-    title: 'Which round?',
-    key: 'round',
-    options: [
-      { id: 'hr',          logo: 'HR', logoColor: 'var(--surface-bold)', title: 'HR round',           meta: 'Tell-me-about-yourself, why-this-company' },
-      { id: 'va',          logo: 'V',  logoColor: 'var(--surface-bold)', title: 'V&A round',          meta: 'Voice & accent · Customer roleplay' },
-      { id: 'ops',         logo: 'O',  logoColor: 'var(--surface-bold)', title: 'Ops manager round',  meta: 'Process, decisions, scenarios' },
-      { id: 'pressure',    logo: '⚡',  logoColor: '#fa2f40', title: 'Pressure drill',     meta: 'Back-to-back hard Qs · Tight clock' },
-    ],
-  },
-  {
-    title: 'Pick the interviewer vibe',
-    key: 'persona',
-    options: [
-      { id: 'interviewer_bored_hr',         logo: 'PM', logoColor: 'var(--surface-bold)', title: 'Priya · Bored HR',         meta: 'Calm, flat, going-through-the-motions' },
-      { id: 'interviewer_formal_ops',       logo: 'RK', logoColor: '#3900ad', title: 'Rajesh · Formal Ops',      meta: 'Authoritative, evaluative' },
-      { id: 'interviewer_friendly_tl',      logo: 'AS', logoColor: '#1eccb0', title: 'Arjun · Friendly TL',      meta: 'Warm, encouraging, wants you to win' },
-      { id: 'interviewer_hostile_customer', logo: 'MS', logoColor: '#fa2f40', title: 'Mr. Sharma · Angry customer', meta: 'Hostile · For V&A pressure drills' },
-    ],
-  },
-  {
-    title: 'Ready to begin?',
-    key: 'confirm',
-    options: [
-      { id: 'go', logo: '▶', logoColor: 'var(--surface-bold)', title: 'Yes — start mock now', meta: '5 minutes · Voice-only · Real-time feedback' },
-    ],
-  },
-];
-
-function setupBack() {
-  if (wizStep === 0) {
-    showView('home');
-  } else {
-    wizStep--;
-    renderWizard();
-  }
-}
-
-function renderWizard() {
-  const step = WIZARD_STEPS[wizStep];
-  document.getElementById('setup_subtitle').textContent = step.title;
-  // Progress
-  document.querySelectorAll('#wiz_progress .dot').forEach((d, i) => {
-    d.classList.remove('done', 'current');
-    if (i < wizStep) d.classList.add('done');
-    if (i === wizStep) d.classList.add('current');
-  });
-  // Step
-  const c = document.getElementById('wiz_step');
-  c.innerHTML = `<div class="step-q">${step.title}</div><div class="wizard-options" id="wiz_opts"></div>`;
-  const opts = c.querySelector('#wiz_opts');
-  step.options.forEach(o => {
-    const el = document.createElement('div');
-    el.className = 'wiz-opt';
-    if (wizData[step.key] === o.id) el.classList.add('selected');
-    el.innerHTML = `
-      <div class="wo-logo" style="background:${o.logoColor}">${o.logo}</div>
-      <div class="wo-text">
-        <div class="wo-title">${o.title}</div>
-        <div class="wo-meta">${o.meta}</div>
-      </div>
-    `;
-    el.onclick = () => {
-      wizData[step.key] = o.id;
-      renderWizard();
-      // Auto-advance after a beat for non-confirm steps
-      if (step.key !== 'confirm') {
-        setTimeout(() => wizardNext(), 200);
-      }
-    };
-    opts.appendChild(el);
-  });
-  // Next button
-  const go = document.getElementById('wiz_go');
-  go.disabled = !wizData[step.key];
-  if (step.key === 'confirm') {
-    go.textContent = 'Start mock 🎤';
-  } else {
-    go.textContent = 'Next →';
-  }
-}
-
-function wizardNext() {
-  const step = WIZARD_STEPS[wizStep];
-  if (!wizData[step.key]) return;
-  if (wizStep < WIZARD_STEPS.length - 1) {
-    wizStep++;
-    renderWizard();
-  } else {
-    // Done — go to cheatsheet
-    if (wizData.company) currentCompany = wizData.company;
-    setupCheatSheet();
-    showView('cheatsheet');
-  }
-}
-
-/* =========================================================================
- * CHEAT SHEET
- * ========================================================================= */
-function setupCheatSheet() {
-  const c = COMPANIES[currentCompany];
-  if (!c) return;
-  const persona = window.JBIQ_PERSONAS[c.persona];
-  document.getElementById('cs_title').textContent = c.name + ' · ' + (wizData.round || 'V&A round');
-  document.getElementById('cs_name').textContent = persona.name;
-  document.getElementById('cs_role').textContent = persona.title;
-  document.getElementById('cs_arch').textContent = persona.archetype + ' · ' + persona.description;
-  document.getElementById('cs_glow').style.background = `radial-gradient(circle, ${persona.accentColor || 'var(--surface-bold)'} 0%, ${persona.accentColor ? persona.accentColor + '88' : '#3900ad'} 100%)`;
-  document.getElementById('cs_company').innerHTML = `
-    <li><strong>Process:</strong> ${c.role}</li>
-    <li><strong>Salary:</strong> ${c.salary}</li>
-    <li><strong>Shifts:</strong> ${c.shifts}</li>
-    <li><strong>Office:</strong> ${c.location}</li>
-  `;
-  document.getElementById('cs_questions').innerHTML = c.questions.map(q => `<li>${q.q.replace(/^\([^)]+\)\s*/, '').slice(0, 80)}${q.q.length > 80 ? '…' : ''}</li>`).join('');
-}
-
-/* =========================================================================
- * LIVE MOCK CALL — canned demo transcript (no mic, no STT)
- * Interviewer speaks via TTS, "Rohit's" answers appear with transcribing
- * animation, then a Rich UI feedback card appears with metrics + tip,
- * then the next question. Linear, deterministic, holistic.
- * ========================================================================= */
-let mockVoice = null;
-let mockRunner = null;
-let mockStarted = false;
-
-function ensureMockVoice() {
-  const c = COMPANIES[currentCompany];
-  if (!c) return null;
-  if (mockVoice) {
-    mockVoice.setPersona(c.persona);
-    return mockVoice;
-  }
-  mockVoice = JBIQVoice.create({
-    persona: c.persona,
-    onError: (e) => console.error('mock voice err', e),
-  });
-  return mockVoice;
-}
-
-// Per-company canned mock — interviewer Qs + Rohit's canned A + feedback cards
 const MOCK_TRANSCRIPTS = {
   'tech-mahindra': [
     { speaker: 'ai', text: "Hi, I'm Rajesh from Tech Mahindra. Let's start. Tell me about yourself in 60 seconds." },
     { speaker: 'user', text: "Hi sir. I'm Rohit, BCom from Hardoi, currently 14 months at Reliance Trends in Lucknow as a sales associate. I handle 60 to 80 walk-in customers a day, returns, complaints, and team coordination on weekends. I'm looking to move into a structured BPO role where my customer-handling experience can scale.", transcribeMs: 1800 },
     { speaker: 'card', card: { kind: 'feedback', label: 'Q1 — Tell me about yourself',
-        content: 'Solid intro. Specific numbers (60-80 walk-ins) make it credible. STAR-ish structure.',
         notes: [
-          { tone: 'good', text: 'Pace at 142 wpm — clear and unhurried. Native speakers track this comfortably.' },
+          { tone: 'good', text: 'Pace around 142 wpm — clear and unhurried. Native speakers track this comfortably.' },
           { tone: 'good', text: 'Zero filler words ("um", "you know") — confidence reads through.' },
           { tone: 'warn', text: 'One pronunciation flag: "Reliance" came out as "rel-ee-AANCE". Stress goes on syllable two: re-LY-ance.' },
         ],
-        metrics: [
-          { v: '85', l: 'Content', tone: 'good' },
-          { v: '142', l: 'Pace WPM', tone: 'good' },
-          { v: '0', l: 'Fillers', tone: 'good' },
-        ],
-        better: "I'm Rohit. BCom from Hardoi, fourteen months in customer-facing sales at Reliance Trends — handling sixty to eighty walk-ins a day, returns, complaints, weekend team coordination. I'm here because BPO at scale is where my customer-handling reps will compound fastest.",
-    } },
+        better: "I'm Rohit. BCom from Hardoi, fourteen months in customer-facing sales at Reliance Trends — handling sixty to eighty walk-ins a day, returns, complaints, weekend team coordination. I'm here because BPO at scale is where my customer-handling reps will compound fastest." } },
     { speaker: 'ai', text: "Good. Now — why BPO, and why specifically the night shift?" },
     { speaker: 'user', text: "Sir, BPO because I want to work at scale. At Reliance I see 80 customers a day, in BPO I'd see 200 calls a day. The reps and skills compound faster. Night shift — honestly, I've worked rotational shifts at Reliance, the 6:30 to 3:30 schedule actually fits my study time better.", transcribeMs: 2000 },
     { speaker: 'card', card: { kind: 'feedback', label: 'Q2 — Why BPO + night shift',
-        content: 'Honest framing on shift preference is rare and credible. The "skills compound" line is a nice touch.',
         notes: [
           { tone: 'good', text: 'Confident delivery — no apologising for the night shift, you owned it.' },
-          { tone: 'warn', text: '1 filler ("honestly") right before the night-shift bit. Drop it; the rest of the line is strong on its own.' },
-          { tone: 'good', text: 'Pace 136 wpm — slowed down slightly under the harder question. Good instinct.' },
+          { tone: 'warn', text: '1 filler ("honestly") right before the night-shift bit. Drop it; the line is strong on its own.' },
+          { tone: 'good', text: 'Slowed down slightly under the harder question. Good instinct.' },
         ],
-        metrics: [
-          { v: '88', l: 'Content', tone: 'good' },
-          { v: '136', l: 'Pace WPM', tone: 'good' },
-          { v: '1', l: 'Fillers', tone: 'good' },
-        ],
-        better: "BPO because I want to work at scale — at Reliance I see eighty customers a day, in BPO I'd see two hundred calls a day. The reps compound faster. Night shift fits me — I've done rotational shifts at Reliance, the six-thirty to three-thirty schedule actually gives me my best study hours.",
-    } },
+        better: "BPO because I want to work at scale — at Reliance I see eighty customers a day, in BPO I'd see two hundred calls a day. The reps compound faster. Night shift fits me — I've done rotational shifts at Reliance, the six-thirty to three-thirty schedule actually gives me my best study hours." } },
     { speaker: 'ai', text: "Now a roleplay. A US customer is angry about a 30-minute wait. They're shouting. What's the first thing you say?" },
     { speaker: 'user', text: "I would say — sir, I completely understand your frustration, and I'm sorry for the long wait. Let me look into this for you right now.", transcribeMs: 1600 },
-    { speaker: 'card', card: { kind: 'phrase', label: 'Strong empathy opener',
-        content: 'Lead with feeling, then action. Saved as your strongest customer-call opener.',
-        keyPhrase: 'I completely understand your frustration. Let me look into this right now.',
-    } },
-    { speaker: 'ai', text: "Quick one — describe a time you handled a difficult situation. 30 seconds. Go." },
+    { speaker: 'card', card: { kind: 'feedback', label: 'Q3 — Angry-customer roleplay',
+        notes: [
+          { tone: 'good', text: 'Led with feeling, then action — exactly the order they want.' },
+          { tone: 'warn', text: 'You stopped a beat early. Add what you\'ll do next so the customer feels momentum.' },
+        ],
+        better: "Sir, I completely understand your frustration, and I'm sorry for the wait. Let me pull up your account right now and I'll stay on the line until it's sorted." } },
+    { speaker: 'ai', text: "Quick — describe a time you handled a difficult situation. 30 seconds. Go." },
     { speaker: 'user', text: "Last Diwali rush at Reliance, the POS went down for 40 minutes, queue of 30 customers. I got a paper register from stockroom, manually noted purchases, took photos of barcodes, and my TL processed them when system was back. Zero customer walked out angry.", transcribeMs: 1900 },
     { speaker: 'card', card: { kind: 'feedback', label: 'Q4 — Pressure drill (30 sec)',
-        content: 'Excellent. Specific scenario, concrete action, clear outcome — textbook STAR.',
         notes: [
-          { tone: 'good', text: 'Hit 30-second target with 4 seconds to spare. Pace 154 wpm — fast but still clear.' },
+          { tone: 'good', text: 'Hit the 30-second target with room to spare. Textbook STAR — situation, action, result.' },
           { tone: 'good', text: 'Zero "um", zero "like". Confidence comes through under time pressure.' },
-          { tone: 'warn', text: '"Stockroom" came out as "stock-room" with too much pause between syllables. Say it as one word: "stockroom".' },
+          { tone: 'warn', text: '"Stockroom" came out with too much pause between syllables. Say it as one word.' },
         ],
-        metrics: [
-          { v: '92', l: 'Content', tone: 'good' },
-          { v: '154', l: 'Pace WPM', tone: 'good' },
-          { v: '0', l: 'Fillers', tone: 'good' },
-        ],
-        better: "Last Diwali rush, our POS went down for forty minutes — queue of thirty customers. I grabbed a paper register from the stockroom, noted purchases manually, photographed each barcode. My team lead processed them when the system came back. Not one customer walked out angry.",
-    } },
+        better: "Last Diwali rush, our POS went down for forty minutes — queue of thirty customers. I grabbed a paper register from the stockroom, noted purchases manually, photographed each barcode. My team lead processed them when the system came back. Not one customer walked out angry." } },
     { speaker: 'ai', text: "Last one — why Tech Mahindra over Concentrix or HDFC?" },
     { speaker: 'user', text: "Sir, I researched the BFSI process specifically. Tech Mahindra's US Banking voice has a stronger career path into Ops Lead within 18 months, and the Andheri office has a buddy system for new joiners. That structure matters more to me than salary alone.", transcribeMs: 1900 },
     { speaker: 'card', card: { kind: 'feedback', label: 'Q5 — Why this company',
-        content: 'Specific (18-mo Ops Lead, buddy system) beats generic. Strong close.',
         notes: [
-          { tone: 'good', text: 'Pace 138 wpm — steady, confident. You finished without trailing off.' },
+          { tone: 'good', text: 'Specific (18-month Ops Lead path, buddy system) beats generic. Strong close.' },
           { tone: 'good', text: 'No fillers, no apology language. You stated a preference cleanly.' },
-          { tone: 'bad',  text: 'You sounded slightly under-confident on the 18-month timeline — the dip in your voice gave the impression you weren\'t sure. Say numbers like facts.' },
+          { tone: 'bad',  text: 'You dipped in confidence on the 18-month timeline — it read like a guess. Say numbers like facts.' },
         ],
-        metrics: [
-          { v: '90', l: 'Content', tone: 'good' },
-          { v: '138', l: 'Pace WPM', tone: 'good' },
-          { v: '0', l: 'Fillers', tone: 'good' },
-        ],
-        better: "Sir, I researched the BFSI process specifically. Tech Mahindra's US Banking voice has a clear eighteen-month path to Ops Lead, the Andheri office runs a buddy programme for new joiners. That structure matters more to me than two thousand rupees of extra salary at a competitor.",
-    } },
-    { speaker: 'ai', text: "That's the mock. You're well-prepared. Generating your report…" },
+        better: "Sir, I researched the BFSI process specifically. Tech Mahindra's US Banking voice has a clear eighteen-month path to Ops Lead, and the Andheri office runs a buddy programme for new joiners. That structure matters more to me than two thousand rupees of extra salary at a competitor." } },
+    { speaker: 'ai', text: "That's the mock. You're well-prepared." },
   ],
 
   'concentrix': [
     { speaker: 'ai', text: "Hi… so… tell me about yourself." },
     { speaker: 'user', text: "Hi ma'am. I'm Rohit, BCom graduate, 14 months as a sales associate at Reliance Trends. Customer-handling is my strongest skill — Diwali season I handled 80+ walk-ins a day. Now ready to move into structured customer voice work.", transcribeMs: 1900 },
     { speaker: 'card', card: { kind: 'feedback', label: 'Q1 — Tell me about yourself',
-        content: 'Pulled her in fast with the 80+ walk-ins number. Bored HR woke up.',
         notes: [
           { tone: 'good', text: 'You front-loaded the strongest number (80+ walk-ins). That woke a bored interviewer up.' },
-          { tone: 'good', text: 'Pace 128 wpm — slow enough for a tired listener to absorb.' },
-          { tone: 'warn', text: '"Concentrix" came out as "Con-CEN-trix" — stress is actually on the first syllable: CON-cen-trix.' },
+          { tone: 'good', text: 'Pace was slow enough for a tired listener to absorb.' },
+          { tone: 'warn', text: '"Concentrix" came out as "Con-CEN-trix" — stress is on the first syllable: CON-cen-trix.' },
         ],
-        metrics: [{ v: '80', l: 'Content', tone: 'good' }, { v: '128', l: 'Pace WPM', tone: 'good' }, { v: '0', l: 'Fillers', tone: 'good' }],
-        better: "Hi ma'am. I'm Rohit, BCom graduate. Fourteen months at Reliance Trends — eighty walk-ins a day at peak, fluent at handling returns, complaints, angry customers. Now ready to bring that empathy to a structured customer-voice role.",
-    } },
+        better: "Hi ma'am. I'm Rohit, BCom graduate. Fourteen months at Reliance Trends — eighty walk-ins a day at peak, fluent at returns, complaints, angry customers. Now ready to bring that empathy to a structured customer-voice role." } },
     { speaker: 'ai', text: "Why this company. (No 'great brand' please.)" },
     { speaker: 'user', text: "Concentrix's Powai office is closer to my Andheri PG, the day-shift roles fit my evening study schedule, and your customer voice training programme is 6 weeks longer than industry average — that matters for someone making the transition from retail.", transcribeMs: 2000 },
     { speaker: 'card', card: { kind: 'feedback', label: 'Q2 — Why this company',
-        content: 'Specific reasons (location, training length) — exactly what kills the "great brand" trap.',
         notes: [
-          { tone: 'good', text: 'Three specific reasons (PG location, day shifts, 6-week training). She can\'t accuse you of "great brand" laziness.' },
-          { tone: 'warn', text: '1 filler ("basically") on the training-programme bullet. Replace with a hard fact and you sound sharper.' },
-          { tone: 'good', text: 'Pace 132 wpm — held steady. No nervousness in the voice.' },
+          { tone: 'good', text: 'Three specific reasons (PG location, day shifts, 6-week training). She can\'t call this "great brand" laziness.' },
+          { tone: 'warn', text: '1 filler ("basically") on the training bullet. Replace it with a hard fact and you sound sharper.' },
+          { tone: 'good', text: 'Held a steady pace — no nervousness in the voice.' },
         ],
-        metrics: [{ v: '85', l: 'Content', tone: 'good' }, { v: '132', l: 'Pace WPM', tone: 'good' }, { v: '1', l: 'Fillers', tone: 'good' }],
-        better: "Concentrix's Powai office is closer to my Andheri PG. Your day-shift roles fit my evening study schedule. Your customer-voice training programme is six weeks longer than industry average — that\'s what tips it from a job into a launchpad.",
-    } },
+        better: "Concentrix's Powai office is closer to my Andheri PG. Your day-shift roles fit my evening study schedule. Your customer-voice training programme is six weeks longer than industry average — that's what tips it from a job into a launchpad." } },
     { speaker: 'ai', text: "Have you done customer voice work before?" },
     { speaker: 'user', text: "Not on calls, ma'am, but face-to-face with 80+ customers a day at Reliance — I've handled returns, complaints, and angry walk-ins. The empathy and de-escalation are the same skills, just on a different channel.", transcribeMs: 1700 },
-    { speaker: 'card', card: { kind: 'phrase', label: 'Saved opener',
-        content: 'Reframing retail as voice-equivalent skill is sharp.',
-        keyPhrase: 'The empathy and de-escalation are the same skills, just on a different channel.',
-    } },
-    { speaker: 'ai', text: "Alright, that's it from my side. Generating your report…" },
+    { speaker: 'card', card: { kind: 'feedback', label: 'Q3 — Voice experience',
+        notes: [
+          { tone: 'good', text: 'Reframing retail as voice-equivalent skill is sharp — turned a "no" into a "yes".' },
+          { tone: 'warn', text: 'Tone-match dipped — she was flat and you stayed neutral. Bring a little warmth to lift her.' },
+        ],
+        better: "Not on calls yet, ma'am — but eighty-plus customers a day face-to-face at Reliance, returns, complaints, angry walk-ins. The empathy and de-escalation are the same skills, just on a different channel. I'll pick up the call mechanics fast." } },
+    { speaker: 'ai', text: "Alright, that's it from my side." },
   ],
 
   'hdfc': [
     { speaker: 'ai', text: "Heya! I'm Arjun, your potential TL. Tell me — why sales over BPO?" },
     { speaker: 'user', text: "Honestly, sir — I've already done 14 months of customer-facing sales at Reliance Trends. I know I love the chase, the close. BPO felt like a step sideways. Sales is a step forward — owning revenue, not just calls.", transcribeMs: 1900 },
     { speaker: 'card', card: { kind: 'feedback', label: 'Q1 — Sales vs BPO',
-        content: 'Honest, energetic. "Owning revenue" lands well with a sales TL.',
         notes: [
-          { tone: 'good', text: 'Energy matched Arjun\'s — he was warm, you mirrored it. Sales TLs want to see that mirror reflex.' },
-          { tone: 'good', text: 'Pace 148 wpm — fast and confident. Slightly higher than ideal but it fits the sales-floor vibe.' },
-          { tone: 'warn', text: '"Owning" came out as "OWN-ning". Single emphasis on the first syllable, soft second: "OWN-ing".' },
+          { tone: 'good', text: 'Energy matched Arjun\'s warmth — sales TLs look for that mirror reflex.' },
+          { tone: 'good', text: 'Fast and confident — fits the sales-floor vibe.' },
+          { tone: 'warn', text: '"Owning" came out as "OWN-ning". Single emphasis on the first syllable, soft second.' },
         ],
-        metrics: [{ v: '88', l: 'Content', tone: 'good' }, { v: '148', l: 'Pace WPM', tone: 'good' }, { v: '0', l: 'Fillers', tone: 'good' }],
-        better: "Honestly, sir — fourteen months in customer-facing sales at Reliance Trends. I know the rush of a close, I want to keep doing that. BPO felt sideways — sales is owning revenue, not just calls. That\'s why I\'m here.",
-    } },
+        better: "Honestly, sir — fourteen months in customer-facing sales at Reliance Trends. I know the rush of a close, I want to keep doing that. BPO felt sideways — sales is owning revenue, not just calls. That's why I'm here." } },
     { speaker: 'ai', text: "Have you sold anything before? Even a YouTube channel counts." },
     { speaker: 'user', text: "At Reliance I drove ₹3-4 lakh in incremental sales last quarter just by upselling layered products at the till. I also run a small Instagram page reselling thrift clothes — 18K followers, 60-70 sales a month at margin.", transcribeMs: 2100 },
     { speaker: 'card', card: { kind: 'feedback', label: 'Q2 — Sales experience',
-        content: 'Two concrete revenue stories — TL will love the upsell number.',
         notes: [
-          { tone: 'good', text: 'Two revenue stories with specific numbers (₹3-4 lakh, 18K followers, 60-70 sales). Numbers anchor everything.' },
-          { tone: 'good', text: 'Pace 140 wpm — steady, persuasive. The kind of voice that closes deals.' },
-          { tone: 'bad',  text: 'Slight hesitation before "incremental sales" — you weren\'t sure the word would land. Trust your vocabulary; that word is exactly right.' },
+          { tone: 'good', text: 'Two revenue stories with specific numbers (₹3-4 lakh, 18K followers). Numbers anchor everything.' },
+          { tone: 'good', text: 'Steady, persuasive pace — the kind of voice that closes.' },
+          { tone: 'bad',  text: 'Slight hesitation before "incremental sales" — trust your vocabulary, that word is exactly right.' },
         ],
-        metrics: [{ v: '92', l: 'Content', tone: 'good' }, { v: '140', l: 'Pace WPM', tone: 'good' }, { v: '0', l: 'Fillers', tone: 'good' }],
-        better: "At Reliance I drove three to four lakh in incremental sales last quarter — just by upselling layered products at the till. I also run a thrift-resale Instagram page — eighteen thousand followers, sixty to seventy sales a month at margin. Both taught me one thing: every conversation is a sale waiting to be asked for.",
-    } },
+        better: "At Reliance I drove three to four lakh in incremental sales last quarter — just by upselling at the till. I also run a thrift-resale Instagram page — eighteen thousand followers, sixty to seventy sales a month at margin. Every conversation is a sale waiting to be asked for." } },
     { speaker: 'ai', text: "A customer says 'I'll think about it' for the third time. What do you do?" },
     { speaker: 'user', text: "I'd ask — what's the one thing holding you back? Not 'have you decided?' but a specific, single concern. That moves them from procrastinating to either deciding or naming the real objection.", transcribeMs: 1700 },
-    { speaker: 'card', card: { kind: 'phrase', label: 'Saved technique',
-        content: 'The one-thing question is a classic — works in sales and in interviews.',
-        keyPhrase: "What's the one thing holding you back?",
-    } },
-    { speaker: 'ai', text: "I like your style. Generating your report…" },
+    { speaker: 'card', card: { kind: 'feedback', label: 'Q3 — Handling hesitation',
+        notes: [
+          { tone: 'good', text: 'The "one thing" question is a classic — it surfaces the real objection without pushing.' },
+          { tone: 'warn', text: 'You answered the technique but didn\'t show warmth. Say it like you genuinely want to help, not close.' },
+        ],
+        better: "I'd slow down and ask — \"what's the one thing holding you back?\" Not \"have you decided\" — one specific concern. That moves them from putting it off to either deciding or telling me the real objection, and then I can actually help." } },
+    { speaker: 'ai', text: "I like your style." },
   ],
 
   'bajaj': [
     { speaker: 'ai', text: "Look, I told the last guy — I don't want your card! Stop calling me!" },
     { speaker: 'user', text: "Sir, I completely understand your frustration with multiple calls — that's not okay. I'm not calling to sell — I'm calling to remove your number from our outbound list permanently. Can I take 30 seconds?", transcribeMs: 2000 },
     { speaker: 'card', card: { kind: 'feedback', label: 'Q1 — Hostile customer (de-escalation)',
-        content: 'Pivot from "selling" to "removing you from list" is brilliant — disarms the anger AND opens the conversation.',
         notes: [
-          { tone: 'good', text: 'Pace dropped to 128 wpm during hostile turn — exactly right. Slow voice = calm authority.' },
-          { tone: 'good', text: 'Zero raised tone, zero defensive language. You held the line.' },
-          { tone: 'warn', text: '"Permanently" came out as "per-mAN-ently" — stress is on syllable one: "PER-manently". Two beats, not three.' },
+          { tone: 'good', text: 'Pivot from "selling" to "removing you from the list" disarms the anger AND opens the conversation.' },
+          { tone: 'good', text: 'Slow voice = calm authority. You dropped your pace at exactly the right moment.' },
+          { tone: 'warn', text: '"Permanently" came out as "per-mAN-ently" — stress is on syllable one: "PER-manently".' },
         ],
-        metrics: [{ v: '95', l: 'Content', tone: 'good' }, { v: '128', l: 'Pace WPM', tone: 'good' }, { v: '0', l: 'Fillers', tone: 'good' }],
-        better: "Sir, I completely understand your frustration with the repeated calls — that\'s not okay. I\'m not calling to sell, I\'m calling to remove your number from our outbound list permanently. Can I take just thirty seconds to confirm that?",
-    } },
+        better: "Sir, I completely understand your frustration with the repeated calls — that's not okay. I'm not calling to sell, I'm calling to remove your number from our outbound list permanently. Can I take just thirty seconds to confirm that?" } },
     { speaker: 'ai', text: "You charged my card for fees I never agreed to. I'm cancelling everything. NOW." },
     { speaker: 'user', text: "Sir, that's a serious concern and you have every right to be upset. Before any cancellation — let me read out the exact charges with dates so you know what you're cancelling. If even one charge looks wrong, I'll process the refund immediately.", transcribeMs: 2200 },
-    { speaker: 'card', card: { kind: 'feedback', label: 'Q2 — Refund threat (calm decisive)',
-        content: 'Empathy + ownership + actionable next step. This is the textbook V&A pressure-drill response.',
+    { speaker: 'card', card: { kind: 'feedback', label: 'Q2 — Refund threat (stay decisive)',
         notes: [
-          { tone: 'good', text: 'Pace 124 wpm — slowed even further. When a customer escalates, your voice should slow. You instinctively did it.' },
-          { tone: 'good', text: 'Concrete next step ("read out exact charges with dates") instead of a vague apology. That\'s what stops the cancellation.' },
-          { tone: 'warn', text: 'Tiny under-confidence dip on "process the refund immediately". Say "process the refund immediately" with the same drop the customer wants to hear — like it\'s already done.' },
+          { tone: 'good', text: 'Empathy, then ownership, then a concrete next step. Textbook pressure-drill response.' },
+          { tone: 'good', text: 'You slowed even further as he escalated — exactly right.' },
+          { tone: 'warn', text: 'Tiny under-confidence dip on "process the refund immediately". Say it like it\'s already done.' },
         ],
-        metrics: [{ v: '93', l: 'Content', tone: 'good' }, { v: '124', l: 'Pace WPM', tone: 'good' }, { v: '0', l: 'Fillers', tone: 'good' }],
-        better: "Sir, that\'s a serious concern and you have every right to be upset. Before any cancellation — let me read out the exact charges with dates so you know what you\'re cancelling. If even one charge is wrong, I\'ll process the refund immediately.",
-    } },
-    { speaker: 'ai', text: "Hmph. Fine. Read them out then. — Mock complete. Generating your report…" },
+        better: "Sir, that's a serious concern and you have every right to be upset. Before any cancellation — let me read out the exact charges with dates so you know what you're cancelling. If even one charge is wrong, I'll process the refund immediately." } },
+    { speaker: 'ai', text: "Hmph. Fine. Read them out then. — Mock complete." },
   ],
 };
 
-// Toast helper for the report CTAs (Plan / Remind / Share).
+/* =========================================================================
+ * HOME — render catalogues + entry points
+ * ========================================================================= */
+function renderHomeCatalogues() {
+  const roleRow = document.getElementById('role-row');
+  roleRow.innerHTML = Object.entries(POPULAR_ROLES).map(([id, r]) => `
+    <div class="company-chip" onclick="prepByRole('${id}')">
+      <div class="c-logo">${r.label.charAt(0)}</div>
+      <div class="c-name">${r.label}</div>
+      <div class="c-meta">${r.meta}</div>
+    </div>`).join('');
+
+  const compRow = document.getElementById('company-row');
+  compRow.innerHTML = Object.entries(COMPANIES).map(([id, c]) => `
+    <div class="company-chip" onclick="prepByCompany('${id}')">
+      <div class="c-logo" style="background:${c.color}">${c.logo}</div>
+      <div class="c-name">${c.name}</div>
+      <div class="c-meta">${c.meta}</div>
+    </div>`).join('');
+}
+
+/* =========================================================================
+ * ONBOARDING — a card inside the chat. Role is required; the rest optional.
+ * Arriving from a role/company catalogue prefills + locks that one field.
+ * ========================================================================= */
+let prep = {};
+function resetPrep() {
+  prep = { role: '', company: '', companyId: null, exp: '', round: '', resume: false, numQ: 5, key: 'tech-mahindra' };
+}
+
+function openChat(title, sub) {
+  showView('chat');
+  document.getElementById('chat').innerHTML = '';
+  document.getElementById('chat_title').textContent = title || 'Set up your mock';
+  document.getElementById('chat_sub').textContent = sub || 'A few quick details and we begin';
+  const dock = document.getElementById('chat_dock_input');
+  if (dock) { dock.placeholder = 'Set up in the card above to begin…'; }
+}
+
+function practiceInterview() {
+  resetPrep();
+  openChat();
+  startOnboarding({});
+}
+function prepByRole(id) {
+  resetPrep();
+  const r = POPULAR_ROLES[id];
+  if (r) { prep.role = r.label; prep.key = r.key; prep.round = r.round; }
+  openChat();
+  startOnboarding({ lockRole: true });
+}
+function prepByCompany(id) {
+  resetPrep();
+  const c = COMPANIES[id];
+  if (c) { prep.company = c.name; prep.companyId = id; prep.key = id; prep.round = c.round; }
+  openChat();
+  startOnboarding({ lockCompany: true });
+}
+
+function startOnboarding(opts) {
+  const chat = document.getElementById('chat');
+  let greet = "Let's set up your mock. Fill this in — only the role is required, the rest just makes the mock sharper.";
+  if (opts.lockRole) greet = `Great — a ${prep.role} mock. Add the rest if you like, then hit start.`;
+  if (opts.lockCompany) greet = `Prepping for ${prep.company} — nice. Tell me the role and we're set.`;
+  window.GC.appendAi(chat, greet);
+  setTimeout(() => appendOnboardCard(opts), 420);
+}
+
+function appendOnboardCard(opts) {
+  const chat = document.getElementById('chat');
+  const expOpts = ['Fresher', '0–1 yr', '1–3 yrs', '3–5 yrs', '5+ yrs'];
+  const roundOpts = ['HR', 'Voice & Accent', 'Technical', 'Managerial', 'Sales pitch', 'Pressure drill'];
+  const numqOpts = ['3', '5', '7'];
+
+  const card = document.createElement('div');
+  card.className = 'onboard-card';
+  card.id = 'obCard';
+  card.innerHTML = `
+    <div class="ob-field">
+      <label class="ob-label">Role you're preparing for <span class="ob-req">*</span></label>
+      <input class="ob-input ${opts.lockRole ? 'prefilled' : ''}" id="ob_role" placeholder="e.g. BPO voice process, Field sales"
+             value="${opts.lockRole ? prep.role.replace(/"/g, '&quot;') : ''}" ${opts.lockRole ? 'readonly' : ''}>
+    </div>
+    <div class="ob-field">
+      <label class="ob-label">Company <span class="ob-opt-tag">optional</span></label>
+      <input class="ob-input ${opts.lockCompany ? 'prefilled' : ''}" id="ob_company" placeholder="e.g. Tech Mahindra, Concentrix"
+             value="${opts.lockCompany ? prep.company.replace(/"/g, '&quot;') : ''}" ${opts.lockCompany ? 'readonly' : ''}>
+    </div>
+    <div class="ob-field">
+      <label class="ob-label">Years of experience <span class="ob-opt-tag">optional</span></label>
+      <div class="ob-seg" id="ob_exp">${expOpts.map(v => `<button class="ob-opt" data-v="${v}">${v}</button>`).join('')}</div>
+    </div>
+    <div class="ob-field">
+      <label class="ob-label">Round <span class="ob-opt-tag">optional</span></label>
+      <div class="ob-seg" id="ob_round">${roundOpts.map(v => `<button class="ob-opt${prep.round === v ? ' sel' : ''}" data-v="${v}">${v}</button>`).join('')}</div>
+    </div>
+    <div class="ob-field">
+      <label class="ob-label">How many questions?</label>
+      <div class="ob-seg" id="ob_numq">${numqOpts.map(v => `<button class="ob-opt${v === '5' ? ' sel' : ''}" data-v="${v}">${v} questions</button>`).join('')}</div>
+    </div>
+    <div class="ob-field">
+      <label class="ob-label">Resume <span class="ob-opt-tag">optional · adds context</span></label>
+      <button class="ob-upload" id="ob_resume">+ Upload resume (PDF/DOC)</button>
+      <input type="file" id="ob_resume_file" accept=".pdf,.doc,.docx" hidden>
+    </div>
+    <button class="start-mock-btn" id="ob_start" disabled><span class="live-dot"></span>Start mock — voice on</button>
+  `;
+  chat.appendChild(card);
+  chat.scrollTop = chat.scrollHeight;
+
+  // Wire role/company text inputs
+  const roleInput = card.querySelector('#ob_role');
+  const startBtn = card.querySelector('#ob_start');
+  function refreshStart() { startBtn.disabled = !roleInput.value.trim(); }
+  roleInput.addEventListener('input', () => { prep.role = roleInput.value.trim(); refreshStart(); });
+  card.querySelector('#ob_company').addEventListener('input', (e) => { prep.company = e.target.value.trim(); });
+  if (opts.lockRole) refreshStart();
+
+  // Segmented pickers
+  function wireSeg(groupId, set) {
+    card.querySelectorAll(`#${groupId} .ob-opt`).forEach(b => {
+      b.addEventListener('click', () => {
+        card.querySelectorAll(`#${groupId} .ob-opt`).forEach(x => x.classList.remove('sel'));
+        b.classList.add('sel');
+        set(b.dataset.v);
+      });
+    });
+  }
+  wireSeg('ob_exp', v => prep.exp = v);
+  wireSeg('ob_round', v => prep.round = v);
+  wireSeg('ob_numq', v => prep.numQ = parseInt(v, 10));
+
+  // Resume upload (optional)
+  const upBtn = card.querySelector('#ob_resume');
+  const upFile = card.querySelector('#ob_resume_file');
+  upBtn.addEventListener('click', () => upFile.click());
+  upFile.addEventListener('change', () => {
+    if (upFile.files && upFile.files.length) {
+      prep.resume = true;
+      upBtn.classList.add('added');
+      upBtn.textContent = '✓ ' + upFile.files[0].name + ' added';
+    }
+  });
+
+  startBtn.addEventListener('click', () => {
+    if (!prep.role.trim()) return;
+    beginMock();
+  });
+}
+
+/* =========================================================================
+ * MOCK — voice on by default, feedback held to the end, Skip available.
+ * ========================================================================= */
+let mockVoice = null;
+let mockSteps = [];
+let mockTimers = [];
+let mockResults = [];   // { step, answered: true|false }
+
+function ensureVoice() {
+  const persona = (COMPANIES[prep.key] || COMPANIES['tech-mahindra']).persona;
+  if (mockVoice) { try { mockVoice.setPersona(persona); } catch (e) {} return mockVoice; }
+  mockVoice = JBIQVoice.create({ persona, onError: (e) => console.error('voice', e) });
+  return mockVoice;
+}
+
+function cancelMockTimers() { mockTimers.forEach(t => clearTimeout(t)); mockTimers = []; }
+
+// Resolve which canned mock to play from the typed company/role.
+function resolveKey() {
+  if (prep.companyId && COMPANIES[prep.companyId]) return prep.companyId;
+  const typed = (prep.company || '').toLowerCase();
+  for (const [id, c] of Object.entries(COMPANIES)) {
+    if (typed && (typed.includes(id) || c.name.toLowerCase().includes(typed) || typed.includes(c.name.toLowerCase().split(' ')[0]))) return id;
+  }
+  return prep.key || 'tech-mahindra';
+}
+
+// Build Q-steps (question + canned answer + feedback) from a transcript.
+function buildSteps(key) {
+  const t = MOCK_TRANSCRIPTS[key] || MOCK_TRANSCRIPTS['tech-mahindra'];
+  const steps = [];
+  for (let i = 0; i < t.length; i++) {
+    if (t[i].speaker !== 'ai') continue;
+    const ans = (t[i + 1] && t[i + 1].speaker === 'user') ? t[i + 1].text : null;
+    if (!ans) continue;  // closing line has no answer — skip
+    let fb = null;
+    for (let j = i + 1; j < t.length && t[j].speaker !== 'ai'; j++) {
+      if (t[j].speaker === 'card') { fb = t[j].card; break; }
+    }
+    steps.push({ q: t[i].text, a: ans, fb, transcribeMs: (t[i + 1] || {}).transcribeMs });
+  }
+  return steps;
+}
+
+function beginMock() {
+  prep.key = resolveKey();
+  ensureVoice();
+  const chat = document.getElementById('chat');
+  const persona = window.JBIQ_PERSONAS[(COMPANIES[prep.key] || COMPANIES['tech-mahindra']).persona];
+
+  // Lock the onboarding card so it reads as submitted.
+  const ob = document.getElementById('obCard');
+  if (ob) ob.classList.add('locked');
+
+  mockSteps = buildSteps(prep.key);
+  const n = Math.min(prep.numQ || 5, mockSteps.length);
+  mockSteps = mockSteps.slice(0, n);
+  mockResults = [];
+
+  document.getElementById('chat_title').textContent = 'Mock interview';
+  document.getElementById('chat_sub').textContent = (prep.role || persona.title) + (prep.round ? ' · ' + prep.round : '');
+  document.getElementById('chat_dock_input').placeholder = 'Voice is on — listening for your answer…';
+
+  // Coach line (text only) + "what they're looking for" card (folded-in cheat sheet)
+  window.GC.appendAi(chat, `Setting up a ${n}-question mock${prep.company ? ' for ' + prep.company : ''}. Your interviewer is ${persona.name} — ${persona.title}.`);
+  const wants = LOOKING_FOR[prep.key] || LOOKING_FOR['tech-mahindra'];
+  setTimeout(() => {
+    window.GC.appendCard(chat, {
+      kind: 'tip', label: "What they're looking for",
+      content: `${persona.archetype}. Here's what lands in this round:`,
+      notes: wants.map(w => ({ tone: 'good', text: w })),
+    });
+  }, 500);
+  setTimeout(() => {
+    window.GC.appendAi(chat, `Voice is on. I'll ask ${n} question${n > 1 ? 's' : ''} — answer out loud, or tap "Skip question" to move on. Here's the first one.`);
+  }, 1100);
+  const t = setTimeout(() => runStep(0), 2400);
+  mockTimers.push(t);
+}
+
+function runStep(i) {
+  const chat = document.getElementById('chat');
+  if (i >= mockSteps.length) return finishMock();
+  const step = mockSteps[i];
+
+  // Interviewer asks — voice plays by default.
+  window.GC.appendAi(chat, step.q);
+  try { if (mockVoice) mockVoice.speak(step.q, 'en-IN'); } catch (e) {}
+
+  // Skip affordance appears inline, contextually under the question.
+  const words = step.q.split(/\s+/).length;
+  const speakMs = Math.max(words * 70, 1600);
+  let answered = false;
+
+  const skipRow = window.GC.appendChips(chat, [{ text: 'Skip question', _skip: true }], () => {
+    if (answered) return;
+    answered = true;
+    cancelStepTimer();
+    mockResults.push({ step, answered: false });
+    window.GC.appendUser(chat, '<em style="opacity:.7">— skipped —</em>');
+    const nt = setTimeout(() => runStep(i + 1), 700);
+    mockTimers.push(nt);
+  });
+  // Tag the skip chip so we can style it.
+  const skipBtn = skipRow.querySelector('.gc-chip');
+  if (skipBtn) skipBtn.classList.add('skip-chip');
+
+  // After the interviewer finishes speaking, the candidate "answers" (canned).
+  let stepTimer = setTimeout(() => {
+    if (answered) return;
+    answered = true;
+    if (skipRow && skipRow.parentNode) skipRow.remove();
+    window.GC.status(chat, "you're answering", 1300).then(() => {
+      window.GC.appendUser(chat, step.a);
+      mockResults.push({ step, answered: true });
+      const nt = setTimeout(() => runStep(i + 1), 900);
+      mockTimers.push(nt);
+    });
+  }, speakMs + 600);
+  mockTimers.push(stepTimer);
+  function cancelStepTimer() { clearTimeout(stepTimer); }
+}
+
+function finishMock() {
+  const chat = document.getElementById('chat');
+  const answeredCount = mockResults.filter(r => r.answered).length;
+  window.GC.appendAi(chat, `That's all ${mockResults.length} question${mockResults.length > 1 ? 's' : ''}${answeredCount < mockResults.length ? ' (a couple skipped — no problem)' : ''}. Want to see how you did?`);
+
+  // The Done button lives in the middle of the chat thread — not on the top bar.
+  setTimeout(() => {
+    const done = document.createElement('div');
+    done.className = 'chat-done';
+    done.innerHTML = `<button class="chat-done-btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Done — see how I did</button>`;
+    chat.appendChild(done);
+    chat.scrollTop = chat.scrollHeight;
+    done.querySelector('button').addEventListener('click', () => { done.remove(); showReport(); });
+  }, 650);
+}
+
+/* =========================================================================
+ * REPORT — rendered inline in the chat. No score. Specific, with a
+ * question-wise "detailed feedback" expander.
+ * ========================================================================= */
+function collectNotes(tone) {
+  const out = [];
+  mockResults.filter(r => r.answered && r.step.fb && r.step.fb.notes).forEach(r => {
+    r.step.fb.notes.forEach(n => {
+      const t = n.tone || '';
+      const isWork = tone === 'work' ? (t === 'warn' || t === 'bad') : (t === 'good');
+      if (isWork) out.push(n.text);
+    });
+  });
+  return out.slice(0, 3);
+}
+
+function showReport(fromKey) {
+  const chat = document.getElementById('chat');
+  const key = fromKey || prep.key;
+  const txt = REPORT_TEXT[key] || REPORT_TEXT['tech-mahindra'];
+
+  document.getElementById('chat_title').textContent = 'Your report';
+  document.getElementById('chat_sub').textContent = 'Mock complete';
+
+  // If invoked from the "Last mock" teaser there are no mockResults — rebuild a full set.
+  if (!mockResults.length) {
+    mockResults = buildSteps(key).map(step => ({ step, answered: true }));
+  }
+
+  const wins = collectNotes('good');
+  const gaps = collectNotes('work');
+
+  window.GC.appendAi(chat, "Here's your read — specific, no scores, just what landed and what to push.");
+
+  const card = document.createElement('div');
+  card.className = 'report-card';
+  card.innerHTML = `
+    <div class="rp-tag">Mock report</div>
+    <div class="rp-h">${txt.headline}</div>
+    <div class="rp-sub">${txt.sub}</div>
+
+    ${wins.length ? `<div class="rp-sec">
+      <div class="rp-sec-h good">What landed</div>
+      <ul class="rp-list good">${wins.map(w => `<li>${w}</li>`).join('')}</ul>
+    </div>` : ''}
+
+    ${gaps.length ? `<div class="rp-sec">
+      <div class="rp-sec-h work">What to work on</div>
+      <ul class="rp-list work">${gaps.map(g => `<li>${g}</li>`).join('')}</ul>
+    </div>` : ''}
+
+    <div class="rp-fix">
+      <div class="rp-fix-h">↑ The one thing to fix first</div>
+      <div class="rp-fix-t">${txt.fix}</div>
+    </div>
+
+    <button class="rp-toggle" id="rpToggle">
+      <span>Detailed feedback · question by question</span>
+      <span class="rp-chev"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span>
+    </button>
+    <div class="rp-detail" id="rpDetail">${buildDetailHtml()}</div>
+
+    <div class="rp-cta-row">
+      <button class="rp-cta primary" id="rpPlan">
+        <span class="rpc-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M7 2v3M17 2v3M3.5 8h17M5 5h14a1 1 0 011 1v13a1 1 0 01-1 1H5a1 1 0 01-1-1V6a1 1 0 011-1z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+        <span class="rpc-text">Get on a plan<div class="rpc-sub">I'll remind you to practice — you pick when</div></span>
+      </button>
+      <button class="rp-cta" id="rpShare">
+        <span class="rpc-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M18 8a3 3 0 10-2.83-4M6 12a3 3 0 100 0zm12 4a3 3 0 10-2.83 2M8.6 13.5l6.8 3M15.4 7.5l-6.8 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="rpc-text">Share performance with a friend<div class="rpc-sub">Send your report on WhatsApp</div></span>
+      </button>
+    </div>
+  `;
+  chat.appendChild(card);
+  chat.scrollTop = chat.scrollHeight;
+
+  // Wire detailed-feedback toggle
+  const toggle = card.querySelector('#rpToggle');
+  const detail = card.querySelector('#rpDetail');
+  toggle.addEventListener('click', () => {
+    const open = detail.classList.toggle('open');
+    toggle.classList.toggle('open', open);
+    if (open) setTimeout(() => detail.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 60);
+  });
+  // Listen buttons inside detailed feedback
+  card.querySelectorAll('[data-rc-play]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const t = btn.getAttribute('data-rc-play');
+      try { if (mockVoice) mockVoice.speak(t, 'en-IN'); else ensureVoice().speak(t, 'en-IN'); } catch (e) {}
+    });
+  });
+  // CTAs
+  card.querySelector('#rpPlan').addEventListener('click', openReminderSheet);
+  card.querySelector('#rpShare').addEventListener('click', shareReport);
+}
+
+function buildDetailHtml() {
+  return mockResults.map((r, i) => {
+    const label = (r.step.fb && r.step.fb.label) || ('Q' + (i + 1));
+    if (!r.answered) {
+      return `<div class="rp-q"><div class="rpq-label">${label}</div><div class="rpq-skip">You skipped this one — run the mock again to get feedback here.</div></div>`;
+    }
+    const notes = (r.step.fb && r.step.fb.notes) || [];
+    const lines = notes.map(n => `<div class="rpq-line ${n.tone || ''}"><span class="rpq-dot"></span>${n.text}</div>`).join('');
+    const better = (r.step.fb && r.step.fb.better)
+      ? `<div class="rpq-better">
+           <div class="rpq-better-h">How it could be even better</div>
+           <div class="rpq-better-row">
+             <div class="rpq-better-text">"${r.step.fb.better.replace(/"/g, '&quot;')}"</div>
+             <button class="rpq-listen" data-rc-play="${r.step.fb.better.replace(/"/g, '&quot;')}">
+               <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>Listen</button>
+           </div>
+         </div>` : '';
+    return `<div class="rp-q"><div class="rpq-label">${label}</div>${lines}${better}</div>`;
+  }).join('');
+}
+
+/* From the "Last mock" home teaser → jump straight to a stored report. */
+function openLastReport() {
+  resetPrep();
+  prep.key = 'concentrix';
+  openChat('Your report', 'Concentrix · yesterday');
+  mockResults = [];
+  window.GC.appendAi(document.getElementById('chat'), "Pulling up your last mock — Concentrix, yesterday.");
+  setTimeout(() => showReport('concentrix'), 600);
+}
+
+/* =========================================================================
+ * REMINDER SHEET + SHARE — both keep the user practising.
+ * ========================================================================= */
+let remTime = 'Evening (7 PM)';
+let remFreq = 'every day';
+
+function openReminderSheet() {
+  document.getElementById('reminderSheet').classList.add('open');
+}
+function closeReminderSheet() {
+  document.getElementById('reminderSheet').classList.remove('open');
+}
+function wireSheetGroup(groupId, set) {
+  document.querySelectorAll(`#${groupId} .sheet-opt`).forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll(`#${groupId} .sheet-opt`).forEach(x => x.classList.remove('sel'));
+      b.classList.add('sel');
+      set(b.dataset.v);
+    });
+  });
+}
+function confirmReminder() {
+  closeReminderSheet();
+  const clock = (remTime.match(/\(([^)]+)\)/) || [])[1] || remTime;
+  reportToast(`Done — I'll remind you ${remFreq} at ${clock}. First nudge: tomorrow.`);
+}
+function shareReport() {
+  reportToast('Opening WhatsApp to share your performance…');
+}
 function reportToast(text) {
   const t = document.createElement('div');
-  t.style.cssText = 'position:fixed;bottom:96px;left:50%;transform:translateX(-50%);background:var(--surface-bold);color:var(--text-on-bold);padding:10px 16px;border-radius:999px;font-family:var(--font);font-size:13px;font-weight:600;z-index:200;box-shadow:var(--shadow-md);opacity:0;transition:opacity .25s ease';
+  t.style.cssText = 'position:fixed;bottom:96px;left:50%;transform:translateX(-50%);max-width:80%;text-align:center;background:var(--surface-bold);color:var(--text-on-bold,#fff);padding:11px 18px;border-radius:16px;font-family:var(--font);font-size:13px;font-weight:600;z-index:300;box-shadow:var(--shadow-md);opacity:0;transition:opacity .25s ease';
   t.textContent = text;
   document.body.appendChild(t);
   requestAnimationFrame(() => t.style.opacity = '1');
-  setTimeout(() => t.style.opacity = '0', 2200);
-  setTimeout(() => t.remove(), 2600);
-}
-function setMockReminder() { reportToast("Reminder set — same mock, tomorrow 8 PM."); }
-function addToPlan() { reportToast("Added to your weekly plan — 3 mocks across the week."); }
-function shareReport() {
-  const company = (COMPANIES[currentCompany] || {}).name || 'mock';
-  reportToast("Opening WhatsApp share — " + company + " report.");
+  setTimeout(() => t.style.opacity = '0', 2600);
+  setTimeout(() => t.remove(), 3000);
 }
 
-// Setup-screen toggle: per-question feedback vs end-of-mock feedback.
-function setFeedbackMode(mode) {
-  feedbackMode = mode;
-  document.querySelectorAll('[data-fb-mode]').forEach(b => {
-    b.classList.toggle('active', b.dataset.fbMode === mode);
-  });
-}
-
-function startMock() {
-  showView('mock');
-  mockStarted = true;
-  timerStart = Date.now();
-  startTimer();
-  setupMockUi();
-  // Defer slightly so DOM is laid out
-  setTimeout(() => runMockTranscript(), 250);
-}
-
-function setupMockUi() {
-  const c = COMPANIES[currentCompany];
-  if (!c) return;
-  const persona = window.JBIQ_PERSONAS[c.persona];
-  document.getElementById('mock_persona_name').textContent = persona.name;
-  const n2 = document.getElementById('mock_persona_name_2');
-  if (n2) n2.textContent = persona.name;
-  const role = document.getElementById('mock_persona_role');
-  if (role) role.textContent = persona.title;
-  const qpill = document.getElementById('mock_qnum_pill');
-  if (qpill) qpill.textContent = (MOCK_TRANSCRIPTS[currentCompany] || []).filter(t => t.speaker === 'ai').length + ' Qs';
-}
-
-// Setting: 'per-q' shows feedback cards after each answer (default); 'end'
-// hides inline feedback and shows it all at once on the report.
-let feedbackMode = 'per-q';
-
-function runMockTranscript() {
-  let transcript = MOCK_TRANSCRIPTS[currentCompany] || MOCK_TRANSCRIPTS['tech-mahindra'];
-  // If user picked "feedback at the end", strip the inline feedback cards
-  // so the chat is just Q + A and the analysis lives only in the report.
-  if (feedbackMode === 'end') {
-    transcript = transcript.filter(t => t.speaker !== 'card');
-  }
-  const chatEl = document.getElementById('mockChat');
-  if (!chatEl) return;
-  if (mockRunner) mockRunner.stop();
-  ensureMockVoice();
-  mockRunner = window.GC.createTranscript({
-    transcript,
-    chatEl,
-    voice: mockVoice,
-    speakerLabel: window.JBIQ_PERSONAS[(COMPANIES[currentCompany] || {}).persona]?.name || 'Interviewer',
-    // When the transcript ends naturally, auto-navigate to the report
-    // after a short pause. Eliminates the confusing two-End-button UX —
-    // the top-bar Done is now only for early exit.
-    onComplete: () => {
-      setTimeout(() => endMock(), 2200);
-    },
-  });
-  mockRunner.start();
-}
-
-function endMock() {
-  if (mockRunner) mockRunner.stop();
-  if (mockVoice) mockVoice.stop();
-  stopTimer();
-  // Bump the run counter for this company so getReport() can return a
-  // distinct variant when the user starts the same mock over.
-  MOCK_RUNS[currentCompany] = (MOCK_RUNS[currentCompany] || 0) + 1;
-  renderReport();
-  showView('report');
-}
-
-function renderReport() {
-  const report = getReport(currentCompany);
-  const company = COMPANIES[currentCompany] || COMPANIES['tech-mahindra'];
-
-  // Title in top bar
-  const t2 = document.querySelector('#view-report .title-area .t2');
-  if (t2) t2.textContent = company.name + ' · run ' + (MOCK_RUNS[currentCompany] || 1);
-
-  // Overall score + headline
-  const num = document.querySelector('#view-report .sn-v');
-  if (num) num.textContent = report.overall;
-  const arc = document.querySelector('#view-report .report-score circle:last-of-type');
-  if (arc) {
-    const total = 276; // 2 * pi * r ≈ 276 for r=44
-    const offset = total * (1 - report.overall / 100);
-    arc.setAttribute('stroke-dashoffset', offset.toFixed(1));
-  }
-  const headline = document.querySelector('#view-report .report-headline');
-  if (headline) headline.textContent = report.headline;
-  const sub = document.querySelector('#view-report .report-sub');
-  if (sub) sub.textContent = report.sub;
-
-  // Criteria — rebuilt from the company-specific list
-  const critWrap = document.querySelector('#view-report .criteria-list');
-  if (critWrap) {
-    critWrap.innerHTML = report.criteria.map(c => `
-      <div class="criterion${c.tone ? ' ' + c.tone : ''}">
-        <div class="cr-h"><div class="cr-name">${c.name}</div><div class="cr-score">${c.score}</div></div>
-        <div class="cr-bar"><div class="cr-fill" style="width: ${c.score}%"></div></div>
-      </div>
-    `).join('');
-  }
-
-  // Strongest answer
-  const adQ = document.querySelector('#view-report .answer-dna .ad-q');
-  const adA = document.querySelector('#view-report .answer-dna .ad-a');
-  if (adQ) adQ.textContent = 'Q: ' + report.strongest.q;
-  if (adA) adA.textContent = '"' + report.strongest.a + '"';
-
-  // One thing to fix
-  const nsText = document.querySelector('#view-report .next-step-card .ns-text');
-  if (nsText) nsText.innerHTML = report.nextStep;
-}
-
-/* Timer */
-function startTimer() {
-  stopTimer();
-  timerInterval = setInterval(() => {
-    const ms = Date.now() - timerStart;
-    const s = Math.floor(ms / 1000);
-    const mm = String(Math.floor(s / 60)).padStart(2, '0');
-    const ss = String(s % 60).padStart(2, '0');
-    const t = document.getElementById('mock_timer');
-    if (t) t.textContent = `${mm}:${ss}`;
-  }, 250);
-}
-function stopTimer() {
-  if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+/* Replay the last interviewer line (dock mic during the mock). */
+function replayLast() {
+  try { if (mockVoice) mockVoice.replayLast(); } catch (e) {}
 }
 
 /* =========================================================================
- * MORNING-OF
- * ========================================================================= */
-function toggleCheck(el) {
-  el.classList.toggle('checked');
-}
-let pepVoice = null;
-function playPep() {
-  if (!pepVoice) {
-    pepVoice = JBIQVoice.create({ persona: 'jbiq_warm' });
-  }
-  pepVoice.speak("Hey Rohit — you've done eight mocks. You scored 72 yesterday. The customer roleplay was your best. Tomorrow, lead with empathy. Drink water. Smile at the door. You've got this.", 'en-IN');
-}
-// Warm-up: launch a tiny canned mock for the chosen warm-up question.
-function warmupQ(n) {
-  const warmupBase = {
-    1: {
-      persona: 'interviewer_formal_ops',
-      transcript: [
-        { speaker: 'ai',   text: "Tell me about yourself in 60 seconds." },
-        { speaker: 'user', text: "I'm Rohit, BCom from Hardoi, 14 months at Reliance Trends in Lucknow. Customer-facing sales — 80 walk-ins a day, returns, complaints. Looking to scale that experience into a structured BPO role." },
-        { speaker: 'card', card: { kind: 'feedback', label: 'Warm-up — Tell me about yourself',
-            content: 'Strong, specific intro. Numbers anchor credibility. Ready for the real mock.',
-            metrics: [{ v: '85', l: 'Content', tone: 'good' }, { v: '142', l: 'Pace WPM', tone: 'good' }, { v: '0', l: 'Fillers', tone: 'good' }],
-        } },
-      ],
-    },
-    2: {
-      persona: 'interviewer_bored_hr',
-      transcript: [
-        { speaker: 'ai',   text: "Why do you want to join this company?" },
-        { speaker: 'user', text: "I researched the BFSI process specifically. The 6-week voice training programme is longer than industry average — that matters for someone making a transition from retail. The 18-month path to Ops Lead is faster than competitors." },
-        { speaker: 'card', card: { kind: 'feedback', label: 'Warm-up — Why this company',
-            content: 'Specific reasons — exactly what kills the "great brand" trap.',
-            metrics: [{ v: '88', l: 'Content', tone: 'good' }, { v: '132', l: 'Pace WPM', tone: 'good' }, { v: '0', l: 'Fillers', tone: 'good' }],
-        } },
-      ],
-    },
-    3: {
-      persona: 'interviewer_hostile_customer',
-      transcript: [
-        { speaker: 'ai',   text: "A customer is shouting at you about a wrong charge. What do you do?" },
-        { speaker: 'user', text: "I would say — sir, I completely understand your frustration. Before any cancellation, let me read out the exact charges with dates so you know what you're disputing. If even one charge is wrong, I'll process the refund immediately." },
-        { speaker: 'card', card: { kind: 'phrase', label: 'Saved opener',
-            content: 'Empathy + ownership + actionable step. The textbook V&A pressure response.',
-            keyPhrase: 'I completely understand your frustration. Let me read out the exact charges.',
-        } },
-      ],
-    },
-  };
-  const item = warmupBase[n];
-  if (!item) return;
-  // Save warm-up as a one-shot company so existing flow works
-  MOCK_TRANSCRIPTS['__warmup'] = item.transcript;
-  COMPANIES['__warmup'] = {
-    name: 'Warm-up',
-    role: 'Single-question voice mock',
-    persona: item.persona,
-    questions: [{ q: item.transcript[0].text, prompt: 'Quick warm-up' }],
-  };
-  currentCompany = '__warmup';
-  if (mockVoice) { try { mockVoice.stop(); } catch (e) {} mockVoice = null; }
-  startMock();
-}
-
-/* =========================================================================
- * INIT — handle ?q= from landing voice routing
+ * INIT
  * ========================================================================= */
 (function init() {
-  renderWizard(); // pre-renders the first wizard step
+  renderHomeCatalogues();
+  resetPrep();
+  wireSheetGroup('rem-time', v => remTime = v);
+  wireSheetGroup('rem-freq', v => remFreq = v);
 
-  // Prefetch ALL AI lines (interviewer questions) for every company so the
-  // canned mock plays instantly — no Sarvam round-trip during the demo.
+  // Prefetch interviewer lines so the canned mock plays instantly.
   if (window.JBIQVoice && window.JBIQVoice.prefetch) {
-    const prefetchList = [];
-    Object.entries(MOCK_TRANSCRIPTS).forEach(([companyId, transcript]) => {
-      const persona = (COMPANIES[companyId] || COMPANIES['tech-mahindra']).persona;
-      transcript.filter(t => t.speaker === 'ai').forEach(t => {
-        prefetchList.push({ personaId: persona, text: t.text });
-      });
+    const list = [];
+    Object.entries(MOCK_TRANSCRIPTS).forEach(([id, transcript]) => {
+      const persona = (COMPANIES[id] || COMPANIES['tech-mahindra']).persona;
+      transcript.filter(t => t.speaker === 'ai').forEach(t => list.push({ personaId: persona, text: t.text }));
     });
-    // Pep talk for morning kit
-    prefetchList.push({
-      personaId: 'jbiq_warm',
-      text: "Hey Rohit — you've done eight mocks. You scored 72 yesterday. The customer roleplay was your best. Tomorrow, lead with empathy. Drink water. Smile at the door. You've got this.",
-    });
-    window.JBIQVoice.prefetch(prefetchList);
+    window.JBIQVoice.prefetch(list);
   }
 
+  // Landing voice routing (?q=…)
   const params = new URLSearchParams(window.location.search);
   const q = (params.get('q') || '').toLowerCase();
-  if (q.includes('tech mahindra')) currentCompany = 'tech-mahindra';
-  else if (q.includes('concentrix')) currentCompany = 'concentrix';
-  else if (q.includes('hdfc')) currentCompany = 'hdfc';
-  else if (q.includes('bajaj')) currentCompany = 'bajaj';
-
-  if (q.includes('mock now') || q.includes('start mock') || q.includes('mock interview')) {
-    setTimeout(() => { setupCheatSheet(); showView('cheatsheet'); }, 200);
-  } else if (q.includes('tomorrow') || q.includes('morning')) {
-    setTimeout(() => showView('morning'), 200);
+  let routed = false;
+  for (const [id, c] of Object.entries(COMPANIES)) {
+    if (q.includes(id.split('-')[0]) || q.includes(c.name.toLowerCase().split(' ')[0])) { setTimeout(() => prepByCompany(id), 200); routed = true; break; }
+  }
+  if (!routed && (q.includes('mock') || q.includes('interview') || q.includes('practice'))) {
+    setTimeout(() => practiceInterview(), 200);
   }
 })();
 </script>
