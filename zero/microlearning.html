@@ -66,7 +66,7 @@
   .continue-card .cc-fill { height: 100%; background: white; border-radius: 3px; }
   .continue-card .cc-arrow { flex-shrink: 0; opacity: 0.9; }
 
-  /* ============= CATEGORY ROWS (Seekho map) ============== */
+  /* ============= CATEGORY ROWS (content map) ============== */
   .cat-scroll {
     display: flex; gap: 10px; overflow-x: auto;
     padding: 0 var(--space-4) 4px; scrollbar-width: none;
@@ -175,8 +175,33 @@
         <div style="font-size: 12.5px; font-weight: 500; color: var(--text-low); line-height: 1.45; margin-top: 4px;">Each course is a few big cards — a quick plan, then the skill step by step. Tap any topic below to begin.</div>
       </div>
 
-      <!-- Seekho category rows -->
+      <!-- Category rows -->
       <div id="cat_host"><!-- renderCategories() --></div>
+    </div>
+
+    <!-- Persistent input dock (prototype basic — on every page) -->
+    <div class="gc-input-dock">
+      <div class="gc-input-wrap">
+        <div class="gc-input-text">
+          <input type="text" placeholder="What do you want to learn today?" readonly onclick="openCourse('ai-kya-hai')">
+        </div>
+        <div class="gc-input-actions">
+          <div class="gc-input-left">
+            <button class="gc-input-icon-btn" aria-label="Browse skills" onclick="openCourse('ai-kya-hai')">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20 11h-7V4a1 1 0 00-2 0v7H4a1 1 0 000 2h7v7a1 1 0 002 0v-7h7a1 1 0 000-2z"/></svg>
+            </button>
+          </div>
+          <div class="gc-input-right">
+            <button class="gc-input-icon-btn" aria-label="Voice" onclick="openCourse('ai-kya-hai')">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 15a3 3 0 003-3V5a3 3 0 00-6 0v7a3 3 0 003 3zm6-5a1 1 0 00-1 1v1a5 5 0 11-10 0v-1a1 1 0 10-2 0v1a7 7 0 1014 0v-1a1 1 0 00-1-1zm-3 10H9a1 1 0 000 2h6a1 1 0 000-2z"/></svg>
+            </button>
+            <button class="gc-input-speak-btn" onclick="openCourse('ai-kya-hai')">
+              <svg viewBox="0 0 24 24"><path d="M12 15a3 3 0 003-3V5a3 3 0 00-6 0v7a3 3 0 003 3zm6-5a1 1 0 00-1 1v1a5 5 0 11-10 0v-1a1 1 0 10-2 0v1a7 7 0 1014 0v-1a1 1 0 00-1-1z"/></svg>
+              <span>Speak</span>
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -192,6 +217,31 @@
       </div>
     </div>
     <div class="guided-chat" id="courseChat"></div>
+
+    <!-- Persistent input dock (prototype basic — on every page) -->
+    <div class="gc-input-dock">
+      <div class="gc-input-wrap">
+        <div class="gc-input-text">
+          <input type="text" placeholder="Reply or ask about this lesson…" readonly onclick="courseAsk()">
+        </div>
+        <div class="gc-input-actions">
+          <div class="gc-input-left">
+            <button class="gc-input-icon-btn" aria-label="Attach" onclick="courseAsk()">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20 11h-7V4a1 1 0 00-2 0v7H4a1 1 0 000 2h7v7a1 1 0 002 0v-7h7a1 1 0 000-2z"/></svg>
+            </button>
+          </div>
+          <div class="gc-input-right">
+            <button class="gc-input-icon-btn" aria-label="Voice" onclick="courseAsk()">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 15a3 3 0 003-3V5a3 3 0 00-6 0v7a3 3 0 003 3zm6-5a1 1 0 00-1 1v1a5 5 0 11-10 0v-1a1 1 0 10-2 0v1a7 7 0 1014 0v-1a1 1 0 00-1-1zm-3 10H9a1 1 0 000 2h6a1 1 0 000-2z"/></svg>
+            </button>
+            <button class="gc-input-speak-btn" onclick="courseAsk()">
+              <svg viewBox="0 0 24 24"><path d="M12 15a3 3 0 003-3V5a3 3 0 00-6 0v7a3 3 0 003 3zm6-5a1 1 0 00-1 1v1a5 5 0 11-10 0v-1a1 1 0 10-2 0v1a7 7 0 1014 0v-1a1 1 0 00-1-1z"/></svg>
+              <span>Speak</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- ========================== REMINDER SHEET ========================== -->
@@ -237,7 +287,7 @@ function showView(name) {
 
 /* =========================================================================
  * SEEKHO CONTENT MAP — categories, each with a row of sub-courses.
- * Sourced from Seekho_Content_Map (Top 100 Subthemes), AI expanded.
+ * Sourced from the content map (Top 100 Subthemes), AI expanded.
  * ========================================================================= */
 const CATEGORIES = [
   { id: 'content', name: 'Content creation', subs: [
@@ -407,6 +457,16 @@ let course = { subId: null, data: null, idx: 0 };
 
 function chatEl() { return document.getElementById('courseChat'); }
 
+// Tapping the in-course input dock — a light "ask" that never breaks the guided flow.
+function courseAsk() {
+  const chat = chatEl();
+  if (!chat || !course) return;
+  window.GC.appendUser(chat, 'Can you explain that again?');
+  setTimeout(() => {
+    window.GC.appendAi(chat, "Of course — re-read the card above; the main idea is in the first line. Tap the button below it when you're ready to keep going. 👍");
+  }, 450);
+}
+
 function openCourse(subId, resumeLesson) {
   const info = SUB_INDEX[subId];
   if (!info) return;
@@ -514,7 +574,7 @@ function finishCourse() {
 /* WhatsApp share — a WhatsApp-style card + a real share via wa.me */
 function shareBadge(title) {
   const chat = chatEl();
-  const msg = `🎓 I just finished "${title}" on Seekho Micro Learning! Learning one small skill at a time. Try it 👉`;
+  const msg = `🎓 I just finished "${title}"! Learning one new skill at a time. Try it 👉`;
   const card = document.createElement('div');
   card.className = 'wa-card';
   card.innerHTML = `
