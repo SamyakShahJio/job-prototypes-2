@@ -3,11 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#3900ad">
-<title>Microlearning — JioBharatIQ</title>
+<meta name="theme-color" content="var(--surface-bold)">
+<title>Micro Learning — JioBharatIQ</title>
 <link rel="stylesheet" href="../shared/jds-tokens.css">
-<link rel="stylesheet" href="../shared/ambient-glow.css">
-<link rel="stylesheet" href="../shared/guided-chat.css">
+<link rel="stylesheet" href="../shared/guided-chat.css?v=2">
 <style>
   body { background: var(--white); }
   .phone-frame { background: var(--white); }
@@ -19,917 +18,138 @@
 
   /* ============= TOP BAR ============== */
   .top-bar {
-    height: 56px;
-    padding: 0 var(--space-4);
+    height: 56px; padding: 0 var(--space-4);
     display: flex; align-items: center; gap: var(--space-3);
-    background: var(--white);
-    flex-shrink: 0;
-    border-bottom: 1px solid transparent;
-    position: relative; z-index: 30;
+    background: var(--white); flex-shrink: 0;
+    border-bottom: 1px solid transparent; position: relative; z-index: 30;
   }
   .top-bar .icon-btn {
     width: 36px; height: 36px; border-radius: 50%;
     background: var(--surface-ghost); border: none;
     display: flex; align-items: center; justify-content: center;
-    cursor: pointer; flex-shrink: 0;
-    color: var(--grey-100);
+    cursor: pointer; flex-shrink: 0; color: var(--grey-100);
   }
   .top-bar .title-area { flex: 1; min-width: 0; }
-  .top-bar .title-area .t1 {
-    font-size: 16px; font-weight: 700; color: var(--grey-100);
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  }
-  .top-bar .title-area .t2 {
-    font-size: 11px; font-weight: 500; color: var(--grey-60);
-  }
-  .vert-pill {
-    display: inline-flex; align-items: center; gap: 6px;
-    padding: 4px 10px; border-radius: var(--radius-pill);
-    background: var(--vert-accent-light); color: var(--vert-accent-dark);
-    font-size: 11px; font-weight: 700; letter-spacing: 0.3px; text-transform: uppercase;
-  }
+  .top-bar .title-area .t1 { font-size: 16px; font-weight: 700; color: var(--grey-100); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .top-bar .title-area .t2 { font-size: 11px; font-weight: 500; color: var(--grey-60); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-  .view {
-    display: none; flex: 1; flex-direction: column; overflow: hidden;
-  }
+  /* ============= VIEW SWITCHING ============== */
+  .view { display: none; flex: 1; flex-direction: column; overflow: hidden; }
   .view.active { display: flex; }
-  .view-body {
-    flex: 1; overflow-y: auto; padding: var(--space-3) var(--space-4) var(--space-7);
-  }
-
-  /* ============= HOME ============== */
-  .what-card {
-    margin: var(--space-3) 0 var(--space-4);
-    background: var(--surface-ghost);
-    border-radius: 22px;
-    padding: 20px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-  }
-  .what-card::after {
-    content: '';
-    position: absolute;
-    right: -30px; top: -30px;
-    width: 130px; height: 130px;
-    background: radial-gradient(circle, rgba(37,171,33,0.25) 0%, rgba(37,171,33,0) 70%);
-  }
-  .what-card .wc-tag {
-    display: inline-flex;
-    padding: 4px 10px;
-    background: var(--white); color: var(--vert-accent-dark);
-    border-radius: var(--radius-pill);
-    font-size: 11px; font-weight: 700; letter-spacing: 0.3px; text-transform: uppercase;
-    margin-bottom: 12px;
-  }
-  .what-card .wc-q {
-    font-size: 20px; font-weight: 900; color: var(--grey-100);
-    line-height: 1.25; letter-spacing: -0.3px; margin-bottom: 8px;
-  }
-  .what-card .wc-sub {
-    font-size: 13px; color: var(--icon-medium); font-weight: 500;
-    line-height: 1.4; margin-bottom: 14px;
-  }
-  .what-card .wc-input {
-    display: flex; align-items: center; gap: 10px;
-    background: white;
-    border: 1px solid rgba(0,0,0,0.06);
-    border-radius: var(--radius-pill);
-    padding: 8px 8px 8px 16px;
-  }
-  .what-card .wc-placeholder {
-    flex: 1; font-size: 14px; color: var(--grey-60);
-  }
-  .what-card .wc-mic {
-    width: 36px; height: 36px;
-    border-radius: 50%;
-    background: var(--vert-accent);
-    color: white;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-  }
-  /* Quick-pick suggestion chips inside the hero — span tracks */
-  .what-card .wc-suggestions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-top: 12px;
-    position: relative;
-  }
-  .what-card .wc-chip {
-    background: white;
-    border: 1px solid rgba(0,0,0,0.06);
-    color: var(--surface-bold);
-    border-radius: var(--radius-pill);
-    padding: 6px 10px;
-    font-family: var(--font);
-    font-size: 11px; font-weight: 700;
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-  .what-card .wc-chip:hover {
-    background: var(--surface-bold);
-    color: white;
-    border-color: var(--surface-bold);
-  }
-
-  /* Section */
+  .view-body { flex: 1; overflow-y: auto; padding: var(--space-3) 0 var(--space-7); }
   .section-h {
     font-size: 11px; font-weight: 700; color: var(--grey-60);
     letter-spacing: 0.6px; text-transform: uppercase;
-    margin: var(--space-5) 0 var(--space-3);
+    margin: var(--space-5) var(--space-4) var(--space-3);
   }
 
-  /* Sub-tracks */
-  .subtracks {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-  }
-  .subtrack {
-    border-radius: 16px;
-    padding: 14px;
-    cursor: pointer;
-    color: var(--grey-100);
-    border: 1px solid rgba(20,20,20,0.06);
-    min-height: 110px;
-    display: flex; flex-direction: column; justify-content: space-between;
-  }
-  .subtrack:hover { transform: translateY(-2px); }
-  .subtrack .st-emoji {
-    font-size: 22px;
-    width: 32px; height: 32px;
-    background: rgba(255,255,255,0.6);
-    border-radius: 8px;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .subtrack .st-name {
-    font-size: 13px; font-weight: 800; line-height: 1.2;
-  }
-  .subtrack .st-meta {
-    font-size: 11px; opacity: 0.7; margin-top: 2px;
-  }
-  .st-creator    { background: var(--surface-ghost); }
-  .st-shopkeeper { background: var(--surface-ghost); }
-  .st-office     { background: var(--primary-20); }
-  .st-ai-fluency { background: var(--surface-ghost); }
-
-  /* Earned skills strip */
-  .skills-strip {
-    display: flex; gap: 8px; overflow-x: auto;
-    margin: 0 calc(var(--space-4) * -1);
-    padding: 0 var(--space-4);
-  }
-  .skills-strip::-webkit-scrollbar { display: none; }
-  .skill-badge {
-    flex-shrink: 0;
-    width: 130px;
-    background: white;
-    border: 1px solid var(--grey-40);
-    border-radius: 14px;
-    padding: 12px;
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-  .skill-badge:hover { border-color: var(--vert-accent); transform: translateY(-2px); }
-  .skill-badge .sb-emoji {
-    font-size: 22px; width: 36px; height: 36px;
-    background: var(--vert-accent-light);
-    border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    margin-bottom: 8px;
-    color: var(--surface-bold);
-  }
-  .skill-badge .sb-name {
-    font-size: 12px; font-weight: 800; color: var(--grey-100);
-    line-height: 1.2; margin-bottom: 2px;
-  }
-  .skill-badge .sb-meta {
-    font-size: 10px; font-weight: 600; color: var(--vert-accent-dark);
-  }
-
-  /* New layout: skills-grid (2 columns, badges have a sub-chiplet action row) */
-  .skills-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-  }
-  .skills-grid .skill-badge {
-    width: 100%;
-    padding: 12px;
-  }
-  .skill-badge .sb-row {
-    display: flex; align-items: center; gap: 10px;
-    margin-bottom: 10px;
-  }
-  .skill-badge .sb-row .sb-emoji {
-    width: 32px; height: 32px; flex-shrink: 0;
-    margin-bottom: 0;
-  }
-  .skill-badge .sb-info { flex: 1; min-width: 0; }
-  .skill-badge .sb-actions {
-    display: flex; flex-wrap: wrap; gap: 6px;
-  }
-  .skill-badge .sb-chip {
-    display: inline-flex; align-items: center; gap: 4px;
-    background: var(--surface-ghost);
-    border: 1px solid var(--stroke-subtle);
-    border-radius: 999px;
-    padding: 4px 9px 4px 7px;
-    color: var(--text-high);
-    font-family: var(--font);
-    font-size: 11px; font-weight: 700;
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-  .skill-badge .sb-chip:hover {
-    background: var(--surface-default);
-    border-color: var(--surface-bold);
-    color: var(--surface-bold);
-  }
-  .skill-badge .sb-chip-wa {
-    background: #25d366;
-    border-color: #25d366;
-    color: white;
-  }
-  .skill-badge .sb-chip-wa:hover {
-    background: #1ebe57;
-    border-color: #1ebe57;
-    color: white;
-  }
-  .skill-badge .sb-chip [data-icon] { line-height: 0; }
-
-  /* Money tracker */
-  .money-tracker {
-    margin-top: var(--space-3);
-    background: var(--vert-accent);
-    color: white;
-    border-radius: 18px;
-    padding: 16px;
+  /* ============= CONTINUE WHERE YOU LEFT OFF ============== */
+  .continue-card {
+    width: calc(100% - 2 * var(--space-4));
+    margin: var(--space-3) var(--space-4) 0;
     display: flex; align-items: center; gap: 14px;
-  }
-  .money-tracker .mt-icon {
-    width: 48px; height: 48px;
-    background: rgba(255,255,255,0.2);
-    border-radius: 12px;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-    font-size: 22px;
-  }
-  .money-tracker .mt-text { flex: 1; }
-  .money-tracker .mt-amount {
-    font-size: 20px; font-weight: 900;
-    line-height: 1;
-  }
-  .money-tracker .mt-sub {
-    font-size: 11px; opacity: 0.9; margin-top: 4px;
-  }
-
-  /* In-progress course */
-  .inprogress-card {
-    margin-top: var(--space-3);
-    border: 1px solid var(--grey-40);
-    border-radius: 16px;
-    padding: 14px;
-    background: white;
-    cursor: pointer;
-    display: flex; align-items: center; gap: 12px;
-    transition: all 0.15s;
-  }
-  .inprogress-card:hover { border-color: var(--vert-accent); }
-  .inprogress-card .ip-thumb {
-    width: 56px; height: 56px;
-    border-radius: 12px;
-    background: var(--surface-ghost);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 22px;
-    flex-shrink: 0;
-  }
-  .inprogress-card .ip-text { flex: 1; min-width: 0; }
-  .inprogress-card .ip-title {
-    font-size: 14px; font-weight: 700; color: var(--grey-100);
-    line-height: 1.2;
-  }
-  .inprogress-card .ip-meta {
-    font-size: 11px; color: var(--grey-60); margin-top: 4px;
-  }
-  .inprogress-card .ip-progress {
-    margin-top: 8px;
-    height: 4px; background: var(--grey-20);
-    border-radius: 2px; overflow: hidden;
-  }
-  .inprogress-card .ip-fill {
-    height: 100%; background: var(--vert-accent);
-    border-radius: 2px;
-  }
-
-  /* ============= CHAT (Just-in-time) ============== */
-  .chat-area {
-    flex: 1;
-    overflow-y: auto;
-    padding: var(--space-4);
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-  .msg { max-width: 88%; animation: msgIn 0.35s ease-out; }
-  .msg-ai { align-self: flex-start; }
-  .msg-user { align-self: flex-end; }
-  .bubble {
-    padding: 12px 16px;
-    font-size: 14px; line-height: 1.5;
-    color: var(--grey-100);
-  }
-  .bubble-ai {
-    background: var(--surface-ghost);
-    border-radius: 4px var(--radius-lg) var(--radius-lg) var(--radius-lg);
-  }
-  .bubble-user {
-    background: var(--vert-accent);
-    color: white;
-    border-radius: var(--radius-lg) 4px var(--radius-lg) var(--radius-lg);
-  }
-  .bubble-ai .speaker-pill {
-    display: inline-flex; padding: 3px 8px;
-    background: white; border-radius: var(--radius-pill);
-    font-size: 10px; font-weight: 700; color: var(--vert-accent-dark);
-    margin-bottom: 6px;
-  }
-  @keyframes msgIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-
-  .reply-chips {
-    display: flex; flex-wrap: wrap; gap: 8px;
-    margin-top: 4px;
-    align-self: flex-start;
-    max-width: 100%;
-  }
-  .reply-chip {
-    padding: 8px 14px;
-    border-radius: var(--radius-pill);
-    border: 1.5px solid var(--vert-accent);
-    color: var(--vert-accent-dark);
-    background: white;
-    font-size: 13px; font-weight: 600;
-    cursor: pointer;
-    font-family: var(--font);
-  }
-  .reply-chip:hover { background: var(--vert-accent-light); }
-
-  /* Trailer card (root cause + N-step plan) */
-  .trailer-card {
-    background: white;
-    border: 1px solid var(--grey-40);
-    border-radius: 14px;
-    padding: 14px;
-  }
-  .trailer-card .tc-tag {
-    display: inline-flex;
-    padding: 4px 10px;
-    background: #fff0d6;
-    color: var(--surface-bold);
-    border-radius: var(--radius-pill);
-    font-size: 11px; font-weight: 700;
-    letter-spacing: 0.3px; text-transform: uppercase;
-    margin-bottom: 8px;
-  }
-  .trailer-card .tc-rootcause {
-    font-size: 14px; line-height: 1.4;
-    color: var(--grey-100); font-weight: 600;
-    margin-bottom: 10px;
-  }
-  .trailer-card .tc-plan-h {
-    font-size: 11px; font-weight: 700; color: var(--vert-accent-dark);
-    letter-spacing: 0.3px; text-transform: uppercase;
-    margin-bottom: 8px;
-  }
-  .trailer-card .tc-step {
-    display: flex; gap: 10px;
-    align-items: flex-start;
-    padding: 8px 0;
-    font-size: 13px;
-    color: var(--grey-100);
-    border-bottom: 1px solid var(--grey-20);
-  }
-  .trailer-card .tc-step:last-child { border-bottom: none; }
-  .trailer-card .tc-step .ts-num {
-    width: 22px; height: 22px;
-    border-radius: 50%;
-    background: var(--vert-accent-light);
-    color: var(--vert-accent-dark);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 11px; font-weight: 800;
-    flex-shrink: 0;
-  }
-  .trailer-card .tc-step .ts-text {
-    flex: 1; line-height: 1.4;
-  }
-  .trailer-card .tc-cta {
-    margin-top: 12px;
-    width: 100%;
-    background: var(--vert-accent);
-    color: white;
-    border: none; border-radius: var(--radius-pill);
-    padding: 12px;
-    font-family: var(--font); font-size: 13px; font-weight: 700;
-    cursor: pointer;
-  }
-
-  /* Chat dock */
-  .chat-dock {
-    flex-shrink: 0;
-    background: white;
-    border-top: 1px solid var(--grey-40);
-    padding: 10px var(--space-4) calc(10px + env(safe-area-inset-bottom, 0px));
-    display: flex; align-items: center; gap: 10px;
-  }
-  .chat-dock .chat-input {
-    flex: 1;
-    border: 1px solid var(--grey-40);
-    border-radius: var(--radius-pill);
-    padding: 10px 16px;
-    font-family: var(--font); font-size: 14px;
-    color: var(--grey-100);
-    outline: none;
-    background: var(--surface-ghost);
-  }
-  .chat-dock .chat-input:focus { border-color: var(--vert-accent); background: white; }
-  .chat-dock .icon-btn-mic {
-    width: 44px; height: 44px;
-    border-radius: 50%;
-    border: none;
-    background: var(--vert-accent);
-    color: white;
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-  }
-  .chat-dock .icon-btn-mic.recording {
-    background: var(--error);
-    animation: pulseRecord 1s ease-in-out infinite;
-  }
-  @keyframes pulseRecord {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(250,47,64,0.5); }
-    50% { box-shadow: 0 0 0 12px rgba(250,47,64,0); }
-  }
-
-  /* ============= COURSE PLAYER (swipeable carousel) ============== */
-  .course-progress {
-    flex-shrink: 0;
-    padding: 12px var(--space-4);
-    display: flex; gap: 4px;
-  }
-  .course-progress .seg {
-    flex: 1; height: 4px;
-    background: var(--grey-20);
-    border-radius: 2px;
-  }
-  .course-progress .seg.done { background: var(--vert-accent); }
-  .course-progress .seg.current {
-    background: linear-gradient(to right, var(--vert-accent) 50%, var(--grey-20) 50%);
-  }
-  .lesson-stack {
-    flex: 1;
-    display: flex; flex-direction: column;
-    overflow-y: auto;
-    padding: 0 var(--space-4) var(--space-4);
-  }
-  .lesson-card {
-    background: white;
-    border: 1px solid var(--grey-40);
-    border-radius: 22px;
-    padding: 22px;
-    margin-bottom: 14px;
-  }
-  /* In-chat variant — course step rendered inline as a chat message */
-  .lesson-card--in-chat {
-    margin: 8px 12px 14px;
-    padding: 18px;
-  }
-  .lesson-card--in-chat .lc-image { height: 100px; }
-  .lc-continue-row {
-    margin-top: 14px;
-    display: flex;
-    justify-content: flex-end;
-  }
-  .lc-continue-btn {
-    background: var(--surface-bold);
-    color: var(--text-on-bold);
-    border: none;
-    border-radius: 999px;
-    padding: 10px 18px;
-    font-family: var(--font);
-    font-size: 13px;
-    font-weight: 800;
-    cursor: pointer;
-    transition: transform 0.15s, background 0.15s;
-  }
-  .lc-continue-btn:hover { background: var(--primary-70); }
-  .lc-continue-btn:active { transform: scale(0.96); }
-  .lesson-card .lc-step {
-    font-size: 11px; font-weight: 700; color: var(--vert-accent-dark);
-    letter-spacing: 0.4px; text-transform: uppercase;
-    margin-bottom: 8px;
-  }
-  .lesson-card .lc-title {
-    font-size: 18px; font-weight: 800; color: var(--grey-100);
-    line-height: 1.3; margin-bottom: 10px;
-  }
-  .lesson-card .lc-image {
-    width: 100%; height: 120px;
-    border-radius: 14px;
-    background: var(--surface-ghost);
-    display: flex; align-items: center; justify-content: center;
-    margin-bottom: 12px;
-    font-size: 60px;
-  }
-  /* Icon variant — replaces giant emoji with a clean centered SVG */
-  .lesson-card .lc-image-icon {
-    background: linear-gradient(135deg, var(--primary-20) 0%, var(--surface-ghost-icon) 100%);
-    color: var(--surface-bold);
-  }
-  .lesson-card .lc-image-icon svg {
-    width: 56px; height: 56px;
-  }
-
-  /* Video placeholder — looks like a YouTube tile, plays a fake "playing" state */
-  .lc-video { margin-bottom: 12px; }
-  .lc-video-thumb {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    border-radius: 14px;
-    border: none;
-    cursor: pointer;
-    overflow: hidden;
-    background:
-      linear-gradient(135deg, #2a0d6e 0%, #3900ad 60%, #6464ff 100%);
-    padding: 0;
-    text-align: left;
-    transition: transform 0.15s;
-  }
-  .lc-video-thumb:hover { transform: translateY(-1px); }
-  .lc-video-thumb:active { transform: scale(0.98); }
-  .lc-video-overlay {
-    position: absolute; inset: 0;
-    background:
-      radial-gradient(60% 50% at 50% 50%, rgba(255,255,255,0.12) 0%, transparent 70%),
-      linear-gradient(to top, rgba(0,0,0,0.4) 0%, transparent 60%);
-  }
-  .lc-video-icon {
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    width: 52px; height: 52px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.95);
-    color: #3900ad;
-    display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.25);
-    transition: transform 0.15s, opacity 0.15s;
-  }
-  .lc-video-thumb:hover .lc-video-icon { transform: translate(-50%, -50%) scale(1.05); }
-  .lc-video-meta {
-    position: absolute;
-    bottom: 10px; left: 12px; right: 12px;
-    display: flex; justify-content: space-between; align-items: flex-end;
-    gap: 10px;
-    color: white;
-  }
-  .lc-video-pill {
-    background: rgba(0,0,0,0.55);
-    border-radius: 999px;
-    padding: 4px 9px;
-    font-size: 10px; font-weight: 700;
-    letter-spacing: 0.5px;
-    color: white;
-  }
-  .lc-video-caption {
-    font-size: 12px; font-weight: 700;
-    text-align: right;
-    max-width: 65%;
-    line-height: 1.2;
-    text-shadow: 0 1px 4px rgba(0,0,0,0.4);
-  }
-  /* "Playing" state — show progress + a stop icon */
-  .lc-video-thumb.playing .lc-video-icon {
-    background: #fa2f40; color: white;
-  }
-  .lc-video-thumb.playing::after {
-    content: '';
-    position: absolute;
-    left: 0; bottom: 0;
-    height: 3px; width: 0;
-    background: #25d366;
-    animation: videoProgress 6s linear forwards;
-  }
-  @keyframes videoProgress { to { width: 100%; } }
-
-  /* Course-complete celebration + next-step CTA */
-  .lc-celebrate {
-    width: 72px; height: 72px;
-    border-radius: 50%;
-    background: var(--success);
-    color: white;
-    display: flex; align-items: center; justify-content: center;
-    margin: 4px auto 14px;
-    box-shadow: 0 8px 24px rgba(37,171,33,0.25);
-  }
-  .lc-next-cta {
-    background: linear-gradient(180deg, #ffffff 0%, var(--primary-20) 100%);
-    border-color: var(--primary-30);
-  }
-  .lc-next-h {
-    font-size: 13px; font-weight: 800;
-    color: var(--surface-bold);
-    letter-spacing: 0.4px;
-    text-transform: uppercase;
-    margin-bottom: 10px;
-  }
-  .lc-next-primary {
-    display: flex; align-items: center; gap: 12px;
-    width: 100%;
-    background: var(--surface-bold);
-    color: white;
-    border: none;
-    border-radius: 14px;
-    padding: 14px 16px;
-    cursor: pointer;
-    text-align: left;
-    transition: all 0.15s;
-    font-family: var(--font);
-    margin-bottom: 10px;
-  }
-  .lc-next-primary:hover { background: var(--primary-70); transform: translateY(-1px); }
-  .lc-next-primary-icon {
-    width: 36px; height: 36px;
-    border-radius: 10px;
-    background: rgba(255,255,255,0.18);
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-  }
-  .lc-next-primary-label {
-    display: block;
-    font-size: 14px; font-weight: 800;
-  }
-  .lc-next-primary-sub {
-    display: block;
-    font-size: 11px; opacity: 0.85;
-    margin-top: 2px;
-  }
-  .lc-next-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-  }
-  .lc-next-chip {
-    display: flex; align-items: center; gap: 8px;
-    background: white;
-    border: 1px solid var(--stroke-subtle);
-    border-radius: 12px;
-    padding: 10px 12px;
-    cursor: pointer;
-    transition: all 0.15s;
-    font-family: var(--font);
-    font-size: 12px; font-weight: 700;
-    color: var(--text-high);
-    text-align: left;
-  }
-  .lc-next-chip:hover { border-color: var(--surface-bold); color: var(--surface-bold); }
-  .lc-next-chip-ghost {
-    grid-column: span 2;
-    background: transparent;
-    border-color: transparent;
-    justify-content: center;
-    color: var(--text-low);
-  }
-  .lc-next-chip-ghost:hover { color: var(--surface-bold); }
-  .lc-next-chip [data-icon] { line-height: 0; flex-shrink: 0; }
-  .lesson-card .lc-text {
-    font-size: 13px; line-height: 1.55; color: var(--grey-80);
-    margin-bottom: 12px;
-  }
-  .lesson-card .lc-text strong { color: var(--grey-100); font-weight: 700; }
-  .lesson-card .lc-doalong {
-    background: var(--surface-ghost);
-    border-radius: 14px;
-    padding: 12px;
-  }
-  .lesson-card .lc-doalong-h {
-    font-size: 11px; font-weight: 700; color: var(--surface-bold);
-    letter-spacing: 0.3px; text-transform: uppercase;
-    margin-bottom: 6px;
-  }
-  .lesson-card .lc-doalong-task {
-    font-size: 13px; color: var(--grey-100); font-weight: 600;
-    margin-bottom: 10px;
-  }
-  .lesson-card .lc-doalong-cta {
+    padding: 16px; border-radius: 18px;
     background: var(--surface-bold); color: white;
-    border: none; border-radius: var(--radius-pill);
-    padding: 8px 14px;
-    font-family: var(--font); font-size: 12px; font-weight: 700;
-    cursor: pointer;
+    cursor: pointer; transition: transform 0.15s; text-align: left;
+    border: none; font-family: var(--font);
   }
-  .lesson-nav {
-    flex-shrink: 0;
-    padding: 12px var(--space-4) calc(12px + env(safe-area-inset-bottom, 0px));
-    border-top: 1px solid var(--grey-40);
-    background: white;
-    display: flex; gap: 10px;
-  }
-  .lesson-nav .ln-prev {
-    flex: 1;
-    background: var(--surface-ghost);
-    border: none; border-radius: var(--radius-pill);
-    padding: 12px;
-    font-family: var(--font); font-size: 13px; font-weight: 700;
-    color: var(--grey-80);
-    cursor: pointer;
-  }
-  .lesson-nav .ln-next {
-    flex: 2;
-    background: var(--vert-accent);
-    color: white;
-    border: none; border-radius: var(--radius-pill);
-    padding: 12px;
-    font-family: var(--font); font-size: 13px; font-weight: 700;
-    cursor: pointer;
-  }
-
-  /* ============= AI FLUENCY TRACK ============== */
-  .fluency-hero {
-    background: var(--surface-ghost);
-    border-radius: 22px;
-    padding: 18px;
-    margin-bottom: var(--space-3);
-  }
-  .fluency-hero .fh-tag {
-    display: inline-flex;
-    padding: 4px 10px;
-    background: white; color: var(--vert-accent-dark);
-    border-radius: var(--radius-pill);
-    font-size: 11px; font-weight: 700;
-    letter-spacing: 0.3px; text-transform: uppercase;
-    margin-bottom: 10px;
-  }
-  .fluency-hero .fh-title {
-    font-size: 20px; font-weight: 900; color: var(--grey-100);
-    line-height: 1.2; margin-bottom: 6px;
-  }
-  .fluency-hero .fh-sub {
-    font-size: 13px; color: var(--icon-medium); font-weight: 500;
-    line-height: 1.4;
-  }
-
-  .skill-row {
-    border: 1px solid var(--grey-40);
-    border-radius: 14px;
-    padding: 12px;
-    background: white;
-    cursor: pointer;
-    display: flex; align-items: center; gap: 12px;
-    margin-bottom: 8px;
-    transition: all 0.15s;
-  }
-  .skill-row:hover { border-color: var(--vert-accent); }
-  .skill-row .sr-emoji {
-    width: 36px; height: 36px;
-    border-radius: 10px;
-    background: var(--vert-accent-light);
+  .continue-card:hover { transform: translateY(-2px); }
+  .continue-card .cc-thumb {
+    width: 46px; height: 46px; border-radius: 12px; flex-shrink: 0;
+    background: rgba(255,255,255,0.18); color: white;
     display: flex; align-items: center; justify-content: center;
-    font-size: 18px;
-    flex-shrink: 0;
   }
-  .skill-row .sr-text { flex: 1; min-width: 0; }
-  .skill-row .sr-title {
-    font-size: 13px; font-weight: 700; color: var(--grey-100);
-  }
-  .skill-row .sr-meta {
-    font-size: 11px; color: var(--grey-60); margin-top: 2px;
-  }
-  .skill-row .sr-time {
-    font-size: 10px; font-weight: 700; color: var(--vert-accent-dark);
-    background: var(--vert-accent-light);
-    padding: 4px 8px; border-radius: var(--radius-pill);
-    flex-shrink: 0;
-  }
+  .continue-card .cc-text { flex: 1; min-width: 0; }
+  .continue-card .cc-title { font-size: 15px; font-weight: 800; letter-spacing: -0.2px; }
+  .continue-card .cc-meta { font-size: 12px; font-weight: 500; opacity: 0.85; margin-top: 2px; }
+  .continue-card .cc-progress { height: 5px; border-radius: 3px; background: rgba(255,255,255,0.25); margin-top: 8px; overflow: hidden; }
+  .continue-card .cc-fill { height: 100%; background: white; border-radius: 3px; }
+  .continue-card .cc-arrow { flex-shrink: 0; opacity: 0.9; }
 
-  /* Prompt practice */
-  .prompt-card {
-    background: var(--surface-ghost);
-    border-radius: 18px;
-    padding: 18px;
-    margin-top: var(--space-3);
+  /* ============= CATEGORY ROWS (Seekho map) ============== */
+  .cat-scroll {
+    display: flex; gap: 10px; overflow-x: auto;
+    padding: 0 var(--space-4) 4px; scrollbar-width: none;
   }
-  .prompt-card .pc-h {
-    font-size: 11px; font-weight: 700; color: var(--surface-bold);
-    letter-spacing: 0.3px; text-transform: uppercase;
-    margin-bottom: 6px;
+  .cat-scroll::-webkit-scrollbar { display: none; }
+  .cat-tile {
+    flex: 0 0 168px; text-align: left;
+    border: 1px solid var(--grey-40); border-radius: 14px;
+    padding: 14px; background: white; cursor: pointer;
+    font-family: var(--font); display: flex; flex-direction: column; gap: 6px;
+    min-height: 92px; transition: all 0.15s;
   }
-  .prompt-card .pc-template {
-    background: white;
-    border-radius: 12px;
-    padding: 12px;
-    font-family: 'Monaco', 'Courier New', monospace;
-    font-size: 12px;
-    line-height: 1.5;
-    color: var(--grey-100);
-    margin-bottom: 10px;
+  .cat-tile:hover { border-color: var(--vert-accent); transform: translateY(-2px); }
+  .cat-tile .ct-badge {
+    width: 30px; height: 30px; border-radius: 9px;
+    background: var(--vert-accent-light); color: var(--vert-accent);
+    display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 900;
   }
-  .prompt-card .pc-template .var {
-    background: var(--vert-accent-light);
-    color: var(--vert-accent-dark);
-    padding: 1px 6px; border-radius: 4px;
-    font-weight: 700;
+  .cat-tile .ct-title { font-size: 13px; font-weight: 700; color: var(--grey-100); line-height: 1.3; }
+  .cat-tile .ct-meta { font-size: 11px; color: var(--text-low); font-weight: 600; margin-top: auto; }
+
+  /* ============= COURSE — in-chat ============== */
+  .plan-card, .lesson-big, .badge-card, .wa-card {
+    align-self: stretch; background: white;
+    border: 1px solid var(--stroke-subtle); border-radius: 18px;
+    padding: 16px; margin: 4px 0 8px; box-shadow: var(--shadow-sm);
   }
-  .prompt-card .pc-input {
-    width: 100%;
-    border: 1px solid rgba(0,0,0,0.1);
-    border-radius: 10px;
-    padding: 10px 12px;
-    font-family: var(--font); font-size: 13px;
-    margin-bottom: 8px;
-    background: white;
-    outline: none;
+  .plan-card .pl-h { font-size: 11px; font-weight: 800; letter-spacing: 0.4px; text-transform: uppercase; color: var(--vert-accent); margin-bottom: 12px; }
+  .plan-card .pl-step { display: flex; align-items: flex-start; gap: 11px; padding: 7px 0; border-bottom: 1px solid var(--grey-20); }
+  .plan-card .pl-step:last-child { border-bottom: none; }
+  .plan-card .pl-num { flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%; background: var(--vert-accent-light); color: var(--vert-accent); font-size: 11px; font-weight: 900; display: flex; align-items: center; justify-content: center; }
+  .plan-card .pl-t { font-size: 13.5px; font-weight: 600; color: var(--grey-100); line-height: 1.35; }
+
+  .lesson-big { background: linear-gradient(135deg, #f3f0ff 0%, var(--surface-ghost) 100%); border-color: var(--primary-20); }
+  .lesson-big .lb-step { font-size: 10.5px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; color: var(--vert-accent); }
+  .lesson-big .lb-h { font-size: 19px; font-weight: 900; letter-spacing: -0.3px; color: var(--grey-100); margin: 6px 0 8px; line-height: 1.2; }
+  .lesson-big .lb-body { font-size: 14px; line-height: 1.55; color: var(--grey-90); }
+
+  .badge-card { text-align: center; background: linear-gradient(135deg, #3900ad 0%, #6464ff 80%); border: none; color: white; }
+  .badge-card .bc-ring { width: 64px; height: 64px; margin: 0 auto 10px; border-radius: 50%; background: rgba(255,255,255,0.18); display: flex; align-items: center; justify-content: center; }
+  .badge-card .bc-h { font-size: 17px; font-weight: 900; letter-spacing: -0.2px; }
+  .badge-card .bc-sub { font-size: 13px; opacity: 0.9; margin-top: 4px; line-height: 1.4; }
+
+  /* WhatsApp share card */
+  .wa-card { background: #e7fce1; border-color: #b7e6ab; }
+  .wa-card .wa-h { display: flex; align-items: center; gap: 7px; font-size: 11px; font-weight: 800; letter-spacing: 0.3px; text-transform: uppercase; color: #1d8a3a; margin-bottom: 8px; }
+  .wa-card .wa-bubble { background: white; border-radius: 12px; border-top-left-radius: 3px; padding: 11px 13px; font-size: 13.5px; line-height: 1.5; color: var(--grey-100); box-shadow: 0 1px 2px rgba(0,0,0,0.06); }
+  .wa-card .wa-send { width: 100%; margin-top: 11px; background: #25d366; color: white; border: none; border-radius: var(--radius-pill); padding: 11px; font-family: var(--font); font-size: 14px; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
+
+  /* In-chat end buttons */
+  .course-end { align-self: stretch; display: flex; flex-direction: column; gap: 9px; margin: 6px 0 8px; }
+  .ce-btn {
+    border: 1px solid var(--stroke-subtle); background: white;
+    border-radius: 14px; padding: 13px 14px; font-family: var(--font);
+    font-size: 14px; font-weight: 700; color: var(--text-high);
+    cursor: pointer; display: flex; align-items: center; gap: 11px; text-align: left; transition: all 0.15s;
   }
-  .prompt-card .pc-go {
-    background: var(--vert-accent); color: white;
-    border: none; border-radius: var(--radius-pill);
-    padding: 10px 18px;
-    font-family: var(--font); font-size: 13px; font-weight: 700;
-    cursor: pointer;
-    width: 100%;
-  }
-  .prompt-result {
-    margin-top: 10px;
-    background: white;
-    border-radius: 12px;
-    padding: 12px;
-    font-size: 13px; line-height: 1.5;
-    color: var(--grey-100);
-    display: none;
-  }
-  .prompt-result.show { display: block; }
-  .prompt-result .pr-h {
-    font-size: 10px; font-weight: 700; color: var(--vert-accent-dark);
-    letter-spacing: 0.3px; text-transform: uppercase;
-    margin-bottom: 8px;
-  }
-  .prompt-result ol {
-    padding-left: 16px;
-  }
-  .prompt-result li {
-    margin-bottom: 4px;
-  }
+  .ce-btn:hover { border-color: var(--vert-accent); }
+  .ce-btn .ce-icon { flex-shrink: 0; width: 32px; height: 32px; border-radius: 9px; background: var(--vert-accent-light); color: var(--vert-accent); display: flex; align-items: center; justify-content: center; }
+  .ce-btn .ce-text { flex: 1; min-width: 0; }
+  .ce-btn .ce-sub { font-size: 11.5px; font-weight: 500; color: var(--text-low); margin-top: 1px; }
+  .ce-btn.primary { background: var(--vert-accent); border-color: var(--vert-accent); color: white; }
+  .ce-btn.primary .ce-icon { background: rgba(255,255,255,0.2); color: white; }
+  .ce-btn.primary .ce-sub { color: rgba(255,255,255,0.85); }
+
+  /* ============= REMINDER BOTTOM SHEET ============== */
+  .sheet-backdrop { position: absolute; inset: 0; z-index: 100; background: rgba(0,0,0,0.45); display: none; align-items: flex-end; opacity: 0; transition: opacity 0.2s ease; }
+  .sheet-backdrop.open { display: flex; opacity: 1; }
+  .sheet { width: 100%; background: white; border-radius: 24px 24px 0 0; padding: 10px var(--space-4) calc(var(--space-5) + env(safe-area-inset-bottom, 0px)); transform: translateY(100%); transition: transform 0.28s cubic-bezier(0.2,0.9,0.3,1); max-height: 88%; overflow-y: auto; }
+  .sheet-backdrop.open .sheet { transform: translateY(0); }
+  .sheet-grab { width: 38px; height: 4px; border-radius: 2px; background: var(--grey-40); margin: 0 auto 14px; }
+  .sheet-h { font-size: 19px; font-weight: 900; letter-spacing: -0.3px; color: var(--grey-100); }
+  .sheet-sub { font-size: 13px; color: var(--grey-80); line-height: 1.45; margin-top: 6px; }
+  .sheet-group { margin-top: 18px; }
+  .sheet-group-h { font-size: 11px; font-weight: 800; letter-spacing: 0.4px; text-transform: uppercase; color: var(--text-low); margin-bottom: 10px; }
+  .sheet-opts { display: flex; flex-wrap: wrap; gap: 8px; }
+  .sheet-opt { border: 1.5px solid var(--grey-40); background: white; border-radius: 999px; padding: 9px 15px; font-family: var(--font); font-size: 13px; font-weight: 600; color: var(--text-high); cursor: pointer; transition: all 0.12s; }
+  .sheet-opt.sel { border-color: var(--vert-accent); background: var(--primary-20); color: var(--vert-accent-dark); font-weight: 700; }
+  .sheet-set { width: 100%; margin-top: 22px; background: var(--vert-accent); color: white; border: none; border-radius: var(--radius-pill); padding: 15px; font-family: var(--font); font-size: 15px; font-weight: 800; cursor: pointer; }
 
   @media (min-width: 600px) {
     .phone-frame { box-shadow: var(--shadow-lg); border-radius: 32px; margin-top: 24px; height: calc(100vh - 48px); }
     body { background: var(--surface-moderate); }
-  }
-
-  /* ============= ZERO-STATE styles (microlearning) — compact ============= */
-  .zero-hero-card {
-    margin: 10px var(--space-4) 4px;
-    padding: 12px 14px;
-    border-radius: 16px;
-    background: linear-gradient(135deg, var(--primary-20) 0%, var(--surface-ghost-icon) 100%);
-    border: 1px solid var(--stroke-subtle);
-    display: flex; flex-direction: column; gap: 2px;
-  }
-  .zero-hero-card .zh-tag {
-    display: none;  /* compacted: tag was redundant */
-  }
-  .zero-hero-card .zh-title {
-    font-size: 15px; font-weight: 800; letter-spacing: -0.2px;
-    color: var(--surface-bold); line-height: 1.25;
-  }
-  .zero-hero-card .zh-sub {
-    font-size: 12px; line-height: 1.4;
-    color: var(--text-low); font-weight: 500;
-  }
-
-  /* "What you'll walk away with" preview cards (replaces Skills Earned) */
-  .zero-promise-strip {
-    display: flex; flex-direction: column; gap: 8px;
-  }
-  .zero-promise-card {
-    display: flex; align-items: center; gap: 12px;
-    background: var(--white);
-    border: 1px dashed var(--primary-30);
-    border-radius: 14px;
-    padding: 12px 14px;
-  }
-  .zero-promise-card .zpc-icon {
-    width: 32px; height: 32px;
-    border-radius: 10px;
-    background: var(--primary-20);
-    color: var(--surface-bold);
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-  }
-  .zero-promise-card .zpc-text {
-    font-size: 13px; font-weight: 600;
-    color: var(--text-high); line-height: 1.35;
   }
 </style>
 </head>
@@ -940,1021 +160,420 @@
   <div class="view active" id="view-home">
     <div class="top-bar">
       <button class="icon-btn" onclick="window.location.href='index.html'" aria-label="Back">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-          <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-        </svg>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
       </button>
       <div class="title-area">
         <div class="t1">Micro Learning</div>
         <div class="t2">Got 10 min? Learn one thing well.</div>
       </div>
-      
     </div>
 
     <div class="view-body">
-      <!-- Zero-state welcome — no money tracker yet, nothing to continue.
-           Just an inviting "this is what we do" hero. -->
-      <div class="zero-hero-card">
-        <div class="zh-tag">Welcome</div>
-        <div class="zh-title">10 minutes. One skill. Real money.</div>
-        <div class="zh-sub">Pick a category below, tell me what's stuck, and I'll walk you through fixing it — with a do-along you can finish today.</div>
+      <!-- Zero-state: nothing to resume yet — a first-time welcome -->
+      <div style="margin: var(--space-4) var(--space-4) 0; padding: 16px; border-radius: 18px; background: linear-gradient(135deg, var(--primary-20), var(--surface-ghost)); border: 1px solid var(--stroke-subtle);">
+        <div style="font-size: 16px; font-weight: 800; letter-spacing: -0.2px; color: var(--surface-bold);">Pick a skill, learn it in ~10 minutes.</div>
+        <div style="font-size: 12.5px; font-weight: 500; color: var(--text-low); line-height: 1.45; margin-top: 4px;">Each course is a few big cards — a quick plan, then the skill step by step. Tap any topic below to begin.</div>
       </div>
 
-      <!-- Categories — primary entry point for the zero-state user -->
-      <div class="section-h">What kind of work do you do?</div>
-      <div class="subtracks">
-        <div class="subtrack st-creator" onclick="startSubtrack('creator')">
-          <div class="st-emoji"><span data-icon="video" data-size="20"></span></div>
-          <div>
-            <div class="st-name">Creator</div>
-            <div class="st-meta">Hooks · Titles · Thumbnails · Edits</div>
-          </div>
-        </div>
-        <div class="subtrack st-shopkeeper" onclick="startSubtrack('shop')">
-          <div class="st-emoji"><span data-icon="whatsapp" data-size="20"></span></div>
-          <div>
-            <div class="st-name">Shopkeeper</div>
-            <div class="st-meta">WhatsApp · Inventory · POS</div>
-          </div>
-        </div>
-        <div class="subtrack st-office" onclick="startSubtrack('office')">
-          <div class="st-emoji"><span data-icon="briefcase" data-size="20"></span></div>
-          <div>
-            <div class="st-name">Office</div>
-            <div class="st-meta">Excel · Email · Slides</div>
-          </div>
-        </div>
-        <div class="subtrack st-ai-fluency" onclick="startSubtrack('ai_fluency')">
-          <div class="st-emoji"><span data-icon="sparkles" data-size="20"></span></div>
-          <div>
-            <div class="st-name">AI Fluency</div>
-            <div class="st-meta">ChatGPT · Image gen · Voice</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Zero-state: no Skills earned yet. Replaced with a "what you'll
-           walk away with" preview so the user can see the shape of value. -->
-      <div class="section-h">What you'll walk away with</div>
-      <div class="zero-promise-strip">
-        <div class="zero-promise-card">
-          <div class="zpc-icon"><span data-icon="thumbnail" data-size="18"></span></div>
-          <div class="zpc-text">A skill badge for each course you finish</div>
-        </div>
-        <div class="zero-promise-card">
-          <div class="zpc-icon"><span data-icon="document" data-size="18"></span></div>
-          <div class="zpc-text">Phrases + templates saved to your phrasebook</div>
-        </div>
-        <div class="zero-promise-card">
-          <div class="zpc-icon"><span data-icon="star" data-size="18"></span></div>
-          <div class="zpc-text">A do-along you'll have done by the end of today</div>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- Ask-me-anything dock with suggested chips — single entry point at the bottom -->
-    <div class="gc-input-dock">
-      <div class="dock-chips" role="list">
-        <button class="dock-chip" onclick="startChatWith('thumbnail')">YouTube thumbnail</button>
-        <button class="dock-chip" onclick="startChatWith('excel')">Excel VLOOKUP</button>
-        <button class="dock-chip" onclick="startChatWith('whatsapp_campaign')">WhatsApp campaign</button>
-        <button class="dock-chip" onclick="startChatWith('chatgpt')">ChatGPT prompts</button>
-      </div>
-      <div class="gc-input-wrap">
-        <div class="gc-input-text">
-          <input type="text" placeholder="Ask me anything — what's stuck?" readonly onclick="startChat()">
-        </div>
-        <div class="gc-input-actions">
-          <div class="gc-input-left">
-            <button class="gc-input-icon-btn" aria-label="Add" onclick="startChat()">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20 11h-7V4a1 1 0 00-2 0v7H4a1 1 0 000 2h7v7a1 1 0 002 0v-7h7a1 1 0 000-2z"/></svg>
-            </button>
-          </div>
-          <div class="gc-input-right">
-            <button class="gc-input-icon-btn" aria-label="Mic" onclick="startChat()">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 15a3 3 0 003-3V5a3 3 0 00-6 0v7a3 3 0 003 3zm6-5a1 1 0 00-1 1v1a5 5 0 11-10 0v-1a1 1 0 10-2 0v1a7 7 0 1014 0v-1a1 1 0 00-1-1zm-3 10H9a1 1 0 000 2h6a1 1 0 000-2z"/></svg>
-            </button>
-            <button class="gc-input-speak-btn" onclick="startChat()">
-              <svg viewBox="0 0 24 24"><path d="M12 15a3 3 0 003-3V5a3 3 0 00-6 0v7a3 3 0 003 3zm6-5a1 1 0 00-1 1v1a5 5 0 11-10 0v-1a1 1 0 10-2 0v1a7 7 0 1014 0v-1a1 1 0 00-1-1z"/></svg>
-              <span>Speak</span>
-            </button>
-          </div>
-        </div>
-      </div>
+      <!-- Seekho category rows -->
+      <div id="cat_host"><!-- renderCategories() --></div>
     </div>
   </div>
 
-  <!-- ========================== JUST-IN-TIME CHAT ========================== -->
-  <div class="view" id="view-chat">
+  <!-- ========================== COURSE (in-chat) ========================== -->
+  <div class="view" id="view-course">
     <div class="top-bar">
       <button class="icon-btn" onclick="showView('home')" aria-label="Back">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-          <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-        </svg>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
       </button>
       <div class="title-area">
-        <div class="t1">Micro Learning</div>
-        <div class="t2">Tell me what's stuck</div>
+        <div class="t1" id="course_title">Course</div>
+        <div class="t2" id="course_sub">Micro Learning</div>
       </div>
     </div>
-
-    <!-- Guided chat — chip-driven canned demo -->
-    <div class="guided-chat" id="ml_chat"></div>
-
-    <!-- OG-style chat input dock — always visible (canned demo) -->
-    <div class="gc-input-dock">
-      <div class="gc-input-wrap">
-        <div class="gc-input-text">
-          <input type="text" placeholder="Ask the coach anything…" readonly>
-        </div>
-        <div class="gc-input-actions">
-          <div class="gc-input-left">
-            <button class="gc-input-icon-btn" aria-label="Add" onclick="startChat()">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20 11h-7V4a1 1 0 00-2 0v7H4a1 1 0 000 2h7v7a1 1 0 002 0v-7h7a1 1 0 000-2z"/></svg>
-            </button>
-          </div>
-          <div class="gc-input-right">
-            <button class="gc-input-icon-btn" aria-label="Mic" onclick="if(mlVoice){try{mlVoice.replayLast();}catch(e){}}">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 15a3 3 0 003-3V5a3 3 0 00-6 0v7a3 3 0 003 3zm6-5a1 1 0 00-1 1v1a5 5 0 11-10 0v-1a1 1 0 10-2 0v1a7 7 0 1014 0v-1a1 1 0 00-1-1zm-3 10H9a1 1 0 000 2h6a1 1 0 000-2z"/></svg>
-            </button>
-            <button class="gc-input-speak-btn" onclick="if(mlVoice){try{mlVoice.replayLast();}catch(e){}}">
-              <svg viewBox="0 0 24 24"><path d="M12 15a3 3 0 003-3V5a3 3 0 00-6 0v7a3 3 0 003 3zm6-5a1 1 0 00-1 1v1a5 5 0 11-10 0v-1a1 1 0 10-2 0v1a7 7 0 1014 0v-1a1 1 0 00-1-1z"/></svg>
-              <span>Speak</span>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
+    <div class="guided-chat" id="courseChat"></div>
   </div>
 
-  <!-- Course Player view removed — courses now render inline inside view-chat
-       as lesson-cards. The user can scroll up in the chat to see the original
-       diagnosis conversation. Back-button on the chat returns to home. -->
-
-  <!-- ========================== AI FLUENCY TRACK ========================== -->
-  <div class="view" id="view-ai-fluency">
-    <div class="top-bar">
-      <button class="icon-btn" onclick="showView('home')" aria-label="Back">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-          <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-        </svg>
-      </button>
-      <div class="title-area">
-        <div class="t1">AI Fluency · Creator</div>
-        <div class="t2">Use AI like a tool, not a toy</div>
-      </div>
-    </div>
-
-    <div class="view-body">
-      <div class="fluency-hero">
-        <div class="fh-tag">8 micro-skills · Creator track</div>
-        <div class="fh-title">From "ChatGPT pe kya likhna hai" to job-ready outputs</div>
-        <div class="fh-sub">Each skill ends with a real output you'll use — a title bank, a thumbnail brief, a script outline.</div>
-      </div>
-
-      <div class="section-h">Today's lesson</div>
-      <div class="skill-row" onclick="openPromptPractice()">
-        <div class="sr-emoji"><span data-icon="document" data-size="18"></span></div>
-        <div class="sr-text">
-          <div class="sr-title">ChatGPT for YouTube titles</div>
-          <div class="sr-meta">Hands-on prompt · You'll generate 10 titles for your real video</div>
-        </div>
-        <div class="sr-time">8 min</div>
-      </div>
-
-      <div class="section-h">Next up</div>
-      <div class="skill-row">
-        <div class="sr-emoji"><span data-icon="brain" data-size="18"></span></div>
-        <div class="sr-text">
-          <div class="sr-title">AI image gen for thumbnails</div>
-          <div class="sr-meta">DALL-E + Midjourney basics · Free tools first</div>
-        </div>
-        <div class="sr-time">12 min</div>
-      </div>
-      <div class="skill-row">
-        <div class="sr-emoji"><span data-icon="mic" data-size="18"></span></div>
-        <div class="sr-text">
-          <div class="sr-title">ElevenLabs voice in your shorts</div>
-          <div class="sr-meta">Clone your voice · 5 demo voices included</div>
-        </div>
-        <div class="sr-time">10 min</div>
-      </div>
-      <div class="skill-row">
-        <div class="sr-emoji"><span data-icon="brain" data-size="18"></span></div>
-        <div class="sr-text">
-          <div class="sr-title">Use ChatGPT to read YouTube analytics</div>
-          <div class="sr-meta">Ask "why did this video drop 60%" and get a real answer</div>
-        </div>
-        <div class="sr-time">8 min</div>
-      </div>
-      <div class="skill-row">
-        <div class="sr-emoji"><span data-icon="flame" data-size="18"></span></div>
-        <div class="sr-text">
-          <div class="sr-title">Automate your YouTube descriptions</div>
-          <div class="sr-meta">A prompt that writes SEO-friendly descriptions in 10 sec</div>
-        </div>
-        <div class="sr-time">6 min</div>
-      </div>
-
-      <!-- Hands-on prompt -->
-      <div class="prompt-card" id="prompt_practice" style="display: none;">
-        <div class="pc-h">▶ Hands-on practice</div>
-        <div class="pc-template">
-          Give me 10 clickable YouTube titles<br>
-          for a video about <span class="var" id="var_topic">_____</span><br>
-          in <span class="var" id="var_style">_____</span> style.
-        </div>
-        <input type="text" class="pc-input" id="pp_topic" placeholder="Topic (e.g. Indore street food)">
-        <input type="text" class="pc-input" id="pp_style" placeholder="Style (e.g. surprising, listicle, story)">
-        <button class="pc-go" onclick="runPrompt()">Run prompt →</button>
-        <div class="prompt-result" id="prompt_result">
-          <div class="pr-h">✨ ChatGPT response</div>
-          <ol id="prompt_titles"></ol>
+  <!-- ========================== REMINDER SHEET ========================== -->
+  <div class="sheet-backdrop" id="reminderSheet" onclick="if(event.target===this)closeReminderSheet()">
+    <div class="sheet">
+      <div class="sheet-grab"></div>
+      <div class="sheet-h">I'll remind you to keep learning</div>
+      <div class="sheet-sub">First nudge lands <strong>tomorrow</strong>. Pick when and how often.</div>
+      <div class="sheet-group">
+        <div class="sheet-group-h">Time of day</div>
+        <div class="sheet-opts" id="rem-time">
+          <button class="sheet-opt" data-v="Morning (8 AM)">Morning · 8 AM</button>
+          <button class="sheet-opt sel" data-v="Evening (7 PM)">Evening · 7 PM</button>
+          <button class="sheet-opt" data-v="Night (9 PM)">Night · 9 PM</button>
         </div>
       </div>
-    </div>
-
-    <!-- Ask the coach — available on every screen -->
-    <div class="gc-input-dock gc-input-dock-compact">
-      <div class="gc-input-wrap">
-        <div class="gc-input-text">
-          <input type="text" placeholder="Ask the coach anything…" readonly onclick="startChat()">
-        </div>
-        <div class="gc-input-actions">
-          <div class="gc-input-right">
-            <button class="gc-input-icon-btn" aria-label="Mic" onclick="startChat()">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 15a3 3 0 003-3V5a3 3 0 00-6 0v7a3 3 0 003 3zm6-5a1 1 0 00-1 1v1a5 5 0 11-10 0v-1a1 1 0 10-2 0v1a7 7 0 1014 0v-1a1 1 0 00-1-1zm-3 10H9a1 1 0 000 2h6a1 1 0 000-2z"/></svg>
-            </button>
-          </div>
+      <div class="sheet-group">
+        <div class="sheet-group-h">How often</div>
+        <div class="sheet-opts" id="rem-freq">
+          <button class="sheet-opt sel" data-v="every day">Every day</button>
+          <button class="sheet-opt" data-v="every other day">Every other day</button>
+          <button class="sheet-opt" data-v="on weekends">Weekends</button>
         </div>
       </div>
+      <button class="sheet-set" onclick="confirmReminder()">Set my learning reminder</button>
     </div>
   </div>
 
 </div>
 
-<script>window.AUDIO_BASE = "../assets/audio/";</script>
-<script src="../shared/icons.js"></script>
-<script src="../shared/personas.js"></script>
-<script src="../shared/tts-cache.js"></script>
-<script src="../shared/jbiq-voice.js"></script>
-<script src="../shared/multimodal.js"></script>
-<script src="../shared/guided-chat.js"></script>
+<script src="../shared/multimodal.js?v=2"></script>
+<script src="../shared/guided-chat.js?v=2"></script>
 <script>
+/* =========================================================================
+ * VIEW SWITCHING — home + one in-chat course view
+ * ========================================================================= */
 function showView(name) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.getElementById('view-' + name).classList.add('active');
-  if (name !== 'chat' && mlVoice) mlVoice.stop();
-  const body = document.querySelector('#view-' + name + ' .view-body, #view-' + name + ' .chat-area, #view-' + name + ' .lesson-stack');
+  const body = document.querySelector('#view-' + name + ' .view-body');
   if (body) body.scrollTop = 0;
 }
 
 /* =========================================================================
- * JUST-IN-TIME CHAT — problem capture → root cause → N-step plan
+ * SEEKHO CONTENT MAP — categories, each with a row of sub-courses.
+ * Sourced from Seekho_Content_Map (Top 100 Subthemes), AI expanded.
  * ========================================================================= */
-let mlVoice = null;
-function ensureMLVoice() {
-  if (mlVoice) return mlVoice;
-  mlVoice = JBIQVoice.create({
-    persona: 'microlearning_coach',
-    onError: (e) => console.error(e),
-  });
-  return mlVoice;
-}
-// Latency status pill helper
-function showMlThinking(label, ms) {
-  const chat = document.getElementById('ml_chat');
-  return window.GC.status(chat, label || 'Pulling the right skill…', ms || 700);
-}
+const CATEGORIES = [
+  { id: 'content', name: 'Content creation', subs: [
+    { id: 'yt-channel',   title: 'YouTube channel kaise banaye' },
+    { id: 'shorts-viral', title: 'Shorts viral karne ke tips' },
+    { id: 'thumbnail',    title: 'Thumbnail design secrets' },
+    { id: 'video-4k',     title: 'Video 4K quality kaise kare' },
+    { id: 'dolly-zoom',   title: 'Dolly zoom effect editing' },
+  ] },
+  { id: 'instagram', name: 'Instagram', subs: [
+    { id: 'reel-1m',      title: 'Reel par 1 million views' },
+    { id: 'ig-unfreeze',  title: 'Instagram account unfreeze' },
+    { id: 'watch-time',   title: 'Reel watch-time kaise badhaye' },
+    { id: 'hidden-growth',title: 'Hidden page growth settings' },
+  ] },
+  { id: 'ai', name: 'AI', subs: [
+    { id: 'ai-kya-hai',   title: 'AI kya hai' },
+    { id: 'ai-image',     title: 'AI se image kaise banayein' },
+    { id: 'ai-prompt',    title: 'Advanced prompt engineering' },
+    { id: 'ai-ppt',       title: 'ChatGPT se PPT banao' },
+    { id: 'ai-blog',      title: 'AI se blog writing earning' },
+  ] },
+  { id: 'income', name: 'Part-time income', subs: [
+    { id: 'delivery-app', title: 'Delivery app se kamai' },
+    { id: 'dropshipping', title: 'Dropshipping product research' },
+    { id: 'wa-marketing', title: 'WhatsApp se marketing' },
+    { id: 'candle-biz',   title: 'Candle making business' },
+    { id: 'no-ad-cust',   title: 'Bina ad ke customer laao' },
+  ] },
+  { id: 'money', name: 'Money & finance', subs: [
+    { id: 'cibil',        title: 'CIBIL score 750+ kaise badhaye' },
+    { id: 'budgeting',    title: 'Paisa track aur budgeting' },
+    { id: 'emergency',    title: 'Emergency fund kaise banaye' },
+    { id: 'stock-start',  title: 'Stock market me pehla kadam' },
+    { id: 'intraday',     title: 'Intraday trading basics' },
+  ] },
+  { id: 'self', name: 'Self-growth', subs: [
+    { id: 'overthinking', title: 'Overthinking se bahar aaye' },
+    { id: 'morning',      title: 'Morning routine kaise fix kare' },
+    { id: 'mental',       title: 'Mental strength kaise badhaye' },
+    { id: 'comfort-zone', title: 'Comfort zone se bahar niklo' },
+  ] },
+];
 
-const PROBLEM_FLOWS = {
-  // ============ Creator track ============
-  thumbnail: {
-    rootCause: "Likely your hook isn't visible in the thumbnail. The first 3 frames matter — face + text + tension.",
-    plan: [
-      "Hook patterns — what makes a face/text combo work",
-      "Title-thumbnail match test — they should mean the same thing",
-      "Thumbnail psychology — 1 emotion per thumbnail, not 3",
-      "A/B mini-test — 3 thumbnails, pick winner in 24h",
-      "Re-upload one old video with the new thumbnail",
-    ],
-    courseId: 'yt-hook-patterns',
-  },
-  title: {
-    rootCause: "Your titles are likely descriptive, not curious. Curiosity beats description.",
-    plan: [
-      "What makes a title curious (gap, surprise, stakes)",
-      "10 title patterns that work in Hindi-English mix",
-      "Title-thumbnail consistency check",
-      "Run ChatGPT prompt to generate 10 titles",
-      "Pick top 2, A B test on next video",
-    ],
-    courseId: 'yt-titles',
-  },
-  views: {
-    rootCause: "Three usual suspects — your hook, your title, or your thumbnail. Let me rank them by impact for your channel.",
-    plan: [
-      "First-3-second hook diagnosis",
-      "Title vs thumbnail mismatch check",
-      "Audience retention curve read",
-      "One-skill-at-a-time fix plan",
-      "Re-test on next 3 videos",
-    ],
-    courseId: 'yt-hook-patterns',
-  },
-  chatgpt: {
-    rootCause: "Most people give ChatGPT a sentence. Pros give it a structure — role plus task plus format plus constraints.",
-    plan: [
-      "The 4-part prompt formula",
-      "Role-setting (You are a YouTube growth strategist)",
-      "Task plus format (Give me 10 titles in this format)",
-      "Constraints (each under 60 chars, Hindi-English mix)",
-      "Hands-on: write your own prompt for your real channel",
-    ],
-    courseId: 'ai-prompts',
-  },
+// Flat lookup: subId → { sub, catId, catName, nextSub }
+const SUB_INDEX = {};
+CATEGORIES.forEach(cat => cat.subs.forEach((s, i) => {
+  SUB_INDEX[s.id] = { sub: s, catId: cat.id, catName: cat.name, next: cat.subs[i + 1] || null };
+}));
 
-  // ============ Office track ============
-  excel: {
-    rootCause: "VLOOKUP and pivot tables are the two skills that save 80 percent of Excel time. Most people Google syntax every time — let me show you the pattern.",
-    plan: [
-      "VLOOKUP in plain English — when, why, how",
-      "Common errors and how to read them",
-      "Pivot tables — drag, drop, done",
-      "INDEX-MATCH (the modern VLOOKUP)",
-      "Hands-on: clean a real expense sheet",
+/* =========================================================================
+ * COURSE CONTENT — specific lessons for the AI track; everything else uses
+ * a contextual generic builder (keeps the file lean, every course works).
+ * ========================================================================= */
+const COURSE_CONTENT = {
+  'ai-kya-hai': {
+    plan: ['AI matlab kya hai', 'Roz ke kaam mein AI', 'Tools jo aapke paas hain', 'Aaj ek cheez try karo'],
+    lessons: [
+      { h: 'AI matlab kya?', body: 'AI ek smart assistant hai jo aapke instruction (prompt) padhke kaam karta hai — likhna, image banana, sawaalon ke jawab dena. Koi magic nahi; bas patterns se seekha hua hai.' },
+      { h: 'Roz ke kaam mein', body: 'Caption likhwana, video ideas, lambi cheez ka short summary, translation, image — sab AI kar sakta hai. Aap soch ko shabdon mein bolo, AI baaki sambhaal lega.' },
+      { h: 'Jo tools aapke paas hain', body: 'ChatGPT aur Gemini (text ke liye), aur image banane ke free tools — sab phone par chal jaate hain. Shuru karne ke liye kuch download nahi chahiye.' },
+      { h: 'Aaj ek cheez try karo', body: 'ChatGPT kholo aur poochho: "5 reel ideas do [aapka topic] ke liye." Bas — aapne AI use kar liya. Yahi pehla kadam hai.' },
     ],
-    courseId: 'office-excel',
   },
-  email: {
-    rootCause: "Most office emails fail because they bury the ask. One-line subject, one-line ask, then context. Reverse pyramid wins.",
-    plan: [
-      "Subject lines that get opened",
-      "Reverse pyramid structure (ask first, context after)",
-      "Tone — formal vs friendly vs urgent",
-      "Templates: status update, escalation, apology",
-      "Hands-on: rewrite one of your sent emails",
+  'ai-image': {
+    plan: ['Image AI kaise samajhta hai', 'Achha prompt ka formula', 'Free tools', 'Aaj ek image banao'],
+    lessons: [
+      { h: 'AI image kaise banata hai', body: 'Aap shabdon mein scene describe karte ho, AI woh picture bana deta hai. Jitna clear aur specific description, utni behtar image milegi.' },
+      { h: 'Achhe prompt ka formula', body: 'Subject + style + detail + mood. Jaise: "A chai stall at sunset, cinematic, warm light, realistic." Chote prompt = aam image; rich prompt = standout image.' },
+      { h: 'Konse tools free hain', body: 'Bing/Copilot image, Gemini, aur kai free apps — phone se hi. Ek prompt likho, 4 options aati hain, best chuno.' },
+      { h: 'Aaj banao', body: 'Apne agle reel ka thumbnail AI se banao — ek line mein describe karo, generate dabao, aur dekho kaise turant ek option mil jaata hai.' },
     ],
-    courseId: 'office-email',
   },
-  slides: {
-    rootCause: "One idea per slide, six words max per bullet. Most decks fail because every slide screams. Let it breathe.",
-    plan: [
-      "The 6-by-6 rule (max 6 lines, max 6 words)",
-      "Title-as-takeaway pattern",
-      "Color and contrast for clarity",
-      "Build animations — only where they help",
-      "Hands-on: rewrite a 12-slide deck into 6",
+  'ai-prompt': {
+    plan: ['Role do', 'Constraints lagao', 'Example do (few-shot)', 'Refine karte raho'],
+    lessons: [
+      { h: 'Role se shuru karo', body: 'Prompt ki shuruaat mein role do: "You are a YouTube growth expert…". Isse AI ka jawab turant sharp aur on-point ho jaata hai.' },
+      { h: 'Constraints lagao', body: 'Exactly kya chahiye batao: "10 titles do, no emojis, har ek 60 characters se kam." Vague prompt ka jawab bhi vague aata hai.' },
+      { h: 'Example do (few-shot)', body: 'Ek-do example do ki output kaisa chahiye. AI pattern pakad leta hai aur waise hi aage banata hai — yeh sabse powerful trick hai.' },
+      { h: 'Pehla jawab final nahi', body: 'Iterate karo: "make it punchier", "shorter", "thoda Hinglish mein". Achha output baat-cheet se banta hai, ek shot mein nahi.' },
     ],
-    courseId: 'office-slides',
   },
-
-  // ============ Shop track ============
-  whatsapp_campaign: {
-    rootCause: "WhatsApp open rates are 90 percent — but only if you send to the right list at the right time. Generic broadcasts burn your number.",
-    plan: [
-      "Segmenting your customer list",
-      "Message timing windows that work",
-      "Broadcast vs Group vs Status — which when",
-      "Templates: promo, restock, reminder",
-      "Hands-on: send 1 segmented campaign",
+  'ai-ppt': {
+    plan: ['Pehle outline', 'Slide content', 'Speaker notes', 'Aaj ek PPT banao'],
+    lessons: [
+      { h: 'Outline pehle banwao', body: 'ChatGPT se poochho: "Make a 6-slide outline on [topic] — title + 3 bullets per slide." Structure pehle, design baad mein.' },
+      { h: 'Slide ka content', body: 'Har slide ka content generate karwao, phir Google Slides ya PowerPoint mein paste karo. 10 minute mein draft taiyaar.' },
+      { h: 'Speaker notes', body: 'Bolo "add short speaker notes for each slide." Ab aapke paas bolne ke liye points bhi hain — presentation ready.' },
+      { h: 'Aaj try karo', body: 'Apne agle kaam ki ek 5-slide PPT AI se banao. Dekhna kitna time bachta hai.' },
     ],
-    courseId: 'shop-whatsapp',
   },
-  inventory: {
-    rootCause: "Stockouts and overstock both kill margin. The fix is a 2-number system — par level and reorder level. Simpler than it sounds.",
-    plan: [
-      "Par level vs reorder level",
-      "Top 20 SKUs that drive 80 percent of revenue",
-      "Free Google Sheet template",
-      "Weekly stock-take in 15 minutes",
-      "Hands-on: set par levels for your top 10 items",
+  'ai-blog': {
+    plan: ['Kaam kahan milta hai', 'Quality kaise rakhein', 'Pricing', 'Aaj pehla sample'],
+    lessons: [
+      { h: 'Kaam kahan milega', body: 'Freelance sites aur local businesses ko blogs, captions, product descriptions chahiye. AI se aap fast deliver kar sakte ho — yahi aapka edge hai.' },
+      { h: 'Quality kaise rakhein', body: 'AI se draft banwao, phir aap edit + fact-check karo aur apni awaaz add karo. Sirf copy-paste se kaam nahi chalega — value aapke touch mein hai.' },
+      { h: 'Charge kitna karein', body: 'Per article ya monthly retainer. Pehle ek sample dikhao, chhote client se shuru karo, phir rate badhao.' },
+      { h: 'Aaj ka kadam', body: 'Ek topic chuno, AI se ek sample blog banao, edit karo — yeh aapke portfolio ka pehla piece hai.' },
     ],
-    courseId: 'shop-inventory',
-  },
-
-  default: {
-    rootCause: "Got it — let me find the right starting point for that.",
-    plan: [
-      "Diagnose the root cause",
-      "Pick the highest-impact skill",
-      "Quick teach-by-example",
-      "Hands-on do-along on your real work",
-      "3-day redo nudge to lock it in",
-    ],
-    courseId: 'yt-hook-patterns',
   },
 };
 
-function startChat() {
-  showView('chat');
-  const chat = document.getElementById('ml_chat');
-  chat.innerHTML = '';
-  // Generic, track-agnostic blank-slate opener. The suggestions span
-  // every track so the user can land here from anywhere.
-  appendAIBubble("Ask me anything — what's stuck, what you want to learn, or where you want to get better.");
-  setTimeout(() => { try { ensureMLVoice().speak("Ask me anything. What do you want to learn?", 'en-IN'); } catch (e) {} }, 200);
-  setTimeout(() => appendChips([
-    { text: "My YouTube thumbnail isn't clicking", key: 'thumbnail' },
-    { text: "Excel formula stuck (VLOOKUP)", key: 'excel' },
-    { text: "WhatsApp campaign for my shop", key: 'whatsapp_campaign' },
-    { text: "ChatGPT prompting — make it actually useful", key: 'chatgpt' },
-  ], handleProblem), 700);
-}
-
-// Used by the home-card suggestion chips — pre-pick a problem and jump
-// straight into the diagnosis.
-function startChatWith(problemKey) {
-  showView('chat');
-  const chat = document.getElementById('ml_chat');
-  chat.innerHTML = '';
-  const labels = {
-    thumbnail:         "My YouTube thumbnail isn't clicking",
-    excel:             "Excel formula stuck (VLOOKUP)",
-    email:             "My office emails get ignored",
-    slides:            "My slides look cluttered",
-    whatsapp_campaign: "WhatsApp campaign for my shop",
-    inventory:         "Stockouts + overstock both happening",
-    chatgpt:           "ChatGPT prompting — make it actually useful",
-    title:             "My YouTube titles are boring",
-    views:             "Views are dropping on recent videos",
-  };
-  appendAIBubble("Ask me anything — what's stuck, what you want to learn, or where you want to get better.");
-  setTimeout(() => handleProblem({ text: labels[problemKey] || 'Help me with this', key: problemKey }), 350);
-}
-
-function handleProblem(chip) {
-  appendUserBubble(chip.text);
-  const flow = PROBLEM_FLOWS[chip.key] || PROBLEM_FLOWS.default;
-
-  showMlThinking('Diagnosing root cause…', 900).then(() => {
-    appendAIBubble(flow.rootCause);
-    try { ensureMLVoice().speak(flow.rootCause, 'en-IN'); } catch (e) {}
-    setTimeout(() => showTrailer(flow), 1100);
-  });
-}
-
-function showTrailer(flow) {
-  const chat = document.getElementById('ml_chat');
-  const stepsHtml = flow.plan.map((s, i) =>
-    `<div class="rc-step"><div class="rc-step-num">${i+1}</div><div>${s}</div></div>`
-  ).join('');
-  const html = `
-    <div class="rich-card rich-card--trailer">
-      <div class="rc-h">
-        <div class="rc-icon">${window.GC.ICONS.tip}</div>
-        <div class="rc-label">My 12-min plan</div>
-      </div>
-      <div class="rc-rootcause">${flow.rootCause}</div>
-      <div class="rc-steps">${stepsHtml}</div>
-      <div class="rc-actions">
-        <button class="rc-btn" data-launch="${flow.courseId}">Start the course</button>
-      </div>
-    </div>`;
-  const wrap = document.createElement('div');
-  wrap.innerHTML = html;
-  const cardEl = wrap.firstElementChild;
-  chat.appendChild(cardEl);
-  cardEl.querySelectorAll('[data-launch]').forEach(btn => {
-    btn.addEventListener('click', () => launchCourse(btn.getAttribute('data-launch')));
-  });
-  chat.scrollTop = chat.scrollHeight;
-}
-
-// Launch a course INSIDE the chat — one continuous scroll. The earlier
-// problem-diagnosis conversation stays above; course steps are appended as
-// rich lesson cards. Replaces the old separate view-course screen.
-function launchCourse(courseId, startIdx) {
-  if (document.querySelector('.view.active')?.id !== 'view-chat') {
-    showView('chat');
-  }
-  currentCourseId = courseId;
-  currentStepIdx = typeof startIdx === 'number' ? startIdx : 0;
-  appendCourseStep();
-}
-
-function appendAIBubble(text)  { return window.GC.appendAi(document.getElementById('ml_chat'), text, 'JBIQ'); }
-function appendUserBubble(text) { return window.GC.appendUser(document.getElementById('ml_chat'), text); }
-function appendChips(chips, onPick) { return window.GC.appendChips(document.getElementById('ml_chat'), chips, onPick); }
-// (Mic + text input removed — chat is fully chip-driven canned demo.)
-
-function startSubtrack(track) {
-  showView('chat');
-  const chat = document.getElementById('ml_chat');
-  chat.innerHTML = '';
-
-  // Per-track opener line + chip set. Each track surfaces only its own
-  // problem flows so the suggestions stay relevant.
-  const OPENERS = {
-    creator:     "Creator track. Tell me what's stuck — hooks, titles, thumbnails, or edits?",
-    shop:        "Shop track. WhatsApp campaigns, inventory, or your POS — what's broken?",
-    office:      "Office track. Excel, email, or slides — what's eating your time?",
-    ai_fluency:  "AI Fluency. ChatGPT, image gen, voice — which one do you want to get sharper at?",
-  };
-  const CHIPS = {
-    creator: [
-      { text: "Thumbnail not clicking",                key: 'thumbnail' },
-      { text: "Titles are boring",                     key: 'title' },
-      { text: "ChatGPT prompts aren't useful",         key: 'chatgpt' },
-      { text: "Views dropping on recent videos",       key: 'views' },
-    ],
-    shop: [
-      { text: "WhatsApp campaign not converting",      key: 'whatsapp_campaign' },
-      { text: "Stockouts + overstock both happening",  key: 'inventory' },
-      { text: "Need a fast way to track sales",        key: 'inventory' },
-    ],
-    office: [
-      { text: "VLOOKUP / pivot table stuck",           key: 'excel' },
-      { text: "My emails get ignored",                 key: 'email' },
-      { text: "My slides look cluttered",              key: 'slides' },
-    ],
-    ai_fluency: [
-      { text: "ChatGPT prompts aren't useful",         key: 'chatgpt' },
-      { text: "Image gen for thumbnails",              key: 'chatgpt' },
-      { text: "Read my YouTube analytics with AI",     key: 'chatgpt' },
+function buildCourse(sub) {
+  if (COURSE_CONTENT[sub.id]) return COURSE_CONTENT[sub.id];
+  const t = sub.title;
+  return {
+    plan: ['Why it matters', 'The core method', 'Common mistakes', 'Your action step'],
+    lessons: [
+      { h: 'Why it matters', body: `"${t}" — get the pattern right and results come fast. We'll skip the theory and go straight to how it's actually done.` },
+      { h: 'The method, step by step', body: 'Start with the simplest version and do it once, end to end — even if it\'s rough. Then improve one thing each time. Doing beats waiting to feel "ready".' },
+      { h: 'What trips most people up', body: 'Two traps: trying to be perfect on day one, and copying others without understanding why it works. Understand the why, then make it your own.' },
+      { h: 'Your action for today', body: 'Pick one small thing from this and do it in the next 10 minutes. That single action is what turns "watched it" into "learned it".' },
     ],
   };
-
-  const opener = OPENERS[track] || PROBLEM_FLOWS.default.rootCause;
-  const chips  = CHIPS[track]   || CHIPS.creator;
-
-  appendAIBubble(opener);
-  setTimeout(() => { try { ensureMLVoice().speak(opener, 'en-IN'); } catch (e) {} }, 200);
-  setTimeout(() => appendChips(chips, handleProblem), 700);
-}
-
-function continueCourse() {
-  // Coming from the home "Continue where you left off" card — clear any
-  // stale chat and drop the user straight into the next course card. No
-  // opener; they know what they were doing.
-  showView('chat');
-  const chat = document.getElementById('ml_chat');
-  if (chat) chat.innerHTML = '';
-  launchCourse('yt-hook-patterns', 2);
 }
 
 /* =========================================================================
- * COURSE PLAYER — swipeable card carousel with do-alongs
+ * HOME — continue card + category rows
  * ========================================================================= */
-// Course steps now use `icon:` (JDS icon name) instead of `emoji:` (raw glyph).
-// Each step can also declare `video:` — either a YouTube embed ID for live demo
-// content, or null for a placeholder "tutorial video" card.
-const COURSES = {
-  'yt-hook-patterns': {
-    title: "YouTube Hook Patterns",
-    nextCourseId: 'yt-titles',
-    steps: [
-      { title: "What makes a hook?",                icon: 'hook',      video: 'placeholder',
-        text: "<strong>Hook = curiosity gap.</strong> First 3 seconds either tease something the viewer doesn't know yet, or shock them. \"Most people miss this\" is a hook. \"Today I'll show you 5 tips\" is not.",
-        doalong: "Open your last video. Watch the first 3 seconds. Where's the gap?",
-        cta: "I checked — let's go" },
-      { title: "3 hook patterns that work in 2026", icon: 'flame-jds', video: 'placeholder',
-        text: "<strong>1. The wrong assumption</strong> — \"Everyone says do X. They're wrong.\"<br><strong>2. The micro-stakes</strong> — \"This 1-second mistake cost me 40K views.\"<br><strong>3. The contrast</strong> — \"Watch this video for 10 seconds. Then watch yours.\"",
-        doalong: "Pick one pattern. Write it for your next video right now.",
-        cta: "Done — show me what's next" },
-      { title: "Hook + thumbnail = 1 idea",         icon: 'thumbnail', video: 'placeholder',
-        text: "Your <strong>hook</strong> and your <strong>thumbnail</strong> should mean the same thing. If your thumbnail says \"how I made ₹50K\", your first sentence shouldn't be \"hi guys welcome back.\" It should be \"This video made me ₹52,400.\"",
-        doalong: "Your last 3 thumbnails — do they match your first sentence?",
-        cta: "Match check done" },
-      { title: "A/B mini-test (10 mins)",           icon: 'split',
-        text: "<strong>The 3-thumbnail test:</strong> Make 3 thumbnails for the same video. Ask 5 friends — \"Which one would you click?\" Pick the winner. Use that. Pure speed > perfect alone.",
-        doalong: "Make 3 thumbnails for your next video. Send to 5 people. Pick the winner.",
-        cta: "On it" },
-      { title: "The redo move",                     icon: 'refresh',
-        text: "<strong>Re-upload trick:</strong> Pick your best-performing video from 6 months ago. Make a new thumbnail using your new hook pattern. Re-upload. Watch what happens. Most creators 2x their views.",
-        doalong: "Pick the video. Make the new thumbnail. Re-upload by tomorrow.",
-        cta: "Got it. Done." },
-    ],
-  },
-  'yt-titles': {
-    title: "YouTube Title Writing",
-    nextCourseId: 'ai-prompts',
-    steps: [
-      { title: "Curiosity > description",          icon: 'document',  video: 'placeholder',
-        text: "<strong>Boring titles describe. Good titles tease.</strong> \"My day in Indore\" describes. \"What ₹500 buys you in Indore — went horribly wrong\" teases. The second one creates a gap the viewer needs filled.",
-        doalong: "Open your last 3 video titles. Are they descriptions or teases?",
-        cta: "Checked" },
-      { title: "5 patterns that work",             icon: 'list',
-        text: "<strong>1. Wrong assumption</strong> — \"Everyone says X. They're wrong.\"<br><strong>2. Stakes</strong> — \"This 5-minute mistake cost me 40K views.\"<br><strong>3. Gap</strong> — \"Most thumbnail tutorials skip this one thing.\"<br><strong>4. Number</strong> — \"3 hooks I steal from MrBeast.\"<br><strong>5. Contrast</strong> — \"Watch mine for 10 sec. Then watch yours.\"",
-        doalong: "Pick one pattern. Write a title for your next video using it.",
-        cta: "Title written" },
-      { title: "Title-thumbnail must match",       icon: 'thumbnail',
-        text: "<strong>If your thumbnail says \"how I made ₹50K\", your title can't say \"my journey as a creator\".</strong> The thumbnail and title together must mean the same thing — that's where most creators lose CTR.",
-        doalong: "Pick your latest video. Do the thumbnail and title say the same thing?",
-        cta: "Match check done" },
-      { title: "Length sweet spot: 50-60 chars",   icon: 'chevron-right',
-        text: "On YouTube, anything over 60 characters gets cut on mobile. Your most important word should be in the first 30 chars. <strong>\"Best ₹100 Indore street food — I tried 7 places\"</strong> beats <strong>\"Today I went to Indore and tried street food on a budget of ₹100 across multiple places\"</strong>.",
-        doalong: "Trim your latest title to under 60 chars. What's the most important word?",
-        cta: "Trimmed" },
-      { title: "A/B test 3 titles, pick winner",   icon: 'split',
-        text: "<strong>Don't guess.</strong> Write 3 titles. Send them to 5 friends with the same thumbnail — \"which would you click?\" Pick the winner. Use it. <strong>Speed > perfect alone.</strong>",
-        doalong: "Write 3 titles for your next video. Send to 5 people. Pick winner.",
-        cta: "Done. On to the next video." },
-    ],
-  },
-  'ai-prompts': {
-    title: "ChatGPT Prompting Basics",
-    nextCourseId: 'yt-hook-patterns',
-    steps: [
-      { title: "The 4-part formula",               icon: 'sparkles',  video: 'placeholder',
-        text: "Most people give ChatGPT a sentence. Pros give it <strong>4 parts</strong>: <strong>Role</strong> (\"You are a YouTube growth strategist\"), <strong>Task</strong> (\"Give me 10 titles for…\"), <strong>Format</strong> (\"each under 60 chars\"), <strong>Constraints</strong> (\"in Hindi-English mix, surprising tone\"). All 4 = better outputs.",
-        doalong: "Write a 4-part prompt for your next video right now.",
-        cta: "Prompt written" },
-      { title: "Role-setting changes everything",  icon: 'chat',
-        text: "<strong>\"Tell me about thumbnails\"</strong> → boring generic answer.<br><strong>\"You are a top YouTube creator with 100M views. Tell me what most thumbnails get wrong.\"</strong> → specific, sharp.<br>Adding a role makes ChatGPT sample from a smaller, better part of its training.",
-        doalong: "Run the same question with and without a role. Compare answers.",
-        cta: "Compared" },
-      { title: "Format = control",                 icon: 'list',
-        text: "<strong>Tell ChatGPT exactly how to format the answer.</strong> \"Give me 10 titles, each under 60 chars, separated by newlines, no quotes, no numbering.\" → exactly that. Without format hints, you get markdown lists, intros, and \"hope this helps!\" garbage.",
-        doalong: "Write a prompt that asks for exactly 10 titles, no intro, no numbering.",
-        cta: "Format set" },
-      { title: "Constraints make it real",         icon: 'check-circle',
-        text: "<strong>\"Give me 10 titles\"</strong> → too generic.<br><strong>\"Give me 10 clickable titles for a video about Indore street food, in Hindi-English mix, surprising tone, each under 60 chars.\"</strong> → usable.<br>The more specific the constraints, the more usable the output.",
-        doalong: "Add 3 constraints to your prompt. Re-run.",
-        cta: "Re-run done" },
-      { title: "Hands-on: your real prompt",       icon: 'send',
-        text: "Now write the prompt for YOUR next video using all 4 parts. Then go to the AI Fluency track \"ChatGPT for YouTube titles\" lesson — there's a hands-on field there to test it live.",
-        doalong: "Write the full 4-part prompt for your real next video. Save it.",
-        cta: "Saved. Open hands-on practice." },
-    ],
-  },
+const RESUME = { subId: 'ai-image', lesson: 2 };   // "continue where you left off" target
 
-  // ============ OFFICE TRACK COURSES ============
-  'office-excel': {
-    title: "Excel: VLOOKUP + Pivot Tables",
-    nextCourseId: 'office-email',
-    steps: [
-      { title: "VLOOKUP in plain English",         icon: 'excel',     video: 'placeholder',
-        text: "<strong>VLOOKUP = look up a value in column 1, return a value from column N.</strong> Think customer ID → customer name. The syntax: <strong>=VLOOKUP(what_you_have, where_to_look, which_column, FALSE)</strong>. The FALSE means exact match — always use FALSE unless you know what you're doing.",
-        doalong: "Open a sheet with two tabs. Write a VLOOKUP that pulls a name from an ID.",
-        cta: "Wrote it" },
-      { title: "Common errors and what they mean", icon: 'check-circle',
-        text: "<strong>#N/A</strong> — value not found. Usually a typo or a number stored as text.<br><strong>#REF!</strong> — column number is wrong or the lookup range got cut.<br><strong>#NAME?</strong> — you misspelled VLOOKUP.<br>The fix is almost always: re-check the first argument matches what's in column 1.",
-        doalong: "Trigger a #N/A on purpose. Then fix it.",
-        cta: "Fixed" },
-      { title: "Pivot tables in 30 seconds",       icon: 'list',      video: 'placeholder',
-        text: "<strong>Pivot tables = drag and drop summary.</strong> Highlight your data, Insert → PivotTable. Drag a field into <strong>Rows</strong> (what you want to group by), drag another into <strong>Values</strong> (what you want to count/sum). That's it — you just built a report.",
-        doalong: "Take any sales sheet. Build a pivot: rows = product, values = sum of sales.",
-        cta: "Done" },
-      { title: "INDEX-MATCH: the modern VLOOKUP",  icon: 'sparkles',
-        text: "<strong>VLOOKUP can only look right.</strong> If your lookup column is to the right of what you want to return, VLOOKUP breaks. <strong>INDEX-MATCH</strong> looks in any direction. Syntax: <strong>=INDEX(return_column, MATCH(what_you_have, lookup_column, 0))</strong>. Once you know it, you stop using VLOOKUP.",
-        doalong: "Convert your VLOOKUP from step 1 into INDEX-MATCH.",
-        cta: "Converted" },
-      { title: "Hands-on: clean a real sheet",     icon: 'briefcase',
-        text: "Take your messiest expense or sales sheet. Apply: VLOOKUP to merge two tabs, a pivot to summarize, and one INDEX-MATCH where VLOOKUP wouldn't work. <strong>15 minutes max.</strong>",
-        doalong: "Pick the sheet. Set a 15-min timer. Go.",
-        cta: "Cleaned" },
-    ],
-  },
-  'office-email': {
-    title: "Email That Gets Replies",
-    nextCourseId: 'office-slides',
-    steps: [
-      { title: "Subject lines that get opened",    icon: 'mail',      video: 'placeholder',
-        text: "<strong>Lead with the outcome, not the request.</strong> \"Need approval for Q3 budget\" beats \"Quick question\". \"Status update — project XYZ on track\" beats \"Update\". The subject is your headline — make it specific and outcome-led.",
-        doalong: "Rewrite the subject of your last 3 sent emails.",
-        cta: "Rewrote" },
-      { title: "Reverse pyramid — ask first",      icon: 'chevron-up',
-        text: "<strong>One-line ask. Then context.</strong> \"Can you approve the attached budget by Friday?\" → THEN three lines of context. Most office emails bury the ask in paragraph 4. Readers skim — give them the ask immediately, let them choose to read the context.",
-        doalong: "Open a sent email. Move the ask to line 1.",
-        cta: "Restructured" },
-      { title: "Tone: formal vs friendly vs urgent", icon: 'chat',
-        text: "<strong>Mirror the recipient.</strong> Formal: \"Could you please review by EOD\". Friendly: \"Mind taking a look when you get a sec?\". Urgent: \"Need this by 5pm to avoid blocking shipping\". <strong>Wrong tone = wrong response speed.</strong> Read their last email before you reply.",
-        doalong: "Pick 3 recipients. What tone fits each?",
-        cta: "Tagged" },
-      { title: "3 templates for hard emails",      icon: 'document',  video: 'placeholder',
-        text: "<strong>Status update:</strong> \"Where we are, what's next, what I need from you.\"<br><strong>Escalation:</strong> \"Here's the issue, here's what I tried, here's what I need.\"<br><strong>Apology:</strong> \"Specific mistake, specific fix, specific prevention.\"<br>Memorize the shape — fill it for any situation.",
-        doalong: "Draft one status update for your manager. Use the template.",
-        cta: "Drafted" },
-      { title: "Hands-on: rewrite a real email",   icon: 'send',
-        text: "Pick a sent email from this week that you wish had landed better. Rewrite it in 5 minutes using the reverse pyramid + the right tone + a clear subject. Send only if it's clearly better.",
-        doalong: "Pick the email. 5-min timer. Rewrite. Send.",
-        cta: "Sent" },
-    ],
-  },
-  'office-slides': {
-    title: "Slides That Don't Suck",
-    nextCourseId: 'office-excel',
-    steps: [
-      { title: "The 6-by-6 rule",                  icon: 'slides',    video: 'placeholder',
-        text: "<strong>Max 6 lines per slide. Max 6 words per line.</strong> If you can't say it that tight, you don't understand it yet. Walls of text kill attention. Slides are a backing track for your voice, not a script.",
-        doalong: "Open your last deck. Count words on the busiest slide.",
-        cta: "Counted" },
-      { title: "Title-as-takeaway",                icon: 'check-circle',
-        text: "<strong>The title is the takeaway, not the topic.</strong> Bad: \"Q3 Revenue\". Good: \"Q3 revenue up 14% — driven by enterprise renewals\". If someone only reads titles, they should still get your story.",
-        doalong: "Rewrite the titles of your last 5 slides as takeaways.",
-        cta: "Rewrote" },
-      { title: "Color, contrast, hierarchy",       icon: 'star',
-        text: "<strong>One accent color. White space is your friend.</strong> Pick 2 fonts max (one for titles, one for body). Bold what matters, dim what doesn't. Most decks fail because every slide screams — let them breathe.",
-        doalong: "Pick one slide. Strip everything that isn't critical. How much is left?",
-        cta: "Stripped" },
-      { title: "Build animations — only where they help", icon: 'play', video: 'placeholder',
-        text: "<strong>Animate to reveal logic, not to decorate.</strong> Build up a chart bar-by-bar to walk through reasoning. Don't fly text in from the left because it's fun. Every animation must answer: \"Does this help the audience follow the argument?\"",
-        doalong: "Pick a slide with animations. Cut every animation that's decorative.",
-        cta: "Cut" },
-      { title: "Hands-on: 12 slides → 6",          icon: 'split',
-        text: "Take a 12-slide deck. Merge, cut, simplify. End at 6 slides. <strong>Every cut slide makes your story sharper.</strong> If you can't cut to 6, the story isn't tight enough yet.",
-        doalong: "Open the deck. Cut to 6 slides in 20 minutes.",
-        cta: "Done" },
-    ],
-  },
+function renderHome() {
+  // Continue card (returning user only — zero-state omits it)
+  const cc = document.getElementById('continue_card');
+  if (cc) {
+    const r = SUB_INDEX[RESUME.subId];
+    const total = buildCourse(r.sub).lessons.length;
+    const pct = Math.round((RESUME.lesson / total) * 100);
+    cc.innerHTML = `
+      <span class="cc-thumb"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+      <span class="cc-text">
+        <span class="cc-title">${r.sub.title}</span>
+        <span class="cc-meta">${r.catName} · Lesson ${RESUME.lesson + 1} of ${total}</span>
+        <span class="cc-progress"><span class="cc-fill" style="width:${pct}%"></span></span>
+      </span>
+      <span class="cc-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span>`;
+  }
 
-  // ============ SHOP TRACK COURSES ============
-  'shop-whatsapp': {
-    title: "WhatsApp for Your Shop",
-    nextCourseId: 'shop-inventory',
-    steps: [
-      { title: "Segment, don't blast",             icon: 'whatsapp',  video: 'placeholder',
-        text: "<strong>A broadcast to 500 unsegmented contacts = ignored.</strong> Split your list into 3-5 tags: regulars, festival-only, recent buyers, dormant. Each gets a different message. Same message, different segments → 4x response rate.",
-        doalong: "Tag your top 50 contacts into 3 groups.",
-        cta: "Tagged" },
-      { title: "Timing windows that convert",      icon: 'stopwatch',
-        text: "<strong>Best windows for shop campaigns:</strong> Tue-Thu 11am-1pm, Sat 4-6pm. Avoid Monday mornings (inbox overflow) and Sunday evenings (family time). Test 2 windows for 4 weeks, keep the winner.",
-        doalong: "Schedule next week's campaign in the right window.",
-        cta: "Scheduled" },
-      { title: "Broadcast vs Group vs Status",     icon: 'list',
-        text: "<strong>Broadcast:</strong> 1-to-many, looks personal (best for promos). <strong>Group:</strong> many-to-many, builds community (best for VIP regulars). <strong>Status:</strong> passive, no obligation (best for daily restock updates). Each does ONE thing well.",
-        doalong: "Map your next 3 messages to the right channel.",
-        cta: "Mapped" },
-      { title: "Promo / restock / reminder templates", icon: 'document', video: 'placeholder',
-        text: "<strong>Promo:</strong> Specific offer + deadline + one image. <strong>Restock:</strong> Item back in stock + price + reserve link. <strong>Reminder:</strong> One personal line + one nudge. <strong>Keep it under 4 lines.</strong> Memorize the shape.",
-        doalong: "Write one of each — promo, restock, reminder.",
-        cta: "Written" },
-      { title: "Hands-on: send 1 segmented campaign", icon: 'send',
-        text: "Pick your top 30 contacts. Tag them into 2 segments. Send a tailored message to each. Track responses for 48 hours. <strong>If response rate doubles, you've found your model.</strong>",
-        doalong: "Set up + send today. Check responses in 48h.",
-        cta: "Sent" },
-    ],
-  },
-  'shop-inventory': {
-    title: "Stock That Doesn't Run Out",
-    nextCourseId: 'shop-whatsapp',
-    steps: [
-      { title: "Par level + reorder level",        icon: 'inventory', video: 'placeholder',
-        text: "<strong>Par level = how much you want on the shelf at all times.</strong> <strong>Reorder level = the trigger to refill.</strong> When stock drops below reorder level, refill back to par level. Two numbers, total clarity. No spreadsheet wizardry needed.",
-        doalong: "Pick your bestseller. What's the par level? Reorder level?",
-        cta: "Set" },
-      { title: "The 20% that drives 80%",          icon: 'flame-jds',
-        text: "<strong>Pareto applies to your stock too.</strong> 20% of your SKUs drive 80% of revenue. Find them. Manage them tight. The other 80% can be looser — review them quarterly, not weekly. Don't waste attention on slow movers.",
-        doalong: "List your top 5 SKUs by revenue. That's your tight-management list.",
-        cta: "Listed" },
-      { title: "The free Google Sheet template",   icon: 'excel',     video: 'placeholder',
-        text: "<strong>3 columns: Item, Par, Reorder.</strong> One row per SKU. Update once a week, takes 15 minutes. Color-code: green = above reorder, yellow = at reorder, red = below par. <strong>One glance, full status.</strong>",
-        doalong: "Build the sheet. Add your top 20 SKUs.",
-        cta: "Built" },
-      { title: "The 15-min weekly stock-take",     icon: 'stopwatch',
-        text: "<strong>Same time, same day, every week.</strong> Walk the shop. Count the top 20. Update the sheet. Place orders for anything below reorder level. Done in 15 minutes. <strong>Consistency beats elaborate systems.</strong>",
-        doalong: "Schedule the recurring stock-take in your calendar.",
-        cta: "Scheduled" },
-      { title: "Hands-on: set par levels for top 10", icon: 'check-circle',
-        text: "Take your top 10 SKUs. Set par level (peak weekly demand × 1.5) and reorder level (par × 0.4). Write them in the sheet. <strong>That's your inventory system — done.</strong>",
-        doalong: "Set par + reorder for 10 SKUs. 10 minutes.",
-        cta: "Done" },
-    ],
-  },
-};
-let currentCourseId = 'yt-hook-patterns';
-let currentStepIdx = 0;
-
-// Legacy helper — kept as a thin wrapper so older call sites still work.
-// (Was used by view-course; now everything goes through launchCourse().)
-function loadCourse(courseId, startIdx) {
-  launchCourse(courseId, startIdx);
+  // Category rows
+  const host = document.getElementById('cat_host');
+  host.innerHTML = '';
+  CATEGORIES.forEach(cat => {
+    const section = document.createElement('div');
+    section.innerHTML = `<div class="section-h">${cat.name}</div><div class="cat-scroll"></div>`;
+    const scroll = section.querySelector('.cat-scroll');
+    cat.subs.forEach(s => {
+      const lessons = buildCourse(s).lessons.length;
+      const tile = document.createElement('button');
+      tile.className = 'cat-tile';
+      tile.innerHTML = `
+        <span class="ct-badge">${cat.name.charAt(0)}</span>
+        <span class="ct-title">${s.title}</span>
+        <span class="ct-meta">${lessons} lessons · ~${lessons * 2} min</span>`;
+      tile.onclick = () => openCourse(s.id);
+      scroll.appendChild(tile);
+    });
+    host.appendChild(section);
+  });
 }
 
-// Append the current course step as an inline card in #ml_chat. Each step
-// gets its own card, stacked under the previous chat content. Scroll up at
-// any time to see the original "what's stuck?" conversation that led here.
-function appendCourseStep() {
-  const course = COURSES[currentCourseId];
-  if (!course) return;
-  const step = course.steps[currentStepIdx];
-  const chat = document.getElementById('ml_chat');
-  if (!chat) return;
+function continueCourse() { openCourse(RESUME.subId, RESUME.lesson); }
 
-  const iconName = step.icon || 'play';
-  const iconHtml = (window.JDS && window.JDS.icon)
-    ? window.JDS.icon(iconName, { size: 32 })
-    : '';
+/* =========================================================================
+ * COURSE FLOW — all in the chat: plan → big lesson cards → finish options
+ * ========================================================================= */
+let course = { subId: null, data: null, idx: 0 };
 
-  const videoHtml = step.video ? `
-    <div class="lc-video">
-      <button class="lc-video-thumb" onclick="playLessonVideo(this)">
-        <div class="lc-video-overlay"></div>
-        <div class="lc-video-icon">${(window.JDS && window.JDS.icon) ? window.JDS.icon('play', { size: 28 }) : '▶'}</div>
-        <div class="lc-video-meta">
-          <div class="lc-video-pill">TUTORIAL · 2:18</div>
-          <div class="lc-video-caption">${step.title}</div>
-        </div>
-      </button>
-    </div>` : '';
+function chatEl() { return document.getElementById('courseChat'); }
 
-  const isLast = currentStepIdx >= course.steps.length - 1;
+function openCourse(subId, resumeLesson) {
+  const info = SUB_INDEX[subId];
+  if (!info) return;
+  course = { subId, data: buildCourse(info.sub), idx: 0 };
+  document.getElementById('course_title').textContent = info.sub.title;
+  document.getElementById('course_sub').textContent = info.catName;
+  showView('course');
+  const chat = chatEl();
+  chat.innerHTML = '';
+
+  if (typeof resumeLesson === 'number') {
+    // Resume straight into a lesson (Continue where you left off).
+    window.GC.appendAi(chat, `Welcome back — let's pick up "${info.sub.title}" where you left off.`);
+    course.idx = resumeLesson;
+    setTimeout(() => showLesson(course.idx), 700);
+    return;
+  }
+
+  window.GC.appendAi(chat, `Let's get started — I'm creating your learning plan for "${info.sub.title}"…`);
+  window.GC.status(chat, 'building your plan', 1100).then(() => showPlan());
+}
+
+function showPlan() {
+  const chat = chatEl();
+  const steps = course.data.plan;
   const card = document.createElement('div');
-  card.className = 'lesson-card lesson-card--in-chat fade-in-up';
+  card.className = 'plan-card';
+  card.innerHTML = `<div class="pl-h">📋 Your learning plan · ${steps.length} short lessons</div>` +
+    steps.map((s, i) => `<div class="pl-step"><span class="pl-num">${i + 1}</span><span class="pl-t">${s}</span></div>`).join('');
+  chat.appendChild(card);
+  chat.scrollTop = chat.scrollHeight;
+  setTimeout(() => {
+    window.GC.appendChips(chat, [{ text: 'Start learning →', key: 'go' }], () => showLesson(0));
+  }, 500);
+}
+
+function showLesson(i) {
+  course.idx = i;
+  const chat = chatEl();
+  const lessons = course.data.lessons;
+  const lesson = lessons[i];
+  const card = document.createElement('div');
+  card.className = 'lesson-big';
   card.innerHTML = `
-    <div class="lc-step">${course.title} · Step ${currentStepIdx + 1} of ${course.steps.length}</div>
-    <div class="lc-title">${step.title}</div>
-    <div class="lc-image lc-image-icon">${iconHtml}</div>
-    ${videoHtml}
-    <div class="lc-text">${step.text}</div>
-    ${step.doalong ? `
-      <div class="lc-doalong">
-        <div class="lc-doalong-h">▶ Do this now</div>
-        <div class="lc-doalong-task">${step.doalong}</div>
-        <button class="lc-doalong-cta" onclick="markDoalong()">${step.cta || 'Done'}</button>
-      </div>
-    ` : ''}
-    <div class="lc-continue-row">
-      <button class="lc-continue-btn" onclick="nextLesson()">${isLast ? 'Finish course →' : 'Continue →'}</button>
-    </div>
-  `;
+    <div class="lb-step">Lesson ${i + 1} of ${lessons.length}</div>
+    <div class="lb-h">${lesson.h}</div>
+    <div class="lb-body">${lesson.body}</div>`;
+  chat.appendChild(card);
+  chat.scrollTop = chat.scrollHeight;
+
+  setTimeout(() => {
+    const last = i >= lessons.length - 1;
+    window.GC.appendChips(chat, [{ text: last ? 'Continue →' : 'Next →', key: 'n' }], () => {
+      if (last) showWrap();
+      else showLesson(i + 1);
+    });
+  }, 450);
+}
+
+function showWrap() {
+  const chat = chatEl();
+  window.GC.appendAi(chat, "That's the whole skill. Quick recap done — ready to lock it in?");
+  setTimeout(() => {
+    window.GC.appendChips(chat, [{ text: 'Finish course ✓', key: 'fin' }], () => finishCourse());
+  }, 500);
+}
+
+function finishCourse() {
+  const chat = chatEl();
+  const info = SUB_INDEX[course.subId];
+  const badge = document.createElement('div');
+  badge.className = 'badge-card';
+  badge.innerHTML = `
+    <div class="bc-ring"><svg width="30" height="30" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div class="bc-h">Course complete!</div>
+    <div class="bc-sub">${info.sub.title} — nicely done.</div>`;
+  chat.appendChild(badge);
+  chat.scrollTop = chat.scrollHeight;
+
+  setTimeout(() => {
+    const end = document.createElement('div');
+    end.className = 'course-end';
+    const next = info.next;
+    end.innerHTML = `
+      <button class="ce-btn primary" id="ce_remind">
+        <span class="ce-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="ce-text">Remind me to practise<span class="ce-sub">A quick nudge so the skill sticks</span></span>
+      </button>
+      ${next ? `<button class="ce-btn" id="ce_next">
+        <span class="ce-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+        <span class="ce-text">Start the next course<span class="ce-sub">${next.title}</span></span>
+      </button>` : ''}
+      <button class="ce-btn" id="ce_share">
+        <span class="ce-icon" style="background:#e7fce1;color:#1d8a3a"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M12 3a9 9 0 00-7.8 13.5L3 21l4.7-1.2A9 9 0 1012 3z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></span>
+        <span class="ce-text">Share your badge<span class="ce-sub">Send it on WhatsApp</span></span>
+      </button>`;
+    chat.appendChild(end);
+    chat.scrollTop = chat.scrollHeight;
+    document.getElementById('ce_remind').onclick = openReminderSheet;
+    if (next) document.getElementById('ce_next').onclick = () => openCourse(next.id);
+    document.getElementById('ce_share').onclick = () => shareBadge(info.sub.title);
+  }, 650);
+}
+
+/* WhatsApp share — a WhatsApp-style card + a real share via wa.me */
+function shareBadge(title) {
+  const chat = chatEl();
+  const msg = `🎓 I just finished "${title}" on Seekho Micro Learning! Learning one small skill at a time. Try it 👉`;
+  const card = document.createElement('div');
+  card.className = 'wa-card';
+  card.innerHTML = `
+    <div class="wa-h"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 3a9 9 0 00-7.8 13.5L3 21l4.7-1.2A9 9 0 1012 3z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg> Share on WhatsApp</div>
+    <div class="wa-bubble">${msg}</div>
+    <button class="wa-send" onclick="sendWhatsApp('${msg.replace(/'/g, "\\'")}')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M2 21l1.65-4.5A8.5 8.5 0 1112 20.5a8.4 8.4 0 01-4.2-1.1L2 21z"/></svg>
+      Send on WhatsApp
+    </button>`;
   chat.appendChild(card);
   chat.scrollTop = chat.scrollHeight;
 }
-
-// Lesson video placeholder click — shows a "playing" state on the card.
-// For a real prototype, swap this for a YouTube iframe or HTML5 <video>.
-function playLessonVideo(btnEl) {
-  btnEl.classList.add('playing');
-  setTimeout(() => btnEl.classList.remove('playing'), 6000);
+function sendWhatsApp(msg) {
+  try { window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank'); } catch (e) {}
+  showToast('Opening WhatsApp…');
 }
 
-function nextLesson() {
-  const course = COURSES[currentCourseId];
-  if (currentStepIdx < course.steps.length - 1) {
-    currentStepIdx++;
-    appendCourseStep();
-  } else {
-    showCourseComplete();
-  }
+/* =========================================================================
+ * REMINDER SHEET + toast
+ * ========================================================================= */
+let remTime = 'Evening (7 PM)', remFreq = 'every day';
+function openReminderSheet() { document.getElementById('reminderSheet').classList.add('open'); }
+function closeReminderSheet() { document.getElementById('reminderSheet').classList.remove('open'); }
+function wireSheetGroup(groupId, set) {
+  document.querySelectorAll(`#${groupId} .sheet-opt`).forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll(`#${groupId} .sheet-opt`).forEach(x => x.classList.remove('sel'));
+      b.classList.add('sel'); set(b.dataset.v);
+    });
+  });
 }
-// prevLesson removed — users scroll up in the chat to revisit prior steps.
-function markDoalong() {
-  // Inline confirmation toast — no alert
-  showToast("Nice — step marked complete.");
+function confirmReminder() {
+  closeReminderSheet();
+  const clock = (remTime.match(/\(([^)]+)\)/) || [])[1] || remTime;
+  showToast(`Done — I'll remind you ${remFreq} at ${clock}. First nudge: tomorrow.`);
 }
 function showToast(text) {
   const t = document.createElement('div');
-  t.style.cssText = 'position:fixed;bottom:96px;left:50%;transform:translateX(-50%);background:var(--surface-bold);color:var(--text-on-bold);padding:10px 16px;border-radius:999px;font-family:var(--font);font-size:13px;font-weight:600;z-index:200;box-shadow:var(--shadow-md);animation:fadeInUp 0.3s ease-out';
+  t.style.cssText = 'position:fixed;bottom:40px;left:50%;transform:translateX(-50%);max-width:80%;text-align:center;background:var(--surface-bold);color:#fff;padding:11px 18px;border-radius:16px;font-family:var(--font);font-size:13px;font-weight:600;z-index:300;box-shadow:var(--shadow-md);opacity:0;transition:opacity .25s ease';
   t.textContent = text;
   document.body.appendChild(t);
-  setTimeout(() => { t.style.opacity = '0'; t.style.transition = 'opacity 0.3s'; }, 1800);
-  setTimeout(() => t.remove(), 2200);
-}
-// Course complete — celebration + CTA card appended inline to the chat.
-function showCourseComplete() {
-  const course = COURSES[currentCourseId];
-  const nextId = course.nextCourseId;
-  const nextCourse = nextId ? COURSES[nextId] : null;
-  const chat = document.getElementById('ml_chat');
-  if (!chat) return;
-
-  const card = document.createElement('div');
-  card.className = 'lesson-card lesson-card--in-chat fade-in-up';
-  card.style.textAlign = 'center';
-  card.innerHTML = `
-    <div class="lc-celebrate">
-      <svg viewBox="0 0 24 24" fill="none" width="36" height="36">
-        <path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </div>
-    <div class="lc-title" style="margin-bottom:6px">Course complete</div>
-    <div class="lc-text" style="margin-bottom:4px">${course.title}</div>
-    <div class="lc-text" style="margin-bottom:16px; opacity:0.7; font-size:13px">${course.steps.length}/${course.steps.length} steps · Skill badge added to your portfolio</div>
-  `;
-  chat.appendChild(card);
-
-  const ctaCard = document.createElement('div');
-  ctaCard.className = 'lesson-card lesson-card--in-chat lc-next-cta fade-in-up';
-  ctaCard.innerHTML = `
-    <div class="lc-next-h">What's next?</div>
-    ${nextCourse ? `
-      <button class="lc-next-primary" onclick="launchCourse('${nextId}')">
-        <span class="lc-next-primary-icon">${(window.JDS && window.JDS.icon) ? window.JDS.icon('play', { size: 18 }) : '▶'}</span>
-        <span>
-          <span class="lc-next-primary-label">Start the next course</span>
-          <span class="lc-next-primary-sub">${nextCourse.title} · ~${nextCourse.steps.length * 2} min</span>
-        </span>
-      </button>
-    ` : ''}
-    <div class="lc-next-row">
-      <button class="lc-next-chip" onclick="setCourseReminder()">
-        <span data-icon="bell" data-size="16"></span>
-        <span>Remind me in 3 days to redo</span>
-      </button>
-      <button class="lc-next-chip" onclick="addToWeeklyPlan()">
-        <span data-icon="calendar-week" data-size="16"></span>
-        <span>Add to my weekly plan</span>
-      </button>
-      <button class="lc-next-chip" onclick="shareSkillOnWhatsApp('${course.title.replace(/'/g, "\\'")}')">
-        <span data-icon="whatsapp" data-size="16"></span>
-        <span>Share badge on WhatsApp</span>
-      </button>
-      <button class="lc-next-chip lc-next-chip-ghost" onclick="showView('home')">
-        <span>Back to home</span>
-      </button>
-    </div>
-  `;
-  chat.appendChild(ctaCard);
-  if (window.JDS && window.JDS.renderIcons) window.JDS.renderIcons(ctaCard);
-  chat.scrollTop = chat.scrollHeight;
-}
-
-function setCourseReminder() {
-  showToast("Reminder set for 3 days — same skill, no hints.");
-}
-function addToWeeklyPlan() {
-  showToast("Added to your weekly plan — Tuesday at 8 PM.");
-}
-function shareSkillOnWhatsApp(courseTitle) {
-  // In a real build this would open wa.me with a prefilled message.
-  showToast("Opening WhatsApp share — " + courseTitle);
-}
-
-/* =========================================================================
- * AI FLUENCY TRACK — hands-on prompt practice
- * ========================================================================= */
-function openPromptPractice() {
-  document.getElementById('prompt_practice').style.display = 'block';
-  document.getElementById('prompt_practice').scrollIntoView({ behavior: 'smooth' });
-}
-
-function runPrompt() {
-  const topic = document.getElementById('pp_topic').value.trim() || 'Indore street food';
-  const style = document.getElementById('pp_style').value.trim() || 'surprising';
-  document.getElementById('var_topic').textContent = topic;
-  document.getElementById('var_style').textContent = style;
-
-  // Mocked LLM response — varied by style
-  const titleBank = {
-    surprising: [
-      `Indore me yeh ${topic} kha kar pachtaaye 🥺`,
-      `${topic} ka asli secret jo kisi ne nahi bataya`,
-      `200 ₹ me ${topic} — ya 2000 ₹ me? Sach yeh hai`,
-      `${topic} eating challenge — went horribly wrong`,
-      `Best ${topic} in Indore? I ate at 7 places. One won.`,
-      `${topic}: 5 mistakes everyone makes`,
-      `Indori bola: \"yeh real ${topic} hai\" — was he right?`,
-      `${topic} — local vs tourist places (huge difference)`,
-      `Iss ${topic} ne mera Sunday banaya 🌶️`,
-      `${topic} pe ₹500 spend kiye — kya bachaa?`,
-    ],
-    listicle: [
-      `Top 10 ${topic} spots in Indore (Ranked)`,
-      `5 Underrated ${topic} Places You're Missing`,
-      `${topic}: Your Complete 2026 Guide`,
-      `7 ${topic} Hacks Every Indori Knows`,
-      `${topic} A to Z — One Day, Many Plates`,
-      `Best ${topic} for Under ₹100`,
-      `${topic} Diaries: Day 1 to Day 7`,
-      `Veg vs Non-Veg ${topic} — The Verdict`,
-      `${topic} Map: From Sarafa to Chappan`,
-      `${topic} for First-Timers`,
-    ],
-    story: [
-      `Mein Indore aaya, ${topic} dhundha — yeh hua`,
-      `${topic} ki search me 4 ghante laga gaye`,
-      `Ek ${topic} ki dukaan ne meri photo le li`,
-      `${topic} bechne wala bola: \"sahab, photo kyun?\"`,
-      `${topic} ke liye 5 km chal kar gaya — story`,
-      `Indore ke ${topic} se mera dil tut gaya`,
-      `${topic} kha rahe the, news aaya — must watch`,
-      `${topic} ki jagah pe milwaaye uncle ji`,
-      `Mein ek vlogger hu, ${topic} ki kahani sun`,
-      `${topic} eating with my dad after 10 years`,
-    ],
-  };
-  const list = titleBank[style.toLowerCase()] || titleBank.surprising;
-  const ol = document.getElementById('prompt_titles');
-  ol.innerHTML = '';
-  list.forEach(t => {
-    const li = document.createElement('li');
-    li.textContent = t;
-    ol.appendChild(li);
-  });
-  document.getElementById('prompt_result').classList.add('show');
+  requestAnimationFrame(() => t.style.opacity = '1');
+  setTimeout(() => t.style.opacity = '0', 2600);
+  setTimeout(() => t.remove(), 3000);
 }
 
 /* =========================================================================
  * INIT
  * ========================================================================= */
 (function init() {
-  // Prefetch coach's openers so chat starts instantly with audio.
-  if (window.JBIQVoice && window.JBIQVoice.prefetch) {
-    window.JBIQVoice.prefetch([
-      { personaId: 'microlearning_coach', text: "Bata — kya stuck hai? Be specific." },
-      { personaId: 'microlearning_coach', text: PROBLEM_FLOWS.thumbnail.rootCause },
-      { personaId: 'microlearning_coach', text: PROBLEM_FLOWS.title.rootCause },
-    ]);
-  }
-  const params = new URLSearchParams(window.location.search);
-  const q = (params.get('q') || '').toLowerCase();
-  if (q.includes('thumb') || q.includes('title') || q.includes('youtube') || q.includes('canva') || q.includes('chatgpt') || q.includes('prompt')) {
-    setTimeout(() => startChat(), 200);
-  } else if (q.includes('ai') && q.includes('learn')) {
-    setTimeout(() => showView('ai-fluency'), 200);
+  renderHome();
+  wireSheetGroup('rem-time', v => remTime = v);
+  wireSheetGroup('rem-freq', v => remFreq = v);
+
+  const q = (new URLSearchParams(window.location.search).get('q') || '').toLowerCase();
+  if (q) {
+    for (const id of Object.keys(SUB_INDEX)) {
+      if (q.includes(id.split('-')[0])) { setTimeout(() => openCourse(id), 200); break; }
+    }
   }
 })();
 </script>
