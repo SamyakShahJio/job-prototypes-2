@@ -81,15 +81,15 @@
   }
   .cat-tile:hover { border-color: var(--vert-accent); transform: translateY(-2px); }
   .cat-tile .ct-badge {
-    width: 30px; height: 30px; border-radius: 9px;
-    background: var(--vert-accent-light); color: var(--vert-accent);
-    display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 900;
+    width: 34px; height: 34px; border-radius: 10px;
+    background: var(--vert-accent-light);
+    display: flex; align-items: center; justify-content: center; font-size: 19px; line-height: 1;
   }
   .cat-tile .ct-title { font-size: 13px; font-weight: 700; color: var(--grey-100); line-height: 1.3; }
   .cat-tile .ct-meta { font-size: 11px; color: var(--text-low); font-weight: 600; margin-top: auto; }
 
   /* ============= COURSE — in-chat ============== */
-  .plan-card, .lesson-big, .badge-card, .wa-card {
+  .plan-card, .badge-card, .wa-card {
     align-self: stretch; background: white;
     border: 1px solid var(--stroke-subtle); border-radius: 18px;
     padding: 16px; margin: 4px 0 8px; box-shadow: var(--shadow-sm);
@@ -100,10 +100,55 @@
   .plan-card .pl-num { flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%; background: var(--vert-accent-light); color: var(--vert-accent); font-size: 11px; font-weight: 900; display: flex; align-items: center; justify-content: center; }
   .plan-card .pl-t { font-size: 13.5px; font-weight: 600; color: var(--grey-100); line-height: 1.35; }
 
-  .lesson-big { background: linear-gradient(135deg, #f3f0ff 0%, var(--surface-ghost) 100%); border-color: var(--primary-20); }
-  .lesson-big .lb-step { font-size: 10.5px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; color: var(--vert-accent); }
-  .lesson-big .lb-h { font-size: 19px; font-weight: 900; letter-spacing: -0.3px; color: var(--grey-100); margin: 6px 0 8px; line-height: 1.2; }
-  .lesson-big .lb-body { font-size: 14px; line-height: 1.55; color: var(--grey-90); }
+  /* Lesson carousel — full-height, swipeable cards with media placeholders */
+  .lesson-carousel {
+    align-self: stretch; flex-shrink: 0; display: flex; gap: 12px;
+    overflow-x: auto; scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch; scrollbar-width: none;
+    margin: 2px 0 2px; padding-bottom: 2px;
+  }
+  .lesson-carousel::-webkit-scrollbar { display: none; }
+  .lesson-slide {
+    scroll-snap-align: start; flex: 0 0 100%;
+    display: flex; flex-direction: column; overflow: hidden;
+    background: white; border: 1px solid var(--stroke-subtle);
+    border-radius: 18px; box-shadow: var(--shadow-sm);
+  }
+  .ls-media {
+    position: relative; flex-shrink: 0; height: 168px;
+    display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, #3900ad 0%, #6464ff 92%); color: white; cursor: pointer;
+  }
+  .ls-media.img { background: linear-gradient(135deg, #0a7c5a 0%, #2bbd8a 92%); }
+  .ls-media .ls-play {
+    width: 56px; height: 56px; border-radius: 50%;
+    background: rgba(255,255,255,0.22);
+    display: flex; align-items: center; justify-content: center; padding-left: 3px;
+  }
+  .ls-media .ls-tag {
+    position: absolute; top: 10px; left: 10px;
+    font-size: 10.5px; font-weight: 800; letter-spacing: 0.4px;
+    background: rgba(0,0,0,0.30); padding: 4px 9px; border-radius: var(--radius-pill);
+  }
+  .ls-media .ls-dur {
+    position: absolute; bottom: 10px; right: 10px;
+    font-size: 11px; font-weight: 700; background: rgba(0,0,0,0.34); padding: 3px 8px; border-radius: 6px;
+  }
+  .ls-body { flex: 1; overflow-y: auto; padding: 15px 16px 16px; display: flex; flex-direction: column; scrollbar-width: none; }
+  .ls-body::-webkit-scrollbar { display: none; }
+  .ls-step { font-size: 10.5px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; color: var(--vert-accent); }
+  .ls-h { font-size: 19px; font-weight: 900; letter-spacing: -0.3px; color: var(--grey-100); margin: 6px 0 8px; line-height: 1.2; }
+  .ls-text { font-size: 14px; line-height: 1.55; color: var(--grey-90); }
+  .ls-next {
+    margin-top: auto; align-self: flex-start; margin-bottom: 2px;
+    background: var(--vert-accent); color: white; border: none;
+    border-radius: var(--radius-pill); padding: 11px 20px;
+    font-family: var(--font); font-size: 14px; font-weight: 800; cursor: pointer;
+  }
+  .ls-next:active { transform: scale(0.97); }
+  .carousel-dots { display: flex; gap: 6px; justify-content: center; margin: 9px 0 6px; }
+  .carousel-dots .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--grey-40); transition: all 0.25s; }
+  .carousel-dots .dot.on { background: var(--vert-accent); width: 20px; border-radius: 4px; }
 
   .badge-card { text-align: center; background: linear-gradient(135deg, #3900ad 0%, #6464ff 80%); border: none; color: white; }
   .badge-card .bc-ring { width: 64px; height: 64px; margin: 0 auto 10px; border-radius: 50%; background: rgba(255,255,255,0.18); display: flex; align-items: center; justify-content: center; }
@@ -338,6 +383,17 @@ CATEGORIES.forEach(cat => cat.subs.forEach((s, i) => {
   SUB_INDEX[s.id] = { sub: s, catId: cat.id, catName: cat.name, next: cat.subs[i + 1] || null };
 }));
 
+// A recognisable emoji per course — shown on the tiles instead of a plain letter.
+const SUB_EMOJI = {
+  'yt-channel': '📺', 'shorts-viral': '🎬', 'thumbnail': '🖼️', 'video-4k': '🎥', 'dolly-zoom': '🎞️',
+  'reel-1m': '🎯', 'ig-unfreeze': '🔓', 'watch-time': '⏱️', 'hidden-growth': '📈',
+  'ai-kya-hai': '🤖', 'ai-image': '🎨', 'ai-prompt': '✨', 'ai-ppt': '📊', 'ai-blog': '✍️',
+  'delivery-app': '🛵', 'dropshipping': '📦', 'wa-marketing': '💬', 'candle-biz': '🕯️', 'no-ad-cust': '🧲',
+  'cibil': '💳', 'budgeting': '🧮', 'emergency': '🛟', 'stock-start': '📈', 'intraday': '📉',
+  'overthinking': '🧠', 'morning': '☀️', 'mental': '💪', 'comfort-zone': '🚀',
+};
+function subEmoji(id) { return SUB_EMOJI[id] || '📘'; }
+
 /* =========================================================================
  * COURSE CONTENT — specific lessons for the AI track; everything else uses
  * a contextual generic builder (keeps the file lean, every course works).
@@ -438,7 +494,7 @@ function renderHome() {
       const tile = document.createElement('button');
       tile.className = 'cat-tile';
       tile.innerHTML = `
-        <span class="ct-badge">${cat.name.charAt(0)}</span>
+        <span class="ct-badge">${subEmoji(s.id)}</span>
         <span class="ct-title">${s.title}</span>
         <span class="ct-meta">${lessons} lessons · ~${lessons * 2} min</span>`;
       tile.onclick = () => openCourse(s.id);
@@ -481,7 +537,7 @@ function openCourse(subId, resumeLesson) {
     // Resume straight into a lesson (Continue where you left off).
     window.GC.appendAi(chat, `Welcome back — let's pick up "${info.sub.title}" where you left off.`);
     course.idx = resumeLesson;
-    setTimeout(() => showLesson(course.idx), 700);
+    setTimeout(() => showLessonCarousel(resumeLesson), 700);
     return;
   }
 
@@ -499,39 +555,74 @@ function showPlan() {
   chat.appendChild(card);
   chat.scrollTop = chat.scrollHeight;
   setTimeout(() => {
-    window.GC.appendChips(chat, [{ text: 'Start learning →', key: 'go' }], () => showLesson(0));
+    window.GC.appendChips(chat, [{ text: 'Start learning →', key: 'go' }], () => showLessonCarousel(0));
   }, 500);
 }
 
-function showLesson(i) {
-  course.idx = i;
+// Lessons live in one swipeable, near-full-height carousel (video/image placeholders
+// on each card) rather than a stack of cards one below the other.
+function showLessonCarousel(startIdx) {
   const chat = chatEl();
   const lessons = course.data.lessons;
-  const lesson = lessons[i];
-  const card = document.createElement('div');
-  card.className = 'lesson-big';
-  card.innerHTML = `
-    <div class="lb-step">Lesson ${i + 1} of ${lessons.length}</div>
-    <div class="lb-h">${lesson.h}</div>
-    <div class="lb-body">${lesson.body}</div>`;
-  chat.appendChild(card);
-  chat.scrollTop = chat.scrollHeight;
 
-  setTimeout(() => {
-    const last = i >= lessons.length - 1;
-    window.GC.appendChips(chat, [{ text: last ? 'Continue →' : 'Next →', key: 'n' }], () => {
-      if (last) showWrap();
-      else showLesson(i + 1);
-    });
-  }, 450);
-}
+  const car = document.createElement('div');
+  car.className = 'lesson-carousel';
+  lessons.forEach((lesson, i) => {
+    const isVideo = i % 2 === 0;                 // alternate video / image placeholders
+    const last = i === lessons.length - 1;
+    const slide = document.createElement('div');
+    slide.className = 'lesson-slide';
+    slide.innerHTML = `
+      <div class="ls-media${isVideo ? '' : ' img'}">
+        <span class="ls-tag">${isVideo ? '▶ VIDEO' : '🖼 IMAGE'}</span>
+        ${isVideo
+          ? '<span class="ls-play"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span><span class="ls-dur">0:45</span>'
+          : '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.6"/><path d="M21 15l-5-5L5 21"/></svg>'}
+      </div>
+      <div class="ls-body">
+        <div class="ls-step">Lesson ${i + 1} of ${lessons.length}</div>
+        <div class="ls-h">${lesson.h}</div>
+        <div class="ls-text">${lesson.body}</div>
+        <button class="ls-next">${last ? 'Finish course ✓' : 'Next lesson →'}</button>
+      </div>`;
+    slide.querySelector('.ls-media').onclick = () =>
+      showToast(isVideo ? '▶ Video lesson — coming soon' : '🖼 Example image — coming soon');
+    slide.querySelector('.ls-next').onclick = () => {
+      if (last) { finishCourse(); chat.scrollTop = chat.scrollHeight; }
+      else { goTo(i + 1); }
+    };
+    car.appendChild(slide);
+  });
+  chat.appendChild(car);
 
-function showWrap() {
-  const chat = chatEl();
-  window.GC.appendAi(chat, "That's the whole skill. Quick recap done — ready to lock it in?");
-  setTimeout(() => {
-    window.GC.appendChips(chat, [{ text: 'Finish course ✓', key: 'fin' }], () => finishCourse());
-  }, 500);
+  const dots = document.createElement('div');
+  dots.className = 'carousel-dots';
+  dots.innerHTML = lessons.map((_, i) => `<span class="dot${i === 0 ? ' on' : ''}"></span>`).join('');
+  chat.appendChild(dots);
+
+  const stride = () => (car.firstElementChild ? car.firstElementChild.offsetWidth + 12 : car.clientWidth);
+  const setDots = (idx) => {
+    course.idx = idx;
+    dots.querySelectorAll('.dot').forEach((d, n) => d.classList.toggle('on', n === idx));
+  };
+  // Button nav: jump straight to a slide and light its dot (swiping stays smooth).
+  const goTo = (idx) => { car.scrollLeft = stride() * idx; setDots(idx); };
+  // Swipe nav: keep dots in sync with wherever the user scrolled.
+  car.addEventListener('scroll', () => {
+    clearTimeout(car._t);
+    car._t = setTimeout(() => setDots(Math.max(0, Math.min(lessons.length - 1, Math.round(car.scrollLeft / stride())))), 70);
+  });
+
+  // Size cards to nearly fill the chat viewport ("screen-long") and bring the
+  // carousel into view. Run on a timer (rAF can be paused in embedded renderers)
+  // and twice, so it lands correctly once layout has fully settled.
+  const settle = () => {
+    car.style.height = Math.min(Math.max(chat.clientHeight - 44, 380), 620) + 'px';
+    chat.scrollTop = car.offsetTop - 6;
+    if (startIdx) goTo(startIdx);
+  };
+  setTimeout(settle, 60);
+  setTimeout(settle, 220);
 }
 
 function finishCourse() {
