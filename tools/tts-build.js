@@ -49,6 +49,13 @@ const PERSONAS = {
   interviewer_hostile_customer: { voiceId: 'cjVigY5qzO86Huf0OWal', stability: 0.4,  similarityBoost: 0.75, style: 0.55 },
   microlearning_coach:          { voiceId: 'cgSgspJ2msm6clMCkdW9', stability: 0.45, similarityBoost: 0.75, style: 0.4 },
   govt_exam_counselor:          { voiceId: 'FGY2WhTYpPnrIDTdsKH5', stability: 0.6,  similarityBoost: 0.75, style: 0.2 },
+  // English-learning avatar personas (Riya=emma, Rajesh=jonas; Maya=sarah_avatar
+  // and Arjun=interviewer_formal_ops are already above).
+  emma_avatar:                  { voiceId: 'XB0fDUnXU5powFXDhCwa', stability: 0.5,  similarityBoost: 0.75, style: 0.45 },
+  jonas_avatar:                 { voiceId: 'JBFqnCBsd6RMkjVDRZzb', stability: 0.65, similarityBoost: 0.75, style: 0.2 },
+  // Mother-tongue explanation voices (multilingual model).
+  english_hi:                   { voiceId: 'XB0fDUnXU5powFXDhCwa', stability: 0.5,  similarityBoost: 0.8,  style: 0.2, model: 'eleven_multilingual_v2' },
+  english_gu:                   { voiceId: 'EXAVITQu4vr4xnSDxMaL', stability: 0.5,  similarityBoost: 0.8,  style: 0.2, model: 'eleven_multilingual_v2' },
 };
 
 // ============================================================================
@@ -196,14 +203,41 @@ function extractFromEnglish() {
   // Pronunciation "suggested" string — also Sarah voicing the correct read.
   lines.push(...extractSuggestedFields(src, 'sarah_avatar'));
 
-  // Inline filler / non-ai speakers (customer / manager / colleague) — these
-  // are voiced by the "other side" of the role-play, which is JBIQ's faceless
-  // demo voice. Use jbiq_warm.
-  const otherRe = /\{\s*speaker:\s*['"](customer|manager|colleague)['"][^}]*?text:\s*(?:"((?:[^"\\]|\\.)*)"|'((?:[^'\\]|\\.)*)')/g;
+  // Situation role-play "other person" lines — now voiced by the practice
+  // voice (sarah_avatar) to match the runtime. Covers all the speaker labels
+  // used in scenario `listen` arrays.
+  const otherRe = /\{\s*speaker:\s*['"](customer|manager|colleague|mil|kid|spouse|family|friend)['"][^}]*?text:\s*(?:"((?:[^"\\]|\\.)*)"|'((?:[^'\\]|\\.)*)')/g;
   let m;
   while ((m = otherRe.exec(src)) !== null) {
     const raw = m[2] !== undefined ? m[2] : m[3];
-    lines.push({ personaId: 'jbiq_warm', text: decodeJsString(raw) });
+    lines.push({ personaId: 'sarah_avatar', text: decodeJsString(raw) });
+  }
+
+  // PERSONA_FLOWS — each persona key is voiced by its own avatar voice.
+  const pfIdx = src.indexOf('PERSONA_FLOWS = {');
+  if (pfIdx >= 0) {
+    const pfSrc = src.slice(pfIdx);
+    ['emma_avatar', 'jonas_avatar', 'sarah_avatar', 'interviewer_formal_ops'].forEach(pid => {
+      const sm = pfSrc.match(new RegExp(pid + ':\\s*\\['));
+      if (!sm) return;
+      let depth = 1, i = sm.index + sm[0].length, inStr = null;
+      while (i < pfSrc.length && depth > 0) {
+        const ch = pfSrc[i];
+        if (inStr) { if (ch === '\\') { i += 2; continue; } if (ch === inStr) inStr = null; }
+        else { if (ch === '"' || ch === "'") inStr = ch; else if (ch === '[') depth++; else if (ch === ']') depth--; }
+        i++;
+      }
+      lines.push(...extractAiText(pfSrc.substring(sm.index + sm[0].length, i - 1), pid));
+    });
+  }
+
+  // Word-of-the-Day spoken lines — one clip per language voice.
+  const spokenRe = /spoken:\s*\{\s*en:\s*"((?:[^"\\]|\\.)*)"\s*,\s*hi:\s*"((?:[^"\\]|\\.)*)"\s*,\s*gu:\s*"((?:[^"\\]|\\.)*)"\s*\}/g;
+  let sp;
+  while ((sp = spokenRe.exec(src)) !== null) {
+    lines.push({ personaId: 'sarah_avatar', text: decodeJsString(sp[1]) });
+    lines.push({ personaId: 'english_hi',   text: decodeJsString(sp[2]) });
+    lines.push({ personaId: 'english_gu',   text: decodeJsString(sp[3]) });
   }
 
   return lines;
@@ -405,7 +439,7 @@ function synthesize(personaId, text) {
   // eleven_flash_v2_5 — half the credit cost vs eleven_multilingual_v2 with
   // very similar quality. Switching here so the key's remaining credits go
   // further (we hit quota on v2 mid-build last time).
-  const modelId = process.env.ELEVENLABS_MODEL || 'eleven_flash_v2_5';
+  const modelId = persona.model || process.env.ELEVENLABS_MODEL || 'eleven_flash_v2_5';
   const body = JSON.stringify({
     text,
     model_id: modelId,

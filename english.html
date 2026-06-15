@@ -660,67 +660,40 @@
     50% { box-shadow: 0 0 0 12px rgba(250,47,64,0); }
   }
 
-  /* ============= AVATAR VIEW (Sarah — chat-driven demo) ============== */
-  .view.avatar-view.active {
-    background: var(--surface-default);
-  }
-  .avatar-view .av-top {
-    height: 56px;
-    padding: 0 var(--space-4);
-    display: flex; align-items: center; gap: 12px;
-    flex-shrink: 0;
-    border-bottom: 1px solid var(--stroke-subtle);
-    background: var(--surface-default);
-  }
-  .avatar-view .av-top .av-end {
-    background: var(--error); color: white;
-    border: none; border-radius: var(--radius-pill);
-    padding: 8px 14px;
-    font-family: var(--font); font-size: 12px; font-weight: 700;
-    cursor: pointer;
-  }
-  .avatar-view .av-top .av-name {
-    flex: 1;
-    font-size: 14px; font-weight: 700; color: var(--grey-100);
-    text-align: center;
-  }
-  .avatar-view .av-top .av-name .live-dot {
-    display: inline-block; width: 6px; height: 6px; border-radius: 50%;
-    background: var(--success); margin-right: 5px;
-    animation: livePulse 1.6s ease-in-out infinite;
-  }
+  /* ============= AVATAR VIEW (persona conversation — mock-style shell) ============== */
+  .view.avatar-view.active { background: var(--surface-default); }
   @keyframes livePulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
-  .avatar-view .av-replay-btn {
-    width: 36px; height: 36px;
-    border-radius: 50%;
-    background: var(--surface-ghost);
-    color: var(--text-high);
-    border: none;
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer;
+  .avatar-view .av-stage {
     flex-shrink: 0;
-  }
-
-  /* Sarah stage — compact avatar at top */
-  .sarah-stage {
-    flex-shrink: 0;
-    padding: 16px 0 12px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    padding: 14px 0 12px;
+    display: flex; flex-direction: column; align-items: center;
     background: var(--surface-default);
     border-bottom: 1px solid var(--stroke-subtle);
   }
-  .sarah-avatar {
-    width: 90px; height: 90px;
+  .avatar-view .av-face-big {
+    width: 84px; height: 84px; border-radius: 50%;
     position: relative;
+    transition: box-shadow 0.25s ease, transform 0.25s ease;
   }
-  .sarah-avatar svg { width: 100%; height: 100%; }
-  .sarah-status {
+  .avatar-view .av-face-big svg { width: 100%; height: 100%; border-radius: 50%; display: block; }
+  .avatar-view .av-stage.speaking .av-face-big {
+    box-shadow: 0 0 0 4px var(--primary-20), 0 0 0 9px rgba(57,0,173,0.12);
+    transform: scale(1.04);
+  }
+  .avatar-view .av-status {
     font-size: 11px; font-weight: 700; color: var(--text-low);
-    letter-spacing: 0.5px; text-transform: uppercase;
-    margin-top: 6px;
+    letter-spacing: 0.5px; text-transform: uppercase; margin-top: 8px;
   }
+  .avatar-view .av-stage.speaking .av-status { color: var(--surface-bold); }
+
+  /* In-chat end (no top-bar controls) — shared by avatar + practice */
+  .chat-end { align-self: center; display: flex; gap: 8px; margin: 12px 0 6px; flex-wrap: wrap; justify-content: center; }
+  .chat-end-btn {
+    background: var(--surface-bold); color: white; border: none;
+    border-radius: var(--radius-pill); padding: 10px 18px;
+    font-family: var(--font); font-size: 13px; font-weight: 700; cursor: pointer;
+  }
+  .chat-end-btn.ghost { background: white; color: var(--surface-bold); border: 1px solid var(--surface-bold); }
 
   /* ============= PATHWAY VIEW ============== */
   .pathway-list {
@@ -909,6 +882,66 @@
     .phone-frame { box-shadow: var(--shadow-lg); border-radius: 32px; margin-top: 24px; height: calc(100vh - 48px); }
     body { background: var(--surface-moderate); }
   }
+  /* ===== Mother-tongue selector ===== */
+  .lang-select { display: flex; align-items: center; gap: 10px; padding: var(--space-3) var(--space-4) 0; }
+  .lang-label { font-size: 11px; font-weight: 700; color: var(--grey-60); text-transform: uppercase; letter-spacing: 0.4px; flex-shrink: 0; }
+  .lang-pills { display: flex; gap: 6px; }
+  .lang-pill { border: 1.5px solid var(--grey-40); background: white; border-radius: 999px; padding: 5px 12px; font-family: var(--font); font-size: 12px; font-weight: 600; color: var(--text-high); cursor: pointer; transition: all 0.12s; }
+  .lang-pill:hover { border-color: var(--surface-bold); }
+  .lang-pill.sel { border-color: var(--surface-bold); background: var(--primary-20); color: var(--surface-bold); font-weight: 800; }
+
+  /* ===== Word of the Day — stacked cards + arrows ===== */
+  .wod-stack-wrap { position: relative; margin: var(--space-4) var(--space-4) 0; padding: 6px 30px; }
+  .wod-stack { position: relative; }
+  .wod-stack::before, .wod-stack::after { content: ''; position: absolute; inset: 0; border-radius: 20px; z-index: 0; }
+  .wod-stack::after  { transform: rotate(2.6deg)  translateY(2px); background: linear-gradient(135deg, #4a2bbf, #6f63f0); opacity: 0.85; }
+  .wod-stack::before { transform: rotate(-2.6deg) translateY(3px); background: linear-gradient(135deg, #3a1f9f, #5a4fd0); opacity: 0.55; }
+  .wod-card { position: relative; z-index: 1; border-radius: 20px; padding: 18px 18px 14px;
+    background: linear-gradient(135deg, #3900ad 0%, #6464ff 78%); color: white;
+    box-shadow: 0 12px 30px rgba(57,0,173,0.25); }
+  .wod-tag { display: inline-block; font-size: 10px; font-weight: 800; letter-spacing: 0.6px; text-transform: uppercase; padding: 4px 10px; background: rgba(255,255,255,0.18); border-radius: 999px; margin-bottom: 10px; }
+  .wod-word { font-size: 32px; font-weight: 900; letter-spacing: -0.6px; line-height: 1; }
+  .wod-pronounce { font-size: 12px; font-style: italic; color: rgba(255,255,255,0.75); margin: 4px 0 10px; font-family: Georgia, serif; }
+  .wod-meaning { font-size: 14px; line-height: 1.45; color: rgba(255,255,255,0.95); margin-bottom: 14px; }
+  .wod-listen { display: inline-flex; align-items: center; gap: 6px; background: white; color: var(--surface-bold); border: none; border-radius: 999px; padding: 8px 16px; font-family: var(--font); font-size: 13px; font-weight: 800; cursor: pointer; }
+  .wod-listen:hover { background: var(--primary-20); }
+  .wod-dots { display: flex; gap: 5px; justify-content: center; margin-top: 14px; }
+  .wod-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.35); transition: all 0.2s; }
+  .wod-dot.on { background: white; width: 16px; border-radius: 3px; }
+  .wod-nav { position: absolute; top: 50%; transform: translateY(-50%); width: 30px; height: 30px; border-radius: 50%; border: none; background: white; color: var(--surface-bold); box-shadow: var(--shadow-md); display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 3; }
+  .wod-prev { left: 2px; } .wod-next { right: 2px; }
+  .wod-nav:hover { background: var(--primary-20); }
+
+  /* ===== Persona avatar faces ===== */
+  .avatar-card { flex: 0 0 146px; }
+  .avatar-card .av-face { width: 56px; height: 56px; margin: 0 auto 6px; }
+  .avatar-card .av-role { font-size: 11px; font-weight: 800; letter-spacing: 0.2px; }
+  .avatar-card .av-title { min-height: 30px; }
+
+  /* ===== Tools ===== */
+  .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 var(--space-4); }
+  .tool-card { display: flex; align-items: center; gap: 10px; padding: 12px 13px; border: 1px solid var(--grey-40); border-radius: 14px; background: white; cursor: pointer; font-family: var(--font); text-align: left; transition: all 0.15s; }
+  .tool-card:hover { border-color: var(--surface-bold); transform: translateY(-2px); }
+  .tool-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .tool-label { font-size: 13px; font-weight: 700; color: var(--grey-100); line-height: 1.2; }
+
+  /* ===== Situation category rows ===== */
+  .sit-scroll { display: flex; gap: 10px; overflow-x: auto; padding: 0 var(--space-4) 4px; scrollbar-width: none; }
+  .sit-scroll::-webkit-scrollbar { display: none; }
+  .sit-tile { flex: 0 0 162px; text-align: left; border: 1px solid var(--grey-40); border-radius: 14px; padding: 13px; background: white; cursor: pointer; font-family: var(--font); display: flex; flex-direction: column; gap: 4px; min-height: 78px; transition: all 0.15s; }
+  .sit-tile:hover { border-color: var(--surface-bold); transform: translateY(-2px); }
+  .sit-tile.done { background: var(--surface-ghost); }
+  .sit-tile-title { font-size: 13px; font-weight: 700; color: var(--grey-100); line-height: 1.25; }
+  .sit-tile-meta { font-size: 11px; color: var(--text-low); font-weight: 500; }
+  .sit-tile-done { font-size: 10px; font-weight: 800; color: var(--success); margin-top: auto; letter-spacing: 0.3px; }
+
+  /* ===== Returning-user resume ===== */
+  .resume-card { width: calc(100% - 2 * var(--space-4)); margin: var(--space-4) var(--space-4) 0; display: flex; align-items: center; gap: 12px; padding: 14px; border: 1px solid var(--surface-bold); border-radius: 16px; background: var(--primary-20); cursor: pointer; font-family: var(--font); text-align: left; }
+  .resume-icon { width: 36px; height: 36px; border-radius: 10px; background: var(--surface-bold); color: white; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .resume-text { flex: 1; min-width: 0; }
+  .resume-h { display: block; font-size: 13px; font-weight: 800; color: var(--surface-bold); }
+  .resume-sub { display: block; font-size: 11.5px; color: var(--text-low); font-weight: 500; margin-top: 2px; }
+  .resume-arrow { color: var(--surface-bold); flex-shrink: 0; }
 </style>
 </head>
 <body>
@@ -930,35 +963,36 @@
     </div>
 
     <div class="view-body">
-      <!-- Word of the Day — top hero, cycles via Next / Past words -->
-      <div class="wod-hero" id="wod_hero">
-        <!-- Filled by renderWordOfDay() — supports cycling through a queue -->
+      <!-- Mother-tongue selector — switches meanings, explanations & audio -->
+      <div class="lang-select">
+        <span class="lang-label" id="lang_label">Explain in</span>
+        <div class="lang-pills" id="lang_pills"><!-- renderLang() --></div>
       </div>
 
-      <!-- Talk with AI — 4 avatars in a horizontal carousel. No "See more"
-           because the carousel already shows the full cast. -->
-      <div class="section-row">
-        <div class="section-h-inline">Talk with AI</div>
-      </div>
-      <div class="avatars-row" id="avatars_row">
-        <!-- Filled by renderAvatars() -->
-      </div>
-
-      <!-- Pick a situation — horizontal carousel of packs + See more -->
-      <div class="section-row">
-        <div class="section-h-inline">Pick a situation</div>
-        <button class="section-more" onclick="showView('packs')">See more →</button>
-      </div>
-      <div class="situations-row" id="situations_row">
-        <!-- Filled by renderSituations() -->
+      <!-- Word of the Day — stacked cards, move with ← → , endless -->
+      <div class="wod-stack-wrap">
+        <button class="wod-nav wod-prev" aria-label="Previous word" onclick="cycleWordOfDay(-1)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>
+        </button>
+        <div class="wod-stack" id="wod_hero"><!-- renderWordOfDay() --></div>
+        <button class="wod-nav wod-next" aria-label="Next word" onclick="cycleWordOfDay(1)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>
+        </button>
       </div>
 
-      <!-- Stats — kept; small footprint at the bottom -->
-      <div class="stats-strip">
-        <div class="stat-card"><div class="v">12</div><div class="l">DAYS</div></div>
-        <div class="stat-card"><div class="v">38</div><div class="l">PHRASES</div></div>
-        <div class="stat-card"><div class="v">A2→B1</div><div class="l">LEVEL</div></div>
-      </div>
+      <!-- Returning-user resume (continue where you left off) -->
+      <div id="resume_host"><!-- renderResume() --></div>
+
+      <!-- Talk with AI — persona avatars with faces -->
+      <div class="section-row"><div class="section-h-inline" id="lbl_talk">Talk with AI</div></div>
+      <div class="avatars-row" id="avatars_row"><!-- renderAvatars() --></div>
+
+      <!-- Tools to help you -->
+      <div class="section-row"><div class="section-h-inline" id="lbl_tools">Tools to help you</div></div>
+      <div class="tools-grid" id="tools_grid"><!-- renderTools() --></div>
+
+      <!-- Situations — one category row after another -->
+      <div id="situations_host"><!-- renderSituations() --></div>
     </div>
 
     <!-- Ask anything dock — converse from home, no menu navigation needed -->
@@ -1096,7 +1130,7 @@
   <!-- ========================== SCENARIO PRACTICE ========================== -->
   <div class="view" id="view-practice">
     <div class="top-bar">
-      <button class="icon-btn" onclick="showView('scenarios')" aria-label="Back">
+      <button class="icon-btn" onclick="showView('home')" aria-label="Back">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
           <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
         </svg>
@@ -1115,21 +1149,12 @@
     <div class="gc-input-dock">
       <div class="gc-input-wrap">
         <div class="gc-input-text">
-          <input type="text" placeholder="Ask anything about this scenario…" readonly>
+          <input type="text" placeholder="Voice is on — just reply…" readonly>
         </div>
         <div class="gc-input-actions">
-          <div class="gc-input-left">
-            <button class="gc-input-icon-btn" aria-label="Add" onclick="renderPractice()">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20 11h-7V4a1 1 0 00-2 0v7H4a1 1 0 000 2h7v7a1 1 0 002 0v-7h7a1 1 0 000-2z"/></svg>
-            </button>
-          </div>
           <div class="gc-input-right">
-            <button class="gc-input-icon-btn" aria-label="Mic" onclick="if(practiceVoice){try{practiceVoice.replayLast();}catch(e){}}">
+            <button class="gc-input-icon-btn" aria-label="Replay" onclick="if(practiceVoice){try{practiceVoice.replayLast();}catch(e){}}">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 15a3 3 0 003-3V5a3 3 0 00-6 0v7a3 3 0 003 3zm6-5a1 1 0 00-1 1v1a5 5 0 11-10 0v-1a1 1 0 10-2 0v1a7 7 0 1014 0v-1a1 1 0 00-1-1zm-3 10H9a1 1 0 000 2h6a1 1 0 000-2z"/></svg>
-            </button>
-            <button class="gc-input-speak-btn" onclick="if(practiceVoice){try{practiceVoice.replayLast();}catch(e){}}">
-              <svg viewBox="0 0 24 24"><path d="M12 15a3 3 0 003-3V5a3 3 0 00-6 0v7a3 3 0 003 3zm6-5a1 1 0 00-1 1v1a5 5 0 11-10 0v-1a1 1 0 10-2 0v1a7 7 0 1014 0v-1a1 1 0 00-1-1z"/></svg>
-              <span>Speak</span>
             </button>
           </div>
         </div>
@@ -1139,50 +1164,20 @@
 
   <!-- ========================== AVATAR (Sarah) ========================== -->
   <div class="view avatar-view" id="view-avatar">
-    <div class="av-top">
-      <button class="av-end" onclick="endAvatar()">End</button>
-      <div class="av-name"><span class="live-dot"></span>Sarah · English coach</div>
-      <button class="av-replay-btn" id="avatarRestart" aria-label="Replay demo">
-        <span data-icon="refresh" data-size="18"></span>
+    <div class="top-bar">
+      <button class="icon-btn" onclick="showView('home')" aria-label="Back">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
       </button>
+      <div class="title-area">
+        <div class="t1" id="av_name">Riya</div>
+        <div class="t2" id="av_role">Friend</div>
+      </div>
     </div>
 
-    <!-- Sarah avatar — small, top-aligned, mood-aware -->
-    <div class="sarah-stage">
-      <div class="sarah-avatar" id="sarahAvatar">
-        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <radialGradient id="bgGlow" cx="50%" cy="40%" r="55%">
-              <stop offset="0%" stop-color="#e8e8fc"/>
-              <stop offset="100%" stop-color="#c8c8f5"/>
-            </radialGradient>
-            <linearGradient id="hairG" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#3a2618"/>
-              <stop offset="100%" stop-color="#1f140b"/>
-            </linearGradient>
-            <linearGradient id="skinG" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#f4d4b8"/>
-              <stop offset="100%" stop-color="#e8c0a0"/>
-            </linearGradient>
-          </defs>
-          <circle cx="100" cy="100" r="95" fill="url(#bgGlow)"/>
-          <path d="M50 90 Q50 35 100 30 Q150 35 150 90 Q150 130 130 145 L130 110 Q130 85 100 85 Q70 85 70 110 L70 145 Q50 130 50 90 Z" fill="url(#hairG)"/>
-          <ellipse cx="100" cy="105" rx="40" ry="48" fill="url(#skinG)"/>
-          <path d="M65 80 Q70 60 100 55 Q130 60 135 80 Q120 70 100 70 Q80 70 65 80 Z" fill="url(#hairG)"/>
-          <ellipse class="eye" cx="85" cy="100" rx="3.5" ry="4.5" fill="#1f140b"/>
-          <ellipse class="eye" cx="115" cy="100" rx="3.5" ry="4.5" fill="#1f140b"/>
-          <path d="M78 91 Q85 88 92 91" stroke="#3a2618" stroke-width="2" fill="none" stroke-linecap="round"/>
-          <path d="M108 91 Q115 88 122 91" stroke="#3a2618" stroke-width="2" fill="none" stroke-linecap="round"/>
-          <path d="M100 110 L98 122 Q100 125 102 122 Z" fill="#d4a888" opacity="0.6"/>
-          <path id="mouth" d="M88 138 Q100 142 112 138" stroke="#a04050" stroke-width="2.5" fill="#c47080" stroke-linecap="round"/>
-          <ellipse cx="75" cy="125" rx="6" ry="4" fill="#f4a8a8" opacity="0.4"/>
-          <ellipse cx="125" cy="125" rx="6" ry="4" fill="#f4a8a8" opacity="0.4"/>
-          <circle cx="58" cy="115" r="2.5" fill="#f7ab20"/>
-          <circle cx="142" cy="115" r="2.5" fill="#f7ab20"/>
-          <path d="M70 168 Q100 180 130 168" stroke="#3535f3" stroke-width="1.5" fill="none" opacity="0.5"/>
-        </svg>
-      </div>
-      <div class="sarah-status" id="av_status">Sarah</div>
+    <!-- Persona face stays on top (the English exception) — pulses while speaking -->
+    <div class="av-stage">
+      <div class="av-face-big" id="av_face"></div>
+      <div class="av-status" id="av_status">on a call</div>
     </div>
 
     <!-- Chat thread (auto-plays demo transcript) -->
@@ -1192,21 +1187,12 @@
     <div class="gc-input-dock">
       <div class="gc-input-wrap">
         <div class="gc-input-text">
-          <input type="text" placeholder="Ask Sarah anything…" readonly>
+          <input type="text" placeholder="Voice is on — just speak…" readonly>
         </div>
         <div class="gc-input-actions">
-          <div class="gc-input-left">
-            <button class="gc-input-icon-btn" aria-label="Add" onclick="window.GC && document.getElementById('avatarRestart') && document.getElementById('avatarRestart').click()">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20 11h-7V4a1 1 0 00-2 0v7H4a1 1 0 000 2h7v7a1 1 0 002 0v-7h7a1 1 0 000-2z"/></svg>
-            </button>
-          </div>
           <div class="gc-input-right">
-            <button class="gc-input-icon-btn" aria-label="Mic" onclick="if(avatarVoice){try{avatarVoice.replayLast();}catch(e){}}">
+            <button class="gc-input-icon-btn" aria-label="Replay" onclick="if(avatarVoice){try{avatarVoice.replayLast();}catch(e){}}">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 15a3 3 0 003-3V5a3 3 0 00-6 0v7a3 3 0 003 3zm6-5a1 1 0 00-1 1v1a5 5 0 11-10 0v-1a1 1 0 10-2 0v1a7 7 0 1014 0v-1a1 1 0 00-1-1zm-3 10H9a1 1 0 000 2h6a1 1 0 000-2z"/></svg>
-            </button>
-            <button class="gc-input-speak-btn" onclick="if(avatarVoice){try{avatarVoice.replayLast();}catch(e){}}">
-              <svg viewBox="0 0 24 24"><path d="M12 15a3 3 0 003-3V5a3 3 0 00-6 0v7a3 3 0 003 3zm6-5a1 1 0 00-1 1v1a5 5 0 11-10 0v-1a1 1 0 10-2 0v1a7 7 0 1014 0v-1a1 1 0 00-1-1z"/></svg>
-              <span>Speak</span>
             </button>
           </div>
         </div>
@@ -1292,6 +1278,16 @@ const PACKS = {
       { id: 'budget', title: 'Family budget discussion', meta: '5 turns · 4 min', done: false },
       { id: 'visit', title: 'Inviting relatives over', meta: '4 turns · 3 min', done: false },
       { id: 'argument', title: 'Resolving a family argument', meta: '6 turns · 5 min', done: false },
+    ],
+  },
+  travel: {
+    name: 'English for travel',
+    scenarios: [
+      { id: 'airport-checkin',   title: 'Airport check-in',          meta: '3 turns · 2 min', done: false, lead: true },
+      { id: 'asking-directions', title: 'Asking for directions',     meta: '3 turns · 2 min', done: false },
+      { id: 'hotel-checkin',     title: 'Hotel check-in',            meta: '3 turns · 2 min', done: false },
+      { id: 'ordering-food',     title: 'Ordering at a restaurant',  meta: '3 turns · 2 min', done: false },
+      { id: 'buying-tickets',    title: 'Buying a ticket',           meta: '3 turns · 2 min', done: false },
     ],
   },
 };
@@ -2040,19 +2036,79 @@ function openPack(packId) {
   showView('scenarios');
 }
 
+function findScenarioMeta(scId) {
+  for (const p of Object.values(PACKS)) {
+    const hit = (p.scenarios || []).find(s => s.id === scId);
+    if (hit) return { title: hit.title, packName: p.name };
+  }
+  return null;
+}
+function genericScenario(scId) {
+  const m = findScenarioMeta(scId) || { title: 'Practice', packName: 'English' };
+  return {
+    title: m.title, pack: m.packName,
+    keyPhrases: [],
+    free: [{ ai: `Let's practise "${m.title}". I'll play the other person — you respond naturally.`, expects: [] }],
+    listen: [],
+  };
+}
 function openScenario(scId) {
   currentScenarioId = scId;
-  const sc = SCENARIO_SCRIPTS[scId];
-  if (!sc) {
-    currentScenarioId = 'angry-customer';
-    return openScenario('angry-customer');
-  }
+  let sc = SCENARIO_SCRIPTS[scId];
+  if (!sc) { sc = genericScenario(scId); SCENARIO_SCRIPTS[scId] = sc; }
   document.getElementById('prac_title').textContent = sc.title;
   document.getElementById('prac_sub').textContent = sc.pack;
   showView('practice');
-  // Open the scenario with a single bubble + 3 chips. No tabs — the user
-  // can pick any mode and switch mid-conversation by sending another chip.
-  setTimeout(() => practiceOpener(sc), 150);
+  setTimeout(() => startScenario(sc), 150);
+}
+
+/* Situations run as a short, coherent roleplay (same shell as the avatar /
+ * interview mock): the canned dialogue plays, one tiny note, then in-chat
+ * options so there's never a dead end. */
+function startScenario(sc) {
+  const chatEl = document.getElementById('prac_chat');
+  if (!chatEl) return;
+  if (practiceRunner) practiceRunner.stop();
+  chatEl.innerHTML = '';
+  ensurePracticeVoice();
+  const transcript = [{ speaker: 'ai', text: `Let's run "${sc.title}". I'll play the other person — you reply.` }];
+  (sc.listen || []).forEach(line => {
+    transcript.push({ speaker: line.speaker === 'agent' ? 'user' : 'ai', text: line.text });
+  });
+  const note = sc.coaching && sc.coaching.notes && sc.coaching.notes[0];
+  transcript.push({ speaker: 'card', card: {
+    kind: 'feedback', label: 'Quick note',
+    notes: [note || { tone: 'good', text: 'Clear and natural — nicely handled.' }],
+    better: sc.coaching && sc.coaching.better,
+  } });
+  const firstAi = transcript.find(t => t.speaker === 'ai');
+  if (firstAi && practiceVoice) { try { practiceVoice.speak(firstAi.text, 'en-IN'); } catch (e) {} }
+  practiceRunner = window.GC.createTranscript({
+    transcript, chatEl, voice: practiceVoice, skipFirstSpeak: true,
+    onComplete: () => appendScenarioEnd(chatEl, sc),
+  });
+  setTimeout(() => practiceRunner.start(), 250);
+}
+function appendScenarioEnd(chatEl, sc) {
+  window.GC.appendChips(chatEl, [
+    { text: '↻ Practice again', key: 'again' },
+    { text: 'Key phrases', key: 'phrases' },
+    { text: 'Back', key: 'back' },
+  ], (chip) => {
+    if (chip.key === 'again') startScenario(sc);
+    else if (chip.key === 'phrases') showKeyPhrases(chatEl, sc);
+    else showView('home');
+  });
+}
+function showKeyPhrases(chatEl, sc) {
+  const phrases = sc.keyPhrases || [];
+  if (!phrases.length) {
+    window.GC.appendAi(chatEl, "This one's a free roleplay — just keep going, you're doing great.");
+  } else {
+    window.GC.appendAi(chatEl, "The lines to remember — tap any to hear it:");
+    phrases.forEach((p, i) => window.GC.appendCard(chatEl, { kind: 'practice', label: 'Phrase ' + (i + 1), keyPhrase: p }, practiceVoice));
+  }
+  setTimeout(() => appendScenarioEnd(chatEl, sc), 700);
 }
 
 // Practice opener: a short bubble and 3 in-chat chips. The user picks one
@@ -2321,62 +2377,98 @@ function renderPractice() {
  * view-week-detail were deleted; the data is no longer referenced. */
 
 /* =========================================================================
- * WORD OF THE DAY — cyclable queue with Next + Past words
+ * LOCALIZATION — mother tongue switches meanings, explanations, UI + audio.
+ * The English the user is *learning* stays English; the explanation language
+ * is what changes (en / hi / gu).
  * ========================================================================= */
-// Curated queue of words at appropriate level. Each carries pronunciation,
-// meaning, example, and the spoken explanation used by Listen.
+let LANG = 'en';
+const LANGS = [
+  { id: 'en', label: 'English' },
+  { id: 'hi', label: 'हिन्दी' },
+  { id: 'gu', label: 'ગુજરાતી' },
+];
+const I18N = {
+  explainIn:   { en: 'Explain in',           hi: 'समझाएँ',                  gu: 'સમજાવો' },
+  talk:        { en: 'Talk with AI',         hi: 'AI से बात करें',          gu: 'AI સાથે વાત કરો' },
+  tools:       { en: 'Tools to help you',    hi: 'आपकी मदद के लिए टूल',     gu: 'તમારી મદદ માટે ટૂલ્સ' },
+  wordOfDay:   { en: 'Word of the day',      hi: 'आज का शब्द',              gu: 'આજનો શબ્દ' },
+  listen:      { en: 'Listen',               hi: 'सुनें',                   gu: 'સાંભળો' },
+  resumeTitle: { en: 'Continue where you left off', hi: 'जहाँ छोड़ा था वहीं से जारी रखें', gu: 'જ્યાં છોડ્યું ત્યાંથી ચાલુ રાખો' },
+};
+function t(key) { const o = I18N[key] || {}; return o[LANG] || o.en || ''; }
+
+function renderLang() {
+  document.getElementById('lang_label').textContent = t('explainIn');
+  const host = document.getElementById('lang_pills');
+  if (!host) return;
+  host.innerHTML = LANGS.map(l => `<button class="lang-pill${l.id === LANG ? ' sel' : ''}" onclick="setLang('${l.id}')">${l.label}</button>`).join('');
+}
+function setLang(l) {
+  LANG = l;
+  renderLang();
+  renderWordOfDay();
+  if (typeof renderAvatars === 'function') renderAvatars();
+  if (typeof renderTools === 'function') renderTools();
+  if (typeof renderSituations === 'function') renderSituations();
+  if (typeof renderResume === 'function') renderResume();
+  document.getElementById('lbl_talk') && (document.getElementById('lbl_talk').textContent = t('talk'));
+  document.getElementById('lbl_tools') && (document.getElementById('lbl_tools').textContent = t('tools'));
+}
+
+/* =========================================================================
+ * WORD OF THE DAY — simplified (word + meaning + Listen), endless stacked
+ * carousel moved with ← → . No level / part-of-speech / practice-in-sentence.
+ * Meaning shows in the chosen mother tongue.
+ * ========================================================================= */
 const WORD_QUEUE = [
-  { word: "Apart",      level: "A2 · ADJECTIVE", ipa: "/əˈpɑːrt/", meaning: "<strong>\"Set apart\"</strong> — different in a good way, special.",
-    example: "What sets us <em>apart</em> is our 24-hour service.",
-    spoken: "Apart. Adjective. Set apart means different in a good way, special. For example: what sets us apart is our 24-hour service." },
-  { word: "Reckon",     level: "B1 · VERB",       ipa: "/ˈrekən/",  meaning: "<strong>\"I reckon\"</strong> — I think, casually. Common in British and Indian English.",
-    example: "I <em>reckon</em> we should ship by Friday.",
-    spoken: "Reckon. Verb. To reckon means to think, in a casual way. For example: I reckon we should ship by Friday." },
-  { word: "Crisp",      level: "B1 · ADJECTIVE", ipa: "/krɪsp/",  meaning: "<strong>Clear and short</strong> — neat, well-edited communication.",
-    example: "She gave a <em>crisp</em> two-minute summary.",
-    spoken: "Crisp. Adjective. Crisp means clear and short. A crisp answer is sharp and well-edited. For example: she gave a crisp two-minute summary." },
-  { word: "Push back",  level: "B2 · PHRASAL VERB", ipa: "/pʊʃ bæk/", meaning: "<strong>Politely disagree</strong> with someone — workplace English.",
-    example: "I'd like to <em>push back</em> gently on the timeline.",
-    spoken: "Push back. Phrasal verb. To push back means to politely disagree with someone. For example: I'd like to push back gently on the timeline." },
-  { word: "Bandwidth",  level: "B2 · NOUN",      ipa: "/ˈbændwɪdθ/", meaning: "<strong>Capacity to take on more work</strong> — office English, very common.",
-    example: "I don't have the <em>bandwidth</em> this week — can it wait till Monday?",
-    spoken: "Bandwidth. Noun. In office English, bandwidth means your capacity to take on more work. For example: I don't have the bandwidth this week — can it wait till Monday?" },
+  { word: "Apart", ipa: "/əˈpɑːrt/",
+    meaning: { en: "Different in a special way — what makes you stand out.", hi: "ख़ास तरीके से अलग — जो आपको बाकियों से अलग बनाता है।", gu: "ખાસ રીતે અલગ — જે તમને બીજાથી અલગ પાડે છે." },
+    spoken:  { en: "Apart. Different in a special way — what makes you stand out.", hi: "Apart. ख़ास तरीके से अलग — जो आपको बाकियों से अलग बनाता है।", gu: "Apart. ખાસ રીતે અલગ — જે તમને બીજાથી અલગ પાડે છે." } },
+  { word: "Reckon", ipa: "/ˈrekən/",
+    meaning: { en: "To think, casually — common in Indian & British English.", hi: "सोचना, अनौपचारिक तरीके से — भारतीय और ब्रिटिश अंग्रेज़ी में आम।", gu: "વિચારવું, સહજ રીતે — ભારતીય અને બ્રિટિશ અંગ્રેજીમાં સામાન્ય." },
+    spoken:  { en: "Reckon. To think, casually — common in Indian and British English.", hi: "Reckon. सोचना, अनौपचारिक तरीके से — भारतीय और ब्रिटिश अंग्रेज़ी में आम।", gu: "Reckon. વિચારવું, સહજ રીતે — ભારતીય અને બ્રિટિશ અંગ્રેજીમાં સામાન્ય." } },
+  { word: "Crisp", ipa: "/krɪsp/",
+    meaning: { en: "Clear and short — neat and to the point.", hi: "स्पष्ट और संक्षिप्त — साफ़ और सटीक।", gu: "સ્પષ્ટ અને ટૂંકું — સાફ અને મુદ્દાસર." },
+    spoken:  { en: "Crisp. Clear and short — neat and to the point.", hi: "Crisp. स्पष्ट और संक्षिप्त — साफ़ और सटीक।", gu: "Crisp. સ્પષ્ટ અને ટૂંકું — સાફ અને મુદ્દાસર." } },
+  { word: "Push back", ipa: "/pʊʃ bæk/",
+    meaning: { en: "To politely disagree with someone.", hi: "किसी से विनम्रता से असहमत होना।", gu: "કોઈની સાથે નમ્રતાથી અસંમત થવું." },
+    spoken:  { en: "Push back. To politely disagree with someone.", hi: "Push back. किसी से विनम्रता से असहमत होना।", gu: "Push back. કોઈની સાથે નમ્રતાથી અસંમત થવું." } },
+  { word: "Bandwidth", ipa: "/ˈbændwɪdθ/",
+    meaning: { en: "Your capacity to take on more work.", hi: "और काम लेने की आपकी क्षमता।", gu: "વધુ કામ લેવાની તમારી ક્ષમતા." },
+    spoken:  { en: "Bandwidth. Your capacity to take on more work.", hi: "Bandwidth. और काम लेने की आपकी क्षमता।", gu: "Bandwidth. વધુ કામ લેવાની તમારી ક્ષમતા." } },
+  { word: "Reach out", ipa: "/riːtʃ aʊt/",
+    meaning: { en: "To contact someone, especially for help.", hi: "किसी से संपर्क करना — ख़ासकर मदद के लिए।", gu: "કોઈનો સંપર્ક કરવો — ખાસ કરીને મદદ માટે." },
+    spoken:  { en: "Reach out. To contact someone, especially for help.", hi: "Reach out. किसी से संपर्क करना — ख़ासकर मदद के लिए।", gu: "Reach out. કોઈનો સંપર્ક કરવો — ખાસ કરીને મદદ માટે." } },
 ];
 
+const WOD_VOICE_BY_LANG = { en: 'sarah_avatar', hi: 'english_hi', gu: 'english_gu' };
 let wodIdx = 0;
-let wodVoice = null;
+let wodVoice = null, wodVoicePersona = null;
 function ensureWodVoice() {
-  if (wodVoice) return wodVoice;
-  wodVoice = JBIQVoice.create({ persona: 'sarah_avatar' });
+  const pid = WOD_VOICE_BY_LANG[LANG] || 'sarah_avatar';
+  if (wodVoice && wodVoicePersona === pid) return wodVoice;
+  if (wodVoice) { try { wodVoice.stop(); } catch (e) {} }
+  wodVoice = JBIQVoice.create({ persona: pid });
+  wodVoicePersona = pid;
   return wodVoice;
 }
+function wodMeaning(w) { return (w.meaning && (w.meaning[LANG] || w.meaning.en)) || ''; }
 
 function renderWordOfDay() {
   const w = WORD_QUEUE[wodIdx];
   const host = document.getElementById('wod_hero');
   if (!host) return;
   host.innerHTML = `
-    <div class="wod-h-row">
-      <div class="wod-tag">Word of the day</div>
-      <div class="wod-level">${w.level}</div>
-    </div>
-    <div class="wod-word">${w.word}</div>
-    <div class="wod-pronounce">${w.ipa}</div>
-    <div class="wod-meaning">${w.meaning}</div>
-    <div class="wod-example">"${w.example}"</div>
-    <div class="wod-actions">
-      <button class="wod-btn wod-btn-primary" onclick="listenWordOfDay()">
+    <div class="wod-card">
+      <div class="wod-tag">${t('wordOfDay')}</div>
+      <div class="wod-word">${w.word}</div>
+      <div class="wod-pronounce">${w.ipa}</div>
+      <div class="wod-meaning">${wodMeaning(w)}</div>
+      <button class="wod-listen" onclick="listenWordOfDay()">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 15a3 3 0 003-3V5a3 3 0 00-6 0v7a3 3 0 003 3zm6-5a1 1 0 00-1 1v1a5 5 0 11-10 0v-1a1 1 0 10-2 0v1a7 7 0 1014 0v-1a1 1 0 00-1-1z"/></svg>
-        <span>Listen</span>
+        <span>${t('listen')}</span>
       </button>
-      <button class="wod-btn" onclick="practiceWordOfDay()">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7L8 5z"/></svg>
-        <span>Practice in a sentence</span>
-      </button>
-    </div>
-    <div class="wod-cycle">
-      <button class="wod-mini" onclick="cycleWordOfDay(-1)">← Past words</button>
-      <button class="wod-mini" onclick="cycleWordOfDay(1)">Next word →</button>
+      <div class="wod-dots">${WORD_QUEUE.map((_, i) => `<span class="wod-dot${i === wodIdx ? ' on' : ''}"></span>`).join('')}</div>
     </div>
   `;
 }
@@ -2386,25 +2478,40 @@ function cycleWordOfDay(dir) {
 }
 function listenWordOfDay() {
   const w = WORD_QUEUE[wodIdx];
-  ensureWodVoice().speak(w.spoken, 'en-IN');
-}
-function practiceWordOfDay() {
-  const w = WORD_QUEUE[wodIdx];
-  showView('avatar');
-  setTimeout(() => {
-    ensureAvatarVoice().speak(`Let's practice the word "${w.word}". Try a sentence using it — anything about your work, your day, anything you care about.`, 'en-IN');
-  }, 400);
+  // English word pronunciation + meaning in the chosen mother tongue, voiced
+  // by a per-language voice (en → Sarah; hi/gu → native multilingual voices).
+  const line = (w.spoken && (w.spoken[LANG] || w.spoken.en)) || `${w.word}. ${wodMeaning(w)}`;
+  ensureWodVoice().speak(line, LANG === 'hi' ? 'hi-IN' : LANG === 'gu' ? 'gu-IN' : 'en-IN');
 }
 
 /* =========================================================================
  * AVATARS + SITUATIONS — home carousels
  * ========================================================================= */
+// Four well-defined personas, each mapped to an existing (cached) voice.
+// Arjun reuses the interview-prep interviewer voice — the two use cases are
+// the same kind of voice conversation, so they share the cast.
 const AVATARS = [
-  { id: 'sarah_avatar', initial: 'S', name: 'Sarah',    title: 'English coach',          tint: 'rgba(53,53,243,0.15)',  color: '#3535f3' },
-  { id: 'emma_avatar',  initial: 'E', name: 'Emma',     title: 'English friend',          tint: 'rgba(30,204,176,0.18)', color: '#0a9c84' },
-  { id: 'jay_avatar',   initial: 'J', name: 'Jay',      title: 'Slang & street English',  tint: 'rgba(247,171,32,0.22)', color: '#b97900' },
-  { id: 'jonas_avatar', initial: 'MJ',name: 'Mr. Jonas',title: 'Interview English',       tint: 'rgba(57,0,173,0.18)',   color: '#3900ad' },
+  { id: 'emma_avatar',            name: 'Riya',   color: '#0a9c84', tint: '#d6f5ec',
+    role: { en: 'Friend',       hi: 'दोस्त',     gu: 'મિત્ર' },
+    vibe: { en: 'Talk naturally in everyday English', hi: 'रोज़मर्रा की अंग्रेज़ी में सहज बात करें', gu: 'રોજિંદી અંગ્રેજીમાં સહજ વાત કરો' } },
+  { id: 'jonas_avatar',           name: 'Rajesh', color: '#6d17ce', tint: '#ece2fb',
+    role: { en: 'Teacher',      hi: 'शिक्षक',    gu: 'શિક્ષક' },
+    vibe: { en: 'Speak correctly and confidently', hi: 'सही और आत्मविश्वास से बोलें', gu: 'સાચું અને આત્મવિશ્વાસથી બોલો' } },
+  { id: 'sarah_avatar',           name: 'Maya',   color: '#3535f3', tint: '#dfe0ff',
+    role: { en: 'Colleague',    hi: 'सहकर्मी',   gu: 'સહકર્મી' },
+    vibe: { en: 'Communicate professionally at work', hi: 'काम पर पेशेवर ढंग से बात करें', gu: 'કામ પર વ્યાવસાયિક રીતે વાત કરો' } },
+  { id: 'interviewer_formal_ops', name: 'Arjun',  color: '#c2790a', tint: '#fdecca',
+    role: { en: 'Interviewer',  hi: 'इंटरव्यूअर', gu: 'ઇન્ટરવ્યૂઅર' },
+    vibe: { en: 'Ace interviews and high-stakes talks', hi: 'इंटरव्यू और अहम बातचीत में महारत', gu: 'ઇન્ટરવ્યૂ અને મહત્વની વાતચીતમાં નિપુણતા' } },
 ];
+function faceSvg(color, tint) {
+  return `<svg viewBox="0 0 64 64" width="100%" height="100%" aria-hidden="true">
+    <circle cx="32" cy="32" r="32" fill="${tint}"/>
+    <circle cx="24" cy="29" r="3.1" fill="${color}"/><circle cx="40" cy="29" r="3.1" fill="${color}"/>
+    <path d="M22 40 Q32 48 42 40" stroke="${color}" stroke-width="3" fill="none" stroke-linecap="round"/>
+  </svg>`;
+}
+function avT(a, key) { return (a[key] && (a[key][LANG] || a[key].en)) || ''; }
 function renderAvatars() {
   const row = document.getElementById('avatars_row');
   if (!row) return;
@@ -2412,12 +2519,11 @@ function renderAvatars() {
   AVATARS.forEach(a => {
     const card = document.createElement('div');
     card.className = 'avatar-card';
-    card.style.setProperty('--av-tint', a.tint);
-    card.style.setProperty('--av-color', a.color);
     card.innerHTML = `
-      <div class="av-pic">${a.initial}</div>
+      <div class="av-face">${faceSvg(a.color, a.tint)}</div>
       <div class="av-name">${a.name}</div>
-      <div class="av-title">${a.title}</div>
+      <div class="av-role" style="color:${a.color}">${avT(a, 'role')}</div>
+      <div class="av-title">${avT(a, 'vibe')}</div>
     `;
     card.onclick = () => openAvatar(a.id);
     row.appendChild(card);
@@ -2430,8 +2536,7 @@ function openAvatar(avatarId) {
   // up the new persona.
   if (avatarVoice) { try { avatarVoice.stop(); } catch (e) {} }
   avatarVoice = null;
-  showView('avatar');
-  setTimeout(() => startSarahDemo(), 200);
+  showView('avatar');  // the showView override starts startPersona() in-gesture
 }
 function showAvatarList() {
   // Stub: in the full version this is a separate full-list view. For now we
@@ -2442,28 +2547,158 @@ function showAvatarList() {
 
 let currentAvatarId = 'sarah_avatar';
 
+// Situations now render as stacked category rows (header + horizontal scroll
+// of sub-situation cards) — no separate pack → scenario pages.
+const SIT_ROWS = [
+  { pack: 'office',   title: { en: 'Office situations',  hi: 'ऑफिस की स्थितियाँ', gu: 'ઓફિસની પરિસ્થિતિઓ' } },
+  { pack: 'travel',   title: { en: 'English for travel', hi: 'यात्रा के लिए अंग्रेज़ी', gu: 'મુસાફરી માટે અંગ્રેજી' } },
+  { pack: 'customer', title: { en: 'Customer calls',     hi: 'ग्राहक कॉल', gu: 'ગ્રાહક કૉલ' } },
+  { pack: 'family',   title: { en: 'Family & in-laws',   hi: 'परिवार और ससुराल', gu: 'કુટુંબ અને સાસરિયાં' } },
+];
 function renderSituations() {
-  const row = document.getElementById('situations_row');
-  if (!row) return;
-  row.innerHTML = '';
-  Object.entries(PACKS).forEach(([id, pack]) => {
-    const card = document.createElement('div');
-    card.className = 'situation-card';
-    card.innerHTML = `
-      <div class="sit-name">${pack.name}</div>
-      <div class="sit-meta">${pack.scenarios.slice(0, 2).map(s => s.title).join(' · ')}…</div>
-      <div class="sit-count">${pack.scenarios.length} scenarios</div>
+  const host = document.getElementById('situations_host');
+  if (!host) return;
+  host.innerHTML = '';
+  SIT_ROWS.forEach(rowCfg => {
+    const pack = PACKS[rowCfg.pack];
+    if (!pack) return;
+    const title = rowCfg.title[LANG] || rowCfg.title.en;
+    const section = document.createElement('div');
+    section.innerHTML = `
+      <div class="section-row"><div class="section-h-inline">${title}</div></div>
+      <div class="sit-scroll"></div>
     `;
-    card.onclick = () => openPack(id);
-    row.appendChild(card);
+    const scroll = section.querySelector('.sit-scroll');
+    pack.scenarios.slice(0, 6).forEach(s => {
+      const card = document.createElement('button');
+      card.className = 'sit-tile' + (s.done ? ' done' : '');
+      card.innerHTML = `
+        <div class="sit-tile-title">${s.title}</div>
+        <div class="sit-tile-meta">${(s.meta || '').split('·')[0].trim()}</div>
+        ${s.done ? '<div class="sit-tile-done">✓ done</div>' : ''}
+      `;
+      card.onclick = () => openScenario(s.id);
+      scroll.appendChild(card);
+    });
+    host.appendChild(section);
   });
+}
+
+/* =========================================================================
+ * TOOLS — quick in-chat helpers (flows built in the chat, no extra screens)
+ * ========================================================================= */
+const TOOLS = [
+  { id: 'email',     color: '#3535f3', label: { en: 'Write an email',       hi: 'ईमेल लिखें',         gu: 'ઈમેલ લખો' },
+    svg: '<path d="M3 6h18v12H3z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3 7l9 7 9-7" fill="none" stroke="currentColor" stroke-width="2"/>' },
+  { id: 'whatsapp',  color: '#0a9c84', label: { en: 'WhatsApp message',     hi: 'व्हाट्सएप संदेश',     gu: 'વોટ્સએપ સંદેશ' },
+    svg: '<path d="M12 3a9 9 0 00-7.8 13.5L3 21l4.7-1.2A9 9 0 1012 3z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>' },
+  { id: 'translate', color: '#c2790a', label: { en: 'Translate to English', hi: 'अंग्रेज़ी में अनुवाद', gu: 'અંગ્રેજીમાં અનુવાદ' },
+    svg: '<path d="M4 5h7M7 5v3c0 3-1.5 5-4 6M5 11c2 2 4 3 6 3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M13 19l4-9 4 9M14.5 16h5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>' },
+  { id: 'photo',     color: '#6d17ce', label: { en: 'Photo to text',        hi: 'फोटो से टेक्स्ट',     gu: 'ફોટોથી ટેક્સ્ટ' },
+    svg: '<path d="M3 7h4l2-2h6l2 2h4v12H3z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="12" cy="13" r="3.5" fill="none" stroke="currentColor" stroke-width="2"/>' },
+];
+function renderTools() {
+  const grid = document.getElementById('tools_grid');
+  if (!grid) return;
+  grid.innerHTML = '';
+  TOOLS.forEach(tool => {
+    const b = document.createElement('button');
+    b.className = 'tool-card';
+    b.innerHTML = `
+      <span class="tool-icon" style="background:${tool.color}1a;color:${tool.color}"><svg viewBox="0 0 24 24" width="20" height="20">${tool.svg}</svg></span>
+      <span class="tool-label">${tool.label[LANG] || tool.label.en}</span>`;
+    b.onclick = () => openTool(tool.id);
+    grid.appendChild(b);
+  });
+}
+// Canned in-chat tool flows — run in the practice chat surface (no new screen).
+const TOOL_FLOWS = {
+  email: () => ([
+    { speaker: 'ai', text: "Sure — who's the email to, and what's the gist?" },
+    { speaker: 'user', text: "To my manager — asking for next Friday off for a family function." },
+    { speaker: 'card', card: { kind: 'tip', label: 'Draft email', content: "<strong>Subject:</strong> Leave request — Friday<br><br>Hi [Manager],<br>I'd like to take Friday off for a family function. I'll finish my pending work on Thursday and stay reachable for anything urgent.<br>Thank you,<br>[Your name]" } },
+    { speaker: 'ai', text: "Want it shorter, more formal, or are you good to send?" },
+  ]),
+  whatsapp: () => ([
+    { speaker: 'ai', text: "What's the message, and who's it for?" },
+    { speaker: 'user', text: "Telling a client I'll be 10 minutes late to the call." },
+    { speaker: 'card', card: { kind: 'tip', label: 'WhatsApp message', content: "Hi [Name], running about 10 minutes late for our call — apologies! I'll join by [time]. Talk soon." } },
+    { speaker: 'ai', text: "Copy it as is, or make it more casual?" },
+  ]),
+  translate: () => ([
+    { speaker: 'ai', text: "Say it in your language — I'll give you natural English." },
+    { speaker: 'user', text: LANG === 'gu' ? "મારે કાલે રજા જોઈએ છે." : "मुझे कल छुट्टी चाहिए।" },
+    { speaker: 'card', card: { kind: 'phrase', label: 'In English', content: "<strong>Natural:</strong> I'd like to take tomorrow off.", keyPhrase: "I'd like to take tomorrow off." } },
+    { speaker: 'ai', text: "Tap it to hear the pronunciation. Translate another?" },
+  ]),
+  photo: () => ([
+    { speaker: 'ai', text: "Point your camera at any English — a form, a sign, a letter." },
+    { speaker: 'user', text: "📷 [Photo of a bank form]" },
+    { speaker: 'card', card: { kind: 'tip', label: 'Read from your photo', content: "\"Nominee details: full name, relationship, date of birth, share %.\"" } },
+    { speaker: 'ai', text: LANG === 'en' ? "Want me to explain any word?" : (LANG === 'hi' ? "किसी शब्द का मतलब आपकी भाषा में बताऊँ?" : "કોઈ શબ્દનો અર્થ તમારી ભાષામાં કહું?") },
+  ]),
+};
+function openTool(id) { startTool(id); }
+function startTool(id) {
+  currentScenarioId = null;
+  const tool = TOOLS.find(t => t.id === id);
+  document.getElementById('prac_title').textContent = tool ? (tool.label[LANG] || tool.label.en) : 'Tool';
+  document.getElementById('prac_sub').textContent = t('tools');
+  showView('practice');
+  const chatEl = document.getElementById('prac_chat');
+  if (!chatEl) return;
+  if (practiceRunner) practiceRunner.stop();
+  chatEl.innerHTML = '';
+  ensurePracticeVoice();
+  const flow = (TOOL_FLOWS[id] || TOOL_FLOWS.email)();
+  const firstAi = flow.find(x => x.speaker === 'ai');
+  if (firstAi && practiceVoice) { try { practiceVoice.speak(firstAi.text, 'en-IN'); } catch (e) {} }
+  practiceRunner = window.GC.createTranscript({
+    transcript: flow, chatEl, voice: practiceVoice, skipFirstSpeak: true,
+    onComplete: () => appendToolEnd(chatEl, id),
+  });
+  setTimeout(() => practiceRunner.start(), 250);
+}
+function appendToolEnd(chatEl, id) {
+  window.GC.appendChips(chatEl, [
+    { text: '↻ Try again', key: 'again' },
+    { text: 'Back', key: 'back' },
+  ], (chip) => { if (chip.key === 'again') startTool(id); else showView('home'); });
+}
+
+/* Returning-user resume — continue the situation/draft you left. */
+function renderResume() {
+  const host = document.getElementById('resume_host');
+  if (!host) return;
+  host.innerHTML = `
+    <button class="resume-card" onclick="openScenario('angry-customer')">
+      <span class="resume-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+      <span class="resume-text">
+        <span class="resume-h">${t('resumeTitle')}</span>
+        <span class="resume-sub">Customer calls · Calming an angry customer</span>
+      </span>
+      <span class="resume-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span>
+    </button>`;
+}
+
+function enToast(text) {
+  const el = document.createElement('div');
+  el.style.cssText = 'position:fixed;bottom:96px;left:50%;transform:translateX(-50%);max-width:80%;text-align:center;background:var(--surface-bold);color:#fff;padding:11px 18px;border-radius:16px;font-family:var(--font);font-size:13px;font-weight:600;z-index:300;box-shadow:var(--shadow-md);opacity:0;transition:opacity .25s ease';
+  el.textContent = text;
+  document.body.appendChild(el);
+  requestAnimationFrame(() => el.style.opacity = '1');
+  setTimeout(() => el.style.opacity = '0', 2200);
+  setTimeout(() => el.remove(), 2600);
 }
 
 // Render carousels on first paint
 document.addEventListener('DOMContentLoaded', () => {
+  renderLang();
   renderWordOfDay();
   renderAvatars();
+  renderTools();
   renderSituations();
+  renderResume();
 });
 
 /* =========================================================================
@@ -2480,87 +2715,88 @@ let avatarRunner = null;
 
 function ensureAvatarVoice() {
   if (avatarVoice) return avatarVoice;
-  // Persona pulled from currentAvatarId so switching between Sarah / Emma
-  // / Jay / Mr Jonas at the home carousel actually changes who speaks.
-  const personaId = (typeof currentAvatarId === 'string' && currentAvatarId) ? currentAvatarId : 'sarah_avatar';
-  const displayName = (window.JBIQ_PERSONAS && window.JBIQ_PERSONAS[personaId]?.name) || 'Sarah';
+  const personaId = (typeof currentAvatarId === 'string' && currentAvatarId) ? currentAvatarId : 'emma_avatar';
   avatarVoice = JBIQVoice.create({
     persona: personaId,
     onState: (state) => {
+      const stage = document.querySelector('#view-avatar .av-stage');
       const status = document.getElementById('av_status');
-      if (!status) return;
-      if (state === 'speaking') { status.textContent = 'Speaking'; startMouthAnim(); }
-      else if (state === 'thinking') { status.textContent = 'Thinking'; setMouth('think'); }
-      else { status.textContent = displayName; stopMouthAnim(); setMouth('rest'); }
+      if (state === 'speaking') { stage && stage.classList.add('speaking'); status && (status.textContent = 'speaking…'); }
+      else if (state === 'thinking') { status && (status.textContent = '…'); }
+      else { stage && stage.classList.remove('speaking'); status && (status.textContent = 'listening…'); }
     },
     onError: (e) => console.error(e),
   });
   return avatarVoice;
 }
 
-// Sarah's transcript is grounded in Pooja's actual day-in-life from
-// JCS_Vertical_Pack_v9 §3 (Day in Their Lives — Pooja, 10:30 AM + 11:30 PM beats).
-// "New to the office" role-play. Sarah coaches the user (a fresh joiner)
-// through the three things people ask on day one: tell-me-about-yourself,
-// why-this-team, and the "any questions?" callback. Replaces the long BPO
-// escalation flow — that scenario is now in Scenarios > Customer Service.
-const SARAH_TRANSCRIPT = [
-  { speaker: 'ai', text: "Hey Pooja. First day at the new office tomorrow — let's run the three intros people will ask you. I'll play your team lead." },
-  { speaker: 'user', text: "Okay, ready." },
-  { speaker: 'ai', text: "\"Hi, you must be the new joiner. Tell me a bit about yourself.\"" },
-  { speaker: 'user', text: "Hi sir. I'm Pooja. I just finished BCom from Pune. I'm excited to be here." },
-  { speaker: 'card', card: {
-      kind: 'correction',
-      label: 'Two quick fixes on your intro',
-      before: "Hi sir. I'm Pooja. I just finished BCom from Pune. I'm excited to be here.",
-      after: "Hi Arjun. I'm Pooja, BCom from Pune. I led the student finance club last year — I want to bring that energy here.",
-  } },
-  { speaker: 'ai', text: "Drop 'sir' — in most offices it sounds too formal for a team lead. And add one specific thing you'll bring to the role. Try again." },
-  { speaker: 'user', text: "Hi Arjun. I'm Pooja, BCom from Pune. I led our student finance club last year, and I want to bring that energy here." },
-  { speaker: 'ai', text: "Much better. Calm, specific, no 'sir'. Now the second one — they'll ask 'why this team?' Most people fumble this. Listen, then say it back." },
-  { speaker: 'card', card: {
-      kind: 'phrase',
-      label: 'Phrase to try: why this team',
-      content: "\"I researched the team's work on payments. The way you scaled UPI integration in 6 months is exactly the pace I want to learn.\"",
-      keyPhrase: "I researched the team's work on payments — the way you scaled UPI integration in 6 months is exactly the pace I want to learn.",
-  } },
-  { speaker: 'user', text: "I researched the team's work on payments. The way you scaled UPI integration in 6 months is exactly the pace I want to learn." },
-  { speaker: 'ai', text: "Crisp. Pace was clear. One last landmine — when they ask 'any questions?', everyone says no. Wrong move. Ask one specific question back." },
-  { speaker: 'card', card: {
-      kind: 'phrase',
-      label: 'Saved · The one question that makes you memorable',
-      content: '"What would success look like in my first 3 months?"',
-      why: "Shows you're thinking about outcomes, not just tasks. Most candidates miss this — you won't.",
-      keyPhrase: 'What would success look like in my first 3 months?',
-  } },
-  { speaker: 'user', text: "What would success look like in my first 3 months?" },
-  { speaker: 'ai', text: "Locked in. Three things saved to your phrasebook — intro, why-this-team, the question back. Tomorrow morning: take a breath at the door. You've got this." },
-];
+// Short, de-texted conversations — one per persona, matched to their vibe.
+// Few turns, no dead-ends; the avatar speaks English, tips stay tiny.
+const PERSONA_FLOWS = {
+  emma_avatar: [ // Riya — Friend
+    { speaker: 'ai', text: "Hey! Good to see you. So — how was your weekend?" },
+    { speaker: 'user', text: "It was good. I relaxed at home and watched some cricket." },
+    { speaker: 'card', card: { kind: 'tip', label: 'Tiny tip', content: "Bounce it back — add \"You?\" so it feels like a chat, not answers." } },
+    { speaker: 'ai', text: "Nice and natural. One thing you're looking forward to this week?" },
+    { speaker: 'user', text: "Meeting my friends on Saturday." },
+    { speaker: 'ai', text: "Lovely. You're easy to talk to — that's half of English. Same time tomorrow?" },
+  ],
+  jonas_avatar: [ // Rajesh — Teacher
+    { speaker: 'ai', text: "Let's fix one common mistake. Say: \"I am working here since two years.\"" },
+    { speaker: 'user', text: "I am working here since two years." },
+    { speaker: 'card', card: { kind: 'correction', label: 'One fix', before: "I am working here since two years.", after: "I have been working here for two years." } },
+    { speaker: 'ai', text: "Use \"for\" for a length of time, \"since\" for a start point. Say it once more." },
+    { speaker: 'user', text: "I have been working here for two years." },
+    { speaker: 'ai', text: "Correct and confident. That's the one most people get wrong — now it's yours." },
+  ],
+  sarah_avatar: [ // Maya — Colleague
+    { speaker: 'ai', text: "I'm Maya, your teammate. Ask me for help with a report — keep it professional." },
+    { speaker: 'user', text: "Maya, can you help me with this report? I'm a bit stuck." },
+    { speaker: 'card', card: { kind: 'tip', label: 'Tiny tip', content: "Add what you tried: \"I've done the data, stuck on the summary.\" It shows effort." } },
+    { speaker: 'ai', text: "Good. Now the full ask, with that line added." },
+    { speaker: 'user', text: "Maya, I've done the data but I'm stuck on the summary — could you take a look?" },
+    { speaker: 'ai', text: "That's exactly how a strong colleague asks. Clear and professional." },
+  ],
+  interviewer_formal_ops: [ // Arjun — Interviewer
+    { speaker: 'ai', text: "I'm Arjun. Quick one — tell me about yourself in two lines." },
+    { speaker: 'user', text: "I'm Pooja, a commerce graduate. Two years in customer support, and I'm good with people." },
+    { speaker: 'card', card: { kind: 'tip', label: 'Tiny tip', content: "Lead with your strongest line — \"Two years in customer support\" grabs attention." } },
+    { speaker: 'ai', text: "Solid. One more — why should we hire you?" },
+    { speaker: 'user', text: "I stay calm with tough customers and I learn fast." },
+    { speaker: 'ai', text: "Confident, no rambling. That lands — you'd do well." },
+  ],
+};
 
-function startSarahDemo() {
+function startPersona() {
+  const a = AVATARS.find(x => x.id === currentAvatarId) || AVATARS[0];
+  const nameEl = document.getElementById('av_name'); if (nameEl) nameEl.textContent = a.name;
+  const roleEl = document.getElementById('av_role'); if (roleEl) roleEl.textContent = avT(a, 'role');
+  const faceEl = document.getElementById('av_face'); if (faceEl) faceEl.innerHTML = faceSvg(a.color, a.tint);
+  const stEl = document.getElementById('av_status'); if (stEl) stEl.textContent = 'on a call';
   ensureAvatarVoice();
   const chatEl = document.getElementById('avatarChat');
   if (!chatEl) return;
-  // Stop any prior runner
   if (avatarRunner) avatarRunner.stop();
-
-  // Fire the FIRST AI line's speak() synchronously inside the click chain.
-  // This locks in the user-gesture context for audio playback before any
-  // setTimeout breaks it. Strict autoplay policies (Safari especially)
-  // require this — the prefetched buffer plays instantly here.
-  const firstAi = SARAH_TRANSCRIPT.find(t => t.speaker === 'ai');
-  if (firstAi && avatarVoice) {
-    try { avatarVoice.speak(firstAi.text, 'en-IN'); } catch (e) { console.warn('[Sarah] first speak failed', e); }
-  }
-
+  const flow = PERSONA_FLOWS[currentAvatarId] || PERSONA_FLOWS.emma_avatar;
+  // First AI line spoken synchronously in the click gesture (autoplay unlock).
+  const firstAi = flow.find(t => t.speaker === 'ai');
+  if (firstAi && avatarVoice) { try { avatarVoice.speak(firstAi.text, 'en-IN'); } catch (e) {} }
   avatarRunner = window.GC.createTranscript({
-    transcript: SARAH_TRANSCRIPT,
-    chatEl,
-    voice: avatarVoice,
-    speakerLabel: 'Sarah',
-    skipFirstSpeak: true,   // we already played it directly above
+    transcript: flow, chatEl, voice: avatarVoice, skipFirstSpeak: true,
+    onComplete: () => appendAvatarEnd(chatEl),
   });
   setTimeout(() => avatarRunner.start(), 300);
+}
+
+// In-chat wrap — no top-bar controls. "Practice again" or back, in the thread.
+function appendAvatarEnd(chatEl) {
+  const wrap = document.createElement('div');
+  wrap.className = 'chat-end';
+  wrap.innerHTML = `
+    <button class="chat-end-btn" onclick="startPersona()">↻ Practice again</button>
+    <button class="chat-end-btn ghost" onclick="showView('home')">Back to home</button>`;
+  chatEl.appendChild(wrap);
+  chatEl.scrollTop = chatEl.scrollHeight;
 }
 
 function endAvatar() {
@@ -2569,11 +2805,7 @@ function endAvatar() {
   showView('home');
 }
 
-// Replay button on the av-top
-document.addEventListener('DOMContentLoaded', () => {
-  const r = document.getElementById('avatarRestart');
-  if (r) r.addEventListener('click', () => { startSarahDemo(); });
-});
+// (Old top-bar replay button removed — "Practice again" now lives in-chat.)
 
 /* =========================================================================
  * Sarah lipsync — toggle mouth shape while audio plays
@@ -2620,12 +2852,12 @@ document.querySelectorAll('.eye').forEach(e => {
   e.style.transformOrigin = 'center';
 });
 
-/* Auto-start the Sarah demo when avatar view opens */
+/* Auto-start the persona conversation when avatar view opens */
 const _origShowView = showView;
 showView = function(name) {
   _origShowView(name);
   if (name === 'avatar') {
-    startSarahDemo();
+    startPersona();
   } else {
     // Stop any running demos when leaving their views
     if (avatarRunner) avatarRunner.stop();
@@ -2642,9 +2874,10 @@ showView = function(name) {
 (function init() {
   // Prefetch ALL AI lines on page load — instant playback when user enters avatar.
   if (window.JBIQVoice && window.JBIQVoice.prefetch) {
-    const prefetchList = SARAH_TRANSCRIPT
-      .filter(t => t.speaker === 'ai')
-      .map(t => ({ personaId: 'sarah_avatar', text: t.text }));
+    const prefetchList = [];
+    Object.entries(PERSONA_FLOWS).forEach(([pid, flow]) => {
+      flow.filter(t => t.speaker === 'ai').forEach(t => prefetchList.push({ personaId: pid, text: t.text }));
+    });
     window.JBIQVoice.prefetch(prefetchList);
   }
 

@@ -108,6 +108,28 @@ window.JBIQ_PERSONAS = {
     fillerPhrase: 'Let me give that some thought…',
   },
 
+  // ============= LOCALIZED EXPLANATION VOICES (mother tongue) =============
+  // Read meanings/explanations in the learner's mother tongue via ElevenLabs
+  // multilingual. NOTE: these reuse premade multilingual voices (the API key
+  // can't list voices to pick verified native ones) — swap voiceId for a
+  // verified native Hindi/Gujarati voice when available.
+  english_hi: {
+    id: 'english_hi',
+    voiceId: 'XB0fDUnXU5powFXDhCwa',   // Charlotte — warm female, multilingual
+    model: 'eleven_multilingual_v2',
+    stability: 0.5, similarityBoost: 0.8, style: 0.2,
+    name: 'हिन्दी', title: 'Hindi explanation voice',
+    fillerPhrase: 'एक सेकंड…',
+  },
+  english_gu: {
+    id: 'english_gu',
+    voiceId: 'EXAVITQu4vr4xnSDxMaL',   // Sarah — clear female, multilingual
+    model: 'eleven_multilingual_v2',
+    stability: 0.5, similarityBoost: 0.8, style: 0.2,
+    name: 'ગુજરાતી', title: 'Gujarati explanation voice',
+    fillerPhrase: 'એક સેકન્ડ…',
+  },
+
   // ============= INTERVIEW PREP — ROLE-PLAY PERSONAS =============
   interviewer_bored_hr: {
     id: 'interviewer_bored_hr',
