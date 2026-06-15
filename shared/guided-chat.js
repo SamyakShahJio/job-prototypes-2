@@ -324,6 +324,8 @@
       autoScroll = true,
       skipFirstSpeak = false,    // when true, the first 'ai' item only renders bubble
                                   // (caller already triggered TTS within gesture context)
+      clearOnStart = true,        // when false, append to the existing thread instead
+                                  // of wiping it (keeps prior content visible)
     } = opts;
 
     let i = 0;
@@ -437,7 +439,7 @@
     }
 
     function start() {
-      chatEl.innerHTML = '';
+      if (clearOnStart) chatEl.innerHTML = '';
       i = 0;
       stopped = false;
       playNext();

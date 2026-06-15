@@ -2154,26 +2154,26 @@ function startScenario(sc) {
   chatEl.innerHTML = '';
   ensurePracticeVoice();
   sc._learnPool = null; sc._learnIdx = 0;   // reset endless-learn state
+  // Opener is text-only (dynamic title → can't be a cached clip; avoids janky
+  // browser TTS). All voiced audio from here on is pre-cached.
   window.GC.appendAi(chatEl, `Let's work on "${sc.title}". Learn the words & phrases, or simulate the conversation — your call.`);
-  try { practiceVoice.speak(`Let's work on ${sc.title}. Learn the words and phrases, or simulate the conversation.`, 'en-IN'); } catch (e) {}
   setTimeout(() => offerSitChips(chatEl, sc, false), 700);
 }
 function offerSitChips(chatEl, sc, learned) {
+  // Always two running options — no "Back" (top-left arrow handles that).
   window.GC.appendChips(chatEl, [
     { text: learned ? 'More words & phrases' : 'Learn words & phrases', key: 'learn' },
     { text: 'Simulate the conversation', key: 'sim' },
-    { text: 'Back', key: 'back' },
   ], (chip) => {
     if (chip.key === 'learn') learnBatch(chatEl, sc);
-    else if (chip.key === 'sim') simulateScenario(chatEl, sc);
-    else showView('home');
+    else simulateScenario(chatEl, sc);
   });
 }
 // Endless, shuffled pool mixing key phrases + key words. "More" keeps drawing;
 // when exhausted it reshuffles, so it never runs dry or shows nothing.
 function buildLearnPool(sc) {
   const items = [];
-  (sc.keyPhrases || []).forEach(p => items.push({ kind: 'practice', label: 'Phrase', keyPhrase: p }));
+  (sc.keyPhrases || []).forEach(p => items.push({ kind: 'phrase', label: 'PHRASE', keyPhrase: p }));
   const vocab = (sc.vocab && sc.vocab.length ? sc.vocab : defaultVocab(sc));
   vocab.forEach(v => items.push({ kind: 'phrase', label: (v.word || '').toUpperCase(), content: '<strong>Meaning:</strong> ' + v.meaning, keyPhrase: (v.example || '').replace(/^"|"$/g, '') }));
   for (let i = items.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); const tmp = items[i]; items[i] = items[j]; items[j] = tmp; }
@@ -2199,8 +2199,9 @@ function simulateScenario(chatEl, sc) {
   } });
   const firstAi = transcript.find(t => t.speaker === 'ai');
   if (firstAi && practiceVoice) { try { practiceVoice.speak(firstAi.text, 'en-IN'); } catch (e) {} }
+  // clearOnStart:false → keep the learn content above; append the roleplay below.
   practiceRunner = window.GC.createTranscript({
-    transcript, chatEl, voice: practiceVoice, skipFirstSpeak: true,
+    transcript, chatEl, voice: practiceVoice, skipFirstSpeak: true, clearOnStart: false,
     onComplete: () => offerSitChips(chatEl, sc, true),
   });
   setTimeout(() => practiceRunner.start(), 250);
@@ -2712,25 +2713,25 @@ const TOOL_FLOWS = {
     { speaker: 'ai', text: "Sure — who's the email to, and what's the gist?" },
     { speaker: 'user', text: "To my manager — asking for next Friday off for a family function." },
     { speaker: 'card', card: { kind: 'tip', label: 'Draft email', content: "<strong>Subject:</strong> Leave request — Friday<br><br>Hi [Manager],<br>I'd like to take Friday off for a family function. I'll finish my pending work on Thursday and stay reachable for anything urgent.<br>Thank you,<br>[Your name]" } },
-    { speaker: 'ai', text: "Want it shorter, more formal, or are you good to send?" },
+    { speaker: 'ai', text: "There's your draft — tweak the bracketed bits and it's ready to send." },
   ]),
   whatsapp: () => ([
     { speaker: 'ai', text: "What's the message, and who's it for?" },
     { speaker: 'user', text: "Telling a client I'll be 10 minutes late to the call." },
     { speaker: 'card', card: { kind: 'tip', label: 'WhatsApp message', content: "Hi [Name], running about 10 minutes late for our call — apologies! I'll join by [time]. Talk soon." } },
-    { speaker: 'ai', text: "Copy it as is, or make it more casual?" },
+    { speaker: 'ai', text: "Copy that, swap in the name and time, and you're set." },
   ]),
   translate: () => ([
     { speaker: 'ai', text: "Say it in your language — I'll give you natural English." },
     { speaker: 'user', text: LANG === 'gu' ? "મારે કાલે રજા જોઈએ છે." : "मुझे कल छुट्टी चाहिए।" },
     { speaker: 'card', card: { kind: 'phrase', label: 'In English', content: "<strong>Natural:</strong> I'd like to take tomorrow off.", keyPhrase: "I'd like to take tomorrow off." } },
-    { speaker: 'ai', text: "Tap it to hear the pronunciation. Translate another?" },
+    { speaker: 'ai', text: "Tap it to hear the pronunciation — that's the natural way to say it." },
   ]),
   photo: () => ([
     { speaker: 'ai', text: "Point your camera at any English — a form, a sign, a letter." },
     { speaker: 'user', text: "📷 [Photo of a bank form]" },
     { speaker: 'card', card: { kind: 'tip', label: 'Read from your photo', content: "\"Nominee details: full name, relationship, date of birth, share %.\"" } },
-    { speaker: 'ai', text: LANG === 'en' ? "Want me to explain any word?" : (LANG === 'hi' ? "किसी शब्द का मतलब आपकी भाषा में बताऊँ?" : "કોઈ શબ્દનો અર્થ તમારી ભાષામાં કહું?") },
+    { speaker: 'ai', text: LANG === 'en' ? "That's the text from your photo, read out clean." : (LANG === 'hi' ? "यह आपकी फोटो से निकाला गया टेक्स्ट है।" : "આ તમારા ફોટોમાંથી કાઢેલું ટેક્સ્ટ છે.") },
   ]),
 };
 function openTool(id) { startTool(id); }
@@ -2754,12 +2755,7 @@ function startTool(id) {
   });
   setTimeout(() => practiceRunner.start(), 250);
 }
-function appendToolEnd(chatEl, id) {
-  window.GC.appendChips(chatEl, [
-    { text: '↻ Try again', key: 'again' },
-    { text: 'Back', key: 'back' },
-  ], (chip) => { if (chip.key === 'again') startTool(id); else showView('home'); });
-}
+function appendToolEnd() { /* no end prompt — back is the top-left arrow */ }
 
 /* Returning-user resume — continue the situation/draft you left. */
 // Zero-state: no prior activity to resume — show a first-time welcome instead.
@@ -2886,15 +2882,7 @@ function startPersona() {
 }
 
 // In-chat wrap — no top-bar controls. "Talk again" or back, in the thread.
-function appendAvatarEnd(chatEl) {
-  const wrap = document.createElement('div');
-  wrap.className = 'chat-end';
-  wrap.innerHTML = `
-    <button class="chat-end-btn" onclick="startPersona()">↻ Talk again</button>
-    <button class="chat-end-btn ghost" onclick="showView('home')">Back to home</button>`;
-  chatEl.appendChild(wrap);
-  chatEl.scrollTop = chatEl.scrollHeight;
-}
+function appendAvatarEnd() { /* conversation ends naturally — back is the top-left arrow */ }
 
 function endAvatar() {
   if (avatarRunner) avatarRunner.stop();
