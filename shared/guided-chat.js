@@ -92,7 +92,7 @@
           <div class="rc-better-row">
             <span class="rc-better-text">"${card.better}"</span>
             <button class="rc-better-play" data-rc-play="${esc(card.better)}" title="Listen">
-              ${PLAY_SVG}<span>Listen</span>
+              ${PLAY_SVG}
             </button>
           </div>
         </div>`;
@@ -109,7 +109,7 @@
           <div class="rc-pron-right">
             <span>Try: <strong>"${p.suggested || ''}"</strong></span>
             <button class="rc-pron-play" data-rc-play="${esc(p.suggested || '')}">
-              ${PLAY_SVG}<span>Listen</span>
+              ${PLAY_SVG}
             </button>
           </div>
         </div>`;

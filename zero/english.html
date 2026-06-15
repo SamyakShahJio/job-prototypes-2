@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#3900ad">
 <title>Speak English — JioBharatIQ</title>
-<link rel="stylesheet" href="../shared/jds-tokens.css">
-<link rel="stylesheet" href="../shared/ambient-glow.css">
-<link rel="stylesheet" href="../shared/guided-chat.css">
+<link rel="stylesheet" href="../shared/jds-tokens.css?v=2">
+<link rel="stylesheet" href="../shared/ambient-glow.css?v=2">
+<link rel="stylesheet" href="../shared/guided-chat.css?v=2">
 <style>
   body { background: var(--white); }
   .phone-frame { background: var(--white); }
@@ -1207,12 +1207,12 @@
 
 </div>
 
-<script src="../shared/icons.js"></script>
-<script src="../shared/personas.js"></script>
-<script src="../shared/tts-cache.js"></script>
-<script src="../shared/jbiq-voice.js"></script>
-<script src="../shared/multimodal.js"></script>
-<script src="../shared/guided-chat.js"></script>
+<script src="../shared/icons.js?v=2"></script>
+<script src="../shared/personas.js?v=2"></script>
+<script src="../shared/tts-cache.js?v=2"></script>
+<script src="../shared/jbiq-voice.js?v=2"></script>
+<script src="../shared/multimodal.js?v=2"></script>
+<script src="../shared/guided-chat.js?v=2"></script>
 <script>
 /* =========================================================================
  * VIEW SWITCHING
@@ -2005,6 +2005,7 @@ const SCENARIO_SCRIPTS = {
   'airport-checkin': {
     title: 'Airport check-in', pack: 'English for travel',
     keyPhrases: [ "I'd like to check in, please.", "Just one bag to check in.", "A window seat, if possible.", "Is the flight on time?" ],
+    free: [{ ai: "Now they ask: \"Did you pack your bags yourself?\" How do you answer?" }],
     vocab: [
       { word: "Boarding pass", meaning: "The ticket that lets you board the plane", example: '"Here is your boarding pass."' },
       { word: "Aisle / Window", meaning: "Seat by the walkway / by the window", example: '"A window seat, please."' },
@@ -2020,6 +2021,7 @@ const SCENARIO_SCRIPTS = {
   'asking-directions': {
     title: 'Asking for directions', pack: 'English for travel',
     keyPhrases: [ "Excuse me, how do I get to the station?", "Is it far from here?", "Should I take a left or right?", "Thank you so much for your help." ],
+    free: [{ ai: "They say: \"It's a bit complicated — want me to show you on the map?\" How do you reply?" }],
     vocab: [
       { word: "Straight ahead", meaning: "Keep going forward", example: '"Go straight ahead for two blocks."' },
       { word: "Around the corner", meaning: "Just past the turn, very close", example: '"It\'s around the corner."' },
@@ -2035,6 +2037,7 @@ const SCENARIO_SCRIPTS = {
   'hotel-checkin': {
     title: 'Hotel check-in', pack: 'English for travel',
     keyPhrases: [ "I have a reservation under [name].", "What time is check-out?", "Is breakfast included?", "Could I get a wake-up call?" ],
+    free: [{ ai: "They ask: \"Would you like a room with a view, for a little extra?\" What do you say?" }],
     vocab: [
       { word: "Reservation", meaning: "A booking made in advance", example: '"I have a reservation for two nights."' },
       { word: "Check-out", meaning: "The time you must leave the room", example: '"Check-out is at 11 AM."' },
@@ -2050,6 +2053,7 @@ const SCENARIO_SCRIPTS = {
   'ordering-food': {
     title: 'Ordering at a restaurant', pack: 'English for travel',
     keyPhrases: [ "Could I see the menu, please?", "What do you recommend?", "I'll have the [dish].", "Could we get the bill, please?" ],
+    free: [{ ai: "They ask: \"Any allergies, or anything you don't eat?\" How do you respond?" }],
     vocab: [
       { word: "Recommend", meaning: "Suggest as a good choice", example: '"What do you recommend?"' },
       { word: "Starter / Main", meaning: "First small dish / the big dish", example: '"I\'ll skip the starter."' },
@@ -2065,6 +2069,7 @@ const SCENARIO_SCRIPTS = {
   'buying-tickets': {
     title: 'Buying a ticket', pack: 'English for travel',
     keyPhrases: [ "One ticket to [place], please.", "Is it a direct train?", "Which platform does it leave from?", "How much is a return ticket?" ],
+    free: [{ ai: "They say: \"The next direct one is full — want the connecting train instead?\" How do you reply?" }],
     vocab: [
       { word: "One-way / Return", meaning: "Single trip / there and back", example: '"A return ticket, please."' },
       { word: "Platform", meaning: "Where you board the train", example: '"Which platform?"' },
@@ -2189,7 +2194,11 @@ function learnBatch(chatEl, sc) {
 }
 function simulateScenario(chatEl, sc) {
   if (practiceRunner) practiceRunner.stop();
-  const transcript = [{ speaker: 'ai', text: "Roleplay time — I'll play the other person, you reply." }];
+  // Contextual framing so the roleplay isn't out of the blue. Text-only (the
+  // title is dynamic, so it's never browser-TTS'd); every voiced line below is
+  // a pre-cached clip.
+  window.GC.appendAi(chatEl, `Roleplay — "${sc.title}". I'll play the other person; reply naturally.`);
+  const transcript = [];
   (sc.listen || []).forEach(line => transcript.push({ speaker: line.speaker === 'agent' ? 'user' : 'ai', text: line.text }));
   const note = sc.coaching && sc.coaching.notes && sc.coaching.notes[0];
   transcript.push({ speaker: 'card', card: {
@@ -2197,6 +2206,9 @@ function simulateScenario(chatEl, sc) {
     notes: [note || { tone: 'good', text: 'Clear and natural — nicely handled.' }],
     better: sc.coaching && sc.coaching.better,
   } });
+  // Don't stop after feedback — ask another question to keep the practice going.
+  const followup = (sc.free && sc.free[0] && sc.free[0].ai);
+  if (followup) transcript.push({ speaker: 'ai', text: followup });
   const firstAi = transcript.find(t => t.speaker === 'ai');
   if (firstAi && practiceVoice) { try { practiceVoice.speak(firstAi.text, 'en-IN'); } catch (e) {} }
   // clearOnStart:false → keep the learn content above; append the roleplay below.
@@ -2561,7 +2573,7 @@ function renderWordOfDay() {
       <div class="wod-pronounce">${w.ipa}</div>
       <div class="wod-meaning">${wodMeaning(w)}</div>
       <button class="wod-listen" onclick="listenWordOfDay()">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 15a3 3 0 003-3V5a3 3 0 00-6 0v7a3 3 0 003 3zm6-5a1 1 0 00-1 1v1a5 5 0 11-10 0v-1a1 1 0 10-2 0v1a7 7 0 1014 0v-1a1 1 0 00-1-1z"/></svg>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
         <span>${t('listen')}</span>
       </button>
       <div class="wod-dots">${WORD_QUEUE.map((_, i) => `<span class="wod-dot${i === wodIdx ? ' on' : ''}"></span>`).join('')}</div>
