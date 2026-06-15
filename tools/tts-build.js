@@ -240,6 +240,21 @@ function extractFromEnglish() {
     lines.push({ personaId: 'english_gu',   text: decodeJsString(sp[3]) });
   }
 
+  // Learn-flow Listen cards: key phrases (arrays of strings) + vocab examples.
+  const kpRe = /keyPhrases:\s*\[([\s\S]*?)\]/g;
+  let kp;
+  while ((kp = kpRe.exec(src)) !== null) {
+    (kp[1].match(/"((?:[^"\\]|\\.)*)"/g) || []).forEach(s => {
+      lines.push({ personaId: 'sarah_avatar', text: decodeJsString(s.slice(1, -1)) });
+    });
+  }
+  const exRe = /\bexample:\s*'((?:[^'\\]|\\.)*)'/g;
+  let ex;
+  while ((ex = exRe.exec(src)) !== null) {
+    const v = decodeJsString(ex[1]).replace(/^"|"$/g, '');
+    if (v && v.length > 2) lines.push({ personaId: 'sarah_avatar', text: v });
+  }
+
   return lines;
 }
 

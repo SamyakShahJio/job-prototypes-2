@@ -2001,6 +2001,82 @@ const SCENARIO_SCRIPTS = {
       better: "I hear you on the urgency. My read is different — the data isn't ready, and shipping early will spike support tickets. Help me see how this works when the spike hits. If two extra agents covers it, let's ship Thursday and revisit Friday.",
     },
   },
+
+  'airport-checkin': {
+    title: 'Airport check-in', pack: 'English for travel',
+    keyPhrases: [ "I'd like to check in, please.", "Just one bag to check in.", "A window seat, if possible.", "Is the flight on time?" ],
+    vocab: [
+      { word: "Boarding pass", meaning: "The ticket that lets you board the plane", example: '"Here is your boarding pass."' },
+      { word: "Aisle / Window", meaning: "Seat by the walkway / by the window", example: '"A window seat, please."' },
+      { word: "Gate", meaning: "Where you wait to board the plane", example: '"Which gate is my flight?"' },
+    ],
+    listen: [
+      { speaker: 'ai', text: "Good morning! Passport and ticket, please." },
+      { speaker: 'agent', text: "Here you go. I'd like to check in — just one bag." },
+      { speaker: 'ai', text: "Sure. Window or aisle?" },
+      { speaker: 'agent', text: "A window seat, if possible. Is the flight on time?" },
+    ],
+  },
+  'asking-directions': {
+    title: 'Asking for directions', pack: 'English for travel',
+    keyPhrases: [ "Excuse me, how do I get to the station?", "Is it far from here?", "Should I take a left or right?", "Thank you so much for your help." ],
+    vocab: [
+      { word: "Straight ahead", meaning: "Keep going forward", example: '"Go straight ahead for two blocks."' },
+      { word: "Around the corner", meaning: "Just past the turn, very close", example: '"It\'s around the corner."' },
+      { word: "Landmark", meaning: "An easy-to-spot building or place", example: '"Look for the big clock — that\'s the landmark."' },
+    ],
+    listen: [
+      { speaker: 'agent', text: "Excuse me, how do I get to the railway station?" },
+      { speaker: 'ai', text: "Go straight ahead, then take the second left. It's around the corner." },
+      { speaker: 'agent', text: "Is it far from here?" },
+      { speaker: 'ai', text: "Just a five-minute walk. You'll see a big clock — that's it." },
+    ],
+  },
+  'hotel-checkin': {
+    title: 'Hotel check-in', pack: 'English for travel',
+    keyPhrases: [ "I have a reservation under [name].", "What time is check-out?", "Is breakfast included?", "Could I get a wake-up call?" ],
+    vocab: [
+      { word: "Reservation", meaning: "A booking made in advance", example: '"I have a reservation for two nights."' },
+      { word: "Check-out", meaning: "The time you must leave the room", example: '"Check-out is at 11 AM."' },
+      { word: "Amenities", meaning: "Extras the hotel provides (wifi, pool…)", example: '"What amenities are included?"' },
+    ],
+    listen: [
+      { speaker: 'ai', text: "Welcome! Do you have a reservation?" },
+      { speaker: 'agent', text: "Yes, under Sharma — two nights. Is breakfast included?" },
+      { speaker: 'ai', text: "It is, from 7 to 10. Here's your key card." },
+      { speaker: 'agent', text: "Thank you. What time is check-out?" },
+    ],
+  },
+  'ordering-food': {
+    title: 'Ordering at a restaurant', pack: 'English for travel',
+    keyPhrases: [ "Could I see the menu, please?", "What do you recommend?", "I'll have the [dish].", "Could we get the bill, please?" ],
+    vocab: [
+      { word: "Recommend", meaning: "Suggest as a good choice", example: '"What do you recommend?"' },
+      { word: "Starter / Main", meaning: "First small dish / the big dish", example: '"I\'ll skip the starter."' },
+      { word: "The bill / cheque", meaning: "What you owe at the end", example: '"Could we get the bill?"' },
+    ],
+    listen: [
+      { speaker: 'ai', text: "Are you ready to order?" },
+      { speaker: 'agent', text: "Almost — what do you recommend?" },
+      { speaker: 'ai', text: "The grilled paneer is very popular." },
+      { speaker: 'agent', text: "Perfect, I'll have that. And some water, please." },
+    ],
+  },
+  'buying-tickets': {
+    title: 'Buying a ticket', pack: 'English for travel',
+    keyPhrases: [ "One ticket to [place], please.", "Is it a direct train?", "Which platform does it leave from?", "How much is a return ticket?" ],
+    vocab: [
+      { word: "One-way / Return", meaning: "Single trip / there and back", example: '"A return ticket, please."' },
+      { word: "Platform", meaning: "Where you board the train", example: '"Which platform?"' },
+      { word: "Direct", meaning: "No changes on the way", example: '"Is it a direct train?"' },
+    ],
+    listen: [
+      { speaker: 'agent', text: "One ticket to Pune, please. Is it a direct train?" },
+      { speaker: 'ai', text: "Yes, direct. One-way or return?" },
+      { speaker: 'agent', text: "Return, please. Which platform does it leave from?" },
+      { speaker: 'ai', text: "Platform 3, in ten minutes." },
+    ],
+  },
 };
 
 /* =========================================================================
@@ -2045,11 +2121,16 @@ function findScenarioMeta(scId) {
 }
 function genericScenario(scId) {
   const m = findScenarioMeta(scId) || { title: 'Practice', packName: 'English' };
+  // Never empty — always carry phrases, words (defaultVocab) and a roleplay.
   return {
     title: m.title, pack: m.packName,
-    keyPhrases: [],
-    free: [{ ai: `Let's practise "${m.title}". I'll play the other person — you respond naturally.`, expects: [] }],
-    listen: [],
+    keyPhrases: [ "Could you help me with this, please?", "Let me make sure I understand.", "Thank you, that's really helpful." ],
+    listen: [
+      { speaker: 'ai', text: `Sure — let's talk about ${(m.title || 'this').toLowerCase()}.` },
+      { speaker: 'agent', text: "Okay. Could you help me with this, please?" },
+      { speaker: 'ai', text: "Of course. Tell me a little more." },
+      { speaker: 'agent', text: "Thanks, that's really helpful." },
+    ],
   };
 }
 function openScenario(scId) {
@@ -2062,19 +2143,54 @@ function openScenario(scId) {
   setTimeout(() => startScenario(sc), 150);
 }
 
-/* Situations run as a short, coherent roleplay (same shell as the avatar /
- * interview mock): the canned dialogue plays, one tiny note, then in-chat
- * options so there's never a dead end. */
+/* Situation pack — two things on offer, always: LEARN (key phrases + key
+ * words mixed and shuffled, with endless "More") and SIMULATE (a short
+ * role-play). No "practice again"; both options stay available after every
+ * step so the flow never dead-ends. */
 function startScenario(sc) {
   const chatEl = document.getElementById('prac_chat');
   if (!chatEl) return;
   if (practiceRunner) practiceRunner.stop();
   chatEl.innerHTML = '';
   ensurePracticeVoice();
-  const transcript = [{ speaker: 'ai', text: `Let's run "${sc.title}". I'll play the other person — you reply.` }];
-  (sc.listen || []).forEach(line => {
-    transcript.push({ speaker: line.speaker === 'agent' ? 'user' : 'ai', text: line.text });
+  sc._learnPool = null; sc._learnIdx = 0;   // reset endless-learn state
+  window.GC.appendAi(chatEl, `Let's work on "${sc.title}". Learn the words & phrases, or simulate the conversation — your call.`);
+  try { practiceVoice.speak(`Let's work on ${sc.title}. Learn the words and phrases, or simulate the conversation.`, 'en-IN'); } catch (e) {}
+  setTimeout(() => offerSitChips(chatEl, sc, false), 700);
+}
+function offerSitChips(chatEl, sc, learned) {
+  window.GC.appendChips(chatEl, [
+    { text: learned ? 'More words & phrases' : 'Learn words & phrases', key: 'learn' },
+    { text: 'Simulate the conversation', key: 'sim' },
+    { text: 'Back', key: 'back' },
+  ], (chip) => {
+    if (chip.key === 'learn') learnBatch(chatEl, sc);
+    else if (chip.key === 'sim') simulateScenario(chatEl, sc);
+    else showView('home');
   });
+}
+// Endless, shuffled pool mixing key phrases + key words. "More" keeps drawing;
+// when exhausted it reshuffles, so it never runs dry or shows nothing.
+function buildLearnPool(sc) {
+  const items = [];
+  (sc.keyPhrases || []).forEach(p => items.push({ kind: 'practice', label: 'Phrase', keyPhrase: p }));
+  const vocab = (sc.vocab && sc.vocab.length ? sc.vocab : defaultVocab(sc));
+  vocab.forEach(v => items.push({ kind: 'phrase', label: (v.word || '').toUpperCase(), content: '<strong>Meaning:</strong> ' + v.meaning, keyPhrase: (v.example || '').replace(/^"|"$/g, '') }));
+  for (let i = items.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); const tmp = items[i]; items[i] = items[j]; items[j] = tmp; }
+  return items;
+}
+function learnBatch(chatEl, sc) {
+  if (!sc._learnPool || sc._learnIdx >= sc._learnPool.length) { sc._learnPool = buildLearnPool(sc); sc._learnIdx = 0; }
+  const batch = sc._learnPool.slice(sc._learnIdx, sc._learnIdx + 3);
+  sc._learnIdx += batch.length;
+  window.GC.appendAi(chatEl, sc._learnIdx <= 3 ? 'Mix of phrases and words — tap any to hear it:' : 'A few more — tap to hear:');
+  batch.forEach(card => window.GC.appendCard(chatEl, card, practiceVoice));
+  setTimeout(() => offerSitChips(chatEl, sc, true), 600);
+}
+function simulateScenario(chatEl, sc) {
+  if (practiceRunner) practiceRunner.stop();
+  const transcript = [{ speaker: 'ai', text: "Roleplay time — I'll play the other person, you reply." }];
+  (sc.listen || []).forEach(line => transcript.push({ speaker: line.speaker === 'agent' ? 'user' : 'ai', text: line.text }));
   const note = sc.coaching && sc.coaching.notes && sc.coaching.notes[0];
   transcript.push({ speaker: 'card', card: {
     kind: 'feedback', label: 'Quick note',
@@ -2085,30 +2201,9 @@ function startScenario(sc) {
   if (firstAi && practiceVoice) { try { practiceVoice.speak(firstAi.text, 'en-IN'); } catch (e) {} }
   practiceRunner = window.GC.createTranscript({
     transcript, chatEl, voice: practiceVoice, skipFirstSpeak: true,
-    onComplete: () => appendScenarioEnd(chatEl, sc),
+    onComplete: () => offerSitChips(chatEl, sc, true),
   });
   setTimeout(() => practiceRunner.start(), 250);
-}
-function appendScenarioEnd(chatEl, sc) {
-  window.GC.appendChips(chatEl, [
-    { text: '↻ Practice again', key: 'again' },
-    { text: 'Key phrases', key: 'phrases' },
-    { text: 'Back', key: 'back' },
-  ], (chip) => {
-    if (chip.key === 'again') startScenario(sc);
-    else if (chip.key === 'phrases') showKeyPhrases(chatEl, sc);
-    else showView('home');
-  });
-}
-function showKeyPhrases(chatEl, sc) {
-  const phrases = sc.keyPhrases || [];
-  if (!phrases.length) {
-    window.GC.appendAi(chatEl, "This one's a free roleplay — just keep going, you're doing great.");
-  } else {
-    window.GC.appendAi(chatEl, "The lines to remember — tap any to hear it:");
-    phrases.forEach((p, i) => window.GC.appendCard(chatEl, { kind: 'practice', label: 'Phrase ' + (i + 1), keyPhrase: p }, practiceVoice));
-  }
-  setTimeout(() => appendScenarioEnd(chatEl, sc), 700);
 }
 
 // Practice opener: a short bubble and 3 in-chat chips. The user picks one
@@ -2793,7 +2888,7 @@ function appendAvatarEnd(chatEl) {
   const wrap = document.createElement('div');
   wrap.className = 'chat-end';
   wrap.innerHTML = `
-    <button class="chat-end-btn" onclick="startPersona()">↻ Practice again</button>
+    <button class="chat-end-btn" onclick="startPersona()">↻ Talk again</button>
     <button class="chat-end-btn ghost" onclick="showView('home')">Back to home</button>`;
   chatEl.appendChild(wrap);
   chatEl.scrollTop = chatEl.scrollHeight;
