@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#6d17ce">
 <title>Jobs · Careers · Skills — JioBharatIQ</title>
-<link rel="stylesheet" href="../shared/jds-tokens.css?v=2">
+<link rel="stylesheet" href="../shared/jds-tokens.css?v=3">
 <link rel="stylesheet" href="../shared/ambient-glow.css">
 <style>
   body { background: var(--surface-default); }
@@ -585,11 +585,12 @@
     </button>
   </div>
   <div class="vo-body">
-    <div class="voice-stage" id="voGlow" data-state="idle">
-      <video class="voice-state idle"      src="https://raw.githubusercontent.com/sunit1986/JioBharatIQ_Server/main/assets/states/Light/Idle_state.mp4"      autoplay loop muted playsinline></video>
-      <video class="voice-state listening" src="https://raw.githubusercontent.com/sunit1986/JioBharatIQ_Server/main/assets/states/Light/Listening_state.mp4" autoplay loop muted playsinline></video>
-      <video class="voice-state thinking"  src="https://raw.githubusercontent.com/sunit1986/JioBharatIQ_Server/main/assets/states/Light/Thinking_state.mp4"  autoplay loop muted playsinline></video>
-      <video class="voice-state speaking"  src="https://raw.githubusercontent.com/sunit1986/JioBharatIQ_Server/main/assets/states/Light/Speaking_State.mp4"  autoplay loop muted playsinline></video>
+    <!-- CSS ambient-glow orb (a2ui "no face, just light"). Replaces the old
+         MP4 state videos, which loaded from a now-deleted repo (404). -->
+    <div class="ambient-glow" id="voGlow" data-state="idle">
+      <div class="halo h2"></div>
+      <div class="halo"></div>
+      <div class="orb"></div>
     </div>
     <div class="vo-label" id="voLabel">Tell me what you need</div>
     <div class="vo-sub" id="voSub">Try: "Interview tomorrow" or "I want to learn thumbnails"</div>

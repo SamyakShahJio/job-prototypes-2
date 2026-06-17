@@ -8,12 +8,17 @@
  * Source of truth — do not introduce off-system hex.
  * ===================================================================== */
 
+/* JioType — self-hosted per JDS (v4.6: "all self-hosted — no external CDN").
+   Uses an OS-installed JioType if present, else woff2 files dropped into
+   shared/fonts/. Until those exist, the --font stack falls back to -apple-system
+   exactly as the JDS font stack specifies. (Replaces a dead raw.githubusercontent
+   hot-link to a now-deleted repo.) */
 @font-face { font-family: 'JioType'; font-weight: 400; font-display: swap;
-  src: url('https://raw.githubusercontent.com/sunit1986/JioBharatIQ_Server/main/assets/fonts/woff2/JioTypeVarW05-Regular.woff2') format('woff2'); }
+  src: local('JioType'), url('fonts/JioType-Regular.woff2') format('woff2'); }
 @font-face { font-family: 'JioType'; font-weight: 500; font-display: swap;
-  src: url('https://raw.githubusercontent.com/sunit1986/JioBharatIQ_Server/main/assets/fonts/woff2/JioTypeW05-Medium.woff2') format('woff2'); }
+  src: local('JioType Medium'), local('JioType'), url('fonts/JioType-Medium.woff2') format('woff2'); }
 @font-face { font-family: 'JioType'; font-weight: 700; font-display: swap;
-  src: url('https://raw.githubusercontent.com/sunit1986/JioBharatIQ_Server/main/assets/fonts/woff2/JioTypeW05-Bold.woff2') format('woff2'); }
+  src: local('JioType Bold'), local('JioType'), url('fonts/JioType-Bold.woff2') format('woff2'); }
 
 :root {
   /* ===== a2ui color tokens ===== */
@@ -106,7 +111,10 @@
   --space-7: 48px;
 
   /* ===== Typography (a2ui — all weight 500) ===== */
-  --font: 'JioType', -apple-system, sans-serif;
+  /* JDS font stack: JioType (Latin/brand) → Mukta (Devanagari/Hindi) →
+     Noto Sans Gujarati (Gujarati) → system. Per-script glyphs auto-route to
+     the first family that has them; all self-hosted/local, no CDN. */
+  --font: 'JioType', 'Mukta', 'Noto Sans Gujarati', -apple-system, sans-serif;
   --weight-medium: 500;
   --text-display: 28px;   /* headline-m */
   --text-h1: 24px;        /* headline-s */
