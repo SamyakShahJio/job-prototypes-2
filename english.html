@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#3900ad">
+<meta name="theme-color" content="#6d17ce">
 <title>Speak English — JioBharatIQ</title>
 <link rel="stylesheet" href="shared/jds-tokens.css?v=2">
 <link rel="stylesheet" href="shared/ambient-glow.css?v=2">
-<link rel="stylesheet" href="shared/guided-chat.css?v=2">
+<link rel="stylesheet" href="shared/guided-chat.css?v=3">
 <style>
   body { background: var(--white); }
   .phone-frame { background: var(--white); }
@@ -43,7 +43,7 @@
     min-width: 0;
   }
   .top-bar .title-area .t1 {
-    font-size: 16px; font-weight: 700; color: var(--grey-100);
+    font-size: 16px; font-weight: 600; color: var(--grey-100);
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
   .top-bar .title-area .t2 {
@@ -95,12 +95,12 @@
   }
   .home-greeting .greet-text { flex: 1; }
   .home-greeting .greet-text .hi {
-    font-size: 11px; font-weight: 700; color: var(--surface-bold);
+    font-size: 11px; font-weight: 600; color: var(--surface-bold);
     letter-spacing: 0.4px; text-transform: uppercase;
     margin-bottom: 2px;
   }
   .home-greeting .greet-text .name {
-    font-size: 20px; font-weight: 900; color: var(--grey-100);
+    font-size: 20px; font-weight: 600; color: var(--grey-100);
     line-height: 1.15; letter-spacing: -0.3px;
   }
   .home-greeting .greet-text .sub {
@@ -116,7 +116,7 @@
   }
   .entry-card {
     border: 1px solid var(--grey-40);
-    border-radius: 20px;
+    border-radius: 16px;
     padding: 18px;
     background: var(--white);
     cursor: pointer;
@@ -135,12 +135,12 @@
     color: white;
   }
   .entry-card .ec-icon svg { width: 24px; height: 24px; }
-  .entry-card.avatar .ec-icon { background: linear-gradient(135deg, #3535f3, var(--surface-bold)); }
+  .entry-card.avatar .ec-icon { background: linear-gradient(135deg, #0078ad, var(--surface-bold)); }
   .entry-card.packs .ec-icon  { background: var(--surface-bold); }
   .entry-card.daily .ec-icon  { background: var(--surface-bold); }
   .entry-card .ec-text { flex: 1; min-width: 0; }
   .entry-card .ec-title {
-    font-size: 15px; font-weight: 700; color: var(--grey-100); margin-bottom: 2px;
+    font-size: 15px; font-weight: 600; color: var(--grey-100); margin-bottom: 2px;
   }
   .entry-card .ec-sub {
     font-size: 12px; font-weight: 500; color: var(--grey-60);
@@ -162,7 +162,7 @@
     text-align: center;
   }
   .stat-card .v {
-    font-size: 22px; font-weight: 900; color: var(--grey-100);
+    font-size: 22px; font-weight: 600; color: var(--grey-100);
     line-height: 1; letter-spacing: -0.5px;
   }
   .stat-card .l {
@@ -174,7 +174,7 @@
   .phrasebook-teaser {
     margin: var(--space-5) var(--space-4) 0;
     border: 1px solid var(--grey-40);
-    border-radius: 20px;
+    border-radius: 16px;
     padding: 16px;
     background: var(--surface-ghost);
     cursor: pointer;
@@ -189,11 +189,11 @@
     color: var(--surface-bold);
   }
   .phrasebook-teaser .pb-title {
-    font-size: 13px; font-weight: 700; color: var(--icon-medium);
+    font-size: 13px; font-weight: 600; color: var(--icon-medium);
     letter-spacing: 0.3px; text-transform: uppercase;
   }
   .phrasebook-teaser .pb-q {
-    font-size: 16px; font-weight: 700; color: var(--grey-100);
+    font-size: 16px; font-weight: 600; color: var(--grey-100);
     line-height: 1.3;
   }
   .phrasebook-teaser .pb-meta {
@@ -210,14 +210,14 @@
     margin: var(--space-5) 0 var(--space-3);
   }
   .section-h-inline {
-    font-size: 13px; font-weight: 800; color: var(--grey-100);
+    font-size: 13px; font-weight: 600; color: var(--grey-100);
     letter-spacing: 0.4px; text-transform: uppercase;
   }
   .section-more {
     background: none; border: none;
     color: var(--surface-bold);
     font-family: var(--font);
-    font-size: 12px; font-weight: 700;
+    font-size: 12px; font-weight: 600;
     cursor: pointer;
     padding: 0;
   }
@@ -238,7 +238,7 @@
     scroll-snap-align: start;
     background: white;
     border: 1px solid var(--grey-40);
-    border-radius: 18px;
+    border-radius: 16px;
     padding: 14px 12px;
     cursor: pointer;
     transition: all 0.15s;
@@ -255,10 +255,10 @@
     background: var(--av-tint, var(--primary-20));
     color: var(--av-color, var(--surface-bold));
     display: flex; align-items: center; justify-content: center;
-    font-size: 22px; font-weight: 900;
+    font-size: 22px; font-weight: 600;
     font-family: var(--font);
   }
-  .avatar-card .av-name { font-size: 13px; font-weight: 800; color: var(--grey-100); }
+  .avatar-card .av-name { font-size: 13px; font-weight: 600; color: var(--grey-100); }
   .avatar-card .av-title { font-size: 11px; color: var(--text-low); font-weight: 500; line-height: 1.3; }
 
   /* Situation carousel */
@@ -286,7 +286,7 @@
   }
   .situation-card:hover { border-color: var(--surface-bold); transform: translateY(-2px); }
   .situation-card .sit-name {
-    font-size: 14px; font-weight: 800; color: var(--grey-100);
+    font-size: 14px; font-weight: 600; color: var(--grey-100);
     line-height: 1.2;
   }
   .situation-card .sit-meta {
@@ -294,7 +294,7 @@
   }
   .situation-card .sit-count {
     margin-top: 6px;
-    font-size: 10px; font-weight: 700;
+    font-size: 10px; font-weight: 600;
     color: var(--surface-bold);
     letter-spacing: 0.3px; text-transform: uppercase;
   }
@@ -313,7 +313,7 @@
     color: white;
     padding: 6px 10px;
     font-family: var(--font);
-    font-size: 11px; font-weight: 700;
+    font-size: 11px; font-weight: 600;
     cursor: pointer;
   }
   .wod-cycle .wod-mini:hover { background: rgba(255,255,255,0.22); }
@@ -321,7 +321,7 @@
   /* Word of the Day — colored hero card with Listen + Practice buttons */
   .wod-hero {
     margin: var(--space-5) var(--space-4) 0;
-    border-radius: 22px;
+    border-radius: 16px;
     padding: 20px 18px 16px;
     background: linear-gradient(135deg, #3900ad 0%, #6464ff 60%, #f7ab20 200%);
     color: white;
@@ -343,7 +343,7 @@
     position: relative;
   }
   .wod-tag {
-    font-size: 10px; font-weight: 800; letter-spacing: 0.6px;
+    font-size: 10px; font-weight: 600; letter-spacing: 0.6px;
     text-transform: uppercase;
     padding: 4px 10px;
     background: rgba(255,255,255,0.18);
@@ -351,11 +351,11 @@
     color: white;
   }
   .wod-level {
-    font-size: 10px; font-weight: 700; letter-spacing: 0.4px;
+    font-size: 10px; font-weight: 600; letter-spacing: 0.4px;
     color: rgba(255,255,255,0.85);
   }
   .wod-word {
-    font-size: 34px; font-weight: 900; letter-spacing: -0.6px;
+    font-size: 34px; font-weight: 600; letter-spacing: -0.6px;
     line-height: 1; margin-bottom: 4px;
     position: relative;
   }
@@ -396,7 +396,7 @@
     padding: 8px 14px;
     color: white;
     font-family: var(--font);
-    font-size: 12px; font-weight: 700;
+    font-size: 12px; font-weight: 600;
     cursor: pointer;
     transition: all 0.15s;
   }
@@ -410,7 +410,7 @@
 
   /* Section headers */
   .section-h {
-    font-size: 11px; font-weight: 700; color: var(--grey-60);
+    font-size: 11px; font-weight: 600; color: var(--grey-60);
     letter-spacing: 0.6px; text-transform: uppercase;
     margin: var(--space-5) var(--space-4) var(--space-3);
   }
@@ -423,7 +423,7 @@
     padding: 0 var(--space-4);
   }
   .pack-card {
-    border-radius: 18px;
+    border-radius: 16px;
     padding: 16px;
     cursor: pointer;
     transition: transform 0.18s;
@@ -444,7 +444,7 @@
     display: flex; align-items: center; justify-content: center;
   }
   .pack-card .p-name {
-    font-size: 16px; font-weight: 800; line-height: 1.15;
+    font-size: 16px; font-weight: 600; line-height: 1.15;
   }
   .pack-card .p-meta {
     font-size: 11px; font-weight: 600; opacity: 0.65; margin-top: 2px;
@@ -477,7 +477,7 @@
     width: 28px; height: 28px; border-radius: 50%;
     background: var(--surface-ghost);
     display: flex; align-items: center; justify-content: center;
-    font-size: 13px; font-weight: 700; color: var(--grey-80);
+    font-size: 13px; font-weight: 600; color: var(--grey-80);
     flex-shrink: 0;
   }
   .scenario-row.done .s-num {
@@ -485,7 +485,7 @@
   }
   .scenario-row .s-text { flex: 1; min-width: 0; }
   .scenario-row .s-title {
-    font-size: 14px; font-weight: 700; color: var(--grey-100);
+    font-size: 14px; font-weight: 600; color: var(--grey-100);
     margin-bottom: 2px;
   }
   .scenario-row .s-meta {
@@ -553,7 +553,7 @@
     padding: 3px 8px;
     background: white;
     border-radius: var(--radius-pill);
-    font-size: 10px; font-weight: 700; color: var(--primary);
+    font-size: 10px; font-weight: 600; color: var(--primary);
   }
   .bubble-ai .play-btn {
     background: white; border: 1px solid var(--grey-40);
@@ -577,7 +577,7 @@
     line-height: 1.4;
   }
   .correction-chip .c-label {
-    font-weight: 700; color: var(--surface-bold);
+    font-weight: 600; color: var(--surface-bold);
     font-size: 10px; letter-spacing: 0.4px;
     text-transform: uppercase;
     margin-bottom: 2px; display: block;
@@ -593,7 +593,7 @@
     margin-bottom: 4px;
   }
   .key-phrases .kp-h {
-    font-size: 11px; font-weight: 700; color: var(--primary);
+    font-size: 11px; font-weight: 600; color: var(--primary);
     letter-spacing: 0.4px; text-transform: uppercase; margin-bottom: 8px;
   }
   .key-phrases .kp-list { display: flex; flex-direction: column; gap: 6px; }
@@ -681,7 +681,7 @@
     transform: scale(1.04);
   }
   .avatar-view .av-status {
-    font-size: 11px; font-weight: 700; color: var(--text-low);
+    font-size: 11px; font-weight: 600; color: var(--text-low);
     letter-spacing: 0.5px; text-transform: uppercase; margin-top: 8px;
   }
   .avatar-view .av-stage.speaking .av-status { color: var(--surface-bold); }
@@ -691,7 +691,7 @@
   .chat-end-btn {
     background: var(--surface-bold); color: white; border: none;
     border-radius: var(--radius-pill); padding: 10px 18px;
-    font-family: var(--font); font-size: 13px; font-weight: 700; cursor: pointer;
+    font-family: var(--font); font-size: 13px; font-weight: 600; cursor: pointer;
   }
   .chat-end-btn.ghost { background: white; color: var(--surface-bold); border: 1px solid var(--surface-bold); }
 
@@ -722,7 +722,7 @@
     background: white;
     border: 2px solid var(--grey-40);
     display: flex; align-items: center; justify-content: center;
-    font-size: 13px; font-weight: 800; color: var(--grey-80);
+    font-size: 13px; font-weight: 600; color: var(--grey-80);
     flex-shrink: 0;
   }
   .pathway-week.done .pw-num {
@@ -745,7 +745,7 @@
     background: var(--primary-light);
   }
   .pathway-week .pw-title {
-    font-size: 13px; font-weight: 700; color: var(--grey-100);
+    font-size: 13px; font-weight: 600; color: var(--grey-100);
   }
   .pathway-week .pw-meta {
     font-size: 11px; color: var(--grey-60); margin-top: 2px;
@@ -770,18 +770,18 @@
   /* Week detail — hero + lesson list */
   .week-hero {
     margin: var(--space-3) var(--space-4) 0;
-    border-radius: 20px;
+    border-radius: 16px;
     padding: 18px;
     background: linear-gradient(135deg, var(--primary-20) 0%, white 70%);
     border: 1px solid var(--stroke-subtle);
   }
   .week-hero .wh-tag {
-    font-size: 10px; font-weight: 800; letter-spacing: 0.5px;
+    font-size: 10px; font-weight: 600; letter-spacing: 0.5px;
     color: var(--surface-bold);
     margin-bottom: 8px;
   }
   .week-hero .wh-title {
-    font-size: 20px; font-weight: 900; color: var(--text-high);
+    font-size: 20px; font-weight: 600; color: var(--text-high);
     letter-spacing: -0.3px; line-height: 1.2; margin-bottom: 6px;
   }
   .week-hero .wh-sub {
@@ -831,12 +831,12 @@
     background: var(--surface-ghost);
     border: 1.5px solid var(--stroke-subtle);
     display: flex; align-items: center; justify-content: center;
-    font-size: 11px; font-weight: 800; color: var(--text-low);
+    font-size: 11px; font-weight: 600; color: var(--text-low);
     flex-shrink: 0;
   }
   .lesson-row .lr-text { flex: 1; min-width: 0; }
   .lesson-row .lr-name {
-    font-size: 13px; font-weight: 700; color: var(--text-high);
+    font-size: 13px; font-weight: 600; color: var(--text-high);
     line-height: 1.25;
   }
   .lesson-row .lr-meta {
@@ -852,7 +852,7 @@
     background: var(--surface-bold); color: white;
     border: none; border-radius: var(--radius-pill);
     padding: 6px 12px;
-    font-family: var(--font); font-size: 11px; font-weight: 700;
+    font-family: var(--font); font-size: 11px; font-weight: 600;
     cursor: pointer;
   }
   .lesson-row .lr-go:hover { background: var(--primary-70); }
@@ -864,11 +864,11 @@
     background: var(--surface-ghost);
   }
   .word-of-day .wod-h {
-    font-size: 11px; font-weight: 700; color: var(--success);
+    font-size: 11px; font-weight: 600; color: var(--success);
     letter-spacing: 0.4px; text-transform: uppercase; margin-bottom: 6px;
   }
   .word-of-day .wod-w {
-    font-size: 22px; font-weight: 900; color: var(--grey-100);
+    font-size: 22px; font-weight: 600; color: var(--grey-100);
     margin-bottom: 4px;
   }
   .word-of-day .wod-m {
@@ -884,27 +884,28 @@
   }
   /* ===== Mother-tongue selector ===== */
   .lang-select { display: flex; align-items: center; gap: 10px; padding: var(--space-3) var(--space-4) 0; }
-  .lang-label { font-size: 11px; font-weight: 700; color: var(--grey-60); text-transform: uppercase; letter-spacing: 0.4px; flex-shrink: 0; }
+  .lang-label { font-size: 11px; font-weight: 600; color: var(--grey-60); text-transform: uppercase; letter-spacing: 0.4px; flex-shrink: 0; }
   .lang-pills { display: flex; gap: 6px; }
   .lang-pill { border: 1.5px solid var(--grey-40); background: white; border-radius: 999px; padding: 5px 12px; font-family: var(--font); font-size: 12px; font-weight: 600; color: var(--text-high); cursor: pointer; transition: all 0.12s; }
   .lang-pill:hover { border-color: var(--surface-bold); }
-  .lang-pill.sel { border-color: var(--surface-bold); background: var(--primary-20); color: var(--surface-bold); font-weight: 800; }
+  .lang-pill.sel { border-color: var(--surface-bold); background: var(--primary-20); color: var(--surface-bold); font-weight: 600; }
 
   /* ===== Word of the Day — stacked cards + arrows ===== */
   .wod-stack-wrap { position: relative; margin: var(--space-4) var(--space-4) 0; padding: 6px 30px; }
   .wod-stack { position: relative; }
-  .wod-stack::before, .wod-stack::after { content: ''; position: absolute; inset: 0; border-radius: 20px; z-index: 0; }
+  .wod-stack::before, .wod-stack::after { content: ''; position: absolute; inset: 0; border-radius: 16px; z-index: 0; }
   .wod-stack::after  { transform: rotate(2.6deg)  translateY(2px); background: linear-gradient(135deg, #4a2bbf, #6f63f0); opacity: 0.85; }
   .wod-stack::before { transform: rotate(-2.6deg) translateY(3px); background: linear-gradient(135deg, #3a1f9f, #5a4fd0); opacity: 0.55; }
-  .wod-card { position: relative; z-index: 1; border-radius: 20px; padding: 18px 18px 14px;
+  .wod-card { position: relative; z-index: 1; border-radius: 16px; padding: 18px 18px 14px;
     background: linear-gradient(135deg, #3900ad 0%, #6464ff 78%); color: white;
     box-shadow: 0 12px 30px rgba(57,0,173,0.25); }
-  .wod-tag { display: inline-block; font-size: 10px; font-weight: 800; letter-spacing: 0.6px; text-transform: uppercase; padding: 4px 10px; background: rgba(255,255,255,0.18); border-radius: 999px; margin-bottom: 10px; }
-  .wod-word { font-size: 32px; font-weight: 900; letter-spacing: -0.6px; line-height: 1; }
+  .wod-tag { display: inline-block; font-size: 10px; font-weight: 600; letter-spacing: 0.6px; text-transform: uppercase; padding: 4px 10px; background: rgba(255,255,255,0.18); border-radius: 999px; margin-bottom: 10px; }
+  .wod-word { font-size: 32px; font-weight: 600; letter-spacing: -0.6px; line-height: 1; }
   .wod-pronounce { font-size: 12px; font-style: italic; color: rgba(255,255,255,0.75); margin: 4px 0 10px; font-family: Georgia, serif; }
   .wod-meaning { font-size: 14px; line-height: 1.45; color: rgba(255,255,255,0.95); margin-bottom: 14px; }
-  .wod-listen { display: inline-flex; align-items: center; gap: 6px; background: white; color: var(--surface-bold); border: none; border-radius: 999px; padding: 8px 16px; font-family: var(--font); font-size: 13px; font-weight: 800; cursor: pointer; }
-  .wod-listen:hover { background: var(--primary-20); }
+  .wod-listen { display: inline-flex; align-items: center; gap: 6px; background: white; color: var(--surface-bold); border: none; border-radius: 999px; padding: 10px 18px; font-family: var(--font); font-size: 13px; font-weight: 500; cursor: pointer; transition: transform var(--ease-snappy) 200ms; }
+  .wod-listen:hover { transform: scale(1.03); }
+  .wod-listen:active { transform: scale(0.97); }
   .wod-dots { display: flex; gap: 5px; justify-content: center; margin-top: 14px; }
   .wod-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.35); transition: all 0.2s; }
   .wod-dot.on { background: white; width: 16px; border-radius: 3px; }
@@ -913,9 +914,9 @@
   .wod-nav:hover { background: var(--primary-20); }
 
   /* ===== Persona avatar faces ===== */
-  .avatar-card { flex: 0 0 146px; }
+  .avatar-card { flex: 0 0 160px; }
   .avatar-card .av-face { width: 56px; height: 56px; margin: 0 auto 6px; }
-  .avatar-card .av-role { font-size: 11px; font-weight: 800; letter-spacing: 0.2px; }
+  .avatar-card .av-role { font-size: 11px; font-weight: 600; letter-spacing: 0.2px; }
   .avatar-card .av-title { min-height: 30px; }
 
   /* ===== Tools ===== */
@@ -923,7 +924,7 @@
   .tool-card { display: flex; align-items: center; gap: 10px; padding: 12px 13px; border: 1px solid var(--grey-40); border-radius: 14px; background: white; cursor: pointer; font-family: var(--font); text-align: left; transition: all 0.15s; }
   .tool-card:hover { border-color: var(--surface-bold); transform: translateY(-2px); }
   .tool-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  .tool-label { font-size: 13px; font-weight: 700; color: var(--grey-100); line-height: 1.2; }
+  .tool-label { font-size: 13px; font-weight: 600; color: var(--grey-100); line-height: 1.2; }
 
   /* ===== Situation category rows ===== */
   .sit-scroll { display: flex; gap: 10px; overflow-x: auto; padding: 0 var(--space-4) 4px; scrollbar-width: none; }
@@ -931,15 +932,15 @@
   .sit-tile { flex: 0 0 162px; text-align: left; border: 1px solid var(--grey-40); border-radius: 14px; padding: 13px; background: white; cursor: pointer; font-family: var(--font); display: flex; flex-direction: column; gap: 4px; min-height: 78px; transition: all 0.15s; }
   .sit-tile:hover { border-color: var(--surface-bold); transform: translateY(-2px); }
   .sit-tile.done { background: var(--surface-ghost); }
-  .sit-tile-title { font-size: 13px; font-weight: 700; color: var(--grey-100); line-height: 1.25; }
+  .sit-tile-title { font-size: 13px; font-weight: 600; color: var(--grey-100); line-height: 1.25; }
   .sit-tile-meta { font-size: 11px; color: var(--text-low); font-weight: 500; }
-  .sit-tile-done { font-size: 10px; font-weight: 800; color: var(--success); margin-top: auto; letter-spacing: 0.3px; }
+  .sit-tile-done { font-size: 10px; font-weight: 600; color: var(--success); margin-top: auto; letter-spacing: 0.3px; }
 
   /* ===== Returning-user resume ===== */
   .resume-card { width: calc(100% - 2 * var(--space-4)); margin: var(--space-4) var(--space-4) 0; display: flex; align-items: center; gap: 12px; padding: 14px; border: 1px solid var(--surface-bold); border-radius: 16px; background: var(--primary-20); cursor: pointer; font-family: var(--font); text-align: left; }
   .resume-icon { width: 36px; height: 36px; border-radius: 10px; background: var(--surface-bold); color: white; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
   .resume-text { flex: 1; min-width: 0; }
-  .resume-h { display: block; font-size: 13px; font-weight: 800; color: var(--surface-bold); }
+  .resume-h { display: block; font-size: 13px; font-weight: 600; color: var(--surface-bold); }
   .resume-sub { display: block; font-size: 11.5px; color: var(--text-low); font-weight: 500; margin-top: 2px; }
   .resume-arrow { color: var(--surface-bold); flex-shrink: 0; }
 </style>
@@ -2590,16 +2591,16 @@ function listenWordOfDay() {
 // Arjun reuses the interview-prep interviewer voice — the two use cases are
 // the same kind of voice conversation, so they share the cast.
 const AVATARS = [
-  { id: 'emma_avatar',            name: 'Riya',   color: '#0a9c84', tint: '#d6f5ec',
+  { id: 'emma_avatar',            name: 'Riya',   color: '#00ad8b', tint: '#ddfef2',
     role: { en: 'Friend',       hi: 'दोस्त',     gu: 'મિત્ર' },
     vibe: { en: 'Talk naturally in everyday English', hi: 'रोज़मर्रा की अंग्रेज़ी में सहज बात करें', gu: 'રોજિંદી અંગ્રેજીમાં સહજ વાત કરો' } },
-  { id: 'jonas_avatar',           name: 'Rajesh', color: '#6d17ce', tint: '#ece2fb',
+  { id: 'jonas_avatar',           name: 'Rajesh', color: '#6d17ce', tint: '#ede7ff',
     role: { en: 'Teacher',      hi: 'शिक्षक',    gu: 'શિક્ષક' },
     vibe: { en: 'Speak correctly and confidently', hi: 'सही और आत्मविश्वास से बोलें', gu: 'સાચું અને આત્મવિશ્વાસથી બોલો' } },
-  { id: 'sarah_avatar',           name: 'Maya',   color: '#3535f3', tint: '#dfe0ff',
+  { id: 'sarah_avatar',           name: 'Maya',   color: '#0078ad', tint: '#ecf7ff',
     role: { en: 'Colleague',    hi: 'सहकर्मी',   gu: 'સહકર્મી' },
     vibe: { en: 'Communicate professionally at work', hi: 'काम पर पेशेवर ढंग से बात करें', gu: 'કામ પર વ્યાવસાયિક રીતે વાત કરો' } },
-  { id: 'interviewer_formal_ops', name: 'Arjun',  color: '#c2790a', tint: '#fdecca',
+  { id: 'interviewer_formal_ops', name: 'Arjun',  color: '#f06d0f', tint: '#fef0e6',
     role: { en: 'Interviewer',  hi: 'इंटरव्यूअर', gu: 'ઇન્ટરવ્યૂઅર' },
     vibe: { en: 'Ace interviews and high-stakes talks', hi: 'इंटरव्यू और अहम बातचीत में महारत', gu: 'ઇન્ટરવ્યૂ અને મહત્વની વાતચીતમાં નિપુણતા' } },
 ];
@@ -2723,11 +2724,11 @@ function renderSituations() {
  * TOOLS — quick in-chat helpers (flows built in the chat, no extra screens)
  * ========================================================================= */
 const TOOLS = [
-  { id: 'email',     color: '#3535f3', label: { en: 'Write an email',       hi: 'ईमेल लिखें',         gu: 'ઈમેલ લખો' },
+  { id: 'email',     color: '#0078ad', label: { en: 'Write an email',       hi: 'ईमेल लिखें',         gu: 'ઈમેલ લખો' },
     svg: '<path d="M3 6h18v12H3z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3 7l9 7 9-7" fill="none" stroke="currentColor" stroke-width="2"/>' },
-  { id: 'whatsapp',  color: '#0a9c84', label: { en: 'WhatsApp message',     hi: 'व्हाट्सएप संदेश',     gu: 'વોટ્સએપ સંદેશ' },
+  { id: 'whatsapp',  color: '#00ad8b', label: { en: 'WhatsApp message',     hi: 'व्हाट्सएप संदेश',     gu: 'વોટ્સએપ સંદેશ' },
     svg: '<path d="M12 3a9 9 0 00-7.8 13.5L3 21l4.7-1.2A9 9 0 1012 3z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>' },
-  { id: 'translate', color: '#c2790a', label: { en: 'Translate to English', hi: 'अंग्रेज़ी में अनुवाद', gu: 'અંગ્રેજીમાં અનુવાદ' },
+  { id: 'translate', color: '#f06d0f', label: { en: 'Translate to English', hi: 'अंग्रेज़ी में अनुवाद', gu: 'અંગ્રેજીમાં અનુવાદ' },
     svg: '<path d="M4 5h7M7 5v3c0 3-1.5 5-4 6M5 11c2 2 4 3 6 3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M13 19l4-9 4 9M14.5 16h5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>' },
   { id: 'photo',     color: '#6d17ce', label: { en: 'Photo to text',        hi: 'फोटो से टेक्स्ट',     gu: 'ફોટોથી ટેક્સ્ટ' },
     svg: '<path d="M3 7h4l2-2h6l2 2h4v12H3z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="12" cy="13" r="3.5" fill="none" stroke="currentColor" stroke-width="2"/>' },

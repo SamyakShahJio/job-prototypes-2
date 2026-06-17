@@ -1,11 +1,12 @@
-/* JDS Tokens — strict JDS-only palette
- * Source of truth for all colors, type, radius, spacing.
- * No custom hex values, no per-vertical accent gradients.
+/* =====================================================================
+ * JDS / a2ui design tokens — VEA2UIApp JDS (Tailwind v4 reference), ported
+ * to CSS variables for these vanilla prototypes.
  *
- * Visual language: monochromatic (white + greys) with primary-dark (#3900ad
- * a.k.a surface-bold) as the accent of the JCS vertical. JDS primary-50
- * (#3535f3) is reserved for active/CTA states only.
- */
+ * Brand: primary-50 #6d17ce (purple) · secondary-50 #00ad8b (teal) ·
+ * sparkle-50 #0078ad (blue). Medium (500) typography. rounded-full buttons
+ * (scale-on-hover, focus ring). 12px cards. Surface stepping.
+ * Source of truth — do not introduce off-system hex.
+ * ===================================================================== */
 
 @font-face { font-family: 'JioType'; font-weight: 400; font-display: swap;
   src: url('https://raw.githubusercontent.com/sunit1986/JioBharatIQ_Server/main/assets/fonts/woff2/JioTypeVarW05-Regular.woff2') format('woff2'); }
@@ -13,105 +14,118 @@
   src: url('https://raw.githubusercontent.com/sunit1986/JioBharatIQ_Server/main/assets/fonts/woff2/JioTypeW05-Medium.woff2') format('woff2'); }
 @font-face { font-family: 'JioType'; font-weight: 700; font-display: swap;
   src: url('https://raw.githubusercontent.com/sunit1986/JioBharatIQ_Server/main/assets/fonts/woff2/JioTypeW05-Bold.woff2') format('woff2'); }
-@font-face { font-family: 'JioType'; font-weight: 900; font-display: swap;
-  src: url('https://raw.githubusercontent.com/sunit1986/JioBharatIQ_Server/main/assets/fonts/woff2/JioTypeW05-Black.woff2') format('woff2'); }
 
 :root {
-  /* ===== JDS color tokens (resolved from mcp__JioBharatIQ__resolve_token) ===== */
-  --primary-20: #e8e8fc;
-  --primary-30: #9999ff;
-  --primary-40: #6464ff;
-  --primary-50: #3535f3;
-  --primary-60: #000093;
-  --primary-70: #00004c;
-  --primary-80: #010029;
+  /* ===== a2ui color tokens ===== */
+  --primary-20: #f6f3ff;
+  --primary-30: #ede7ff;
+  --primary-40: #e4dbff;
+  --primary-50: #6d17ce;   /* ★ brand */
+  --primary-60: #310064;
+  --primary-70: #13002d;
 
-  --secondary-20: #fef7e9;
-  --secondary-50: #f7ab20;
-  --secondary-60: #ac660c;
+  --secondary-20: #ddfef2;
+  --secondary-30: #c0fae6;
+  --secondary-40: #a6f4db;
+  --secondary-50: #00ad8b;
+  --secondary-60: #014c3b;
 
-  --sparkle-20: #e8faf7;
-  --sparkle-50: #1eccb0;
+  --sparkle-20: #ecf7ff;
+  --sparkle-30: #d8effe;
+  --sparkle-40: #c4e7ff;
+  --sparkle-50: #0078ad;
+  --sparkle-60: #004566;
 
   --error: #fa2f40;
   --warning: #f06d0f;
   --success: #25ab21;
+  --gold: #f7ab20;
 
-  --grey-100: #141414;
-  --grey-80: rgba(0,0,0,0.66);
-  --grey-60: #b5b5b5;
-  --grey-40: #e0e0e0;
-  --grey-20: #f5f5f5;
-  --white: #ffffff;
-  --black: #141414;
-
+  /* surfaces */
   --surface-default: #ffffff;
-  --surface-ghost: #eeeeef;
-  --surface-ghost-icon: #e7e9ff;
-  --surface-bold: #3900ad;       /* "purple dark" — the JCS vertical accent */
   --surface-minimal: #f5f5f5;
+  --surface-ghost: #eeeeef;
+  --surface-ghost-icon: #ede7ff;   /* primary-tinted icon containers */
   --surface-moderate: #e3e3e4;
+  --surface-bold: #6d17ce;          /* = primary-50 — the brand fill */
 
-  --text-high: #141414;
-  --text-low: rgba(25,27,30,0.65);
-  --text-disabled: rgba(25,27,30,0.38);
+  /* text */
+  --text-high: #0c0d10;
+  --text-low: rgba(12,13,16,0.65);
+  --text-disabled: rgba(12,13,16,0.38);
   --text-on-bold: #ffffff;
 
-  --icon-medium: #170054;        /* the deep purple — refined accent */
-  --icon-high: #141414;
+  /* stroke */
+  --stroke-subtle: rgba(12,13,16,0.12);
+  --stroke-minimal: rgba(12,13,16,0.08);
+  --stroke-tile: rgba(12,13,16,0.07);
 
-  --stroke-subtle: rgba(36,38,43,0.12);
-  --stroke-minimal: rgba(36,38,43,0.13);
-
-  /* ===== Aliases used throughout the prototype suite ===== */
+  /* ===== legacy aliases (kept so existing markup keeps working) ===== */
+  --grey-100: #0c0d10;
+  --grey-90: rgba(12,13,16,0.82);
+  --grey-80: rgba(12,13,16,0.65);
+  --grey-60: rgba(12,13,16,0.45);
+  --grey-40: #e3e3e4;
+  --grey-20: #f5f5f5;
+  --white: #ffffff;
+  --black: #0c0d10;
+  --icon-medium: #310064;
+  --icon-high: #0c0d10;
   --primary: var(--primary-50);
   --primary-light: var(--primary-20);
-  --primary-dark: var(--surface-bold);
+  --primary-dark: var(--primary-60);
   --secondary: var(--secondary-50);
   --sparkle: var(--sparkle-50);
 
-  /* Vertical accents — subtle differentiation per use case, all JDS tokens.
-     Default is surface-bold (purple-dark = JCS vertical accent).
-     Each use case page can override --v-accent / --v-accent-soft / --v-accent-deep
-     in :root to get a slightly different signature without bright pastels. */
-  --v-accent:      var(--surface-bold);   /* primary accent */
-  --v-accent-soft: var(--primary-20);     /* tinted background */
-  --v-accent-deep: var(--icon-medium);    /* deepest hue */
-  /* Backwards-compat: */
+  /* Per-vertical accent — defaults to the brand purple; each surface may
+     override --v-accent / --v-accent-soft / --v-accent-deep to one of a2ui's
+     three brand tones (primary / secondary / sparkle). */
+  --v-accent:      var(--primary-50);
+  --v-accent-soft: var(--primary-20);
+  --v-accent-deep: var(--primary-60);
+  --v-accent-tint: var(--surface-ghost-icon);
   --vertical-accent: var(--v-accent);
   --vertical-accent-soft: var(--v-accent-soft);
   --vertical-accent-deep: var(--v-accent-deep);
 
-  /* ===== Radii ===== */
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  --radius-xl: 20px;
+  /* ===== Radii (a2ui) ===== */
+  --radius-xs: 4px;     /* TagChip */
+  --radius-sm: 8px;     /* images, QATrigger */
+  --radius-md: 12px;    /* ★ cards, IconBox */
+  --radius-lg: 16px;    /* large cards */
+  --radius-xl: 24px;    /* sheets */
   --radius-pill: 999px;
 
-  /* ===== Spacing ===== */
+  /* ===== Spacing (a2ui scale) ===== */
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
-  --space-4: 16px;
+  --space-4: 16px;   /* ★ screen margin */
   --space-5: 24px;
   --space-6: 32px;
   --space-7: 48px;
 
-  /* ===== Typography (JDS scale, mobile) ===== */
-  --font: 'JioType', sans-serif;
-  --text-display: 28px;
-  --text-h1: 22px;
-  --text-h2: 18px;
-  --text-h3: 16px;
-  --text-body: 14px;
-  --text-small: 12px;
-  --text-tiny: 10px;
+  /* ===== Typography (a2ui — all weight 500) ===== */
+  --font: 'JioType', -apple-system, sans-serif;
+  --weight-medium: 500;
+  --text-display: 28px;   /* headline-m */
+  --text-h1: 24px;        /* headline-s */
+  --text-h2: 20px;        /* headline-2xs / title-l */
+  --text-h3: 16px;        /* title-s */
+  --text-body: 14px;      /* body-s */
+  --text-small: 12px;     /* body-2xs */
+  --text-tiny: 10px;      /* overline */
 
-  /* ===== Shadows — minimal, monochromatic ===== */
-  --shadow-sm: 0 1px 2px rgba(20,20,20,0.04);
-  --shadow-md: 0 2px 8px rgba(20,20,20,0.06);
-  --shadow-lg: 0 12px 32px rgba(20,20,20,0.10);
+  /* ===== Shadows (a2ui elev) ===== */
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);    /* elev-1 hover lift */
+  --shadow-md: 0 2px 12px rgba(0,0,0,0.04);   /* elev-2 cards */
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.18);   /* elev-3 */
+
+  /* ===== Motion ===== */
+  --ease-spring: cubic-bezier(0.175,0.885,0.32,1.275);
+  --ease-smooth: cubic-bezier(0.45,0,0.55,1);
+  --ease-snappy: cubic-bezier(0.2,0,0,1);
+  --ease-gentle: cubic-bezier(0.4,0,0.2,1);
 }
 
 /* ===== Reset ===== */
@@ -120,6 +134,7 @@ html, body { height: 100%; overflow: hidden; }
 body {
   font-family: var(--font);
   font-size: var(--text-body);
+  font-weight: 500;
   color: var(--text-high);
   background: var(--surface-default);
   display: flex;
@@ -140,96 +155,175 @@ body {
   flex-direction: column;
 }
 
-/* ===== Buttons ===== */
-.btn { font-family: var(--font); cursor: pointer; border: none; transition: all 0.15s; user-select: none; }
+/* ===================================================================
+ * BUTTONS — a2ui: rounded-full, font-jio, weight 500, scale-on-hover
+ * (never a colour change), active:scale(0.97), JDS focus ring.
+ * =================================================================== */
+.btn { font-family: var(--font); cursor: pointer; border: none; font-weight: 500;
+  transition: transform var(--ease-snappy) 200ms; user-select: none; }
+.btn:focus-visible, .jds-focus:focus-visible {
+  outline: none; box-shadow: 0 0 0 2px var(--surface-default), 0 0 0 4px var(--primary-60);
+}
 .btn-primary {
-  background: var(--surface-bold);
+  background: var(--primary-50);
   color: var(--text-on-bold);
-  padding: 14px 24px;
+  padding: 0 22px; height: 44px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
   border-radius: var(--radius-pill);
-  font-size: var(--text-body);
-  font-weight: 700;
+  font-size: var(--text-body); font-weight: 500;
 }
-.btn-primary:hover { background: var(--primary-70); }
+.btn-primary:hover { transform: scale(1.02); }
 .btn-primary:active { transform: scale(0.97); }
+.btn-primary:disabled { opacity: 0.5; pointer-events: none; }
 .btn-secondary {
-  background: var(--surface-default);
-  color: var(--surface-bold);
-  border: 1.5px solid var(--surface-bold);
-  padding: 12px 22px;
+  background: var(--primary-20);
+  color: var(--primary-50);
+  padding: 0 22px; height: 44px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
   border-radius: var(--radius-pill);
-  font-weight: 700;
+  font-size: var(--text-body); font-weight: 500; border: none;
 }
-.btn-secondary:hover { background: var(--primary-20); }
-
-/* ===== Chips ===== */
-.chip {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-  padding: 8px 14px;
-  border-radius: var(--radius-pill);
-  border: 1px solid var(--stroke-subtle);
-  color: var(--text-high);
-  font-size: var(--text-small);
-  font-weight: 600;
+.btn-secondary:hover { transform: scale(1.02); }
+.btn-secondary:active { transform: scale(0.97); }
+.btn-tertiary {
   background: var(--surface-default);
+  color: var(--primary-50);
+  border: 1px solid var(--primary-50);
+  padding: 0 22px; height: 44px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  border-radius: var(--radius-pill);
+  font-size: var(--text-body); font-weight: 500;
+}
+.btn-tertiary:hover { transform: scale(1.02); }
+.btn-tertiary:active { transform: scale(0.97); }
+
+/* ===================================================================
+ * CHIPS — a2ui JDSChip: rounded-full, ghost / active-primary, no border
+ * =================================================================== */
+.chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 14px;
+  border-radius: var(--radius-pill);
+  border: none;
+  color: var(--text-high);
+  font-size: var(--text-body); font-weight: 500;
+  background: var(--surface-ghost);
   cursor: pointer;
-  transition: all 0.15s;
+  transition: transform var(--ease-snappy) 200ms;
   white-space: nowrap;
   font-family: var(--font);
 }
-.chip:hover { background: var(--surface-ghost); border-color: var(--surface-bold); color: var(--surface-bold); }
+.chip:hover { transform: scale(1.02); }
+.chip:active { transform: scale(0.97); }
 .chip.active {
-  background: var(--surface-bold);
+  background: var(--primary-50);
   color: var(--text-on-bold);
-  border-color: var(--surface-bold);
 }
 
-/* ===== Cards ===== */
+/* ===================================================================
+ * CARDS — a2ui Card/SurfaceCard: rounded-md (12px), 1px subtle border,
+ * elev-2 shadow.
+ * =================================================================== */
 .card {
   background: var(--surface-default);
-  border-radius: var(--radius-xl);
-  border: 1px solid var(--stroke-subtle);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--stroke-minimal);
+  box-shadow: var(--shadow-md);
   padding: var(--space-4);
-  transition: all 0.15s;
 }
+
+/* ===================================================================
+ * a2ui ATOMS (reusable across surfaces)
+ * =================================================================== */
+
+/* FlashListenButton — purple pill with play/pause icon + label */
+.jds-listen {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 18px; border-radius: var(--radius-pill);
+  background: var(--primary-50); color: #fff; border: none;
+  font-family: var(--font); font-size: 13px; font-weight: 500; cursor: pointer;
+  transition: transform var(--ease-snappy) 200ms;
+}
+.jds-listen:hover { transform: scale(1.02); }
+.jds-listen:active { transform: scale(0.97); }
+.jds-listen svg { width: 16px; height: 16px; fill: currentColor; }
+
+/* NavButton — 40px circle, primary or neutral */
+.jds-nav-btn {
+  width: 40px; height: 40px; border-radius: var(--radius-pill);
+  display: flex; align-items: center; justify-content: center;
+  border: none; cursor: pointer; flex-shrink: 0; color: var(--text-high);
+  background: var(--surface-ghost);
+  transition: transform var(--ease-snappy) 200ms;
+}
+.jds-nav-btn.primary { background: var(--primary-50); color: #fff; }
+.jds-nav-btn:hover:not(:disabled) { transform: scale(1.05); }
+.jds-nav-btn:active:not(:disabled) { transform: scale(0.92); }
+.jds-nav-btn:disabled { opacity: 0.35; cursor: default; }
+
+/* IconBox — 44×44 rounded-md tinted container (icon/emoji) */
+.jds-icon-box {
+  width: 44px; height: 44px; border-radius: var(--radius-md);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  background: var(--surface-ghost-icon); color: var(--primary-50);
+}
+.jds-icon-box.secondary { background: var(--secondary-20); color: var(--secondary-50); }
+.jds-icon-box.sparkle { background: var(--sparkle-20); color: var(--sparkle-50); }
+.jds-icon-box.neutral { background: var(--surface-ghost); color: var(--text-high); }
+
+/* IconCircle — 40px round tinted */
+.jds-icon-circle {
+  width: 40px; height: 40px; border-radius: var(--radius-pill);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  background: var(--surface-ghost-icon); color: var(--primary-50);
+}
+
+/* Badges — rounded-full pill, tonal */
+.jds-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 3px 9px; border-radius: var(--radius-pill);
+  font-size: var(--text-small); font-weight: 500;
+  background: var(--primary-20); color: var(--primary-50);
+}
+.jds-badge.success { background: #e6f7e6; color: var(--success); }
+.jds-badge.sparkle { background: var(--sparkle-20); color: var(--sparkle-60); }
+.jds-badge.dot::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+
+/* Avatar — 46px round, primary tint */
+.jds-avatar {
+  width: 46px; height: 46px; border-radius: var(--radius-pill);
+  background: var(--primary-30); color: var(--primary-50);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; font-weight: 500; overflow: hidden; flex-shrink: 0;
+}
+
+/* SectionHeader — overline + title row (no horizontal padding; parent pads) */
+.jds-section { margin: var(--space-5) var(--space-4) var(--space-3); }
+.jds-section .ovl {
+  display: block; font-size: var(--text-small); font-weight: 500;
+  text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-low); margin-bottom: 4px;
+}
+.jds-section .ttl { font-size: var(--text-body); font-weight: 500; color: var(--text-high); }
 
 /* ===== Animations ===== */
 @keyframes fadeInUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-.fade-in { animation: fadeIn 0.3s ease-out; }
-.fade-in-up { animation: fadeInUp 0.35s ease-out; }
+.fade-in { animation: fadeIn 0.3s var(--ease-smooth); }
+.fade-in-up { animation: fadeInUp 0.35s var(--ease-gentle); }
 
 /* Hide scrollbars (mobile-style) */
 ::-webkit-scrollbar { display: none; }
 * { scrollbar-width: none; }
 
-/* ===== JBIQ pill — vertical identifier ===== */
+/* ===== JBIQ pill — vertical identifier (a2ui StatusBadge style) ===== */
 .jbiq-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 10px;
-  border-radius: var(--radius-pill);
-  background: var(--primary-20);
-  color: var(--surface-bold);
-  font-size: var(--text-tiny);
-  font-weight: 700;
-  letter-spacing: 0.4px;
-  text-transform: uppercase;
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 3px 10px; border-radius: var(--radius-pill);
+  background: var(--primary-20); color: var(--primary-50);
+  font-size: var(--text-tiny); font-weight: 500;
+  letter-spacing: 0.4px; text-transform: uppercase;
 }
 
 /* ===== Icon helpers ===== */
-.jds-icon {
-  display: inline-block;
-  vertical-align: middle;
-  flex-shrink: 0;
-}
-[data-icon] {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  line-height: 0;
-}
+.jds-icon { display: inline-block; vertical-align: middle; flex-shrink: 0; }
+[data-icon] { display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; line-height: 0; }

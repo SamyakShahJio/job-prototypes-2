@@ -30,20 +30,20 @@
 .gc-msg-user { align-self: flex-end; }
 
 .gc-bubble {
-  padding: 11px 14px;
+  padding: 8px 12px;
   font-size: 14px;
-  line-height: 1.45;
+  line-height: 1.5;
+  font-weight: 500;
 }
 .gc-bubble-ai {
-  background: var(--surface-ghost);
+  background: var(--surface-ghost-icon);
   color: var(--text-high);
-  border-radius: 4px 16px 16px 16px;
-  border-left: 2px solid var(--v-accent);
+  border-radius: 14px 14px 14px 4px;
 }
 .gc-bubble-user {
-  background: var(--v-accent);
-  color: var(--text-on-bold);
-  border-radius: 16px 4px 16px 16px;
+  background: var(--primary-50);
+  color: #fff;
+  border-radius: 14px 14px 4px 14px;
 }
 .gc-speaker {
   display: inline-flex;
@@ -53,7 +53,7 @@
   background: var(--surface-default);
   border-radius: 999px;
   font-size: 10px;
-  font-weight: 700;
+  font-weight: 500;
   color: var(--v-accent);
   letter-spacing: 0.3px;
   margin-bottom: 6px;
@@ -144,7 +144,7 @@
 }
 .rich-card .rc-label {
   font-size: 10px;
-  font-weight: 700;
+  font-weight: 500;
   color: var(--v-accent);
   letter-spacing: 0.5px;
   text-transform: uppercase;
@@ -162,7 +162,7 @@
 .rich-card .rc-better {
   background: var(--primary-20);
   color: var(--surface-bold);
-  font-weight: 700;
+  font-weight: 500;
   font-size: 13px;
   padding: 9px 12px;
   border-radius: 10px;
@@ -180,7 +180,7 @@
   border-radius: 999px;
   padding: 7px 12px;
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 500;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
@@ -206,7 +206,7 @@
   border-radius: 10px;
 }
 .rich-card .rc-before .rc-row-label {
-  font-size: 10px; font-weight: 800; letter-spacing: 0.4px;
+  font-size: 10px; font-weight: 500; letter-spacing: 0.4px;
   text-transform: uppercase; color: var(--text-low);
   opacity: 0.7;
 }
@@ -225,7 +225,7 @@
   border-radius: 10px;
 }
 .rich-card .rc-after .rc-row-label {
-  font-size: 10px; font-weight: 800; letter-spacing: 0.4px;
+  font-size: 10px; font-weight: 500; letter-spacing: 0.4px;
   text-transform: uppercase; color: #15791a;
   opacity: 0.7;
 }
@@ -264,7 +264,7 @@
   padding: 10px 12px;
 }
 .rich-card .rc-better-block .rc-better-h {
-  font-size: 10px; font-weight: 800; letter-spacing: 0.4px;
+  font-size: 10px; font-weight: 500; letter-spacing: 0.4px;
   text-transform: uppercase;
   color: var(--surface-bold);
   margin-bottom: 6px;
@@ -287,13 +287,13 @@
   border-radius: 999px;
   padding: 5px 10px;
   font-family: var(--font);
-  font-size: 10px; font-weight: 800;
+  font-size: 10px; font-weight: 500;
   letter-spacing: 0.3px;
   text-transform: uppercase;
   cursor: pointer;
   transition: transform 0.15s, background 0.15s;
 }
-.rich-card .rc-better-block .rc-better-play:hover { background: var(--primary-70); }
+.rich-card .rc-better-block .rc-better-play:hover { transform: scale(1.03); }
 .rich-card .rc-better-block .rc-better-play:active { transform: scale(0.95); }
 
 /* Pronunciation feedback — "You said X, try Y" */
@@ -303,7 +303,7 @@
   padding: 10px 12px;
 }
 .rich-card .rc-pron-h {
-  font-size: 10px; font-weight: 800; letter-spacing: 0.5px;
+  font-size: 10px; font-weight: 500; letter-spacing: 0.5px;
   text-transform: uppercase;
   color: var(--surface-bold);
   margin-bottom: 6px;
@@ -333,13 +333,13 @@
   border-radius: 999px;
   padding: 5px 10px;
   font-family: var(--font);
-  font-size: 10px; font-weight: 800;
+  font-size: 10px; font-weight: 500;
   letter-spacing: 0.3px;
   text-transform: uppercase;
   cursor: pointer;
   transition: transform 0.15s;
 }
-.rich-card .rc-pron-play:hover { filter: brightness(1.05); }
+.rich-card .rc-pron-play:hover { transform: scale(1.03); }
 .rich-card .rc-pron-play:active { transform: scale(0.95); }
 
 /* Variant: phrase saved (success accent) */
@@ -362,13 +362,13 @@
 }
 .rich-card--feedback .rc-metric-v {
   font-size: 14px;
-  font-weight: 800;
+  font-weight: 500;
   color: var(--text-high);
   line-height: 1;
 }
 .rich-card--feedback .rc-metric-l {
   font-size: 9px;
-  font-weight: 700;
+  font-weight: 500;
   color: var(--text-low);
   letter-spacing: 0.3px;
   text-transform: uppercase;
@@ -384,13 +384,13 @@
 }
 .rich-card--score .rc-score-num {
   font-size: 28px;
-  font-weight: 900;
+  font-weight: 500;
   color: var(--surface-bold);
   line-height: 1;
 }
 .rich-card--score .rc-score-l {
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 500;
   color: var(--text-low);
   letter-spacing: 0.4px;
   text-transform: uppercase;
@@ -431,13 +431,13 @@
   align-items: center;
   justify-content: center;
   font-size: 11px;
-  font-weight: 800;
+  font-weight: 500;
   flex-shrink: 0;
 }
 .rich-card--list .rli-text { flex: 1; min-width: 0; }
 .rich-card--list .rli-name {
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 500;
   color: var(--text-high);
   line-height: 1.2;
 }
@@ -469,7 +469,7 @@
   position: absolute;
   left: 0;
   color: var(--surface-bold);
-  font-weight: 700;
+  font-weight: 500;
 }
 
 /* Variant: trailer — N-step plan card (microlearning) */
@@ -505,7 +505,7 @@
   align-items: center;
   justify-content: center;
   font-size: 10px;
-  font-weight: 800;
+  font-weight: 500;
   flex-shrink: 0;
 }
 
@@ -513,7 +513,7 @@
 .rich-card--practice .rc-key-phrase {
   background: var(--primary-20);
   color: var(--surface-bold);
-  font-weight: 700;
+  font-weight: 500;
   font-size: 14px;
   padding: 10px 12px;
   border-radius: 10px;
@@ -548,7 +548,7 @@
 .gc-chips:empty { display: none; }
 .gc-chip-prompt {
   font-size: 10px;
-  font-weight: 700;
+  font-weight: 500;
   color: var(--text-low);
   letter-spacing: 0.5px;
   text-transform: uppercase;
@@ -562,33 +562,29 @@
 }
 
 .gc-chip {
-  background: var(--v-accent-soft);
-  border: 1px solid var(--v-accent);
-  border-radius: 12px;
-  padding: 11px 14px;
+  background: var(--surface-ghost-icon);
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 11px 16px;
   font-size: 13px;
-  font-weight: 600;
-  color: var(--v-accent-deep);
+  font-weight: 500;
+  color: var(--primary-60);
   cursor: pointer;
   text-align: left;
   font-family: var(--font);
-  transition: all 0.15s;
+  transition: transform var(--ease-snappy) 200ms;
   line-height: 1.35;
   animation: fadeInUp 0.25s ease-out backwards;
 }
 .gc-chip:nth-child(1) { animation-delay: 0.05s; }
 .gc-chip:nth-child(2) { animation-delay: 0.15s; }
 .gc-chip:nth-child(3) { animation-delay: 0.25s; }
-.gc-chip:hover {
-  background: var(--v-accent);
-  color: var(--text-on-bold);
-  border-color: var(--v-accent);
-}
-.gc-chip:active { transform: scale(0.98); }
+.gc-chip:hover { transform: scale(1.02); }
+.gc-chip:active { transform: scale(0.97); }
 .gc-chip-tag {
   display: inline-block;
   font-size: 9px;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0.4px;
   text-transform: uppercase;
   padding: 2px 6px;
@@ -650,12 +646,12 @@
   padding: 9px 18px;
   font-family: var(--font);
   font-size: 12px;
-  font-weight: 800;
+  font-weight: 500;
   letter-spacing: 0.2px;
   cursor: pointer;
   transition: transform 0.15s, background 0.15s;
 }
-.gc-more-btn:hover { background: var(--primary-70); }
+.gc-more-btn:hover { transform: scale(1.02); }
 .gc-more-btn:active { transform: scale(0.96); }
 
 /* Suggested-prompt chips row, sits inside .gc-input-dock just above the input.
@@ -686,11 +682,8 @@
   white-space: nowrap;
   transition: all 0.15s;
 }
-.dock-chip:hover {
-  background: var(--surface-default);
-  border-color: var(--surface-bold);
-  color: var(--surface-bold);
-}
+.dock-chip { transition: transform var(--ease-snappy) 200ms; }
+.dock-chip:hover { transform: scale(1.03); }
 .dock-chip:active { transform: scale(0.96); }
 .gc-input-wrap {
   background: var(--surface-ghost);          /* #eeeeef */
@@ -752,7 +745,7 @@
   gap: 8px;                                  /* OG exact gap */
   cursor: pointer;
   font-family: var(--font);
-  font-weight: 700;
+  font-weight: 500;
   font-size: 14px;
   color: var(--white);
   line-height: 1;
@@ -776,7 +769,7 @@
 .gc-suggest-row:empty { display: none; }
 .gc-suggest-row .gc-suggest-label {
   font-size: 10px;
-  font-weight: 700;
+  font-weight: 500;
   color: var(--text-low);
   letter-spacing: 0.5px;
   text-transform: uppercase;
