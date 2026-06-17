@@ -2575,12 +2575,42 @@ function cycleWordOfDay(dir) {
   wodIdx = (wodIdx + dir + WORD_QUEUE.length) % WORD_QUEUE.length;
   renderWordOfDay();
 }
+// Gujarati isn't supported by our ElevenLabs voice/model, so the baked gu clip
+// is unusable. Prefer the device's native Gujarati TTS; if the device has no
+// Gujarati voice, play the correct Hindi explanation rather than mangled audio.
+let wodHiFallbackVoice = null;
+function deviceHasVoice(prefix) {
+  try { return ('speechSynthesis' in window) && window.speechSynthesis.getVoices().some(v => v.lang && v.lang.toLowerCase().startsWith(prefix)); }
+  catch (e) { return false; }
+}
+function speakOnDevice(text, prefix, lang) {
+  try {
+    const synth = window.speechSynthesis;
+    synth.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = lang;
+    try {
+      const v = synth.getVoices().find(x => x.lang && x.lang.toLowerCase().startsWith(prefix));
+      if (v) u.voice = v;
+    } catch (e) {}
+    synth.speak(u);
+  } catch (e) {}
+}
 function listenWordOfDay() {
   const w = WORD_QUEUE[wodIdx];
-  // English word pronunciation + meaning in the chosen mother tongue, voiced
-  // by a per-language voice (en → Sarah; hi/gu → native multilingual voices).
+  if (LANG === 'gu') {
+    if (wodVoice) { try { wodVoice.stop(); } catch (e) {} }
+    const guLine = (w.spoken && w.spoken.gu) || `${w.word}. ${(w.meaning && w.meaning.gu) || ''}`;
+    if (deviceHasVoice('gu')) { speakOnDevice(guLine, 'gu', 'gu-IN'); return; }
+    // No Gujarati voice on this device → fall back to the (correct) Hindi clip.
+    const hiLine = (w.spoken && w.spoken.hi) || `${w.word}. ${(w.meaning && w.meaning.hi) || ''}`;
+    if (!wodHiFallbackVoice) wodHiFallbackVoice = JBIQVoice.create({ persona: 'english_hi' });
+    wodHiFallbackVoice.speak(hiLine, 'hi-IN');
+    return;
+  }
+  // English word pronunciation + meaning in the chosen mother tongue (en → Sarah, hi → multilingual).
   const line = (w.spoken && (w.spoken[LANG] || w.spoken.en)) || `${w.word}. ${wodMeaning(w)}`;
-  ensureWodVoice().speak(line, LANG === 'hi' ? 'hi-IN' : LANG === 'gu' ? 'gu-IN' : 'en-IN');
+  ensureWodVoice().speak(line, LANG === 'hi' ? 'hi-IN' : 'en-IN');
 }
 
 /* =========================================================================
