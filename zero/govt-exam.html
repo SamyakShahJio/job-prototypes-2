@@ -3,710 +3,198 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#3900ad">
-<title>Govt Exam Prep — JioBharatIQ</title>
+<meta name="theme-color" content="#1f4e8c">
+<title>Govt Exams — JioBharatIQ</title>
 <link rel="stylesheet" href="../shared/jds-tokens.css">
-<link rel="stylesheet" href="../shared/ambient-glow.css">
-<link rel="stylesheet" href="../shared/guided-chat.css">
+<link rel="stylesheet" href="../shared/guided-chat.css?v=2">
 <style>
   body { background: var(--white); }
   .phone-frame { background: var(--white); }
   :root {
-    --vert-accent: var(--surface-bold);
-    --vert-accent-light: var(--primary-20);
-    --vert-accent-dark: var(--icon-medium);
+    --vert-accent: #1f4e8c;          /* official blue */
+    --vert-accent-light: #e7eef9;
+    --vert-accent-dark: #16365f;
   }
 
   /* ============= TOP BAR ============== */
   .top-bar {
-    height: 56px;
-    padding: 0 var(--space-4);
+    height: 56px; padding: 0 var(--space-4);
     display: flex; align-items: center; gap: var(--space-3);
-    background: var(--white);
-    flex-shrink: 0;
-    border-bottom: 1px solid transparent;
-    position: relative; z-index: 30;
+    background: var(--white); flex-shrink: 0;
+    border-bottom: 1px solid transparent; position: relative; z-index: 30;
   }
-  .top-bar.scrolled { border-bottom-color: var(--grey-40); }
   .top-bar .icon-btn {
     width: 36px; height: 36px; border-radius: 50%;
     background: var(--surface-ghost); border: none;
     display: flex; align-items: center; justify-content: center;
-    cursor: pointer; flex-shrink: 0;
-    color: var(--grey-100);
+    cursor: pointer; flex-shrink: 0; color: var(--grey-100);
   }
   .top-bar .title-area { flex: 1; min-width: 0; }
-  .top-bar .title-area .t1 {
-    font-size: 16px; font-weight: 700; color: var(--grey-100);
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  }
-  .top-bar .title-area .t2 {
-    font-size: 11px; font-weight: 500; color: var(--grey-60);
-  }
-  .vert-pill {
-    display: inline-flex; align-items: center; gap: 6px;
-    padding: 4px 10px; border-radius: var(--radius-pill);
-    background: var(--vert-accent-light); color: var(--vert-accent-dark);
-    font-size: 11px; font-weight: 700; letter-spacing: 0.3px; text-transform: uppercase;
-  }
+  .top-bar .title-area .t1 { font-size: 16px; font-weight: 700; color: var(--grey-100); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .top-bar .title-area .t2 { font-size: 11px; font-weight: 500; color: var(--grey-60); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-  .view {
-    display: none; flex: 1; flex-direction: column; overflow: hidden;
-  }
+  /* ============= VIEW SWITCHING ============== */
+  .view { display: none; flex: 1; flex-direction: column; overflow: hidden; }
   .view.active { display: flex; }
-  .view-body {
-    flex: 1; overflow-y: auto; padding: var(--space-3) var(--space-4) var(--space-7);
-  }
-
-  /* ============= HOME — life-first prompt ============== */
-  .life-first-card {
-    margin: var(--space-3) 0 var(--space-4);
-    background: var(--surface-ghost);
-    border-radius: 22px;
-    padding: 20px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-  }
-  /* Heading-only variant: no input below, so tighter padding. */
-  .life-first-card--heading-only { padding: 16px 18px; }
-  .life-first-card--heading-only .lf-q { margin-bottom: 0; }
-  .life-first-card--heading-only .lf-tag { margin-bottom: 8px; }
-  .life-first-card::after {
-    content: '';
-    position: absolute;
-    right: -20px; top: -20px;
-    width: 100px; height: 100px;
-    background: radial-gradient(circle, rgba(247,171,32,0.4) 0%, rgba(247,171,32,0) 70%);
-  }
-  .life-first-card .lf-tag {
-    display: inline-flex;
-    padding: 4px 10px;
-    background: var(--white);
-    color: var(--vert-accent-dark);
-    border-radius: var(--radius-pill);
-    font-size: 11px; font-weight: 700;
-    letter-spacing: 0.3px; text-transform: uppercase;
-    margin-bottom: 12px;
-  }
-  .life-first-card .lf-q {
-    font-size: 20px; font-weight: 900; color: var(--grey-100);
-    line-height: 1.25; letter-spacing: -0.3px;
-    margin-bottom: 8px;
-  }
-  .life-first-card .lf-sub {
-    font-size: 13px; color: var(--icon-medium); font-weight: 500;
-    line-height: 1.4; margin-bottom: 14px;
-  }
-  .life-first-card .lf-input-fake {
-    display: flex; align-items: center; gap: 10px;
-    background: white;
-    border: 1px solid rgba(0,0,0,0.06);
-    border-radius: var(--radius-pill);
-    padding: 8px 8px 8px 16px;
-  }
-  .life-first-card .lf-placeholder {
-    flex: 1; font-size: 14px; color: var(--grey-60);
-  }
-  .life-first-card .lf-mic {
-    width: 36px; height: 36px;
-    border-radius: 50%;
-    background: var(--vert-accent);
-    color: white;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-  }
-
-  /* ============= Path cards ============== */
+  .view-body { flex: 1; overflow-y: auto; padding: var(--space-3) 0 var(--space-7); }
   .section-h {
     font-size: 11px; font-weight: 700; color: var(--grey-60);
     letter-spacing: 0.6px; text-transform: uppercase;
-    margin: var(--space-5) 0 var(--space-3);
+    margin: var(--space-5) var(--space-4) var(--space-3);
   }
-  .paths-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
+
+  /* ============= COUNSELLOR ENTRY CARD ============== */
+  .counsel-card {
+    width: calc(100% - 2 * var(--space-4));
+    margin: var(--space-3) var(--space-4) 0;
+    display: flex; align-items: center; gap: 14px;
+    padding: 16px; border-radius: 18px;
+    background: var(--vert-accent); color: white;
+    cursor: pointer; transition: transform 0.15s; text-align: left;
+    border: none; font-family: var(--font);
   }
-  .path-card {
-    border-radius: 16px;
-    padding: 14px;
-    cursor: pointer;
-    transition: transform 0.15s;
-    color: var(--grey-100);
-    border: 1px solid rgba(20,20,20,0.06);
-    display: flex; flex-direction: column;
-    min-height: 120px;
-    justify-content: space-between;
-  }
-  .path-card:hover { transform: translateY(-2px); }
-  .path-card .pc-emoji {
-    font-size: 24px; width: 36px; height: 36px;
-    background: rgba(255,255,255,0.6);
-    border-radius: 10px;
+  .counsel-card:hover { transform: translateY(-2px); }
+  .counsel-card .cc-ic {
+    width: 44px; height: 44px; border-radius: 12px; flex-shrink: 0;
+    background: rgba(255,255,255,0.18); color: white;
     display: flex; align-items: center; justify-content: center;
   }
-  .path-card .pc-name {
-    font-size: 14px; font-weight: 800; line-height: 1.2;
-  }
-  .path-card .pc-meta {
-    font-size: 11px; font-weight: 600; opacity: 0.7; margin-top: 2px;
-  }
-  .path-banking { background: var(--surface-ghost); }
-  .path-admin   { background: var(--surface-ghost); }
-  .path-tech    { background: var(--primary-20); }
-  .path-state   { background: var(--surface-ghost); }
+  .counsel-card .cc-text { flex: 1; min-width: 0; }
+  .counsel-card .cc-title { font-size: 15px; font-weight: 800; letter-spacing: -0.2px; }
+  .counsel-card .cc-sub { font-size: 12px; font-weight: 500; opacity: 0.9; margin-top: 3px; line-height: 1.35; }
+  .counsel-card .cc-arrow { flex-shrink: 0; opacity: 0.9; }
 
-  /* ============= Tracked exams ============== */
-  .tracked-list {
-    display: flex; flex-direction: column; gap: 10px;
+  /* ============= CATEGORY ROWS ============== */
+  .cat-scroll {
+    display: flex; gap: 10px; overflow-x: auto;
+    padding: 0 var(--space-4) 4px; scrollbar-width: none;
   }
-  .tracked-card {
-    border: 1px solid var(--grey-40);
-    border-radius: 16px;
-    padding: 14px;
-    background: white;
-    cursor: pointer;
-    transition: all 0.15s;
+  .cat-scroll::-webkit-scrollbar { display: none; }
+  .cat-tile {
+    flex: 0 0 158px; text-align: left;
+    border: 1px solid var(--grey-40); border-radius: 14px;
+    padding: 14px; background: white; cursor: pointer;
+    font-family: var(--font); display: flex; flex-direction: column; gap: 6px;
+    min-height: 96px; transition: all 0.15s;
   }
-  .tracked-card:hover { border-color: var(--vert-accent); }
-  .tracked-card .tc-h {
-    display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
-  }
-  .tracked-card .tc-icon {
-    width: 36px; height: 36px;
-    border-radius: 10px;
+  .cat-tile:hover { border-color: var(--vert-accent); transform: translateY(-2px); }
+  .cat-tile .ct-badge {
+    width: 34px; height: 34px; border-radius: 10px;
     background: var(--vert-accent-light);
-    color: var(--vert-accent-dark);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 14px; font-weight: 800;
-    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center; font-size: 19px; line-height: 1;
   }
-  .tracked-card .tc-name {
-    font-size: 14px; font-weight: 700; color: var(--grey-100);
-    flex: 1; min-width: 0;
-  }
-  .tracked-card .tc-cd {
-    font-size: 11px; font-weight: 700; color: var(--vert-accent-dark);
-    background: var(--vert-accent-light);
-    padding: 4px 8px; border-radius: var(--radius-pill);
-    flex-shrink: 0;
-  }
-  .tracked-card .tc-progress-row {
-    display: flex; align-items: center; gap: 10px; font-size: 11px;
-    color: var(--grey-60); font-weight: 500;
-  }
-  .tracked-card .tc-bar {
-    flex: 1; height: 6px;
-    background: var(--grey-20); border-radius: 3px; overflow: hidden;
-  }
-  .tracked-card .tc-fill {
-    height: 100%; background: var(--vert-accent);
-    border-radius: 3px;
-  }
-  .tracked-card .tc-pct {
-    font-size: 12px; font-weight: 700; color: var(--grey-100);
-    min-width: 38px; text-align: right;
+  .cat-tile .ct-title { font-size: 14px; font-weight: 800; color: var(--grey-100); line-height: 1.2; letter-spacing: -0.2px; }
+  .cat-tile .ct-meta { font-size: 11px; color: var(--text-low); font-weight: 600; margin-top: auto; line-height: 1.3; }
+
+  /* ============= IN-CHAT CARDS ============== */
+  .elig-card, .recommend-card, .quiz-setup, .quiz-card, .flash-card {
+    align-self: stretch; background: white;
+    border: 1px solid var(--stroke-subtle); border-radius: 18px;
+    padding: 16px; margin: 4px 0 8px; box-shadow: var(--shadow-sm);
   }
 
-  /* Stats */
-  .stats-strip {
-    display: flex; gap: 10px; margin-top: var(--space-3);
-  }
-  .stat-card {
-    flex: 1;
-    background: var(--surface-ghost);
-    border-radius: 14px; padding: 12px;
-    text-align: center;
-  }
-  .stat-card .v {
-    font-size: 22px; font-weight: 900; color: var(--grey-100);
-    line-height: 1;
-  }
-  .stat-card .l {
-    font-size: 10px; font-weight: 600; color: var(--grey-60);
-    margin-top: 6px; letter-spacing: 0.3px;
-  }
+  /* Eligibility card (shown at top of an exam) */
+  .elig-card { background: linear-gradient(160deg, var(--vert-accent-light) 0%, var(--surface-ghost) 100%); border-color: #cfe0f4; }
+  .elig-card .el-h { font-size: 11px; font-weight: 800; letter-spacing: 0.4px; text-transform: uppercase; color: var(--vert-accent); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+  .elig-card .el-row { display: flex; gap: 10px; padding: 7px 0; border-bottom: 1px solid rgba(31,78,140,0.12); }
+  .elig-card .el-row:last-of-type { border-bottom: none; }
+  .elig-card .el-k { flex: 0 0 92px; font-size: 12px; font-weight: 700; color: var(--vert-accent-dark); }
+  .elig-card .el-v { flex: 1; font-size: 13px; font-weight: 500; color: var(--grey-100); line-height: 1.35; }
+  .elig-card .el-reality { margin-top: 10px; font-size: 12px; font-weight: 600; color: var(--text-low); background: rgba(255,255,255,0.6); border-radius: 10px; padding: 8px 10px; line-height: 1.4; }
 
-  /* Daily prep teaser */
-  .daily-prep-card {
-    margin-top: var(--space-3);
-    background: var(--vert-accent);
-    color: white;
-    border-radius: 18px;
-    padding: 16px;
-    cursor: pointer;
-    display: flex; align-items: center; gap: 12px;
+  /* Onboarding (counsellor) card */
+  .onb-card { align-self: stretch; background: white; border: 1px solid var(--stroke-subtle); border-radius: 18px; padding: 16px; margin: 4px 0 8px; box-shadow: var(--shadow-sm); }
+  .onb-h { font-size: 15px; font-weight: 900; color: var(--grey-100); letter-spacing: -0.2px; }
+  .onb-sub { font-size: 12.5px; color: var(--text-low); font-weight: 500; margin: 3px 0 14px; line-height: 1.4; }
+  .onb-group { margin-bottom: 13px; }
+  .onb-label { font-size: 11px; font-weight: 800; letter-spacing: 0.3px; text-transform: uppercase; color: var(--vert-accent); margin-bottom: 7px; }
+  .onb-chips { display: flex; flex-wrap: wrap; gap: 7px; }
+  .onb-chip {
+    border: 1px solid var(--grey-40); background: white;
+    border-radius: var(--radius-pill); padding: 7px 13px;
+    font-family: var(--font); font-size: 12.5px; font-weight: 600; color: var(--text-high);
+    cursor: pointer; transition: all 0.12s;
   }
-  .daily-prep-card .dp-icon {
-    width: 44px; height: 44px;
-    border-radius: 12px;
-    background: rgba(255,255,255,0.2);
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
+  .onb-chip:hover { border-color: var(--vert-accent); }
+  .onb-chip.sel { background: var(--vert-accent); border-color: var(--vert-accent); color: white; }
+  .onb-go {
+    width: 100%; margin-top: 6px; background: var(--vert-accent); color: white;
+    border: none; border-radius: var(--radius-pill); padding: 12px;
+    font-family: var(--font); font-size: 14px; font-weight: 800; cursor: pointer;
   }
-  .daily-prep-card .dp-text { flex: 1; }
-  .daily-prep-card .dp-title {
-    font-size: 14px; font-weight: 800; line-height: 1.2;
-  }
-  .daily-prep-card .dp-sub {
-    font-size: 11px; opacity: 0.85; margin-top: 4px;
-  }
+  .onb-go:active { transform: scale(0.99); }
 
-  /* ============= DISCOVERY CHAT ============== */
-  .chat-area {
-    flex: 1;
-    overflow-y: auto;
-    padding: var(--space-4);
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-  .msg { max-width: 88%; animation: msgIn 0.35s ease-out; }
-  .msg-ai { align-self: flex-start; }
-  .msg-user { align-self: flex-end; }
-  .bubble {
-    padding: 12px 16px;
-    font-size: 14px; line-height: 1.5;
-    color: var(--grey-100);
-  }
-  .bubble-ai {
-    background: var(--surface-ghost);
-    border-radius: 4px var(--radius-lg) var(--radius-lg) var(--radius-lg);
-  }
-  .bubble-user {
-    background: var(--vert-accent);
-    color: white;
-    border-radius: var(--radius-lg) 4px var(--radius-lg) var(--radius-lg);
-  }
-  .bubble-ai .speaker-pill {
-    display: inline-flex; padding: 3px 8px;
-    background: white; border-radius: var(--radius-pill);
-    font-size: 10px; font-weight: 700; color: var(--vert-accent-dark);
-    margin-bottom: 6px;
-  }
-  @keyframes msgIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  /* Recommend card */
+  .recommend-card { cursor: pointer; transition: all 0.15s; }
+  .recommend-card:hover { border-color: var(--vert-accent); transform: translateY(-2px); }
+  .recommend-card .rc-top { display: flex; align-items: center; gap: 11px; }
+  .recommend-card .rc-emoji { width: 38px; height: 38px; border-radius: 11px; background: var(--vert-accent-light); display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+  .recommend-card .rc-name { font-size: 15px; font-weight: 800; color: var(--grey-100); }
+  .recommend-card .rc-cat { font-size: 11.5px; font-weight: 600; color: var(--text-low); }
+  .recommend-card .rc-why { font-size: 12.5px; color: var(--grey-90); line-height: 1.45; margin-top: 9px; }
+  .recommend-card .rc-why b { color: var(--vert-accent-dark); }
 
-  .reply-chips {
-    display: flex; flex-wrap: wrap; gap: 8px;
-    margin-top: 4px;
-    align-self: flex-start;
-    max-width: 100%;
-  }
-  .reply-chip {
-    padding: 8px 14px;
-    border-radius: var(--radius-pill);
-    border: 1.5px solid var(--vert-accent);
-    color: var(--vert-accent-dark);
-    background: white;
-    font-size: 13px; font-weight: 600;
-    cursor: pointer;
-    transition: all 0.15s;
-    font-family: var(--font);
-  }
-  .reply-chip:hover { background: var(--vert-accent-light); }
-
-  .exam-card-bubble {
-    background: white;
-    border: 1px solid var(--grey-40);
-    border-radius: 14px;
-    padding: 12px;
-    cursor: pointer;
-    transition: all 0.15s;
-    display: flex; align-items: center; gap: 12px;
-  }
-  .exam-card-bubble:hover { border-color: var(--vert-accent); }
-  .exam-card-bubble .ecb-icon {
-    width: 36px; height: 36px;
-    border-radius: 10px;
-    background: var(--vert-accent-light);
-    color: var(--vert-accent-dark);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 13px; font-weight: 800;
-    flex-shrink: 0;
-  }
-  .exam-card-bubble .ecb-text { flex: 1; }
-  .exam-card-bubble .ecb-name {
-    font-size: 14px; font-weight: 700; color: var(--grey-100);
-  }
-  .exam-card-bubble .ecb-meta {
-    font-size: 11px; color: var(--grey-60); margin-top: 2px; line-height: 1.4;
-  }
-
-  .reality-check {
-    background: var(--surface-ghost);
-    border-radius: 14px;
-    padding: 14px;
-  }
-  .reality-check .rc-h {
-    font-size: 11px; font-weight: 700; color: var(--surface-bold);
-    letter-spacing: 0.4px; text-transform: uppercase; margin-bottom: 8px;
-  }
-  .reality-check ul {
-    list-style: none; padding: 0; margin: 0;
-  }
-  .reality-check ul li {
-    font-size: 12px; line-height: 1.5; color: var(--grey-100);
-    padding: 4px 0;
-    display: flex; gap: 8px;
-  }
-  .reality-check ul li::before {
-    content: '•'; color: var(--surface-bold); font-weight: 700;
-  }
-
-  /* Chat dock with mic + text */
-  .chat-dock {
-    flex-shrink: 0;
-    background: white;
-    border-top: 1px solid var(--grey-40);
-    padding: 10px var(--space-4) calc(10px + env(safe-area-inset-bottom, 0px));
-    display: flex; align-items: center; gap: 10px;
-  }
-  .chat-dock .chat-input {
-    flex: 1;
-    border: 1px solid var(--grey-40);
-    border-radius: var(--radius-pill);
-    padding: 10px 16px;
-    font-family: var(--font); font-size: 14px;
-    color: var(--grey-100);
-    outline: none;
-    background: var(--surface-ghost);
-  }
-  .chat-dock .chat-input:focus { border-color: var(--vert-accent); background: white; }
-  .chat-dock .icon-btn-mic {
-    width: 44px; height: 44px;
-    border-radius: 50%;
-    border: none;
-    background: var(--vert-accent);
-    color: white;
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-  }
-  .chat-dock .icon-btn-mic.recording {
-    background: var(--error);
-    animation: pulseRecord 1s ease-in-out infinite;
-  }
-  @keyframes pulseRecord {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(250,47,64,0.5); }
-    50% { box-shadow: 0 0 0 12px rgba(250,47,64,0); }
-  }
-
-  /* ============= DAILY PREP DECK ============== */
-  .prep-tabs {
-    display: flex; gap: 6px;
-    padding: 8px var(--space-4);
-    background: white;
-    border-bottom: 1px solid var(--grey-40);
-  }
-  .prep-tab {
-    flex: 1;
-    padding: 10px;
-    border-radius: 10px;
-    border: none;
-    background: transparent;
-    font-family: var(--font); font-size: 13px; font-weight: 600;
-    color: var(--grey-80);
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-  .prep-tab.active {
-    background: var(--vert-accent);
-    color: white;
-  }
-
-  /* Horizontal carousel wrapper — used for quizzes + flashcards */
-  .prep-carousel {
-    display: flex;
-    gap: 14px;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    padding: 0 var(--space-4) 8px;
-    margin: 0 calc(var(--space-4) * -1) 4px;
-    scroll-padding: 0 var(--space-4);
-  }
-  .prep-carousel::-webkit-scrollbar { display: none; }
-  .prep-carousel > * {
-    flex: 0 0 86%;
-    max-width: 320px;
-    scroll-snap-align: start;
-    margin-bottom: 0;
-  }
-  .prep-carousel-h {
-    display: flex; align-items: baseline; justify-content: space-between;
-    margin-bottom: 8px;
-  }
-  .prep-carousel-h .pch-title {
-    font-size: 13px; font-weight: 800; color: var(--grey-100);
-  }
-  .prep-carousel-h .pch-count {
-    font-size: 11px; font-weight: 700; color: var(--text-low);
-    letter-spacing: 0.4px;
-    text-transform: uppercase;
-  }
-  /* Subtle scroll indicators on the edges so the carousel reads as scrollable */
-  .prep-carousel-wrap { position: relative; }
-  .prep-carousel-wrap::after {
-    content: '';
-    position: absolute;
-    right: 0; top: 0; bottom: 8px;
-    width: 28px;
-    background: linear-gradient(to left, var(--white) 0%, rgba(255,255,255,0) 100%);
-    pointer-events: none;
-  }
+  /* Quiz setup */
+  .quiz-setup .qs-h { font-size: 15px; font-weight: 900; color: var(--grey-100); margin-bottom: 3px; }
+  .quiz-setup .qs-sub { font-size: 12.5px; color: var(--text-low); margin-bottom: 13px; line-height: 1.4; }
+  .quiz-setup .qs-free { width: 100%; box-sizing: border-box; border: 1px solid var(--grey-40); border-radius: 12px; padding: 11px 13px; font-family: var(--font); font-size: 13.5px; color: var(--grey-100); margin-top: 4px; }
+  .quiz-setup .qs-free::placeholder { color: var(--grey-60); }
 
   /* Quiz card */
-  .quiz-card {
-    background: white;
-    border: 1px solid var(--grey-40);
-    border-radius: 22px;
-    padding: 22px;
-    margin-bottom: 14px;
-    box-shadow: var(--shadow-sm);
+  .quiz-card .qz-tag { font-size: 10.5px; font-weight: 800; letter-spacing: 0.4px; text-transform: uppercase; color: var(--vert-accent); }
+  .quiz-card .qz-q { font-size: 15px; font-weight: 700; color: var(--grey-100); line-height: 1.4; margin: 7px 0 12px; }
+  .quiz-card .qz-opt {
+    display: flex; align-items: center; gap: 10px; width: 100%;
+    border: 1px solid var(--grey-40); border-radius: 12px; padding: 11px 13px;
+    background: white; font-family: var(--font); font-size: 13.5px; font-weight: 600; color: var(--grey-100);
+    cursor: pointer; margin-bottom: 8px; text-align: left; transition: all 0.12s;
   }
-  .quiz-card .q-meta {
-    display: flex; gap: 8px; margin-bottom: 10px;
-  }
-  .quiz-card .q-tag {
-    padding: 4px 10px;
-    background: var(--vert-accent-light);
-    color: var(--vert-accent-dark);
-    border-radius: var(--radius-pill);
-    font-size: 11px; font-weight: 700;
-    letter-spacing: 0.3px; text-transform: uppercase;
-  }
-  .quiz-card .q-tag-asked {
-    background: #d6f5ec; color: var(--success);
-  }
-  .quiz-card .q-text {
-    font-size: 16px; font-weight: 700; color: var(--grey-100);
-    line-height: 1.4; margin-bottom: 16px;
-  }
-  .quiz-card .q-options {
-    display: flex; flex-direction: column; gap: 8px;
-  }
-  .quiz-card .q-opt {
-    border: 1.5px solid var(--grey-40);
-    border-radius: 12px;
-    padding: 12px 14px;
-    cursor: pointer;
-    transition: all 0.15s;
-    font-size: 14px;
-    color: var(--grey-100);
-    display: flex; align-items: center; gap: 10px;
-    background: white;
-    text-align: left;
-    font-family: var(--font);
-  }
-  .quiz-card .q-opt:hover { border-color: var(--vert-accent); }
-  .quiz-card .q-opt.correct { border-color: var(--success); background: #d6f5ec; color: var(--success); }
-  .quiz-card .q-opt.wrong { border-color: var(--error); background: #ffe2e8; color: var(--error); }
-  .quiz-card .q-opt-letter {
-    width: 24px; height: 24px; border-radius: 50%;
-    background: var(--surface-ghost);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 11px; font-weight: 800; color: var(--grey-80);
-    flex-shrink: 0;
-  }
-  .quiz-card.solved .q-opt.correct .q-opt-letter { background: var(--success); color: white; }
-  .quiz-card.solved .q-opt.wrong .q-opt-letter { background: var(--error); color: white; }
-  .quiz-card .q-explain {
-    margin-top: 14px;
-    background: var(--vert-accent-light);
-    color: var(--grey-100);
-    border-radius: 10px;
-    padding: 10px 12px;
-    font-size: 12px; line-height: 1.4;
-    display: none;
-  }
-  .quiz-card.solved .q-explain { display: block; }
-  .quiz-card .q-explain strong { color: var(--vert-accent-dark); }
+  .quiz-card .qz-opt:hover { border-color: var(--vert-accent); }
+  .quiz-card .qz-opt .qz-letter { width: 24px; height: 24px; border-radius: 7px; background: var(--surface-ghost); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 12px; flex-shrink: 0; }
+  .quiz-card .qz-opt.correct { border-color: #1d8a3a; background: #ecfbf0; }
+  .quiz-card .qz-opt.correct .qz-letter { background: #1d8a3a; color: white; }
+  .quiz-card .qz-opt.wrong { border-color: #d24545; background: #fdeeee; }
+  .quiz-card .qz-opt.wrong .qz-letter { background: #d24545; color: white; }
+  .quiz-card .qz-opt:disabled { cursor: default; }
+  .quiz-card .qz-explain { font-size: 12.5px; line-height: 1.5; color: var(--grey-90); background: var(--surface-ghost); border-radius: 12px; padding: 11px 12px; margin-top: 4px; }
+  .quiz-card .qz-explain b { color: var(--vert-accent-dark); }
 
   /* Flashcard */
-  .flashcard {
-    background: white;
-    border: 1px solid var(--grey-40);
-    border-radius: 22px;
-    margin-bottom: 14px;
-    perspective: 1000px;
-    cursor: pointer;
-    min-height: 180px;
-    position: relative;
-  }
-  .flashcard-inner {
-    position: relative;
-    width: 100%;
-    min-height: 180px;
-    transition: transform 0.5s;
-    transform-style: preserve-3d;
-  }
-  .flashcard.flipped .flashcard-inner { transform: rotateY(180deg); }
-  .flashcard-face {
-    position: absolute; inset: 0;
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-    padding: 22px;
-    display: flex; flex-direction: column; justify-content: center;
-    border-radius: 22px;
-  }
-  .flashcard-front {
-    background: white;
-  }
-  .flashcard-back {
-    background: var(--surface-ghost);
-    transform: rotateY(180deg);
-  }
-  .flashcard .fc-tap {
-    position: absolute; bottom: 12px; right: 16px;
-    font-size: 11px; color: var(--grey-60); font-weight: 600;
-  }
-  .flashcard .fc-q {
-    font-size: 16px; font-weight: 700; color: var(--grey-100);
-    line-height: 1.35; margin-bottom: 8px;
-  }
-  .flashcard .fc-tag {
-    display: inline-flex;
-    padding: 3px 10px;
-    background: var(--vert-accent-light);
-    color: var(--vert-accent-dark);
-    border-radius: var(--radius-pill);
-    font-size: 10px; font-weight: 700;
-    letter-spacing: 0.3px; text-transform: uppercase;
-    margin-bottom: 8px;
-    align-self: flex-start;
-  }
-  .flashcard .fc-a {
-    font-size: 18px; font-weight: 800; color: var(--grey-100);
-    line-height: 1.3; margin-bottom: 6px;
-  }
-  .flashcard .fc-eg {
-    font-size: 12px; color: var(--icon-medium); font-weight: 500; line-height: 1.4;
-  }
+  .flash-card { background: linear-gradient(135deg, #f3f0ff 0%, var(--surface-ghost) 100%); border-color: var(--primary-20); }
+  .flash-card .fl-tag { font-size: 10.5px; font-weight: 800; letter-spacing: 0.4px; text-transform: uppercase; color: var(--vert-accent); }
+  .flash-card .fl-q { font-size: 16px; font-weight: 800; color: var(--grey-100); line-height: 1.3; margin: 7px 0 10px; }
+  .flash-card .fl-reveal { width: 100%; border: 1px dashed var(--vert-accent); background: transparent; color: var(--vert-accent); border-radius: 12px; padding: 11px; font-family: var(--font); font-size: 13px; font-weight: 800; cursor: pointer; }
+  .flash-card .fl-a { display: none; }
+  .flash-card.open .fl-a { display: block; }
+  .flash-card.open .fl-reveal { display: none; }
+  .flash-card .fl-a-label { font-size: 11px; font-weight: 800; color: var(--text-low); text-transform: uppercase; letter-spacing: 0.3px; }
+  .flash-card .fl-a-text { font-size: 17px; font-weight: 900; color: var(--vert-accent-dark); margin: 4px 0 8px; line-height: 1.25; }
+  .flash-card .fl-eg { font-size: 12.5px; color: var(--grey-90); line-height: 1.45; }
 
-  /* Concept card */
-  .concept-card {
-    background: white;
-    border: 1px solid var(--grey-40);
-    border-radius: 22px;
-    padding: 18px;
-    margin-bottom: 14px;
-  }
-  .concept-card .cc-tag {
-    display: inline-flex;
-    padding: 4px 10px;
-    background: var(--vert-accent-light);
-    color: var(--vert-accent-dark);
-    border-radius: var(--radius-pill);
-    font-size: 10px; font-weight: 700;
-    letter-spacing: 0.3px; text-transform: uppercase;
-    margin-bottom: 10px;
-  }
-  .concept-card .cc-title {
-    font-size: 18px; font-weight: 800; color: var(--grey-100);
-    margin-bottom: 8px;
-  }
-  .concept-card .cc-desc {
-    font-size: 13px; line-height: 1.5; color: var(--grey-80);
-    margin-bottom: 12px;
-  }
-  .concept-card .cc-diagram {
-    background: var(--vert-accent-light);
-    border-radius: 12px;
-    padding: 14px;
-    margin-bottom: 10px;
-    font-size: 12px;
-    color: var(--vert-accent-dark);
-    line-height: 1.5;
-  }
-  .concept-card .cc-actions {
-    display: flex; gap: 8px;
-  }
-  .concept-card .cc-btn {
-    padding: 8px 14px;
-    border-radius: var(--radius-pill);
-    border: 1.5px solid var(--vert-accent);
-    color: var(--vert-accent-dark);
-    background: white;
-    font-size: 12px; font-weight: 700;
-    cursor: pointer;
-    font-family: var(--font);
-    display: flex; align-items: center; gap: 6px;
-  }
-  .concept-card .cc-btn:hover { background: var(--vert-accent-light); }
-  .concept-card .cc-btn.primary {
-    background: var(--vert-accent); color: white;
-  }
+  /* Carousel dots */
+  .carousel-dots { display: flex; gap: 6px; justify-content: center; margin: 4px 0 8px; }
 
-  /* Floating "ask doubt" button */
-  .ask-doubt {
-    position: absolute;
-    right: 16px; bottom: 96px;
-    width: 52px; height: 52px;
-    border-radius: 50%;
-    background: var(--vert-accent);
-    color: white;
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(247,171,32,0.4);
-    z-index: 5;
-    border: none;
-    transition: transform 0.15s;
+  /* In-chat option buttons */
+  .opt-stack { align-self: stretch; display: flex; flex-direction: column; gap: 9px; margin: 6px 0 8px; }
+  .opt-btn {
+    border: 1px solid var(--stroke-subtle); background: white;
+    border-radius: 14px; padding: 13px 14px; font-family: var(--font);
+    font-size: 14px; font-weight: 700; color: var(--text-high);
+    cursor: pointer; display: flex; align-items: center; gap: 11px; text-align: left; transition: all 0.15s;
   }
-  .ask-doubt:hover { transform: scale(1.06); }
+  .opt-btn:hover { border-color: var(--vert-accent); }
+  .opt-btn .ob-ic { flex-shrink: 0; width: 32px; height: 32px; border-radius: 9px; background: var(--vert-accent-light); color: var(--vert-accent); display: flex; align-items: center; justify-content: center; font-size: 17px; }
+  .opt-btn .ob-t { display: flex; flex-direction: column; }
+  .opt-btn .ob-sub { font-size: 11.5px; font-weight: 500; color: var(--text-low); margin-top: 1px; }
 
-  /* ============= ZERO-STATE styles (govt-exam) ============= */
-  .zero-exams-table {
-    display: flex; flex-direction: column; gap: 6px;
-    padding: 0 var(--space-4);
+  /* Toast */
+  .toast {
+    position: fixed; left: 50%; bottom: 96px; transform: translateX(-50%) translateY(10px);
+    background: var(--grey-100); color: white; font-size: 13px; font-weight: 600;
+    padding: 10px 16px; border-radius: var(--radius-pill); opacity: 0; pointer-events: none;
+    transition: all 0.25s; z-index: 200; white-space: nowrap; max-width: 90%;
   }
-  .zero-exam-row {
-    background: var(--surface-default);
-    border: 1px solid var(--stroke-subtle);
-    border-radius: 12px;
-    padding: 12px 14px;
-  }
-  .zero-exam-row .zer-name {
-    font-size: 13px; font-weight: 800; color: var(--surface-bold);
-    margin-bottom: 4px;
-  }
-  .zero-exam-row .zer-detail {
-    font-size: 12px; color: var(--text-low); font-weight: 500; line-height: 1.4;
-  }
-  .zero-cta-card {
-    margin: var(--space-4);
-    display: flex; align-items: center; gap: 12px;
-    padding: 14px 16px;
-    border-radius: 18px;
-    background: linear-gradient(135deg, var(--primary-20) 0%, var(--surface-ghost-icon) 100%);
-    border: 1px solid var(--stroke-subtle);
-    cursor: pointer;
-    transition: transform 0.15s, box-shadow 0.15s;
-  }
-  .zero-cta-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
-  .zero-cta-card .zcc-icon {
-    width: 40px; height: 40px; border-radius: 12px;
-    background: var(--surface-bold);
-    color: white;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-  }
-  .zero-cta-card .zcc-text { flex: 1; min-width: 0; }
-  .zero-cta-card .zcc-title {
-    font-size: 14px; font-weight: 800; color: var(--text-high);
-    margin-bottom: 2px;
-  }
-  .zero-cta-card .zcc-sub {
-    font-size: 12px; color: var(--text-low); font-weight: 500; line-height: 1.4;
-  }
-  .zero-cta-card .zcc-arrow {
-    color: var(--surface-bold);
-    flex-shrink: 0;
-  }
-
-  @media (min-width: 600px) {
-    .phone-frame { box-shadow: var(--shadow-lg); border-radius: 32px; margin-top: 24px; height: calc(100vh - 48px); }
-    body { background: var(--surface-moderate); }
-  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 </style>
 </head>
 <body>
@@ -716,115 +204,46 @@
   <div class="view active" id="view-home">
     <div class="top-bar">
       <button class="icon-btn" onclick="window.location.href='index.html'" aria-label="Back">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-          <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-        </svg>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
       </button>
       <div class="title-area">
-        <div class="t1">Govt Exam · Discovery + Prep</div>
-        <div class="t2">Find your exam · Prep on your commute</div>
+        <div class="t1">Government Exams</div>
+        <div class="t2">Find the right exam · Prepare for it</div>
       </div>
-      
     </div>
 
     <div class="view-body">
-      <!-- Life-first prompt — heading-only. The duplicate text input was
-           removed; the bottom dock is the only entry point now. -->
-      <div class="life-first-card life-first-card--heading-only" onclick="startDiscovery()">
-        <div class="lf-tag">Tell me what you want</div>
-        <div class="lf-q">I'll find the exam that fits your life.</div>
-      </div>
+      <!-- Career-counsellor entry -->
+      <button class="counsel-card" onclick="openCounsel()">
+        <span class="cc-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.4"/><path d="M5.5 20a6.5 6.5 0 0 1 13 0"/></svg></span>
+        <span class="cc-text">
+          <span class="cc-title">Not sure which exam?</span>
+          <span class="cc-sub">I'll be your career counsellor — answer a few questions and I'll find the exams that fit your goals.</span>
+        </span>
+        <span class="cc-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span>
+      </button>
 
-      <!-- Path-first cards -->
-      <div class="section-h">Or pick a path</div>
-      <div class="paths-row">
-        <div class="path-card path-banking" onclick="startPath('banking')">
-          <div class="pc-emoji"><span data-icon="document" data-size="20"></span></div>
-          <div>
-            <div class="pc-name">Banking</div>
-            <div class="pc-meta">IBPS · SBI · RBI</div>
-          </div>
-        </div>
-        <div class="path-card path-admin" onclick="startPath('admin')">
-          <div class="pc-emoji"><span data-icon="list" data-size="20"></span></div>
-          <div>
-            <div class="pc-name">Admin</div>
-            <div class="pc-meta">SSC CGL · CHSL · UPSC</div>
-          </div>
-        </div>
-        <div class="path-card path-tech" onclick="startPath('tech')">
-          <div class="pc-emoji"><span data-icon="brain" data-size="20"></span></div>
-          <div>
-            <div class="pc-name">Technical</div>
-            <div class="pc-meta">SSC JE · GATE · DRDO</div>
-          </div>
-        </div>
-        <div class="path-card path-state" onclick="startPath('state')">
-          <div class="pc-emoji"><span data-icon="document" data-size="20"></span></div>
-          <div>
-            <div class="pc-name">State-level</div>
-            <div class="pc-meta">BPSC · UPPSC · MPSC</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Zero-state: no exam tracked yet. Replace with a quick comparison
-           table of the most-asked exams so the user can scan the breadth. -->
-      <div class="section-h">Most-asked exams (for reference)</div>
-      <div class="zero-exams-table">
-        <div class="zero-exam-row">
-          <div class="zer-name">IBPS PO</div>
-          <div class="zer-detail">Banking · ₹52-67K start · 12-18 mo prep · 1-in-1500 selection</div>
-        </div>
-        <div class="zero-exam-row">
-          <div class="zer-name">SSC CGL</div>
-          <div class="zer-detail">Admin · ₹35-50K + DA · 12-18 mo prep · Posting anywhere in India</div>
-        </div>
-        <div class="zero-exam-row">
-          <div class="zer-name">UPSC CSE</div>
-          <div class="zer-detail">Civil services · ₹56K-2.5L · 2-4 yr prep · IAS / IPS / IFS</div>
-        </div>
-        <div class="zero-exam-row">
-          <div class="zer-name">RBI Grade B</div>
-          <div class="zer-detail">Highest-paid banking · ₹78-90K start · 18-24 mo prep · ~0.1% selection</div>
-        </div>
-      </div>
-
-      <!-- Zero-state CTA — discovery is the right first action -->
-      <div class="zero-cta-card" onclick="startDiscovery()">
-        <div class="zcc-icon"><span data-icon="conversation" data-size="20"></span></div>
-        <div class="zcc-text">
-          <div class="zcc-title">Not sure which one fits you?</div>
-          <div class="zcc-sub">2-minute chat with me. I'll match your goals (money, stability, location) to the right exam.</div>
-        </div>
-        <span class="zcc-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span>
-      </div>
+      <!-- Category rows -->
+      <div id="cat_host"><!-- renderHome() --></div>
     </div>
 
-    <!-- Ask anything dock with suggested chips — second entry point at the bottom -->
+    <!-- Persistent input dock -->
     <div class="gc-input-dock">
-      <div class="dock-chips" role="list">
-        <button class="dock-chip" onclick="startDiscovery()">Help me pick an exam</button>
-        <button class="dock-chip" onclick="startPath('banking')">Banking (IBPS / SBI)</button>
-        <button class="dock-chip" onclick="startPath('admin')">SSC / UPSC</button>
-        <button class="dock-chip" onclick="startPath('state')">State-level (BPSC / UPPSC)</button>
-        <button class="dock-chip" onclick="startDailyPrep()">Today's commute prep</button>
-      </div>
       <div class="gc-input-wrap">
         <div class="gc-input-text">
-          <input type="text" placeholder="Tell me what you want — exam, eligibility, salary…" readonly>
+          <input type="text" placeholder="Which exam should I take? Ask me…" readonly onclick="openCounsel()">
         </div>
         <div class="gc-input-actions">
           <div class="gc-input-left">
-            <button class="gc-input-icon-btn" aria-label="Add" onclick="startDiscovery()">
+            <button class="gc-input-icon-btn" aria-label="Counsellor" onclick="openCounsel()">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20 11h-7V4a1 1 0 00-2 0v7H4a1 1 0 000 2h7v7a1 1 0 002 0v-7h7a1 1 0 000-2z"/></svg>
             </button>
           </div>
           <div class="gc-input-right">
-            <button class="gc-input-icon-btn" aria-label="Mic" onclick="startDiscovery()">
+            <button class="gc-input-icon-btn" aria-label="Voice" onclick="openCounsel()">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 15a3 3 0 003-3V5a3 3 0 00-6 0v7a3 3 0 003 3zm6-5a1 1 0 00-1 1v1a5 5 0 11-10 0v-1a1 1 0 10-2 0v1a7 7 0 1014 0v-1a1 1 0 00-1-1zm-3 10H9a1 1 0 000 2h6a1 1 0 000-2z"/></svg>
             </button>
-            <button class="gc-input-speak-btn" onclick="startDiscovery()">
+            <button class="gc-input-speak-btn" onclick="openCounsel()">
               <svg viewBox="0 0 24 24"><path d="M12 15a3 3 0 003-3V5a3 3 0 00-6 0v7a3 3 0 003 3zm6-5a1 1 0 00-1 1v1a5 5 0 11-10 0v-1a1 1 0 10-2 0v1a7 7 0 1014 0v-1a1 1 0 00-1-1z"/></svg>
               <span>Speak</span>
             </button>
@@ -834,40 +253,36 @@
     </div>
   </div>
 
-  <!-- ========================== DISCOVERY CHAT ========================== -->
-  <div class="view" id="view-discovery">
+  <!-- ========================== COUNSELLOR (in-chat) ========================== -->
+  <div class="view" id="view-counsel">
     <div class="top-bar">
       <button class="icon-btn" onclick="showView('home')" aria-label="Back">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-          <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-        </svg>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
       </button>
       <div class="title-area">
-        <div class="t1">Discover your exam</div>
-        <div class="t2">Life-first counselling · 5 min</div>
+        <div class="t1">Exam counsellor</div>
+        <div class="t2">Find the exam for your goals</div>
       </div>
     </div>
+    <div class="guided-chat" id="counselChat"></div>
 
-    <!-- Guided chat — chip-driven canned demo -->
-    <div class="guided-chat" id="discChat"></div>
-
-    <!-- OG-style chat input dock — always visible (canned demo) -->
+    <!-- Persistent input dock -->
     <div class="gc-input-dock">
       <div class="gc-input-wrap">
         <div class="gc-input-text">
-          <input type="text" placeholder="Ask about any exam…" readonly>
+          <input type="text" placeholder="Reply or ask about any exam…" readonly onclick="counselAsk()">
         </div>
         <div class="gc-input-actions">
           <div class="gc-input-left">
-            <button class="gc-input-icon-btn" aria-label="Add" onclick="startDiscovery()">
+            <button class="gc-input-icon-btn" aria-label="Attach" onclick="counselAsk()">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20 11h-7V4a1 1 0 00-2 0v7H4a1 1 0 000 2h7v7a1 1 0 002 0v-7h7a1 1 0 000-2z"/></svg>
             </button>
           </div>
           <div class="gc-input-right">
-            <button class="gc-input-icon-btn" aria-label="Mic" onclick="if(discVoice){try{discVoice.replayLast();}catch(e){}}">
+            <button class="gc-input-icon-btn" aria-label="Voice" onclick="counselAsk()">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 15a3 3 0 003-3V5a3 3 0 00-6 0v7a3 3 0 003 3zm6-5a1 1 0 00-1 1v1a5 5 0 11-10 0v-1a1 1 0 10-2 0v1a7 7 0 1014 0v-1a1 1 0 00-1-1zm-3 10H9a1 1 0 000 2h6a1 1 0 000-2z"/></svg>
             </button>
-            <button class="gc-input-speak-btn" onclick="if(discVoice){try{discVoice.replayLast();}catch(e){}}">
+            <button class="gc-input-speak-btn" onclick="counselAsk()">
               <svg viewBox="0 0 24 24"><path d="M12 15a3 3 0 003-3V5a3 3 0 00-6 0v7a3 3 0 003 3zm6-5a1 1 0 00-1 1v1a5 5 0 11-10 0v-1a1 1 0 10-2 0v1a7 7 0 1014 0v-1a1 1 0 00-1-1z"/></svg>
               <span>Speak</span>
             </button>
@@ -877,949 +292,564 @@
     </div>
   </div>
 
-  <!-- view-daily removed — daily prep now runs inline in the discovery
-       chat via startDailyPrep(). -->
+  <!-- ========================== EXAM PREP (in-chat) ========================== -->
+  <div class="view" id="view-exam">
+    <div class="top-bar">
+      <button class="icon-btn" onclick="showView('home')" aria-label="Back">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+      </button>
+      <div class="title-area">
+        <div class="t1" id="exam_title">Exam</div>
+        <div class="t2" id="exam_sub">Govt Exam</div>
+      </div>
+    </div>
+    <div class="guided-chat" id="examChat"></div>
 
+    <!-- Persistent input dock -->
+    <div class="gc-input-dock">
+      <div class="gc-input-wrap">
+        <div class="gc-input-text">
+          <input type="text" placeholder="Ask a doubt, or pick a topic to drill…" readonly onclick="examAsk()">
+        </div>
+        <div class="gc-input-actions">
+          <div class="gc-input-left">
+            <button class="gc-input-icon-btn" aria-label="Attach" onclick="examAsk()">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20 11h-7V4a1 1 0 00-2 0v7H4a1 1 0 000 2h7v7a1 1 0 002 0v-7h7a1 1 0 000-2z"/></svg>
+            </button>
+          </div>
+          <div class="gc-input-right">
+            <button class="gc-input-icon-btn" aria-label="Voice" onclick="examAsk()">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 15a3 3 0 003-3V5a3 3 0 00-6 0v7a3 3 0 003 3zm6-5a1 1 0 00-1 1v1a5 5 0 11-10 0v-1a1 1 0 10-2 0v1a7 7 0 1014 0v-1a1 1 0 00-1-1zm-3 10H9a1 1 0 000 2h6a1 1 0 000-2z"/></svg>
+            </button>
+            <button class="gc-input-speak-btn" onclick="examAsk()">
+              <svg viewBox="0 0 24 24"><path d="M12 15a3 3 0 003-3V5a3 3 0 00-6 0v7a3 3 0 003 3zm6-5a1 1 0 00-1 1v1a5 5 0 11-10 0v-1a1 1 0 10-2 0v1a7 7 0 1014 0v-1a1 1 0 00-1-1z"/></svg>
+              <span>Speak</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
 </div>
 
-<script>window.AUDIO_BASE = "../assets/audio/";</script>
 <script src="../shared/icons.js"></script>
-<script src="../shared/personas.js"></script>
-<script src="../shared/tts-cache.js"></script>
-<script src="../shared/jbiq-voice.js"></script>
-<script src="../shared/multimodal.js"></script>
-<script src="../shared/guided-chat.js"></script>
+<script src="../shared/multimodal.js?v=2"></script>
+<script src="../shared/guided-chat.js?v=2"></script>
 <script>
+/* =========================================================================
+ * VIEW SWITCHING
+ * ========================================================================= */
 function showView(name) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.getElementById('view-' + name).classList.add('active');
-  if (name !== 'discovery' && discVoice) discVoice.stop();
-  const body = document.querySelector('#view-' + name + ' .view-body, #view-' + name + ' .chat-area');
+  const body = document.querySelector('#view-' + name + ' .view-body');
   if (body) body.scrollTop = 0;
 }
 
 /* =========================================================================
- * DISCOVERY CHAT — life-first scripted flow
+ * EXAM TAXONOMY — categories, each with a row of exams.
  * ========================================================================= */
-const DISCOVERY_FLOW = [
-  {
-    // Short, blank-slate opener. The previous Hindi-mixed paragraph dragged.
-    ai: "Tell me what you want. What matters most — money, stability, staying close to home, or prestige?",
-    speaker: 'JBIQ',
-    chips: [
-      { text: "Stability + good salary",  key: 'stability_salary' },
-      { text: "Money is the priority",    key: 'money' },
-      { text: "Posting close to home",    key: 'near_home' },
-      { text: "Power & prestige",         key: 'prestige' },
-    ],
-  },
+const EXAM_CATS = [
+  { id: 'banking', name: 'Banking & Insurance', exams: [
+    { id: 'ibps-po',    name: 'IBPS PO',      meta: 'Bank Probationary Officer', emoji: '🏦' },
+    { id: 'ibps-clerk', name: 'IBPS Clerk',   meta: 'Bank Clerk',                emoji: '🏦' },
+    { id: 'sbi-po',     name: 'SBI PO',       meta: 'SBI Probationary Officer',  emoji: '🏦' },
+    { id: 'sbi-clerk',  name: 'SBI Clerk',    meta: 'SBI Junior Associate',      emoji: '🏦' },
+    { id: 'rbi-grade-b',name: 'RBI Grade B',  meta: 'RBI Officer',               emoji: '🏛️' },
+    { id: 'nabard',     name: 'NABARD Grade A',meta: 'Rural Development Officer', emoji: '🌾' },
+  ] },
+  { id: 'ssc', name: 'SSC — Staff Selection', exams: [
+    { id: 'ssc-cgl',   name: 'SSC CGL',          meta: 'Combined Graduate Level',  emoji: '📋' },
+    { id: 'ssc-chsl',  name: 'SSC CHSL',         meta: 'Higher Secondary (10+2)',  emoji: '📋' },
+    { id: 'ssc-mts',   name: 'SSC MTS',          meta: 'Multi-Tasking Staff',      emoji: '📋' },
+    { id: 'ssc-gd',    name: 'SSC GD',           meta: 'Constable (GD)',           emoji: '🛡️' },
+    { id: 'ssc-steno', name: 'SSC Stenographer', meta: 'Steno Grade C & D',        emoji: '⌨️' },
+  ] },
+  { id: 'railways', name: 'Railways (RRB)', exams: [
+    { id: 'rrb-ntpc',   name: 'RRB NTPC',    meta: 'Non-Technical Popular',  emoji: '🚆' },
+    { id: 'rrb-groupd', name: 'RRB Group D', meta: 'Level-1 posts',          emoji: '🚆' },
+    { id: 'rrb-alp',    name: 'RRB ALP',     meta: 'Assistant Loco Pilot',   emoji: '🚆' },
+    { id: 'rrb-je',     name: 'RRB JE',      meta: 'Junior Engineer',        emoji: '🛠️' },
+  ] },
+  { id: 'civil', name: 'Civil Services', exams: [
+    { id: 'upsc-cse', name: 'UPSC CSE', meta: 'IAS · IPS · IFS',     emoji: '🏛️' },
+    { id: 'bpsc',     name: 'BPSC',     meta: 'Bihar PSC',           emoji: '🏛️' },
+    { id: 'uppsc',    name: 'UPPSC',    meta: 'Uttar Pradesh PSC',   emoji: '🏛️' },
+    { id: 'mpsc',     name: 'MPSC',     meta: 'Maharashtra PSC',     emoji: '🏛️' },
+  ] },
+  { id: 'defence', name: 'Defence & Police', exams: [
+    { id: 'nda',   name: 'NDA',     meta: 'National Defence Academy', emoji: '🎖️' },
+    { id: 'cds',   name: 'CDS',     meta: 'Combined Defence Services',emoji: '🎖️' },
+    { id: 'afcat', name: 'AFCAT',   meta: 'Air Force (Flying/Ground)',emoji: '✈️' },
+    { id: 'capf',  name: 'CAPF AC', meta: 'Assistant Commandant',     emoji: '🛡️' },
+  ] },
+  { id: 'teaching', name: 'Teaching', exams: [
+    { id: 'ctet',    name: 'CTET',    meta: 'Central Teacher Eligibility', emoji: '📚' },
+    { id: 'ugc-net', name: 'UGC NET', meta: 'Lectureship / JRF',           emoji: '📚' },
+    { id: 'kvs',     name: 'KVS',     meta: 'Kendriya Vidyalaya Teacher',  emoji: '📚' },
+  ] },
+  { id: 'technical', name: 'Technical / Engineering', exams: [
+    { id: 'gate',     name: 'GATE',          meta: 'Grad Aptitude Test (Eng)',  emoji: '⚙️' },
+    { id: 'ssc-je',   name: 'SSC JE',        meta: 'Junior Engineer',           emoji: '⚙️' },
+    { id: 'isro',     name: 'ISRO Scientist',meta: 'Scientist/Engineer SC',     emoji: '🛰️' },
+    { id: 'drdo',     name: 'DRDO CEPTAM',   meta: 'Scientist B / Tech',        emoji: '🛰️' },
+    { id: 'state-je', name: 'State JE',       meta: 'State Junior Engineer',     emoji: '⚙️' },
+  ] },
 ];
 
-const DISCOVERY_BRANCHES = {
-  stability_salary: {
-    ai: "Got it — stability + good money. Banking is your strongest path. 4 main routes — let me show you, with reality-check on each.",
-    next: 'banking_paths',
-  },
-  money: {
-    ai: "If money is the priority, banking PO is your best shot — government job security plus ₹50K+ start. Want to see the options?",
-    next: 'banking_paths',
-  },
-  near_home: {
-    ai: "Posting near home is best served by state-level exams. BPSC for Bihar keeps you there. Banking also has reasonable transfer policies. Want both options?",
-    next: 'state_or_banking',
-  },
-  prestige: {
-    ai: "If prestige is what drives you — UPSC Civil Services is the peak, but it's a 3-5 year commitment with about 0.2% selection. RBI Grade B and SBI PO are the next-best, much more achievable. Which direction?",
-    next: 'upsc_or_banking',
-  },
+// Flat lookup: examId -> { exam, catId, catName }
+const EXAM_INDEX = {};
+EXAM_CATS.forEach(cat => cat.exams.forEach(e => { EXAM_INDEX[e.id] = { exam: e, catId: cat.id, catName: cat.name }; }));
+
+/* =========================================================================
+ * ELIGIBILITY — shown at the top of an exam. Specific entries for flagship
+ * exams; a per-category fallback keeps every exam meaningful.
+ * ========================================================================= */
+const CAT_ELIG = {
+  banking:  { age: '20–30 yrs', qual: 'Graduate, any stream',          attempts: 'No limit (age-bound)' },
+  ssc:      { age: '18–32 yrs (post-wise)', qual: '12th / Graduate (post-wise)', attempts: 'No limit (age-bound)' },
+  railways: { age: '18–33 yrs (post-wise)', qual: '10th / ITI / Graduate (post-wise)', attempts: 'No limit (age-bound)' },
+  civil:    { age: '21–32 yrs (+relaxations)', qual: 'Graduate, any stream',  attempts: '6 (Gen) · more for OBC/SC/ST' },
+  defence:  { age: '16.5–25 yrs (exam-wise)', qual: '12th / Graduate (exam-wise)', attempts: 'Age-bound' },
+  teaching: { age: 'Usually no upper limit', qual: 'Graduate + B.Ed / PG / NET', attempts: 'No limit' },
+  technical:{ age: '18–32 yrs (post-wise)', qual: 'Diploma / B.E. / B.Tech',  attempts: 'No limit (age-bound)' },
 };
-
-const BANKING_PATHS = {
-  ai: "Here are the 4 banking routes that fit your goal. I've marked the easiest by selection rate and the most rewarding by salary.",
-  cards: [
-    { id: 'ibps-po',   name: 'IBPS PO',          meta: '~3% selection · ₹52K-67K start · 18 mo prep typical · Posting anywhere in India' },
-    { id: 'ibps-clerk', name: 'IBPS Clerk',       meta: '~5% selection · ₹28K-32K start · 12 mo prep · Easier entry, lower salary' },
-    { id: 'sbi-po',    name: 'SBI PO',           meta: '~2% selection · ₹56K-70K start · 24 mo prep · Toughest banking exam, best brand' },
-    { id: 'rbi-grade-b', name: 'RBI Grade B',     meta: '~1% selection · ₹78K-90K start · 24 mo prep · Govt+banking peak, hard but rare' },
-  ],
+const ELIG = {
+  'ibps-po':    { age: '20–30 yrs', qual: 'Graduate, any stream', attempts: 'No limit (age-bound)', reality: '~5L apply · ~3K selected · ₹52–67K/mo · posting anywhere in India' },
+  'ibps-clerk': { age: '20–28 yrs', qual: 'Graduate, any stream', attempts: 'No limit (age-bound)', reality: '~4L apply · ~7K selected · ₹28–32K/mo · strong home-state preference' },
+  'sbi-po':     { age: '21–30 yrs', qual: 'Graduate, any stream', attempts: '4 (General)', reality: '~25L apply · ~2.5K selected · ₹56–70K/mo · biggest banking brand' },
+  'rbi-grade-b':{ age: '21–30 yrs', qual: 'Graduate (60%+)',      attempts: '6 (General)', reality: '~3L apply · ~300 selected · ₹78–90K/mo · do it after IBPS PO' },
+  'ssc-cgl':    { age: '18–32 yrs (post-wise)', qual: 'Graduate, any stream', attempts: 'No limit (age-bound)', reality: '~30L apply · ~15K posts · ₹35–55K/mo · Income Tax, Audit, Ministries' },
+  'ssc-chsl':   { age: '18–27 yrs', qual: '12th pass (10+2)', attempts: 'No limit (age-bound)', reality: 'Best 12th-pass govt entry · ₹25–35K/mo · LDC, DEO, postal' },
+  'rrb-ntpc':   { age: '18–33 yrs', qual: '12th / Graduate (post-wise)', attempts: 'No limit (age-bound)', reality: 'Lakhs apply · station master, clerk, typist · stable railway career' },
+  'upsc-cse':   { age: '21–32 yrs (+relaxations)', qual: 'Graduate, any stream', attempts: '6 (Gen) · 9 (OBC) · unlimited (SC/ST)', reality: '~10L apply · ~1K selected · the peak — plan a banking fallback too' },
+  'nda':        { age: '16.5–19.5 yrs', qual: '12th (PCM for Air/Navy)', attempts: 'Age-bound', reality: 'Unmarried · 12th-level entry to Army/Navy/Air Force + SSB interview' },
+  'ctet':       { age: 'No upper limit', qual: '12th + D.El.Ed OR Graduate + B.Ed', attempts: 'No limit', reality: 'Eligibility test (lifetime valid) for teaching in central schools' },
+  'gate':       { age: 'No age limit', qual: 'B.E./B.Tech or final-year', attempts: 'No limit', reality: 'Gateway to PSU jobs (IOCL, NTPC…) + M.Tech admissions' },
 };
-
-const REALITY_CHECKS = {
-  'ibps-po': {
-    ai: "Real talk on IBPS PO — your profile is exactly the typical aspirant. Here's the honest picture:",
-    bullets: [
-      "~5L apply each year, ~3K selected (one in 1,500)",
-      "Prep time: 12-18 months if 4-5 hrs/day, 24+ months at slower pace",
-      "Cost: ₹6K-15K mock test packages + optional ₹40-80K coaching",
-      "Salary at posting: ₹52K-67K incl. allowances",
-      "Posting: anywhere in India (rural branches first 2 years typical)",
-    ],
-    end: "Want me to add IBPS PO to your tracked list and start a 12-min daily prep plan from tomorrow?",
-  },
-  'ibps-clerk': {
-    ai: "IBPS Clerk — easier entry, smaller paycheck. Honest picture:",
-    bullets: [
-      "~4L apply each year, ~7K selected (~1.7%)",
-      "Prep time: 6-12 months at moderate pace",
-      "Cost: ₹4K-10K mock packages, less coaching needed than PO",
-      "Salary at posting: ₹28K-32K incl. allowances",
-      "Posting: home state preference is high — better for staying close to home",
-    ],
-    end: "Add IBPS Clerk to your tracked list?",
-  },
-  'sbi-po': {
-    ai: "SBI PO — toughest exam, biggest brand. Honest picture:",
-    bullets: [
-      "~25L apply, ~2.5K selected (~0.1% — fiercest)",
-      "Prep time: 18-24 months at 5+ hrs/day",
-      "Cost: ₹15K-30K mock packages + ₹60-120K coaching for many",
-      "Salary at posting: ₹56K-70K + bigger bonuses than IBPS",
-      "Brand: SBI on resume opens doors elsewhere too",
-    ],
-    end: "Add SBI PO to your tracked list?",
-  },
-  'rbi-grade-b': {
-    ai: "RBI Grade B — highest-paid banking exam, near-zero selection. Honest picture:",
-    bullets: [
-      "~3L apply, ~300 selected (~0.1%)",
-      "Prep time: 18-24+ months — needs Phase 2 specialised papers",
-      "Cost: ₹15K-40K mocks + ₹80-150K coaching is common",
-      "Salary at posting: ₹78K-90K + Mumbai/Delhi posting + RBI prestige",
-      "Realistic: do this AFTER IBPS PO, not as your first exam",
-    ],
-    end: "Track RBI Grade B as a future goal alongside IBPS PO?",
-  },
-  'bpsc': {
-    ai: "BPSC — Bihar's flagship state exam. Stays in Bihar, decent pay.",
-    bullets: [
-      "~5L apply, ~1.5K selected (~0.3%)",
-      "Prep time: 15-24 months",
-      "Cost: ₹5K-15K mock packages + optional coaching",
-      "Salary at posting: ₹56K-1.7L (depends on cadre)",
-      "Posting: Bihar only — close to home, away from inter-state cab life",
-    ],
-    end: "Add BPSC to your tracked list?",
-  },
-  'upsc-cse': {
-    ai: "UPSC Civil Services — the peak. Brutal but everyone has heard of it.",
-    bullets: [
-      "~10L apply, ~1K selected (~0.1%) — toughest in the country",
-      "Prep time: 2-4 years typical · 6-8 hrs/day for 3 attempts is common",
-      "Cost: ₹50K-200K coaching + 2-3 years of opportunity cost",
-      "Salary at posting: ₹56K-2.5L (rises fast with promotions)",
-      "Reality: 1 in 3 UPSC aspirants ends up in IBPS PO/SBI PO anyway",
-    ],
-    end: "Track both — UPSC as a stretch and IBPS PO as a fallback?",
-  },
-  'uppsc': {
-    ai: "UPPSC — UP's flagship state exam. Stays in UP, decent pay.",
-    bullets: [
-      "~7L apply, ~700 selected (~0.1%)",
-      "Prep time: 18-24 months · GS-heavy syllabus",
-      "Cost: ₹6K-15K mock packages + optional coaching",
-      "Salary at posting: ₹56K-1.7L (depends on cadre)",
-      "Posting: UP only — close to home if from there",
-    ],
-    end: "Add UPPSC to your tracked list?",
-  },
-  'mpsc': {
-    ai: "MPSC — Maharashtra's flagship state exam. Marathi-friendly, Maharashtra-only.",
-    bullets: [
-      "~3L apply, ~500 selected (~0.15%)",
-      "Prep time: 18-24 months",
-      "Cost: ₹5K-12K mock packages + optional coaching",
-      "Salary at posting: ₹56K-1.7L",
-      "Posting: Maharashtra only",
-    ],
-    end: "Add MPSC to your tracked list?",
-  },
-  'ssc-cgl': {
-    ai: "SSC CGL — central govt admin jobs. Big seat count, decent pay.",
-    bullets: [
-      "~30L apply, ~5-30K selected per cycle (varies)",
-      "Prep time: 12-18 months at 4-5 hrs/day",
-      "Cost: ₹4K-12K mock packages, coaching optional",
-      "Salary at posting: ₹35K-50K + DA",
-      "Posting: anywhere in India · Cadre depends on rank",
-    ],
-    end: "Add SSC CGL to your tracked list?",
-  },
-  'ssc-chsl': {
-    ai: "SSC CHSL — easier entry-level exam. 12th-pass eligible. Smaller paycheck.",
-    bullets: [
-      "~14L apply, ~4-9K selected",
-      "Prep time: 9-12 months",
-      "Cost: ₹3K-8K mock packages",
-      "Salary at posting: ₹28K-35K + DA",
-      "Posting: anywhere in India",
-    ],
-    end: "Add SSC CHSL to your tracked list?",
-  },
-  'ssc-je': {
-    ai: "SSC JE — Junior Engineer (Civil/Electrical/Mechanical). Engg degree needed.",
-    bullets: [
-      "~3L apply, ~1K selected (~0.3%)",
-      "Prep time: 12-18 months · technical paper-heavy",
-      "Cost: ₹6K-15K mock packages + technical books",
-      "Salary at posting: ₹35K-45K + DA",
-      "Posting: anywhere in India",
-    ],
-    end: "Add SSC JE to your tracked list?",
-  },
-  'gate-psu': {
-    ai: "GATE → PSU — Engg → GATE score → top PSUs (IOCL/NTPC/BHEL/ONGC). High pay.",
-    bullets: [
-      "GATE: ~10L apply, ~15% qualify · Each PSU shortlists from there",
-      "Prep time: 18-24 months · core branch + aptitude",
-      "Cost: ₹10K-30K coaching + technical materials",
-      "Salary at posting: ₹60K-90K + perks (housing, medical)",
-      "Posting: depends on PSU · usually metro or industrial belts",
-    ],
-    end: "Track GATE → PSU as your goal?",
-  },
-  'drdo-rac': {
-    ai: "DRDO RAC — defence research. Engg degree required, technical-heavy.",
-    bullets: [
-      "~50K apply, ~250 selected per cycle",
-      "Prep time: 18+ months · core engineering + research aptitude",
-      "Cost: ₹8K-20K materials + coaching optional",
-      "Salary at posting: ₹56K-80K + research benefits",
-      "Posting: Hyderabad/Bangalore/Delhi research labs",
-    ],
-    end: "Add DRDO RAC to your tracked list?",
-  },
-};
-
-const STATE_PATHS = {
-  ai: "Here are the main state-level exams. BPSC is the obvious one for Bihar — UPPSC and MPSC if you're moving.",
-  cards: [
-    { id: 'bpsc',  name: 'BPSC',  meta: 'Bihar · ~1.5K seats · ₹56K-1.7L · Posting: Bihar only' },
-    { id: 'uppsc', name: 'UPPSC', meta: 'UP · ~700 seats · ₹56K-1.7L · Posting: UP only' },
-    { id: 'mpsc',  name: 'MPSC',  meta: 'Maharashtra · ~500 seats · ₹56K-1.7L · Posting: Maharashtra' },
-  ],
-};
-
-const UPSC_PATHS = {
-  ai: "UPSC has multiple service exams. CSE (Civil Services) is the famous one. If you really want this, here's the truth.",
-  cards: [
-    { id: 'upsc-cse', name: 'UPSC CSE', meta: '~1K seats · 2-4 yr prep · ₹56K-2.5L · IAS/IPS/IFS' },
-    { id: 'rbi-grade-b', name: 'RBI Grade B', meta: '~300 seats · 1.5-2 yr prep · ₹78K-90K · Banking peak' },
-    { id: 'sbi-po', name: 'SBI PO', meta: '~2.5K seats · 1.5-2 yr prep · ₹56K-70K · Best banking brand' },
-  ],
-};
-
-let discVoice = null;
-function ensureDiscVoice() {
-  if (discVoice) return discVoice;
-  discVoice = JBIQVoice.create({
-    persona: 'govt_exam_counselor',
-    onError: (e) => console.error(e),
-  });
-  return discVoice;
+function eligFor(examId) {
+  const info = EXAM_INDEX[examId];
+  const base = ELIG[examId] || CAT_ELIG[info.catId] || { age: 'Check notification', qual: 'Check notification', attempts: 'Check notification' };
+  return base;
 }
 
-let discStep = 0;
+/* =========================================================================
+ * QUESTION BANKS — reused across exams (general aptitude + awareness).
+ * ========================================================================= */
+const QUIZ_BANK = [
+  { tag: 'Quant · Simple Interest', q: "A sum of money doubles in 8 years at simple interest. What is the rate of interest per annum?",
+    options: [{l:'A',t:'8%'},{l:'B',t:'10%'},{l:'C',t:'12.5%'},{l:'D',t:'15%'}], correct: 'C',
+    explain: "<b>Money doubles ⇒ SI = Principal.</b> SI = P·R·T/100 ⇒ P = P·R·8/100 ⇒ R = 100/8 = <b>12.5%</b>." },
+  { tag: 'Reasoning · Syllogism', q: "All flowers are leaves. Some leaves are roots. Which conclusion is definitely true?",
+    options: [{l:'A',t:'Some flowers are roots'},{l:'B',t:'No flower is a root'},{l:'C',t:'Some leaves are flowers'},{l:'D',t:"Can't be determined"}], correct: 'C',
+    explain: "<b>'All A is B' ⇒ 'Some B is A'</b> is always true. So 'Some leaves are flowers' is definitely true." },
+  { tag: 'GA · Banking awareness', q: "What is the current Repo Rate set by the RBI (as of Jan 2026)?",
+    options: [{l:'A',t:'5.50%'},{l:'B',t:'6.00%'},{l:'C',t:'6.25%'},{l:'D',t:'6.50%'}], correct: 'A',
+    explain: "<b>Repo rate is 5.50%</b> — cut from 6.00% in the Dec 2025 MPC meeting. Current-rate questions appear nearly every year." },
+  { tag: 'Quant · Percentages', q: "If a number is increased by 20% and then decreased by 20%, the net change is:",
+    options: [{l:'A',t:'No change'},{l:'B',t:'4% decrease'},{l:'C',t:'4% increase'},{l:'D',t:'2% decrease'}], correct: 'B',
+    explain: "<b>Net % = +20 − 20 − (20·20/100) = −4%.</b> Successive change always gives a small net decrease here." },
+  { tag: 'English · Idiom', q: "'To beat around the bush' means:",
+    options: [{l:'A',t:'To work very hard'},{l:'B',t:'To avoid the main point'},{l:'C',t:'To win easily'},{l:'D',t:'To be confused'}], correct: 'B',
+    explain: "<b>'Beat around the bush'</b> = to avoid saying something directly / delay the main point." },
+  { tag: 'Reasoning · Coding', q: "If MOTHER is coded as NPUIFS, how is FATHER coded?",
+    options: [{l:'A',t:'GBUIFS'},{l:'B',t:'GBVIFS'},{l:'C',t:'GAUIFS'},{l:'D',t:'HBUIFS'}], correct: 'A',
+    explain: "<b>Each letter shifts +1.</b> F→G, A→B, T→U, H→I, E→F, R→S ⇒ <b>GBUIFS</b>." },
+  { tag: 'GA · Static', q: "Who is the current Governor of the RBI?",
+    options: [{l:'A',t:'Shaktikanta Das'},{l:'B',t:'Sanjay Malhotra'},{l:'C',t:'Urjit Patel'},{l:'D',t:'Raghuram Rajan'}], correct: 'B',
+    explain: "<b>Sanjay Malhotra</b> is the 26th RBI Governor (took office Dec 2024)." },
+  { tag: 'Quant · Averages', q: "The average of 5 consecutive numbers is 30. What is the largest number?",
+    options: [{l:'A',t:'30'},{l:'B',t:'32'},{l:'C',t:'34'},{l:'D',t:'28'}], correct: 'B',
+    explain: "<b>Average of consecutive numbers = middle number = 30.</b> So they are 28,29,30,31,32 ⇒ largest = <b>32</b>." },
+];
+const FLASH_BANK = [
+  { tag: 'Banking · Repo Rate', q: "What is the current Repo Rate (Jan 2026)?", a: "5.50%", eg: "Cut from 6.00% in Dec 2025 MPC. Rate at which RBI lends to banks." },
+  { tag: 'Banking · CRR', q: "What is CRR, and the current rate?", a: "Cash Reserve Ratio · 4.50%", eg: "Share of deposits banks must keep with RBI as cash. No interest is paid on it." },
+  { tag: 'Quant · Compound Interest', q: "Formula for compound interest amount?", a: "A = P(1 + r/n)^(nt)", eg: "P = principal, r = annual rate, n = times compounded per year, t = years." },
+  { tag: 'GA · Apex', q: "Who is the current Governor of the RBI?", a: "Sanjay Malhotra", eg: "Took office Dec 2024 — the 26th Governor." },
+  { tag: 'Finance · NEFT', q: "What does NEFT stand for?", a: "National Electronic Funds Transfer", eg: "RBI's electronic payment system, now settled 24×7." },
+  { tag: 'Reasoning · Coding', q: "If MOTHER = NPUIFS, what is FATHER?", a: "GBUIFS", eg: "Each letter is shifted by +1." },
+  { tag: 'Polity · Constitution', q: "How many fundamental rights are in the Constitution?", a: "Six", eg: "Equality, Freedom, Against Exploitation, Religion, Cultural/Educational, Constitutional Remedies." },
+  { tag: 'Quant · Profit & Loss', q: "Profit % formula?", a: "(Profit / Cost Price) × 100", eg: "Always on cost price unless stated otherwise." },
+];
 
-function startDiscovery() {
-  showView('discovery');
-  const chat = document.getElementById('discChat');
-  chat.innerHTML = '';
-
-  // Sneha's actual 11:30 PM moment from JCS doc §3 — three-year anxiety,
-  // family pressure, no benchmark. Plus her 8:30 PM mock-test 45% confusion.
-  appendUserBubble("Aaj mock test mein 45% aaye. Pata bhi nahi achhe hain ya kharab. Bansal Classes 3 mahine ho gaye, family bol rahi government job, lekin teen saal lag gaye toh? Koi seedha bata de — mera kya scene hai.");
-
-  // JBIQ first question
-  setTimeout(() => askDiscoveryQ(0), 600);
-}
-
-function askDiscoveryQ(idx) {
-  const step = DISCOVERY_FLOW[idx];
-  if (!step) return;
-  appendAIBubble(step.ai);
-  // Speak it
-  setTimeout(() => {
-    const v = ensureDiscVoice();
-    v.speak(step.ai, 'en-IN');
-  }, 200);
-  // Chips
-  if (step.chips) {
-    setTimeout(() => appendChips(step.chips, (chip) => {
-      appendUserBubble(chip.text);
-      const branch = DISCOVERY_BRANCHES[chip.key];
-      if (!branch) return;
-      // Latency marker: brief status pill before AI replies
-      showThinking('Mapping your goals to a path…', 800).then(() => {
-        appendAIBubble(branch.ai);
-        try { ensureDiscVoice().speak(branch.ai, 'en-IN'); } catch (e) {}
-        if (branch.next === 'banking_paths') setTimeout(() => showBankingPaths(), 1400);
-        if (branch.next === 'state_or_banking') setTimeout(() => showStateOrBanking(), 1400);
-        if (branch.next === 'upsc_or_banking') setTimeout(() => showUpscOrBanking(), 1400);
-      });
-    }), 700);
-  }
-}
-
-function appendExamListCard(paths) {
-  const chat = document.getElementById('discChat');
-  const items = paths.cards.map(card =>
-    `<button class="rc-list-item" data-exam-id="${card.id}">
-      <div class="rli-icon">${card.id.split('-').slice(0,2).map(s => s[0].toUpperCase()).join('')}</div>
-      <div class="rli-text">
-        <div class="rli-name">${card.name}</div>
-        <div class="rli-meta">${card.meta}</div>
-      </div>
-    </button>`
-  ).join('');
-  const html = `
-    <div class="rich-card rich-card--list">
-      <div class="rc-h">
-        <div class="rc-icon">${window.GC.ICONS.tip}</div>
-        <div class="rc-label">Pick an exam</div>
-      </div>
-      <div class="rc-list">${items}</div>
-    </div>`;
-  const wrap = document.createElement('div');
-  wrap.innerHTML = html;
-  const cardEl = wrap.firstElementChild;
-  chat.appendChild(cardEl);
-  cardEl.querySelectorAll('[data-exam-id]').forEach(btn => {
-    btn.addEventListener('click', () => showRealityCheck(btn.getAttribute('data-exam-id')));
-  });
-  scrollChatBottom();
-  return cardEl;
-}
-
-function showBankingPaths() {
-  showThinking('Pulling banking paths…', 700).then(() => {
-    appendAIBubble(BANKING_PATHS.ai);
-    try { ensureDiscVoice().speak(BANKING_PATHS.ai, 'en-IN'); } catch (e) {}
-    setTimeout(() => appendExamListCard(BANKING_PATHS), 900);
-  });
-}
-
-function showStateOrBanking() {
-  setTimeout(() => appendChips([
-    { text: "Show me state exams", key: 'state_exams' },
-    { text: "Banking, but with transfer info", key: 'banking_paths' },
-  ], (chip) => {
-    appendUserBubble(chip.text);
-    if (chip.key === 'banking_paths') showBankingPaths();
-    else showStatePaths();
-  }), 600);
-}
-
-function showUpscOrBanking() {
-  setTimeout(() => appendChips([
-    { text: "Banking — more achievable", key: 'banking_paths' },
-    { text: "UPSC anyway", key: 'upsc_paths' },
-  ], (chip) => {
-    appendUserBubble(chip.text);
-    if (chip.key === 'banking_paths') showBankingPaths();
-    else showUpscPaths();
-  }), 600);
-}
-
-function showExamCards(paths) {
-  showThinking('Pulling exam options…', 700).then(() => {
-    appendAIBubble(paths.ai);
-    try { ensureDiscVoice().speak(paths.ai, 'en-IN'); } catch (e) {}
-    setTimeout(() => appendExamListCard(paths), 900);
-  });
-}
-function showStatePaths() { showExamCards(STATE_PATHS); }
-function showUpscPaths() { showExamCards(UPSC_PATHS); }
-
-function showRealityCheck(examId) {
-  const rc = REALITY_CHECKS[examId];
-  if (!rc) {
-    showThinking('Pulling reality-check…', 700).then(() => {
-      appendAIBubble("That's a great choice. Let me set it up. (Detailed reality-check coming for that exam.)");
+/* =========================================================================
+ * HOME — counsellor card + category rows
+ * ========================================================================= */
+function renderHome() {
+  const host = document.getElementById('cat_host');
+  host.innerHTML = '';
+  EXAM_CATS.forEach(cat => {
+    const section = document.createElement('div');
+    section.innerHTML = `<div class="section-h">${cat.name}</div><div class="cat-scroll"></div>`;
+    const scroll = section.querySelector('.cat-scroll');
+    cat.exams.forEach(e => {
+      const tile = document.createElement('button');
+      tile.className = 'cat-tile';
+      tile.innerHTML = `
+        <span class="ct-badge">${e.emoji}</span>
+        <span class="ct-title">${e.name}</span>
+        <span class="ct-meta">${e.meta}</span>`;
+      tile.onclick = () => openExam(e.id);
+      scroll.appendChild(tile);
     });
-    return;
-  }
-  appendUserBubble("Tell me about " + examId.toUpperCase());
-  showThinking('Pulling latest cut-offs and selection data…', 1000).then(() => {
-    appendAIBubble(rc.ai);
-    try { ensureDiscVoice().speak(rc.ai, 'en-IN'); } catch (e) {}
-    setTimeout(() => {
-      const chat = document.getElementById('discChat');
-      window.GC.appendCard(chat, {
-        kind: 'bullets',
-        label: 'Reality check',
-        content: rc.bullets.map(b => `<li>${b}</li>`).join(''),
-      }, null);
-      // The .rc-content above wraps the LI string; we need .rc-bullets <ul>.
-      // Replace the appended card's body to use a proper list.
-      const cards = chat.querySelectorAll('.rich-card--bullets');
-      const last = cards[cards.length - 1];
-      if (last) {
-        const cont = last.querySelector('.rc-content');
-        if (cont) {
-          const ul = document.createElement('ul');
-          ul.className = 'rc-bullets';
-          ul.innerHTML = cont.innerHTML;
-          cont.replaceWith(ul);
-        }
-      }
-    }, 900);
-    setTimeout(() => {
-      appendAIBubble(rc.end);
-      try { ensureDiscVoice().speak(rc.end, 'en-IN'); } catch (e) {}
-    }, 1700);
-    setTimeout(() => {
-      appendChips([
-        { text: "Yes, add to my plan", key: 'add_plan' },
-        { text: "Let me think", key: 'think' },
-      ], (chip) => {
-        if (chip.key === 'add_plan') {
-          appendUserBubble("Yes, add to my plan");
-          setTimeout(() => {
-            appendAIBubble("Done — IBPS PO added. Tomorrow morning your daily prep starts: 3 quizzes, 8 flashcards, 1 concept. 12 mins. Want a preview?");
-            ensureDiscVoice().speak("Done — your prep starts tomorrow.", 'en-IN');
-          }, 500);
-          setTimeout(() => appendChips([
-            { text: "Yes, preview", key: 'preview' },
-            { text: "Sounds good, see you tomorrow", key: 'done' },
-          ], (chip2) => {
-            if (chip2.key === 'preview') {
-              setTimeout(() => startDailyPrep(), 600);
-            } else {
-              appendUserBubble("Sounds good, see you tomorrow");
-              setTimeout(() => appendAIBubble("Tomorrow at 8 AM. You've got this. ⭐"), 400);
-            }
-          }), 1300);
-        } else {
-          appendUserBubble("Let me think");
-          setTimeout(() => appendAIBubble("Take your time — I'll be here. Tap me anytime."), 400);
-        }
-      });
-    }, 2700);
-  }, 600);
+    host.appendChild(section);
+  });
 }
 
-function appendAIBubble(text) {
-  const chat = document.getElementById('discChat');
-  return window.GC.appendAi(chat, text, 'JBIQ');
+function chatC() { return document.getElementById('counselChat'); }
+function chatE() { return document.getElementById('examChat'); }
+
+/* =========================================================================
+ * COUNSELLOR — in-chat onboarding -> recommended exams
+ * ========================================================================= */
+let counselPick = { goal: null, qual: null, age: null, cat: null };
+
+function openCounsel(prefill) {
+  counselPick = { goal: null, qual: null, age: null, cat: null };
+  if (prefill && prefill.cat) counselPick.cat = prefill.cat;
+  showView('counsel');
+  const chat = chatC();
+  chat.innerHTML = '';
+  window.GC.appendAi(chat, "I'll help you find the right exam to reach your goals. Tell me a bit about yourself — pick what fits.");
+  setTimeout(() => showOnboarding(), 650);
 }
-function appendUserBubble(text) {
-  const chat = document.getElementById('discChat');
-  return window.GC.appendUser(chat, text);
-}
-function appendChips(chips, onPick) {
-  const chat = document.getElementById('discChat');
-  return window.GC.appendChips(chat, chips, onPick);
-}
-function scrollChatBottom() {
-  const chat = document.getElementById('discChat');
+
+function showOnboarding() {
+  const chat = chatC();
+  const card = document.createElement('div');
+  card.className = 'onb-card';
+  const groups = [
+    { key: 'goal', label: 'What matters most to you?', opts: ['A govt job soon', 'Highest salary', 'Stay near home', 'Prestige / officer rank', 'Job security'] },
+    { key: 'qual', label: 'Your highest qualification', opts: ['10th', '12th pass', 'Graduate', 'Postgraduate', 'Engineering (B.E./B.Tech)'] },
+    { key: 'age',  label: 'Your age', opts: ['Under 18', '18–21', '22–25', '26–30', '31+'] },
+    { key: 'cat',  label: 'Your category', opts: ['General', 'OBC', 'SC', 'ST', 'EWS'] },
+  ];
+  card.innerHTML =
+    `<div class="onb-h">A few quick questions</div>
+     <div class="onb-sub">No right answers — this just helps me shortlist exams worth your time.</div>` +
+    groups.map(g => `
+      <div class="onb-group" data-key="${g.key}">
+        <div class="onb-label">${g.label}</div>
+        <div class="onb-chips">
+          ${g.opts.map(o => `<button class="onb-chip${counselPick[g.key] === o ? ' sel' : ''}" data-k="${g.key}" data-v="${o}">${o}</button>`).join('')}
+        </div>
+      </div>`).join('') +
+    `<button class="onb-go">Find my exams →</button>`;
+  chat.appendChild(card);
   chat.scrollTop = chat.scrollHeight;
-}
-// Status pill (latency marker) — shown briefly between user pick and AI reply
-function showThinking(label, ms) {
-  const chat = document.getElementById('discChat');
-  return window.GC.status(chat, label || 'Looking that up…', ms || 700);
+
+  card.querySelectorAll('.onb-chip').forEach(ch => {
+    ch.onclick = () => {
+      const k = ch.dataset.k;
+      card.querySelectorAll(`.onb-chip[data-k="${k}"]`).forEach(x => x.classList.remove('sel'));
+      ch.classList.add('sel');
+      counselPick[k] = ch.dataset.v;
+    };
+  });
+  card.querySelector('.onb-go').onclick = () => recommendExams();
 }
 
-function handleDiscTranscript(text, lang) {
-  if (!text) return;
-  appendUserBubble(text);
-  // Simple keyword route
-  const lower = text.toLowerCase();
-  let key = null;
-  if (/stab|salary|secur/.test(lower)) key = 'stability_salary';
-  else if (/money|paisa|earning/.test(lower)) key = 'money';
-  else if (/ghar|home|near|patna/.test(lower)) key = 'near_home';
-  else if (/prestig|power|status|dhasu|ifs|ias/.test(lower)) key = 'prestige';
-  else key = 'stability_salary';
+function recommendExams() {
+  const chat = chatC();
+  // Echo the choices as a user bubble, then recommend.
+  const said = [counselPick.goal, counselPick.qual && ('Qualified: ' + counselPick.qual), counselPick.age && (counselPick.age + ' yrs')]
+    .filter(Boolean).join(' · ') || 'Here are my details';
+  window.GC.appendUser(chat, said);
+
+  // Simple rules engine (placeholder for the real recommendation engine later).
+  let ids = [];
+  const q = counselPick.qual || 'Graduate';
+  if (q === '10th') ids = ['ssc-mts', 'ssc-gd', 'rrb-groupd'];
+  else if (q === '12th pass') ids = ['ssc-chsl', 'rrb-ntpc', 'nda'];
+  else if (q === 'Engineering (B.E./B.Tech)') ids = ['gate', 'ssc-je', 'rrb-je'];
+  else if (q === 'Postgraduate') ids = ['ugc-net', 'rbi-grade-b', 'upsc-cse'];
+  else ids = ['ibps-po', 'ssc-cgl', 'rrb-ntpc'];
+
+  if (counselPick.goal === 'Highest salary') ids = uniq(['rbi-grade-b', 'sbi-po', ...ids]);
+  if (counselPick.goal === 'Prestige / officer rank') ids = uniq(['upsc-cse', 'ibps-po', ...ids]);
+  if (counselPick.goal === 'Stay near home') ids = uniq(['bpsc', 'uppsc', ...ids]);
+  ids = ids.slice(0, 3);
+
+  const why = {
+    'ibps-po': 'A graduate-friendly officer role with nationwide vacancies every year.',
+    'ssc-cgl': 'The widest graduate-level door — thousands of posts across ministries.',
+    'rrb-ntpc': 'Stable railway career, large intake, moderate competition.',
+    'ssc-mts': 'Entry-level central govt job you can target right after 10th.',
+    'ssc-gd': 'Uniformed force entry with 10th-level eligibility.',
+    'rrb-groupd': 'High-vacancy railway entry, 10th/ITI eligible.',
+    'ssc-chsl': 'Best 12th-pass route into central govt clerical posts.',
+    'nda': 'A 12th-level path to becoming an officer in the armed forces.',
+    'gate': 'Unlocks PSU jobs and M.Tech — built for engineers.',
+    'ssc-je': 'Junior Engineer posts that value your diploma/degree.',
+    'rrb-je': 'Engineering-stream railway posts with good stability.',
+    'ugc-net': 'The route to lectureship and JRF for postgraduates.',
+    'rbi-grade-b': 'The highest-paid banking role — best after some prep maturity.',
+    'sbi-po': "The biggest banking brand — tough, but opens doors everywhere.",
+    'upsc-cse': 'The peak of civil services — pair it with a realistic fallback.',
+    'bpsc': 'Stay in Bihar with a respected state-services posting.',
+    'uppsc': 'Stay in UP with a respected state-services posting.',
+  };
+
   setTimeout(() => {
-    const branch = DISCOVERY_BRANCHES[key];
-    appendAIBubble(branch.ai);
-    ensureDiscVoice().speak(branch.ai, 'en-IN');
-    if (branch.next === 'banking_paths') setTimeout(() => showBankingPaths(), 1500);
+    window.GC.appendAi(chat, "Based on that, these three are worth a serious look. Tap any one to see eligibility and start practising:");
+    setTimeout(() => {
+      ids.forEach((id, n) => setTimeout(() => {
+        const info = EXAM_INDEX[id]; if (!info) return;
+        const card = document.createElement('div');
+        card.className = 'recommend-card';
+        card.innerHTML = `
+          <div class="rc-top">
+            <span class="rc-emoji">${info.exam.emoji}</span>
+            <span><span class="rc-name">${info.exam.name}</span><br><span class="rc-cat">${info.catName}</span></span>
+          </div>
+          <div class="rc-why">${why[id] || ('A strong fit for your profile in ' + info.catName + '.')}</div>`;
+        card.onclick = () => openExam(id);
+        chat.appendChild(card);
+        chat.scrollTop = chat.scrollHeight;
+      }, n * 280));
+    }, 500);
   }, 500);
 }
 
-function startPath(pathId) {
-  showView('discovery');
-  const chat = document.getElementById('discChat');
-  chat.innerHTML = '';
-  const labels = { banking: 'banking', admin: 'admin (SSC, UPSC)', tech: 'technical (SSC JE, GATE)', state: 'state-level' };
-  appendUserBubble(`I'm interested in ${labels[pathId] || pathId} jobs.`);
-  setTimeout(() => {
-    if (pathId === 'banking') {
-      showBankingPaths();
-    } else if (pathId === 'state') {
-      showStatePaths();
-    } else if (pathId === 'admin') {
-      // Admin = SSC + UPSC. Reuse UPSC paths (covers UPSC CSE) — could expand later.
-      const ADMIN_PATHS = {
-        ai: "Admin path covers SSC and UPSC. Here are the main routes — easiest to hardest by selection rate.",
-        cards: [
-          { id: 'ssc-cgl', name: 'SSC CGL', meta: '~5-30K seats · 12-18 mo prep · ₹35K-50K · Posting: anywhere' },
-          { id: 'ssc-chsl', name: 'SSC CHSL', meta: '~4-9K seats · 12 mo prep · ₹28K-35K · Easier entry' },
-          { id: 'upsc-cse', name: 'UPSC CSE', meta: '~1K seats · 2-4 yr prep · ₹56K-2.5L · IAS/IPS/IFS' },
-        ],
-      };
-      showExamCards(ADMIN_PATHS);
-    } else if (pathId === 'tech') {
-      const TECH_PATHS = {
-        ai: "Technical path needs an engineering or technical background. Here are the main routes:",
-        cards: [
-          { id: 'ssc-je', name: 'SSC JE', meta: 'Junior Engineer · ~1K seats · 12 mo prep · ₹35K-45K' },
-          { id: 'gate-psu', name: 'GATE → PSU', meta: 'Engg degree → GATE → IOCL/NTPC/BHEL · 18-24 mo prep · ₹60K-90K' },
-          { id: 'drdo-rac', name: 'DRDO RAC', meta: 'Defence research · ~250 seats · 18 mo prep · ₹56K-80K' },
-        ],
-      };
-      showExamCards(TECH_PATHS);
-    } else {
-      showBankingPaths();
-    }
-  }, 600);
+function counselAsk() {
+  const chat = chatC();
+  window.GC.appendUser(chat, 'How do I decide between two of these?');
+  setTimeout(() => window.GC.appendAi(chat, "Good question — go with the one whose eligibility you clearly meet and whose posting suits your life (near home vs. anywhere). Open any exam above to compare eligibility, then practise a few questions to feel the level."), 450);
 }
-
-// (Mic + text input removed — discovery is fully chip-driven canned demo.)
 
 /* =========================================================================
- * DAILY PREP DECK
+ * EXAM PREP — eligibility at top, then endless flashcards / quizzes
  * ========================================================================= */
-const QUIZZES = [
-  {
-    tag: 'Quant · Asked 4/5 last yrs',
-    q: "If a sum of money doubles in 8 years at simple interest, what is the rate of interest per annum?",
-    options: [
-      { letter: 'A', text: '8%' },
-      { letter: 'B', text: '10%' },
-      { letter: 'C', text: '12.5%' },
-      { letter: 'D', text: '15%' },
-    ],
-    correct: 'C',
-    explain: "<strong>Formula:</strong> Money doubles ⇒ SI = Principal. SI = P×R×T/100. P = P×R×8/100 ⇒ R = 100/8 = <strong>12.5%</strong>. This question pattern appeared in IBPS PO 2023, 2022, 2021, 2019."
-  },
-  {
-    tag: 'Reasoning · IBPS PO classic',
-    q: "All flowers are leaves. Some leaves are roots. Which conclusion is definitely true?",
-    options: [
-      { letter: 'A', text: 'Some flowers are roots' },
-      { letter: 'B', text: 'No flower is a root' },
-      { letter: 'C', text: 'Some leaves are flowers' },
-      { letter: 'D', text: "Can't be determined" },
-    ],
-    correct: 'C',
-    explain: "<strong>Conversion:</strong> 'All A is B' ⇒ 'Some B is A' is always true. So 'All flowers are leaves' ⇒ 'Some leaves are flowers' is definitely true. Other options aren't guaranteed."
-  },
-  {
-    tag: 'GA · Banking awareness',
-    q: "What is the current Repo Rate set by RBI as of January 2026?",
-    options: [
-      { letter: 'A', text: '5.50%' },
-      { letter: 'B', text: '6.00%' },
-      { letter: 'C', text: '6.25%' },
-      { letter: 'D', text: '6.50%' },
-    ],
-    correct: 'A',
-    explain: "<strong>Current Repo Rate:</strong> RBI cut repo to <strong>5.50%</strong> in Dec 2025 MPC meeting (was 6.00%). This pattern of asking current rates is asked every IBPS PO Tier 1."
-  },
-];
+let prep = { examId: null, flashIdx: 0, quizIdx: 0, quizPlan: null, quizDone: 0 };
 
-const FLASHCARDS = [
-  { tag: 'Banking · Repo Rate', q: "What is the current Repo Rate (Jan 2026)?", a: "5.50%", eg: "Cut from 6.00% in Dec 2025 MPC. Rate at which RBI lends to banks." },
-  { tag: 'Banking · CRR', q: "What is CRR? Current rate?", a: "Cash Reserve Ratio · 4.50%", eg: "% of deposits banks must keep with RBI as cash. No interest paid." },
-  { tag: 'Quant · Compound Interest', q: "Formula for compound interest?", a: "A = P(1 + r/n)^(nt)", eg: "P = principal, r = annual rate, n = times compounded/year, t = years." },
-  { tag: 'GA · Banking apex', q: "Who is the current Governor of RBI?", a: "Sanjay Malhotra", eg: "Took office Dec 2024. 26th Governor." },
-  { tag: 'GA · Finance', q: "What does NEFT stand for?", a: "National Electronic Funds Transfer", eg: "RBI's electronic payment system. Settled in batches." },
-  { tag: 'Reasoning · Coding', q: "If MOTHER = NPUIFS, what is FATHER?", a: "GBUIFS", eg: "Each letter shifted by +1." },
-];
+function openExam(examId) {
+  const info = EXAM_INDEX[examId];
+  if (!info) return;
+  prep = { examId, flashIdx: 0, quizIdx: 0, quizPlan: null, quizDone: 0 };
+  document.getElementById('exam_title').textContent = info.exam.name;
+  document.getElementById('exam_sub').textContent = info.catName;
+  showView('exam');
+  const chat = chatE();
+  chat.innerHTML = '';
 
-const CONCEPTS = [
-  {
-    tag: 'Concept · Banking',
-    title: 'Repo Rate vs Reverse Repo Rate',
-    desc: 'Two opposite-direction tools RBI uses to control money supply. Both impact your home loan EMI and FD interest.',
-    diagram: "<strong>Repo Rate</strong> (5.50%): RBI → Banks (RBI lends to banks)<br><strong>Reverse Repo</strong> (3.35%): Banks → RBI (Banks park money with RBI)<br><br>When repo rate ↓, EMIs ↓, FD rates ↓. When repo ↑, vice versa.",
-    spoken: "Repo rate and reverse repo rate work in opposite directions. The repo rate, currently 5.5 percent, is what RBI charges banks when they borrow money. The reverse repo rate, currently 3.35 percent, is what RBI pays banks when they park money with it. When repo rate drops, your home loan EMIs drop. When it rises, EMIs rise too.",
-  },
-  {
-    tag: 'Concept · Banking',
-    title: 'CRR vs SLR — what\'s actually different',
-    desc: 'Two RBI tools that both control how much money banks can lend, but in different forms — cash vs government bonds.',
-    diagram: "<strong>CRR</strong> (4.50%): % of deposits banks keep with RBI <em>as cash</em>. Earns zero interest.<br><strong>SLR</strong> (18.00%): % of deposits banks keep in <em>liquid assets</em> (gold, govt securities). Earns yield.<br><br>Higher CRR or SLR ⇒ less money for banks to lend ⇒ controls inflation.",
-    spoken: "CRR and SLR are two of RBI's tools to control how much banks can lend. CRR, Cash Reserve Ratio, is the percentage of deposits banks must keep with RBI as cash. Currently 4.5 percent. SLR, Statutory Liquidity Ratio, is the percentage banks must keep in liquid assets like gold and government bonds. Currently 18 percent. Both reduce how much banks can lend out, which controls inflation.",
-  },
-  {
-    tag: 'Concept · Macro',
-    title: 'Inflation & Monetary Policy',
-    desc: 'India targets 4% inflation with a band of 2-6%. When inflation rises above 6%, RBI raises repo rate to cool spending.',
-    diagram: "<strong>Inflation high</strong> (above 6%) → RBI <strong>raises repo rate</strong> → loans become expensive → people borrow less → spending drops → prices cool<br><br><strong>Inflation low</strong> (below 2%) → RBI <strong>cuts repo rate</strong> → loans become cheaper → people borrow more → spending rises → growth picks up",
-    spoken: "Inflation is the rate at which prices rise. India targets 4 percent inflation, with a tolerance band of 2 to 6 percent. When inflation goes above 6 percent, RBI raises the repo rate to make borrowing more expensive. People borrow less, spending drops, and prices cool. When inflation falls below 2 percent, RBI cuts the repo rate to stimulate the economy.",
-  },
-  {
-    tag: 'Concept · Markets',
-    title: 'Bonds vs Equities',
-    desc: 'Two ways companies raise money: borrowing (bonds) or selling ownership (equities). Bonds pay fixed interest. Equities give you a share of the profits — and the risk.',
-    diagram: "<strong>Bond</strong>: You <em>lend</em> money to a company or government. You get fixed interest (coupon) + principal back at maturity. Lower risk, lower return.<br><strong>Equity (share)</strong>: You <em>own</em> a piece of the company. You get dividends + price appreciation, or losses if the company falters. Higher risk, higher potential return.",
-    spoken: "Bonds and equities are two ways companies raise money. A bond is when you lend money — you get fixed interest and your principal back at maturity. Lower risk, lower return. An equity, or share, is when you own a piece of the company. You get dividends and price appreciation, or losses if the company falters. Higher risk, higher potential return.",
-  },
-];
+  // Eligibility card FIRST.
+  const el = eligFor(examId);
+  const card = document.createElement('div');
+  card.className = 'elig-card';
+  card.innerHTML = `
+    <div class="el-h">✅ Eligibility · ${info.exam.name}</div>
+    <div class="el-row"><div class="el-k">Age</div><div class="el-v">${el.age}</div></div>
+    <div class="el-row"><div class="el-k">Qualification</div><div class="el-v">${el.qual}</div></div>
+    <div class="el-row"><div class="el-k">Attempts</div><div class="el-v">${el.attempts}</div></div>
+    ${el.reality ? `<div class="el-reality">📊 ${el.reality}</div>` : ''}`;
+  chat.appendChild(card);
+  chat.scrollTop = chat.scrollHeight;
 
-let prepTab = 'quiz';
-function setPrepTab(tab) {
-  prepTab = tab;
-  document.querySelectorAll('.prep-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
-  renderPrep();
+  setTimeout(() => {
+    window.GC.appendAi(chat, `Here's the eligibility for ${info.exam.name}. Ready to prepare? Pick how you want to start — you can keep going as long as you like.`);
+    setTimeout(() => showPrepOptions(), 550);
+  }, 400);
 }
 
-function renderPrep() {
-  const c = document.getElementById('prep_content');
-  c.innerHTML = '';
-  if (prepTab === 'quiz') {
-    // Horizontal carousel — feels more conversational than a vertical menu.
-    const wrap = document.createElement('div');
-    wrap.className = 'prep-carousel-wrap';
-    const head = document.createElement('div');
-    head.className = 'prep-carousel-h';
-    head.innerHTML = `<div class="pch-title">Today's quizzes</div><div class="pch-count">Swipe →</div>`;
-    const row = document.createElement('div');
-    row.className = 'prep-carousel';
-    QUIZZES.forEach((q, i) => row.appendChild(renderQuiz(q, i)));
-    wrap.appendChild(head);
-    wrap.appendChild(row);
-    c.appendChild(wrap);
-  } else if (prepTab === 'flash') {
-    const wrap = document.createElement('div');
-    wrap.className = 'prep-carousel-wrap';
-    const head = document.createElement('div');
-    head.className = 'prep-carousel-h';
-    head.innerHTML = `<div class="pch-title">Flashcards</div><div class="pch-count">Tap to flip · Swipe →</div>`;
-    const row = document.createElement('div');
-    row.className = 'prep-carousel';
-    FLASHCARDS.forEach((f, i) => row.appendChild(renderFlashcard(f, i)));
-    wrap.appendChild(head);
-    wrap.appendChild(row);
-    c.appendChild(wrap);
-  } else if (prepTab === 'concept') {
-    CONCEPTS.forEach((cn, i) => c.appendChild(renderConcept(cn, i)));
-    // Tease the next concept
-    const more = document.createElement('div');
-    more.className = 'concept-card';
-    more.style.opacity = '0.5';
-    more.innerHTML = `<div class="cc-tag">Coming up</div><div class="cc-title">CRR vs SLR — what's actually different?</div><div class="cc-desc">Tomorrow's concept · Will surface based on your weak topics.</div>`;
-    c.appendChild(more);
-  }
+function showPrepOptions() {
+  const chat = chatE();
+  const stack = document.createElement('div');
+  stack.className = 'opt-stack';
+  stack.innerHTML = `
+    <button class="opt-btn" data-go="flash">
+      <span class="ob-ic">🃏</span>
+      <span class="ob-t">Practice flashcards<span class="ob-sub">Quick recall — one card at a time</span></span>
+    </button>
+    <button class="opt-btn" data-go="quiz">
+      <span class="ob-ic">📝</span>
+      <span class="ob-t">Start a quiz<span class="ob-sub">Choose length or topics, then solve</span></span>
+    </button>`;
+  chat.appendChild(stack);
+  chat.scrollTop = chat.scrollHeight;
+  stack.querySelector('[data-go="flash"]').onclick = () => { stack.remove(); startFlashcards(); };
+  stack.querySelector('[data-go="quiz"]').onclick = () => { stack.remove(); showQuizSetup(); };
 }
 
-function renderQuiz(q, idx) {
+/* ---------- Flashcards (endless) ---------- */
+function startFlashcards() {
+  const chat = chatE();
+  window.GC.appendAi(chat, "Flashcards it is. Tap to reveal the answer, then move on whenever you're ready.");
+  setTimeout(() => showFlashcard(), 450);
+}
+function showFlashcard() {
+  const chat = chatE();
+  const f = FLASH_BANK[prep.flashIdx % FLASH_BANK.length];
+  prep.flashIdx++;
+  const card = document.createElement('div');
+  card.className = 'flash-card';
+  card.innerHTML = `
+    <div class="fl-tag">${f.tag}</div>
+    <div class="fl-q">${f.q}</div>
+    <button class="fl-reveal">Tap to reveal answer</button>
+    <div class="fl-a">
+      <div class="fl-a-label">Answer</div>
+      <div class="fl-a-text">${f.a}</div>
+      <div class="fl-eg">${f.eg}</div>
+    </div>`;
+  chat.appendChild(card);
+  chat.scrollTop = chat.scrollHeight;
+  card.querySelector('.fl-reveal').onclick = () => {
+    card.classList.add('open');
+    chat.scrollTop = chat.scrollHeight;
+    setTimeout(() => flashControls(), 250);
+  };
+}
+function flashControls() {
+  const chat = chatE();
+  window.GC.appendChips(chat, [
+    { text: 'Next flashcard →', key: 'n' },
+    { text: 'Switch to a quiz', key: 'q' },
+  ], (c) => { if (c.key === 'n') showFlashcard(); else showQuizSetup(); });
+}
+
+/* ---------- Quiz (setup -> endless questions) ---------- */
+function showQuizSetup() {
+  const chat = chatE();
+  const card = document.createElement('div');
+  card.className = 'quiz-setup';
+  card.innerHTML = `
+    <div class="qs-h">Set up your quiz</div>
+    <div class="qs-sub">Pick how many questions or how long — or type the topics you want to test.</div>
+    <div class="onb-group"><div class="onb-label">Number of questions</div>
+      <div class="onb-chips" data-grp="count">
+        <button class="onb-chip" data-v="5">5 questions</button>
+        <button class="onb-chip" data-v="10">10 questions</button>
+        <button class="onb-chip" data-v="20">20 questions</button>
+      </div></div>
+    <div class="onb-group"><div class="onb-label">Or set a timer</div>
+      <div class="onb-chips" data-grp="time">
+        <button class="onb-chip" data-v="5">5 min</button>
+        <button class="onb-chip" data-v="10">10 min</button>
+        <button class="onb-chip" data-v="15">15 min</button>
+      </div></div>
+    <div class="onb-group"><div class="onb-label">Or topics to focus on</div>
+      <input class="qs-free" type="text" placeholder="e.g. Quant, Reasoning, Banking awareness…">
+    </div>
+    <button class="onb-go">Start quiz →</button>`;
+  chat.appendChild(card);
+  chat.scrollTop = chat.scrollHeight;
+
+  let plan = { mode: 'count', count: 10, mins: null, topics: '' };
+  card.querySelectorAll('.onb-chips').forEach(grp => {
+    grp.querySelectorAll('.onb-chip').forEach(ch => {
+      ch.onclick = () => {
+        card.querySelectorAll('.onb-chip').forEach(x => x.classList.remove('sel'));
+        ch.classList.add('sel');
+        if (grp.dataset.grp === 'count') { plan = { mode: 'count', count: +ch.dataset.v, topics: plan.topics }; }
+        else { plan = { mode: 'time', mins: +ch.dataset.v, topics: plan.topics }; }
+      };
+    });
+  });
+  const free = card.querySelector('.qs-free');
+  free.oninput = () => { plan.topics = free.value.trim(); };
+  card.querySelector('.onb-go').onclick = () => { card.querySelector('.onb-go').disabled = true; startQuiz(plan); };
+}
+
+function startQuiz(plan) {
+  prep.quizPlan = plan; prep.quizDone = 0;
+  const chat = chatE();
+  let line = "Let's begin.";
+  if (plan.topics) line = `Focusing on “${plan.topics}”. Let's begin.`;
+  else if (plan.mode === 'time') line = `${plan.mins}-minute drill — solve as many as you can. Let's begin.`;
+  else line = `${plan.count} questions coming up. Let's begin.`;
+  window.GC.appendAi(chat, line);
+  setTimeout(() => showQuizQ(), 450);
+}
+
+function showQuizQ() {
+  const chat = chatE();
+  const item = QUIZ_BANK[prep.quizIdx % QUIZ_BANK.length];
+  prep.quizIdx++;
   const card = document.createElement('div');
   card.className = 'quiz-card';
   card.innerHTML = `
-    <div class="q-meta">
-      <span class="q-tag">${q.tag.split('·')[0]}</span>
-      <span class="q-tag q-tag-asked">${q.tag.split('·')[1] || ''}</span>
-    </div>
-    <div class="q-text">${q.q}</div>
-    <div class="q-options"></div>
-    <div class="q-explain">${q.explain}</div>
-  `;
-  const opts = card.querySelector('.q-options');
-  q.options.forEach(o => {
-    const b = document.createElement('button');
-    b.className = 'q-opt';
-    b.innerHTML = `<span class="q-opt-letter">${o.letter}</span><span>${o.text}</span>`;
-    b.onclick = () => {
-      if (card.classList.contains('solved')) return;
-      card.classList.add('solved');
-      if (o.letter === q.correct) {
-        b.classList.add('correct');
-      } else {
-        b.classList.add('wrong');
-        // also highlight correct
-        Array.from(opts.children).forEach(child => {
-          if (child.querySelector('.q-opt-letter').textContent === q.correct) child.classList.add('correct');
-        });
-      }
+    <div class="qz-tag">${item.tag}</div>
+    <div class="qz-q">${item.q}</div>
+    <div class="qz-opts">
+      ${item.options.map(o => `<button class="qz-opt" data-l="${o.l}"><span class="qz-letter">${o.l}</span><span>${o.t}</span></button>`).join('')}
+    </div>`;
+  chat.appendChild(card);
+  chat.scrollTop = chat.scrollHeight;
+  const opts = card.querySelectorAll('.qz-opt');
+  opts.forEach(btn => {
+    btn.onclick = () => {
+      opts.forEach(b => b.disabled = true);
+      const chosen = btn.dataset.l;
+      opts.forEach(b => { if (b.dataset.l === item.correct) b.classList.add('correct'); });
+      if (chosen !== item.correct) btn.classList.add('wrong');
+      const ex = document.createElement('div');
+      ex.className = 'qz-explain';
+      ex.innerHTML = (chosen === item.correct ? '✅ <b>Correct.</b> ' : '❌ <b>Not quite.</b> ') + item.explain;
+      card.appendChild(ex);
+      chat.scrollTop = chat.scrollHeight;
+      prep.quizDone++;
+      setTimeout(() => quizControls(), 300);
     };
-    opts.appendChild(b);
   });
-  return card;
 }
 
-function renderFlashcard(f, idx) {
-  const card = document.createElement('div');
-  card.className = 'flashcard';
-  card.innerHTML = `
-    <div class="flashcard-inner">
-      <div class="flashcard-face flashcard-front">
-        <div class="fc-tag">${f.tag}</div>
-        <div class="fc-q">${f.q}</div>
-        <div class="fc-tap">Tap to flip ↻</div>
-      </div>
-      <div class="flashcard-face flashcard-back">
-        <div class="fc-tag">Answer</div>
-        <div class="fc-a">${f.a}</div>
-        <div class="fc-eg">${f.eg}</div>
-        <div class="fc-tap">Tap to flip back ↻</div>
-      </div>
-    </div>
-  `;
-  card.onclick = () => card.classList.toggle('flipped');
-  return card;
-}
-
-function renderConcept(cn, idx) {
-  const card = document.createElement('div');
-  card.className = 'concept-card';
-  card.innerHTML = `
-    <div class="cc-tag">${cn.tag}</div>
-    <div class="cc-title">${cn.title}</div>
-    <div class="cc-desc">${cn.desc}</div>
-    <div class="cc-diagram">${cn.diagram}</div>
-    <div class="cc-actions">
-      <button class="cc-btn primary" onclick="speakConcept(${idx})"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg> Listen</button>
-      <button class="cc-btn">Got it · save</button>
-    </div>
-  `;
-  return card;
-}
-
-/* =========================================================================
- * DAILY PREP — IN-CHAT FLOW (replaces the separate view-daily page)
- * The user lands in discovery chat; quizzes / flashcards / concepts are
- * rendered as inline message-like cards in the same chat. Scroll up to see
- * any prior conversation; tap "More questions" at the end to load more.
- * ========================================================================= */
-function startDailyPrep(initialKind) {
-  showView('discovery');
-  const chat = document.getElementById('discChat');
-  if (!chat) return;
-  chat.innerHTML = '';
-
-  // Intro bubble — sets up what today's prep covers
-  window.GC.appendAi(chat, "Today's prep — 12 minutes for the commute. " + QUIZZES.length + " quizzes, " + FLASHCARDS.length + " flashcards, " + CONCEPTS.length + " concept. Where do you want to start?");
-
-  // Voice it
-  try { ensureDiscVoice().speak("Today's prep, twelve minutes for the commute. Three quizzes, eight flashcards, one concept. Where do you want to start?", 'en-IN'); } catch (e) {}
-
-  // Three picker chips — user picks one, we stream that kind into the chat
-  setTimeout(() => {
+function quizControls() {
+  const chat = chatE();
+  const plan = prep.quizPlan || { mode: 'count', count: 10 };
+  const reachedCount = plan.mode === 'count' && prep.quizDone >= plan.count;
+  if (reachedCount) {
+    window.GC.appendAi(chat, `That's ${plan.count} done — nice work. No finish line here: keep going as long as you want.`);
+    setTimeout(() => {
+      window.GC.appendChips(chat, [
+        { text: 'Practise more questions →', key: 'm' },
+        { text: 'Switch to flashcards', key: 'f' },
+      ], (c) => { if (c.key === 'm') { prep.quizDone = 0; showQuizQ(); } else startFlashcards(); });
+    }, 350);
+  } else {
     window.GC.appendChips(chat, [
-      { text: QUIZZES.length    + " Quizzes",     key: 'quiz'    },
-      { text: FLASHCARDS.length + " Flashcards",  key: 'flash'   },
-      { text: CONCEPTS.length   + " Concept",     key: 'concept' },
-    ], (chip) => streamDailyPrep(chip.key));
-  }, 500);
-
-  if (initialKind) setTimeout(() => streamDailyPrep(initialKind), 1400);
-}
-
-// Track how many quizzes/flashcards the user has seen so the "More questions"
-// button can load another batch instead of repeating the same ones.
-// Track how many quizzes / flashcards / concepts the user has seen so the
-// "More questions" / "More flashcards" / "More concepts" buttons can load the
-// next slice instead of repeating. All three cycle back to start if exhausted
-// so the user never runs out of content.
-const PREP_STATE = { quiz: 0, flash: 0, concept: 0 };
-
-function streamDailyPrep(kind) {
-  const chat = document.getElementById('discChat');
-  if (!chat) return;
-
-  // Echo the user's pick as a user bubble
-  const labels = { quiz: "Start with quizzes", flash: "Start with flashcards", concept: "Show me the concept" };
-  window.GC.appendUser(chat, labels[kind] || kind);
-
-  // Brief AI ack
-  setTimeout(() => {
-    const acks = {
-      quiz:    "Three picked from past papers. Tap the answer.",
-      flash:   "Tap any card to flip it over.",
-      concept: "Listen on the concept card — it's two minutes.",
-    };
-    window.GC.appendAi(chat, acks[kind] || "Here you go.");
-  }, 400);
-
-  // Stream the cards in. Quiz + flashcard batches render as a SINGLE chat
-  // message containing a horizontal carousel — user swipes through the cards
-  // rather than scrolling past each one stacked vertically.
-  setTimeout(() => {
-    if (kind === 'quiz') {
-      const start = PREP_STATE.quiz;
-      const slice = QUIZZES.slice(start, start + 3);
-      const items = slice.map((q, i) => renderQuiz(q, start + i));
-      appendChatCarousel(chat, "Today's quizzes", "Swipe →", items);
-      PREP_STATE.quiz += slice.length;
-      appendMoreButton(chat, 'quiz', "More questions");
-      appendKindSwitcher(chat, 'quiz');
-    } else if (kind === 'flash') {
-      const start = PREP_STATE.flash;
-      const slice = FLASHCARDS.slice(start, start + 4);
-      const items = slice.map((f, i) => renderFlashcard(f, start + i));
-      appendChatCarousel(chat, "Flashcards", "Tap to flip · Swipe →", items);
-      PREP_STATE.flash += slice.length;
-      appendMoreButton(chat, 'flash', "More flashcards");
-      appendKindSwitcher(chat, 'flash');
-    } else if (kind === 'concept') {
-      // One concept at a time (they're deeper-dive cards), cycle via "More".
-      const idx = PREP_STATE.concept % CONCEPTS.length;
-      const cn = CONCEPTS[idx];
-      appendChatCard(chat, renderConcept(cn, idx));
-      PREP_STATE.concept += 1;
-      appendMoreButton(chat, 'concept', "More concepts");
-      appendKindSwitcher(chat, 'concept');
-    }
-  }, 1000);
-}
-
-// Append a horizontal carousel of pre-built card elements as a single chat
-// message. Reuses the existing .prep-carousel CSS so quizzes / flashcards get
-// scroll-snap + edge fade for free.
-function appendChatCarousel(chat, title, hint, cardEls) {
-  const wrap = document.createElement('div');
-  wrap.className = 'gc-msg gc-msg-card';
-  wrap.innerHTML = `
-    <div class="prep-carousel-wrap">
-      <div class="prep-carousel-h">
-        <div class="pch-title">${title}</div>
-        <div class="pch-count">${hint}</div>
-      </div>
-      <div class="prep-carousel"></div>
-    </div>
-  `;
-  const row = wrap.querySelector('.prep-carousel');
-  cardEls.forEach(el => row.appendChild(el));
-  chat.appendChild(wrap);
-  chat.scrollTop = chat.scrollHeight;
-}
-
-// Wrap a quiz/flashcard/concept card so it sits as a "message" in the chat
-// (consistent margins, scrolls into view).
-function appendChatCard(chat, cardEl) {
-  const wrap = document.createElement('div');
-  wrap.className = 'gc-msg gc-msg-card';
-  wrap.appendChild(cardEl);
-  chat.appendChild(wrap);
-  chat.scrollTop = chat.scrollHeight;
-}
-
-// "More questions" / "More flashcards" button at the end of a batch. Loads
-// the next slice; cycles back to start if we've exhausted the bank.
-function appendMoreButton(chat, kind, label) {
-  const wrap = document.createElement('div');
-  wrap.className = 'gc-more-row';
-  const btn = document.createElement('button');
-  btn.className = 'gc-more-btn';
-  btn.textContent = label + ' →';
-  btn.onclick = () => {
-    wrap.remove();
-    // Cycle: if exhausted, reset and start over so the user never sees a dead end
-    if (kind === 'quiz'  && PREP_STATE.quiz  >= QUIZZES.length)    PREP_STATE.quiz  = 0;
-    if (kind === 'flash' && PREP_STATE.flash >= FLASHCARDS.length) PREP_STATE.flash = 0;
-    streamDailyPrep(kind);
-  };
-  wrap.appendChild(btn);
-  chat.appendChild(wrap);
-  chat.scrollTop = chat.scrollHeight;
-}
-
-// Small chip-row after a batch lets the user jump to a different kind without
-// scrolling back up.
-function appendKindSwitcher(chat, currentKind) {
-  const others = [
-    { key: 'quiz',    label: 'Switch to quizzes' },
-    { key: 'flash',   label: 'Switch to flashcards' },
-    { key: 'concept', label: 'Switch to the concept' },
-  ].filter(o => o.key !== currentKind);
-  window.GC.appendChips(chat, others.map(o => ({ text: o.label, key: o.key })), (chip) => streamDailyPrep(chip.key));
-}
-
-
-
-
-let conceptVoice = null;
-function speakConcept(idx) {
-  if (!conceptVoice) conceptVoice = JBIQVoice.create({ persona: 'govt_exam_counselor' });
-  const cn = CONCEPTS[idx];
-  if (!cn) return;
-  // Speak only the natural title + description. Earlier we glued a hardcoded
-  // explanation onto the end, which sounded stitched-together and robotic.
-  // If a concept needs a long-form spoken version, add a `spoken` field.
-  const text = cn.spoken || (cn.title + '. ' + cn.desc);
-  conceptVoice.speak(text, 'en-IN');
-}
-
-let doubtVoice = null;
-const DOUBT_ANSWERS = {
-  repo: "Repo rate is the rate at which RBI lends to commercial banks. Currently 5.5%. When repo rate drops, your home loan EMI drops too, because banks lower their lending rates.",
-  crr: "Cash Reserve Ratio is the percent of total deposits banks must keep with RBI as cash. Currently 4.5%. Higher CRR means less money for banks to lend out — so it controls inflation.",
-  slr: "Statutory Liquidity Ratio is the percent of deposits banks must keep in liquid assets like government bonds. Currently 18%. CRR is in cash, SLR is in bonds — both are RBI's tools to control liquidity.",
-  inflation: "Inflation is the rate at which prices rise over time. India targets 4% with a band of 2-6%. RBI raises repo rate when inflation goes above target, lowers it when inflation cools.",
-  bond: "A bond is a debt instrument. The government or a company borrows money from you and promises to pay it back with interest. Higher interest rate generally means higher risk.",
-  fallback: "Good question. Here's the short answer — I'd give you a 30-second explanation tied to your current syllabus topic, then a 1-line takeaway you can recall in the exam.",
-};
-function pickDoubtAnswer(text) {
-  const t = (text || '').toLowerCase();
-  if (/repo/.test(t)) return DOUBT_ANSWERS.repo;
-  if (/\bcrr\b|cash reserve/.test(t)) return DOUBT_ANSWERS.crr;
-  if (/\bslr\b|statutory/.test(t)) return DOUBT_ANSWERS.slr;
-  if (/inflation/.test(t)) return DOUBT_ANSWERS.inflation;
-  if (/bond|debenture/.test(t)) return DOUBT_ANSWERS.bond;
-  return DOUBT_ANSWERS.fallback;
-}
-function askDoubt() {
-  if (!doubtVoice) {
-    doubtVoice = JBIQVoice.create({
-      persona: 'govt_exam_counselor',
-      onTranscript: (text) => {
-        if (!text) return;
-        const answer = pickDoubtAnswer(text);
-        // Use a small bottom-sheet pattern instead of alert
-        showDoubtAnswer(text, answer);
-        // Speak the answer
-        try { doubtVoice.speak(answer, 'en-IN'); } catch (e) {}
-      },
-    });
+      { text: 'Next question →', key: 'n' },
+      { text: 'Switch to flashcards', key: 'f' },
+    ], (c) => { if (c.key === 'n') showQuizQ(); else startFlashcards(); });
   }
-  if (doubtVoice.isRecording) doubtVoice.stopRecording();
-  else doubtVoice.startRecording();
-}
-function showDoubtAnswer(question, answer) {
-  // Create a transient popover at the bottom of the prep view
-  const existing = document.getElementById('doubt-popover');
-  if (existing) existing.remove();
-  const pop = document.createElement('div');
-  pop.id = 'doubt-popover';
-  pop.style.cssText = 'position:absolute;left:16px;right:16px;bottom:80px;background:var(--surface-bold);color:var(--text-on-bold);border-radius:18px;padding:16px;box-shadow:var(--shadow-lg);z-index:50;animation:fadeInUp 0.3s ease-out;';
-  pop.innerHTML = `
-    <div style="font-size:11px;font-weight:700;letter-spacing:0.4px;text-transform:uppercase;opacity:0.8;margin-bottom:6px">You asked</div>
-    <div style="font-size:13px;font-weight:600;margin-bottom:10px;font-style:italic">"${question}"</div>
-    <div style="font-size:11px;font-weight:700;letter-spacing:0.4px;text-transform:uppercase;opacity:0.8;margin-bottom:6px">Answer</div>
-    <div style="font-size:13px;line-height:1.5">${answer}</div>
-    <button onclick="this.parentNode.remove()" style="margin-top:12px;background:rgba(255,255,255,0.18);border:none;color:white;padding:8px 14px;border-radius:999px;font-family:var(--font);font-size:12px;font-weight:700;cursor:pointer">Got it</button>
-  `;
-  const view = document.getElementById('view-daily');
-  if (view) view.appendChild(pop);
-  // Auto-dismiss after 12s
-  setTimeout(() => { if (document.getElementById('doubt-popover')) document.getElementById('doubt-popover').remove(); }, 12000);
 }
 
-renderPrep();
+function examAsk() {
+  const chat = chatE();
+  window.GC.appendUser(chat, 'Can you explain that more simply?');
+  setTimeout(() => window.GC.appendAi(chat, "Sure — read the explanation on the card above slowly; the bold part is the rule to remember. When it clicks, tap Next and try a similar one. Repetition is what makes it stick. 👍"), 450);
+}
 
 /* =========================================================================
- * INIT — handle ?q= from landing voice
+ * TOAST
+ * ========================================================================= */
+let toastT;
+function showToast(text) {
+  const el = document.getElementById('toast');
+  el.textContent = text;
+  el.classList.add('show');
+  clearTimeout(toastT);
+  toastT = setTimeout(() => el.classList.remove('show'), 1900);
+}
+
+function uniq(arr) { return arr.filter((v, i) => arr.indexOf(v) === i); }
+
+/* =========================================================================
+ * INIT — honour ?q= / ?from= deep links from the landing page
  * ========================================================================= */
 (function init() {
-  // Prefetch counselor's first line so discovery starts instantly with audio.
-  if (window.JBIQVoice && window.JBIQVoice.prefetch) {
-    window.JBIQVoice.prefetch([
-      { personaId: 'govt_exam_counselor', text: DISCOVERY_FLOW[0].ai },
-      { personaId: 'govt_exam_counselor', text: DISCOVERY_BRANCHES.stability_salary.ai },
-      { personaId: 'govt_exam_counselor', text: BANKING_PATHS.ai },
-    ]);
-  }
-  const params = new URLSearchParams(window.location.search);
+  if (window.JDS && window.JDS.renderIcons) window.JDS.renderIcons();
+  renderHome();
+  const params = new URLSearchParams(location.search);
   const q = (params.get('q') || '').toLowerCase();
-  if (q.includes('exam') || q.includes('which') || q.includes('kaunsa') || q.includes('discover') || q.includes('tell me')) {
-    setTimeout(() => startDiscovery(), 200);
-  } else if (q.includes('ibps') || q.includes('po')) {
-    setTimeout(() => startDailyPrep(), 200);
+  if (q) {
+    // Try to match a query to an exam, else open the counsellor.
+    const hit = Object.keys(EXAM_INDEX).find(id =>
+      id.replace(/-/g, ' ').includes(q) || EXAM_INDEX[id].exam.name.toLowerCase().includes(q));
+    if (hit) { openExam(hit); return; }
+    if (/which|kaunsa|pick|help|counsel|exam/.test(q)) openCounsel();
   }
 })();
 </script>
