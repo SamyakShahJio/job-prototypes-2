@@ -1041,28 +1041,28 @@
           <div class="p-emoji"><span data-icon="document" data-size="22"></span></div>
           <div>
             <div class="p-name">Office</div>
-            <div class="p-meta">5 scenarios · 5 done</div>
+            <div class="p-meta">5 scenarios</div>
           </div>
         </div>
         <div class="pack-card pack-customer" onclick="openPack('customer')">
           <div class="p-emoji"><span data-icon="chat" data-size="22"></span></div>
           <div>
             <div class="p-name">Customer Service</div>
-            <div class="p-meta">5 scenarios · 2 done</div>
+            <div class="p-meta">5 scenarios</div>
           </div>
         </div>
         <div class="pack-card pack-dating" onclick="openPack('dating')">
           <div class="p-emoji"><span data-icon="star" data-size="22"></span></div>
           <div>
             <div class="p-name">Dating</div>
-            <div class="p-meta">5 scenarios · 0 done</div>
+            <div class="p-meta">5 scenarios</div>
           </div>
         </div>
         <div class="pack-card pack-family" onclick="openPack('family')">
           <div class="p-emoji"><span data-icon="document" data-size="22"></span></div>
           <div>
             <div class="p-name">Family / In-Laws</div>
-            <div class="p-meta">5 scenarios · 1 done</div>
+            <div class="p-meta">5 scenarios</div>
           </div>
         </div>
         <div class="pack-card pack-travel pack-coming">
@@ -1238,56 +1238,56 @@ const PACKS = {
     name: 'Workplace English',
     scenarios: [
       // The four week-themes from the old 12-week pathway, now scenarios.
-      { id: 'asking-questions',      title: 'Asking questions internally',  meta: '4 turns · 3 min', done: false, lead: true },
-      { id: 'agreeing-meetings',     title: 'Agreeing in meetings',         meta: '4 turns · 3 min', done: true },
-      { id: 'giving-opinions',       title: 'Giving opinions',              meta: '5 turns · 4 min', done: false },
-      { id: 'handling-disagreement', title: 'Handling disagreement',        meta: '5 turns · 4 min', done: false },
+      { id: 'asking-questions',      title: 'Asking questions internally',  desc: 'Ask questions without sounding unsure', lead: true },
+      { id: 'agreeing-meetings',     title: 'Agreeing in meetings',         desc: 'Agree in meetings, sound confident' },
+      { id: 'giving-opinions',       title: 'Giving opinions',              desc: 'Share opinions people actually hear' },
+      { id: 'handling-disagreement', title: 'Handling disagreement',        desc: 'Push back politely, stay calm' },
       // Existing office scenarios — they fit workplace English too.
-      { id: 'raise',   title: 'Ask for a raise',        meta: '4 turns · 3 min', done: true },
-      { id: 'mistake', title: 'Reporting a mistake',    meta: '4 turns · 3 min', done: true },
-      { id: 'lunch',   title: 'Lunch chat',             meta: '5 turns · 4 min', done: true },
-      { id: 'disagree',title: 'Disagreeing politely',   meta: '4 turns · 3 min', done: true },
-      { id: 'cooler',  title: 'Water-cooler small talk',meta: '5 turns · 3 min', done: true },
+      { id: 'raise',   title: 'Ask for a raise',        desc: 'Ask for a raise without flinching' },
+      { id: 'mistake', title: 'Reporting a mistake',    desc: 'Own a mistake, keep their trust' },
+      { id: 'lunch',   title: 'Lunch chat',             desc: 'Easy lunch chat with colleagues' },
+      { id: 'disagree',title: 'Disagreeing politely',   desc: 'Disagree politely without burning bridges' },
+      { id: 'cooler',  title: 'Water-cooler small talk',desc: 'Small talk that feels natural' },
     ],
   },
   customer: {
     name: 'Customer Service',
     scenarios: [
-      { id: 'angry-customer', title: 'Calming an angry customer', meta: '5 turns · 4 min', done: true, lead: true },
-      { id: 'return-policy', title: 'Explaining a return policy', meta: '4 turns · 3 min', done: true },
-      { id: 'escalate', title: 'Politely refusing escalation', meta: '5 turns · 4 min', done: false },
-      { id: 'callback', title: 'Promising a callback', meta: '3 turns · 2 min', done: false },
-      { id: 'wrong-charge', title: 'Disputing a wrong charge', meta: '5 turns · 4 min', done: false },
+      { id: 'angry-customer', title: 'Calming an angry customer', desc: 'Turn an angry customer calm again', lead: true },
+      { id: 'return-policy', title: 'Explaining a return policy', desc: 'Explain returns clearly, keep them happy' },
+      { id: 'escalate', title: 'Politely refusing escalation', desc: 'Refuse escalation without losing the customer' },
+      { id: 'callback', title: 'Promising a callback', desc: 'Promise a callback and sound reliable' },
+      { id: 'wrong-charge', title: 'Disputing a wrong charge', desc: 'Handle a wrong charge confidently' },
     ],
   },
   dating: {
     name: 'Dating',
     scenarios: [
-      { id: 'first-message', title: 'Sending the first message', meta: '3 turns · 2 min', done: false, lead: true },
-      { id: 'first-date', title: 'First date small talk', meta: '6 turns · 5 min', done: false },
-      { id: 'compliment', title: 'Giving a compliment', meta: '3 turns · 2 min', done: false },
-      { id: 'no-thanks', title: 'Saying "no thanks" politely', meta: '4 turns · 3 min', done: false },
-      { id: 'meet-parents', title: 'Meeting their parents', meta: '6 turns · 5 min', done: false },
+      { id: 'first-message', title: 'Sending the first message', desc: 'Send a first message that lands', lead: true },
+      { id: 'first-date', title: 'First date small talk', desc: 'Keep first-date talk easy and fun' },
+      { id: 'compliment', title: 'Giving a compliment', desc: 'Give a compliment that feels genuine' },
+      { id: 'no-thanks', title: 'Saying "no thanks" politely', desc: 'Say no thanks without the awkwardness' },
+      { id: 'meet-parents', title: 'Meeting their parents', desc: 'Meet their parents and stay relaxed' },
     ],
   },
   family: {
     name: 'Family / In-Laws',
     scenarios: [
-      { id: 'in-laws', title: 'Talking to in-laws in English', meta: '5 turns · 4 min', done: true },
-      { id: 'kid-school', title: 'Helping kids with English homework', meta: '4 turns · 3 min', done: false },
-      { id: 'budget', title: 'Family budget discussion', meta: '5 turns · 4 min', done: false },
-      { id: 'visit', title: 'Inviting relatives over', meta: '4 turns · 3 min', done: false },
-      { id: 'argument', title: 'Resolving a family argument', meta: '6 turns · 5 min', done: false },
+      { id: 'in-laws', title: 'Talking to in-laws in English', desc: 'Talk to in-laws with easy English' },
+      { id: 'kid-school', title: 'Helping kids with English homework', desc: 'Help your kids with English homework' },
+      { id: 'budget', title: 'Family budget discussion', desc: 'Discuss the family budget without tension' },
+      { id: 'visit', title: 'Inviting relatives over', desc: 'Invite relatives over the easy way' },
+      { id: 'argument', title: 'Resolving a family argument', desc: 'Settle a family argument, keep peace' },
     ],
   },
   travel: {
     name: 'English for travel',
     scenarios: [
-      { id: 'airport-checkin',   title: 'Airport check-in',          meta: '3 turns · 2 min', done: false, lead: true },
-      { id: 'asking-directions', title: 'Asking for directions',     meta: '3 turns · 2 min', done: false },
-      { id: 'hotel-checkin',     title: 'Hotel check-in',            meta: '3 turns · 2 min', done: false },
-      { id: 'ordering-food',     title: 'Ordering at a restaurant',  meta: '3 turns · 2 min', done: false },
-      { id: 'buying-tickets',    title: 'Buying a ticket',           meta: '3 turns · 2 min', done: false },
+      { id: 'airport-checkin',   title: 'Airport check-in',          desc: 'Check in at the airport confidently', lead: true },
+      { id: 'asking-directions', title: 'Asking for directions',     desc: 'Ask directions and understand the answer' },
+      { id: 'hotel-checkin',     title: 'Hotel check-in',            desc: 'Check into your hotel with ease' },
+      { id: 'ordering-food',     title: 'Ordering at a restaurant',  desc: 'Order food the way you want' },
+      { id: 'buying-tickets',    title: 'Buying a ticket',           desc: 'Buy a ticket quickly and clearly' },
     ],
   },
 };
@@ -1319,7 +1319,6 @@ const SCENARIO_SCRIPTS = {
         { tone: 'bad',  text: 'You sounded slightly underconfident on "resolve this today". Drop the rising tone — it makes it sound like a question.' },
         { tone: 'warn', text: 'One filler ("you know") slipped in. Replace with a half-second pause; it sounds more authoritative.' },
       ],
-      pronunciation: { you: "frus-trAY-tion", suggested: "frus-TRAY-shun (stress on the middle syllable)" },
       better: "I completely understand your frustration, sir. Let me look into this right away — I'll have an answer for you in two minutes.",
     },
     listen: [
@@ -1364,7 +1363,6 @@ const SCENARIO_SCRIPTS = {
         { tone: 'bad',  text: 'You spoke a bit too fast (~160 wpm). For a raise conversation, slow down to 130. Pauses feel powerful.' },
         { tone: 'warn', text: '"Discuss compensation" was rushed — you swallowed "compensation". Open your mouth wider for the long vowels: com-pen-SAY-shun.' },
       ],
-      pronunciation: { you: "com-pen-suh-shun", suggested: "com-pen-SAY-shun" },
       better: "Sir, I'd like to discuss my contribution this year. Based on my impact — I closed eighteen accounts last quarter and took on two new responsibilities — I'd like to revisit my compensation.",
     },
     listen: [
@@ -1543,7 +1541,6 @@ const SCENARIO_SCRIPTS = {
         { tone: 'warn', text: 'Slight rush on "absolutely escalate" — you swallowed "absolutely". Say it slowly: ab-so-LUTE-ly.' },
         { tone: 'good', text: 'Closing with "what\'s the issue?" hands them the floor. 80% of callers stop demanding the manager from this question alone.' },
       ],
-      pronunciation: { you: "ab-so-loot-lee (rushed)", suggested: "ab-so-LUTE-ly (stress on syllable three)" },
       better: "I completely understand — you'd like to speak to my manager, and I can absolutely escalate this if it comes to that. Before I do, give me thirty seconds — what's the issue? Most of the time I can sort it from here.",
     },
   },
@@ -1599,7 +1596,6 @@ const SCENARIO_SCRIPTS = {
         { tone: 'bad',  text: 'You said "I\'ll check" — change to "I\'ll investigate". \'Check\' sounds casual; \'investigate\' sounds methodical, which is what an upset customer wants to hear.' },
         { tone: 'good', text: 'Closing with a concrete timeline (5-7 business days) prevents a follow-up call. Always end with one.' },
       ],
-      pronunciation: { you: "in-VES-tih-gate (clipped)", suggested: "in-VES-tuh-gate — open vowel on the third syllable" },
       better: "I completely understand — let me look at this with you. Yes, I see the charge for two thousand five hundred rupees on the fifteenth. Let me investigate — this looks like a duplicate charge. I'll process the refund right away, you'll see it within five to seven business days.",
     },
   },
@@ -1747,7 +1743,6 @@ const SCENARIO_SCRIPTS = {
         { tone: 'warn', text: 'Slightly under-confident on the question — your voice trailed off. End "What got you into Y?" on a clear, even tone.' },
         { tone: 'bad',  text: 'You repeated "same here" twice in 5 seconds. Once is charming; twice is filler.' },
       ],
-      pronunciation: { you: "kyoor-ee-ous", suggested: "KYOOR-ee-uhs (3 quick syllables, stress on the first)" },
       better: "Hey — your bio mentioned hiking, same here. What got you into trail running? I'd love to hear about your favourite route.",
     },
     listen: [
@@ -1877,7 +1872,6 @@ const SCENARIO_SCRIPTS = {
         { tone: 'warn', text: 'Slight pause before "Friday" — sounded uncertain. Say the word like you already know what you\'re asking.' },
         { tone: 'good', text: 'Closing with "by end of day" gave the manager a timebox. Adults love timeboxes.' },
       ],
-      pronunciation: { you: "klah-ri-fy", suggested: "KLA-ruh-fy (stress first, soft second)" },
       better: "Just to make sure I follow — when you say Friday, do you mean end of day Friday, or Friday morning so QA has time to test? I can confirm with the QA lead and get back to you by lunch.",
     },
   },
@@ -1957,7 +1951,6 @@ const SCENARIO_SCRIPTS = {
         { tone: 'good', text: 'You gave a falsifiable condition ("if user research came back…"). Managers love that — it shows you can update.' },
         { tone: 'warn', text: 'A small filler ("you know") on the convert-better line. The line is strong enough on its own; trust it.' },
       ],
-      pronunciation: { you: "REE-kun-suh-der", suggested: "ree-kun-SID-er (stress on the third syllable)" },
       better: "If I had to pick, I'd go with B. My read on the data: B-style products convert about 18% better in our segment. If user research came back showing A's framing tested cleaner, I'd reconsider — but on current numbers, it's B.",
     },
   },
@@ -2102,12 +2095,12 @@ function openPack(packId) {
   c.innerHTML = '';
   pack.scenarios.forEach((s, i) => {
     const row = document.createElement('div');
-    row.className = 'scenario-row' + (s.done ? ' done' : '');
+    row.className = 'scenario-row';
     row.innerHTML = `
-      <div class="s-num">${s.done ? '✓' : (i+1)}</div>
+      <div class="s-num">${i+1}</div>
       <div class="s-text">
         <div class="s-title">${s.title}</div>
-        <div class="s-meta">${s.meta}</div>
+        <div class="s-meta">${s.desc || ''}</div>
       </div>
       <div class="s-arrow"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
     `;
@@ -2370,7 +2363,6 @@ function buildPracticeTranscript(sc, mode) {
         label: 'How that landed',
         content: 'Empathy first, solution second — the right structure. Here\'s the line-by-line.',
         notes: coaching.notes,
-        pronunciation: coaching.pronunciation,
         better: coaching.better,
       },
     });
@@ -2529,22 +2521,22 @@ function setLang(l) {
  * Meaning shows in the chosen mother tongue.
  * ========================================================================= */
 const WORD_QUEUE = [
-  { word: "Apart", ipa: "/əˈpɑːrt/",
+  { word: "Apart",
     meaning: { en: "Different in a special way — what makes you stand out.", hi: "ख़ास तरीके से अलग — जो आपको बाकियों से अलग बनाता है।", gu: "ખાસ રીતે અલગ — જે તમને બીજાથી અલગ પાડે છે." },
     spoken:  { en: "Apart. Different in a special way — what makes you stand out.", hi: "Apart. ख़ास तरीके से अलग — जो आपको बाकियों से अलग बनाता है।", gu: "Apart. ખાસ રીતે અલગ — જે તમને બીજાથી અલગ પાડે છે." } },
-  { word: "Reckon", ipa: "/ˈrekən/",
+  { word: "Reckon",
     meaning: { en: "To think, casually — common in Indian & British English.", hi: "सोचना, अनौपचारिक तरीके से — भारतीय और ब्रिटिश अंग्रेज़ी में आम।", gu: "વિચારવું, સહજ રીતે — ભારતીય અને બ્રિટિશ અંગ્રેજીમાં સામાન્ય." },
     spoken:  { en: "Reckon. To think, casually — common in Indian and British English.", hi: "Reckon. सोचना, अनौपचारिक तरीके से — भारतीय और ब्रिटिश अंग्रेज़ी में आम।", gu: "Reckon. વિચારવું, સહજ રીતે — ભારતીય અને બ્રિટિશ અંગ્રેજીમાં સામાન્ય." } },
-  { word: "Crisp", ipa: "/krɪsp/",
+  { word: "Crisp",
     meaning: { en: "Clear and short — neat and to the point.", hi: "स्पष्ट और संक्षिप्त — साफ़ और सटीक।", gu: "સ્પષ્ટ અને ટૂંકું — સાફ અને મુદ્દાસર." },
     spoken:  { en: "Crisp. Clear and short — neat and to the point.", hi: "Crisp. स्पष्ट और संक्षिप्त — साफ़ और सटीक।", gu: "Crisp. સ્પષ્ટ અને ટૂંકું — સાફ અને મુદ્દાસર." } },
-  { word: "Push back", ipa: "/pʊʃ bæk/",
+  { word: "Push back",
     meaning: { en: "To politely disagree with someone.", hi: "किसी से विनम्रता से असहमत होना।", gu: "કોઈની સાથે નમ્રતાથી અસંમત થવું." },
     spoken:  { en: "Push back. To politely disagree with someone.", hi: "Push back. किसी से विनम्रता से असहमत होना।", gu: "Push back. કોઈની સાથે નમ્રતાથી અસંમત થવું." } },
-  { word: "Bandwidth", ipa: "/ˈbændwɪdθ/",
+  { word: "Bandwidth",
     meaning: { en: "Your capacity to take on more work.", hi: "और काम लेने की आपकी क्षमता।", gu: "વધુ કામ લેવાની તમારી ક્ષમતા." },
     spoken:  { en: "Bandwidth. Your capacity to take on more work.", hi: "Bandwidth. और काम लेने की आपकी क्षमता।", gu: "Bandwidth. વધુ કામ લેવાની તમારી ક્ષમતા." } },
-  { word: "Reach out", ipa: "/riːtʃ aʊt/",
+  { word: "Reach out",
     meaning: { en: "To contact someone, especially for help.", hi: "किसी से संपर्क करना — ख़ासकर मदद के लिए।", gu: "કોઈનો સંપર્ક કરવો — ખાસ કરીને મદદ માટે." },
     spoken:  { en: "Reach out. To contact someone, especially for help.", hi: "Reach out. किसी से संपर्क करना — ख़ासकर मदद के लिए।", gu: "Reach out. કોઈનો સંપર્ક કરવો — ખાસ કરીને મદદ માટે." } },
 ];
@@ -2678,11 +2670,10 @@ function renderSituations() {
     const scroll = section.querySelector('.sit-scroll');
     pack.scenarios.slice(0, 6).forEach(s => {
       const card = document.createElement('button');
-      card.className = 'sit-tile' + (s.done ? ' done' : '');
+      card.className = 'sit-tile';
       card.innerHTML = `
         <div class="sit-tile-title">${s.title}</div>
-        <div class="sit-tile-meta">${(s.meta || '').split('·')[0].trim()}</div>
-        ${s.done ? '<div class="sit-tile-done">✓ done</div>' : ''}
+        <div class="sit-tile-meta">${s.desc || ''}</div>
       `;
       card.onclick = () => openScenario(s.id);
       scroll.appendChild(card);
