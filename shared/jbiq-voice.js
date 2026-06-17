@@ -169,19 +169,12 @@
    * the AudioContext (which needs a user gesture), but the raw bytes are
    * cached in memory immediately.
    */
-  let prefetchStarted = false;
-  function prefetchAll() {
-    if (prefetchStarted) return;
-    prefetchStarted = true;
-    const cache = window.TTS_CACHE || {};
-    const files = new Set(Object.values(cache));
-    files.forEach(filename => { fetchMp3(filename).catch(() => {}); });
-  }
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', prefetchAll);
-  } else {
-    prefetchAll();
-  }
+  // NOTE: audio is fetched on demand by fetchMp3() and cached after a clip's
+  // first play. We deliberately do NOT bulk-prefetch the ~550 cached clips on
+  // load. That earlier warm fired every clip at once, saturating the connection
+  // and making page loads — and navigation between pages — crawl (and wasting
+  // mobile data). On-demand fetch adds only a small one-time delay the first
+  // time a given clip plays, which is well worth a fast, light page.
 
   /* ============ Glow state controller ============ */
   function setGlowState(glowEl, state) {
