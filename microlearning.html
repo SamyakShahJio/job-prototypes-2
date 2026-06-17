@@ -594,7 +594,7 @@ function showLearningPlan(planId) {
       chat.appendChild(card);
       chat.scrollTop = chat.scrollHeight;
       card.querySelectorAll('.lp-course').forEach(el => { el.onclick = () => openCourse(el.dataset.sub); });
-      card.querySelector('.lp-start').onclick = () => openCourse(plan.subs[0]);
+      card.querySelector('.lp-start').onclick = () => openCourse(plan.subs[0], undefined, true);
       card.querySelector('.lp-remind').onclick = openReminderSheet;
     }, 500);
   }, 450);
@@ -617,7 +617,7 @@ function courseAsk() {
   }, 450);
 }
 
-function openCourse(subId, resumeLesson) {
+function openCourse(subId, resumeLesson, skipIntro) {
   const info = SUB_INDEX[subId];
   if (!info) return;
   course = { subId, data: buildCourse(info.sub), idx: 0 };
@@ -633,6 +633,14 @@ function openCourse(subId, resumeLesson) {
     window.GC.appendAi(chat, `Welcome back — let's pick up "${info.sub.title}" where you left off.`);
     course.idx = resumeLesson;
     setTimeout(() => showLessonCarousel(resumeLesson), 700);
+    return;
+  }
+
+  if (skipIntro) {
+    // Reached via "Start my plan" / "Start the next course" — the user already
+    // chose to begin, so drop straight into lessons (no redundant "Start learning").
+    window.GC.appendAi(chat, `Great — let's dive into "${info.sub.title}". 💪`);
+    setTimeout(() => showLessonCarousel(0), 700);
     return;
   }
 
@@ -757,7 +765,7 @@ function finishCourse() {
     chat.appendChild(end);
     chat.scrollTop = chat.scrollHeight;
     document.getElementById('ce_remind').onclick = openReminderSheet;
-    if (next) document.getElementById('ce_next').onclick = () => openCourse(next.id);
+    if (next) document.getElementById('ce_next').onclick = () => openCourse(next.id, undefined, true);
     document.getElementById('ce_share').onclick = () => shareBadge(info.sub.title);
   }, 650);
 }
