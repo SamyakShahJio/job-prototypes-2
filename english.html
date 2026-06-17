@@ -7,7 +7,7 @@
 <title>Speak English — JioBharatIQ</title>
 <link rel="stylesheet" href="shared/jds-tokens.css?v=3">
 <link rel="stylesheet" href="shared/ambient-glow.css?v=2">
-<link rel="stylesheet" href="shared/guided-chat.css?v=3">
+<link rel="stylesheet" href="shared/guided-chat.css?v=4">
 <style>
   body { background: var(--white); }
   .phone-frame { background: var(--white); }
@@ -323,7 +323,7 @@
     margin: var(--space-5) var(--space-4) 0;
     border-radius: 16px;
     padding: 20px 18px 16px;
-    background: linear-gradient(135deg, #3900ad 0%, #6464ff 60%, #f7ab20 200%);
+    background: linear-gradient(135deg, #6d17ce 0%, #9c65fe 60%, #f7ab20 200%);
     color: white;
     position: relative;
     overflow: hidden;
@@ -730,7 +730,7 @@
   }
   .pathway-week.current .pw-num {
     background: var(--primary); border-color: var(--primary); color: white;
-    box-shadow: 0 0 0 4px rgba(53,53,243,0.15);
+    box-shadow: 0 0 0 4px rgba(109,23,206,0.15);
   }
   .pathway-week .pw-content {
     flex: 1;
@@ -886,9 +886,10 @@
   .lang-select { display: flex; align-items: center; gap: 10px; padding: var(--space-3) var(--space-4) 0; }
   .lang-label { font-size: 11px; font-weight: 600; color: var(--grey-60); text-transform: uppercase; letter-spacing: 0.4px; flex-shrink: 0; }
   .lang-pills { display: flex; gap: 6px; }
-  .lang-pill { border: 1.5px solid var(--grey-40); background: white; border-radius: 999px; padding: 5px 12px; font-family: var(--font); font-size: 12px; font-weight: 600; color: var(--text-high); cursor: pointer; transition: all 0.12s; }
-  .lang-pill:hover { border-color: var(--surface-bold); }
-  .lang-pill.sel { border-color: var(--surface-bold); background: var(--primary-20); color: var(--surface-bold); font-weight: 600; }
+  .lang-pill { border: none; background: var(--surface-ghost); border-radius: 999px; padding: 7px 14px; font-family: var(--font); font-size: 12px; font-weight: 500; color: var(--text-high); cursor: pointer; transition: transform var(--ease-snappy) 200ms; }
+  .lang-pill:hover { transform: scale(1.03); }
+  .lang-pill:active { transform: scale(0.97); }
+  .lang-pill.sel { background: var(--primary-50); color: #fff; }
 
   /* ===== Word of the Day — stacked cards + arrows ===== */
   .wod-stack-wrap { position: relative; margin: var(--space-4) var(--space-4) 0; padding: 6px 30px; }
@@ -897,7 +898,7 @@
   .wod-stack::after  { transform: rotate(2.6deg)  translateY(2px); background: linear-gradient(135deg, #4a2bbf, #6f63f0); opacity: 0.85; }
   .wod-stack::before { transform: rotate(-2.6deg) translateY(3px); background: linear-gradient(135deg, #3a1f9f, #5a4fd0); opacity: 0.55; }
   .wod-card { position: relative; z-index: 1; border-radius: 16px; padding: 18px 18px 14px;
-    background: linear-gradient(135deg, #3900ad 0%, #6464ff 78%); color: white;
+    background: linear-gradient(135deg, #6d17ce 0%, #9c65fe 78%); color: white;
     box-shadow: 0 12px 30px rgba(57,0,173,0.25); }
   .wod-tag { display: inline-block; font-size: 10px; font-weight: 600; letter-spacing: 0.6px; text-transform: uppercase; padding: 4px 10px; background: rgba(255,255,255,0.18); border-radius: 999px; margin-bottom: 10px; }
   .wod-word { font-size: 32px; font-weight: 600; letter-spacing: -0.6px; line-height: 1; }
