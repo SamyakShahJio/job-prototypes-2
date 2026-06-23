@@ -604,7 +604,52 @@ function askFromHome() {
   }, 600);
 }
 
-// Free text typed mid-course → a light, contextual answer that never breaks the flow.
+// Concrete, course-specific examples. "ek aur example do" cycles through these
+// so each ask gives a genuinely new one (not a canned line).
+const COURSE_EXAMPLES = {
+  'ai-kya-hai': [
+    'Bolo: "Meri kirane ki dukaan ke liye 5 WhatsApp status ideas do." — AI turant 5 ready-to-post lines de dega.',
+    'Koi lamba message paste karke bolo: "ise 2 line mein samjhao." — AI chhota summary bana dega.',
+    'Bolo: "Yeh English email simple Hindi mein likho." — seconds mein translate ho jaayega.',
+  ],
+  'ai-image': [
+    'Prompt: "A samosa plate on a wooden table, morning light, top view, realistic" → menu/reel ke liye saaf food photo.',
+    'Prompt: "Diwali sale poster, diya aur rangoli, space for text, warm colours" → dukaan ke offer ka poster ready.',
+    'Prompt: "Profile photo, plain blue background, formal shirt, soft light" → studio gaye bina professional DP.',
+  ],
+  'ai-prompt': [
+    'Few-shot: "Yeh do titles ka style copy karo — 1) ₹500 mein ghar setup 2) 10 min mein paneer. Ab aise hi 5 aur do." AI tone pakad leta hai.',
+    'Role + limit: "You are a hiring manager. Mere resume ki 3 sabse badi galtiyan bullet points mein batao." — sharp, kaam ka feedback.',
+    'Refine: pehle jawab par bolo "thoda chhota karo aur Hinglish mein" — output aapke style mein dhal jaata hai.',
+  ],
+  'ai-ppt': [
+    'Bolo: "Make a 6-slide outline on \'online dukaan kaise shuru karein\' — title + 3 bullets per slide." → poora structure ready.',
+    'Phir bolo: "Har slide ke liye 2-line speaker notes do." → bolne ke points bhi taiyaar.',
+  ],
+  'ai-blog': [
+    'Bolo: "Write a 200-word product description for a handmade candle, friendly tone." → client ko dikhane layak sample.',
+    'Bolo: "5 SEO-friendly blog titles for a local gym." → pitch karne ke ideas taiyaar.',
+  ],
+  'cibil': [
+    'Example: card limit ₹1,00,000 hai to ₹30,000 se zyada kabhi use mat karo — yeh "30% rule" score upar rakhta hai.',
+    'Example: purana card band mat karo — lambi history score ke liye achhi hoti hai.',
+  ],
+  'thumbnail': ['Example: chehra + bada emotion + 3 shabd se kam text (jaise "₹0 SETUP") — door se padh jaaye, wahi click laata hai.'],
+  'overthinking': ['Example: jab dimaag bhaage, likho "abhi main kya control kar sakta hoon?" — sirf usi ek cheez par kaam karo.'],
+  'yt-channel': ['Example: ek hi topic ke 10 video (jaise "ghar ke nuskhe") — channel ko pehchaan milti hai, log subscribe karte hain.'],
+  'budgeting': ['Example: 50-30-20 — ₹20,000 income par ₹10k zaroorat, ₹6k shauk, ₹4k bachat. Pehli tareekh ko bachat alag kar do.'],
+};
+const exCursor = {};   // per-course pointer so "ek aur" keeps moving forward
+const firstSentence = (s) => (String(s).match(/^[^.!?]*[.!?]/) || [String(s)])[0].trim();
+function curLesson() {
+  const ls = course && course.data && course.data.lessons;
+  if (!ls || !ls.length) return null;
+  return ls[Math.min(course.idx || 0, ls.length - 1)] || ls[0];
+}
+
+// Free text typed mid-course → a meaningful, content-grounded answer. Reads the
+// intent (example / simpler / where-to-use) and pulls from the real course
+// content so the reply is specific to where the user actually is.
 function askInCourse() {
   const chat = chatEl();
   if (!chat) return;
@@ -612,9 +657,38 @@ function askInCourse() {
   const text = ((inp && inp.value) || '').trim() || 'Can you explain that again?';
   if (inp) inp.value = '';
   window.GC.appendUser(chat, text);
-  setTimeout(() => {
-    window.GC.appendAi(chat, "Sure — short answer: the main idea is in the first line of the card above. Want a quick example, or shall we keep going? Tap the button on the card when you're ready. 👍");
-  }, 500);
+  const t = text.toLowerCase();
+  const sid = course && course.subId;
+  const title = (sid && SUB_INDEX[sid]) ? SUB_INDEX[sid].sub.title : 'is topic';
+  let reply;
+
+  if (/example|udaharan|udahran|for instance|jaise ki|ek aur|aur ek/.test(t)) {
+    const list = sid && COURSE_EXAMPLES[sid];
+    if (list && list.length) {
+      const n = exCursor[sid] || 0;
+      reply = list[n % list.length];
+      exCursor[sid] = n + 1;
+    } else {
+      const l = curLesson();
+      reply = l ? `Example: socho aap "${title}" par kaam kar rahe ho — ${firstSentence(l.body)} Isi ko aaj ek baar khud karke dekho.`
+                : `Example: "${title}" ka jo pehla step hai, use aaj 10 minute mein ek baar try karo.`;
+    }
+  } else if (/simple|aasaan|asaan|easy|samjha|samajh|phir se|dobara|again|repeat/.test(t)) {
+    const l = curLesson();
+    reply = l ? `Aasaan shabdon mein: ${firstSentence(l.body)}`
+              : 'Aasaan mein: ek chhoti cheez chuno aur abhi ek baar karke dekho — wahi seekhna hai.';
+  } else if (/kahan|kaha|where|use kar|apply|kab use|real life|kaam mein/.test(t)) {
+    const ls = course && course.data && course.data.lessons;
+    const action = ls && (ls.filter(x => /aaj|today|kadam|action|try/i.test(x.h)).pop() || ls[ls.length - 1]);
+    reply = action ? `Aise use karo: ${firstSentence(action.body)}`
+                   : `Iska use: aaj kisi ek chhote kaam mein "${title}" wala tareeka laga ke dekho.`;
+  } else {
+    const l = curLesson();
+    reply = l ? `${l.h} — ${firstSentence(l.body)} Aur kuch poochho, ya card par button daba ke aage badho. 👍`
+              : 'Bolo kya jaanna hai — ya card par button daba ke aage badho. 👍';
+  }
+
+  setTimeout(() => window.GC.appendAi(chat, reply), 500);
 }
 function courseAsk() { askInCourse(); } // back-compat
 
