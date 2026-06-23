@@ -101,15 +101,21 @@
   .hscroll-arrow.right { right: 2px; }
   .hscroll-arrow:disabled { opacity: 0; pointer-events: none; }
 
-  /* Active learning plan card (returning home) */
-  .plan-active { display: block; width: calc(100% - 2 * var(--space-4)); margin: 0 var(--space-4) var(--space-4); padding: 15px; border: none; border-radius: 16px; background: linear-gradient(135deg, var(--vert-accent) 0%, #9c65fe 92%); color: #fff; cursor: pointer; text-align: left; font-family: var(--font); }
-  .plan-active:hover { transform: translateY(-2px); }
-  .plan-active .pa-tag { font-size: 10.5px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; opacity: 0.92; display: flex; align-items: center; gap: 6px; }
-  .plan-active .pa-title { font-size: 16px; font-weight: 600; letter-spacing: -0.2px; margin-top: 4px; }
-  .plan-active .pa-meta { font-size: 12.5px; opacity: 0.92; margin-top: 3px; }
-  .plan-active .pa-bar { height: 5px; border-radius: 3px; background: rgba(255,255,255,0.28); margin-top: 11px; overflow: hidden; }
-  .plan-active .pa-fill { height: 100%; background: #fff; border-radius: 3px; }
-  .plan-active .pa-next { font-size: 12px; opacity: 0.95; margin-top: 9px; display: flex; align-items: center; gap: 6px; }
+  /* Active learning plan — horizontal progress stepper (returning home) */
+  .plan-active { width: calc(100% - 2 * var(--space-4)); margin: 0 var(--space-4) var(--space-4); padding: 14px 14px 12px; border: 1px solid var(--stroke-subtle); border-radius: 16px; background: white; font-family: var(--font); box-shadow: var(--shadow-sm); }
+  .plan-active .pa-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 14px; }
+  .plan-active .pa-tag { font-size: 12.5px; font-weight: 600; color: var(--vert-accent-dark); }
+  .plan-active .pa-count { font-size: 11px; font-weight: 600; color: var(--text-low); white-space: nowrap; }
+  .plan-active .pa-track { display: flex; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
+  .plan-active .pa-track::-webkit-scrollbar { display: none; }
+  .plan-active .pa-step { flex: 0 0 88px; position: relative; display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 0; background: none; border: none; cursor: pointer; font-family: var(--font); }
+  .plan-active .pa-step:not(:last-child)::after { content: ''; position: absolute; top: 13px; left: 50%; width: 100%; height: 2px; background: var(--grey-30); z-index: 0; }
+  .plan-active .pa-step.done:not(:last-child)::after { background: var(--vert-accent); }
+  .plan-active .pa-node { position: relative; z-index: 1; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; background: white; border: 2px solid var(--grey-30); color: var(--text-low); }
+  .plan-active .pa-step.done .pa-node { background: var(--vert-accent); border-color: var(--vert-accent); color: white; }
+  .plan-active .pa-step.current .pa-node { border-color: var(--vert-accent); color: var(--vert-accent); box-shadow: 0 0 0 3px var(--primary-20); }
+  .plan-active .pa-name { font-size: 10.5px; font-weight: 600; line-height: 1.25; text-align: center; color: var(--grey-90); max-width: 82px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .plan-active .pa-step.upcoming .pa-name { color: var(--text-low); font-weight: 500; }
 
   /* ============= COURSE — in-chat ============== */
   .plan-card, .badge-card, .wa-card {
@@ -140,9 +146,9 @@
   .ls-media {
     position: relative; flex-shrink: 0; height: 168px;
     display: flex; align-items: center; justify-content: center;
-    background: linear-gradient(135deg, #6d17ce 0%, #9c65fe 92%); color: white; cursor: pointer;
+    background: #6d17ce; color: white; cursor: pointer;
   }
-  .ls-media.img { background: linear-gradient(135deg, #0a7c5a 0%, #2bbd8a 92%); }
+  .ls-media.img { background: #0a7c5a; }
   .ls-media .ls-play {
     width: 56px; height: 56px; border-radius: 50%;
     background: rgba(255,255,255,0.22);
@@ -173,7 +179,7 @@
   .carousel-dots .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--grey-40); transition: all 0.25s; }
   .carousel-dots .dot.on { background: var(--vert-accent); width: 20px; border-radius: 4px; }
 
-  .badge-card { text-align: center; background: linear-gradient(135deg, #6d17ce 0%, #9c65fe 80%); border: none; color: white; }
+  .badge-card { text-align: center; background: #6d17ce; border: none; color: white; }
   .badge-card .bc-ring { width: 64px; height: 64px; margin: 0 auto 10px; border-radius: 50%; background: rgba(255,255,255,0.18); display: flex; align-items: center; justify-content: center; }
   .badge-card .bc-h { font-size: 17px; font-weight: 600; letter-spacing: -0.2px; }
   .badge-card .bc-sub { font-size: 13px; opacity: 0.9; margin-top: 4px; line-height: 1.4; }
@@ -657,16 +663,26 @@ function renderPlanActive() {
   if (!host || typeof ACTIVE_PLAN === 'undefined' || !ACTIVE_PLAN) return;
   const cat = CATEGORIES.find(c => c.id === ACTIVE_PLAN.catId);
   if (!cat) return;
-  const total = cat.subs.length, done = ACTIVE_PLAN.done, pct = Math.round((done / total) * 100);
-  const nextSub = cat.subs[done] || cat.subs[total - 1];
-  host.innerHTML = `
-    <button class="plan-active" onclick="openCourse('${nextSub.id}')">
-      <span class="pa-tag">🧭 Your learning plan</span>
-      <span class="pa-title">${cat.name}</span>
-      <span class="pa-meta">${done} of ${total} courses done · keep the streak going</span>
-      <span class="pa-bar"><span class="pa-fill" style="width:${pct}%"></span></span>
-      <span class="pa-next">Next: ${subEmoji(nextSub.id)} ${nextSub.title} →</span>
+  const total = cat.subs.length, done = ACTIVE_PLAN.done;
+  const steps = cat.subs.map((s, i) => {
+    const state = i < done ? 'done' : (i === done ? 'current' : 'upcoming');
+    const node = i < done
+      ? '<svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+      : (i + 1);
+    return `<button class="pa-step ${state}" onclick="openCourse('${s.id}')">
+      <span class="pa-node">${node}</span>
+      <span class="pa-name">${s.title}</span>
     </button>`;
+  }).join('');
+  host.innerHTML = `
+    <div class="plan-active">
+      <div class="pa-head">
+        <span class="pa-tag">🧭 Your learning plan · ${cat.name}</span>
+        <span class="pa-count">${done} / ${total} done</span>
+      </div>
+      <div class="pa-track">${steps}</div>
+    </div>`;
+  withArrows(host.querySelector('.pa-track'));
 }
 
 function openCourse(subId, resumeLesson, skipIntro) {
