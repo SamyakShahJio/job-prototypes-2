@@ -108,6 +108,12 @@
     margin: 0 calc(var(--space-4) * -1);
   }
   .companies-row::-webkit-scrollbar { display: none; }
+  /* ===== Feedback round: side arrows on horizontal scrollers ===== */
+  .hscroll { position: relative; }
+  .hscroll-arrow { position: absolute; top: 50%; transform: translateY(-50%); z-index: 6; width: 30px; height: 30px; border-radius: 50%; background: rgba(255,255,255,0.96); border: 1px solid var(--grey-40); box-shadow: var(--shadow-sm); display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--grey-90); transition: opacity 0.15s; }
+  .hscroll-arrow.left { left: 2px; }
+  .hscroll-arrow.right { right: 2px; }
+  .hscroll-arrow:disabled { opacity: 0; pointer-events: none; }
   .company-chip {
     flex-shrink: 0;
     padding: 12px 14px;
@@ -842,6 +848,34 @@ function renderHomeCatalogues() {
       <div class="c-name">${c.name}</div>
       <div class="c-meta">${c.meta}</div>
     </div>`).join('');
+  withArrows(roleRow);
+  withArrows(compRow);
+}
+
+// Wrap a horizontal scroller with left/right side arrows.
+function withArrows(scrollEl) {
+  if (!scrollEl || scrollEl.parentNode.classList.contains('hscroll')) return;
+  const wrap = document.createElement('div');
+  wrap.className = 'hscroll';
+  scrollEl.parentNode.insertBefore(wrap, scrollEl);
+  wrap.appendChild(scrollEl);
+  const arrow = (dir) => {
+    const b = document.createElement('button');
+    b.className = 'hscroll-arrow ' + dir;
+    b.setAttribute('aria-label', dir === 'left' ? 'Scroll left' : 'Scroll right');
+    b.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M' + (dir === 'left' ? '15 6l-6 6 6 6' : '9 6l6 6-6 6') + '" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    b.onclick = () => scrollEl.scrollBy({ left: (dir === 'left' ? -1 : 1) * scrollEl.clientWidth * 0.85, behavior: 'smooth' });
+    return b;
+  };
+  const left = arrow('left'), right = arrow('right');
+  wrap.appendChild(left); wrap.appendChild(right);
+  const update = () => {
+    left.disabled = scrollEl.scrollLeft <= 4;
+    right.disabled = scrollEl.scrollLeft + scrollEl.clientWidth >= scrollEl.scrollWidth - 4;
+  };
+  scrollEl.addEventListener('scroll', update);
+  window.addEventListener('resize', update);
+  setTimeout(update, 60);
 }
 
 /* =========================================================================

@@ -271,6 +271,13 @@
     scrollbar-width: none;
   }
   .situations-row::-webkit-scrollbar { display: none; }
+
+  /* ===== Feedback round: side arrows on horizontal scrollers ===== */
+  .hscroll { position: relative; }
+  .hscroll-arrow { position: absolute; top: 50%; transform: translateY(-50%); z-index: 6; width: 30px; height: 30px; border-radius: 50%; background: rgba(255,255,255,0.96); border: 1px solid var(--grey-40); box-shadow: var(--shadow-sm); display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--grey-90); transition: opacity 0.15s; }
+  .hscroll-arrow.left { left: 2px; }
+  .hscroll-arrow.right { right: 2px; }
+  .hscroll-arrow:disabled { opacity: 0; pointer-events: none; }
   .situation-card {
     flex: 0 0 200px;
     scroll-snap-align: start;
@@ -965,7 +972,7 @@
     <div class="view-body">
       <!-- Mother-tongue selector — switches meanings, explanations & audio -->
       <div class="lang-select">
-        <span class="lang-label" id="lang_label">Explain in</span>
+        <span class="lang-label" id="lang_label">Learn in</span>
         <div class="lang-pills" id="lang_pills"><!-- renderLang() --></div>
       </div>
 
@@ -992,6 +999,7 @@
       <div class="tools-grid" id="tools_grid"><!-- renderTools() --></div>
 
       <!-- Situations — one category row after another -->
+      <div class="section-row"><div class="section-h-inline">Practising for situations</div></div>
       <div id="situations_host"><!-- renderSituations() --></div>
     </div>
 
@@ -1030,7 +1038,7 @@
         </svg>
       </button>
       <div class="title-area">
-        <div class="t1">Situation packs</div>
+        <div class="t1">Practising for situations</div>
         <div class="t2">Real situations · 5 scenarios each</div>
       </div>
     </div>
@@ -2488,7 +2496,7 @@ const LANGS = [
   { id: 'gu', label: 'ગુજરાતી' },
 ];
 const I18N = {
-  explainIn:   { en: 'Explain in',           hi: 'समझाएँ',                  gu: 'સમજાવો' },
+  explainIn:   { en: 'Learn in',             hi: 'सीखें',                   gu: 'શીખો' },
   talk:        { en: 'Talk with AI',         hi: 'AI से बात करें',          gu: 'AI સાથે વાત કરો' },
   tools:       { en: 'Tools to help you',    hi: 'आपकी मदद के लिए टूल',     gu: 'તમારી મદદ માટે ટૂલ્સ' },
   wordOfDay:   { en: 'Word of the day',      hi: 'आज का शब्द',              gu: 'આજનો શબ્દ' },
@@ -2694,6 +2702,7 @@ function renderAvatars() {
     card.onclick = () => openAvatar(a.id);
     row.appendChild(card);
   });
+  withArrows(row);
 }
 function openAvatar(avatarId) {
   // Set the active avatar persona (avatarVoice picks this up on creation).
@@ -2721,6 +2730,32 @@ const SIT_ROWS = [
   { pack: 'customer', title: { en: 'Customer calls',     hi: 'ग्राहक कॉल', gu: 'ગ્રાહક કૉલ' } },
   { pack: 'family',   title: { en: 'Family & in-laws',   hi: 'परिवार और ससुराल', gu: 'કુટુંબ અને સાસરિયાં' } },
 ];
+// Wrap a horizontal scroller with left/right side arrows.
+function withArrows(scrollEl) {
+  if (!scrollEl || scrollEl.parentNode.classList.contains('hscroll')) return;
+  const wrap = document.createElement('div');
+  wrap.className = 'hscroll';
+  scrollEl.parentNode.insertBefore(wrap, scrollEl);
+  wrap.appendChild(scrollEl);
+  const arrow = (dir) => {
+    const b = document.createElement('button');
+    b.className = 'hscroll-arrow ' + dir;
+    b.setAttribute('aria-label', dir === 'left' ? 'Scroll left' : 'Scroll right');
+    b.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M' + (dir === 'left' ? '15 6l-6 6 6 6' : '9 6l6 6-6 6') + '" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    b.onclick = () => scrollEl.scrollBy({ left: (dir === 'left' ? -1 : 1) * scrollEl.clientWidth * 0.85, behavior: 'smooth' });
+    return b;
+  };
+  const left = arrow('left'), right = arrow('right');
+  wrap.appendChild(left); wrap.appendChild(right);
+  const update = () => {
+    left.disabled = scrollEl.scrollLeft <= 4;
+    right.disabled = scrollEl.scrollLeft + scrollEl.clientWidth >= scrollEl.scrollWidth - 4;
+  };
+  scrollEl.addEventListener('scroll', update);
+  window.addEventListener('resize', update);
+  setTimeout(update, 60);
+}
+
 function renderSituations() {
   const host = document.getElementById('situations_host');
   if (!host) return;
@@ -2745,6 +2780,7 @@ function renderSituations() {
       card.onclick = () => openScenario(s.id);
       scroll.appendChild(card);
     });
+    withArrows(scroll);
     host.appendChild(section);
   });
 }

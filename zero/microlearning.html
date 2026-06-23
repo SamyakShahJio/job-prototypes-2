@@ -88,6 +88,17 @@
   .cat-tile .ct-title { font-size: 13px; font-weight: 600; color: var(--grey-100); line-height: 1.3; }
   .cat-tile .ct-meta { font-size: 11px; color: var(--text-low); font-weight: 600; margin-top: auto; }
 
+  /* ===== Feedback round: done ticks · side arrows ===== */
+  .cat-tile { position: relative; }
+  .cat-tile .ct-tick { position: absolute; top: 10px; right: 10px; width: 19px; height: 19px; border-radius: 50%; background: #25ab21; color: #fff; display: flex; align-items: center; justify-content: center; box-shadow: 0 1px 3px rgba(0,0,0,0.18); }
+  .cat-tile.done .ct-badge { opacity: 0.6; }
+  .cat-tile.done .ct-meta { color: #25ab21; }
+  .hscroll { position: relative; }
+  .hscroll-arrow { position: absolute; top: 50%; transform: translateY(-50%); z-index: 6; width: 30px; height: 30px; border-radius: 50%; background: rgba(255,255,255,0.96); border: 1px solid var(--grey-40); box-shadow: var(--shadow-sm); display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--grey-90); transition: opacity 0.15s; }
+  .hscroll-arrow.left { left: 2px; }
+  .hscroll-arrow.right { right: 2px; }
+  .hscroll-arrow:disabled { opacity: 0; pointer-events: none; }
+
   /* ============= COURSE — in-chat ============== */
   .plan-card, .badge-card, .wa-card {
     align-self: stretch; background: white;
@@ -228,7 +239,7 @@
     <div class="gc-input-dock">
       <div class="gc-input-wrap">
         <div class="gc-input-text">
-          <input type="text" placeholder="What do you want to learn today?" readonly onclick="openCourse('ai-kya-hai')">
+          <input id="home_input" type="text" placeholder="What do you want to learn today?" onkeydown="if(event.key==='Enter')askFromHome()">
         </div>
         <div class="gc-input-actions">
           <div class="gc-input-left">
@@ -240,7 +251,7 @@
             <button class="gc-input-icon-btn" aria-label="Voice" onclick="openCourse('ai-kya-hai')">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 15a3 3 0 003-3V5a3 3 0 00-6 0v7a3 3 0 003 3zm6-5a1 1 0 00-1 1v1a5 5 0 11-10 0v-1a1 1 0 10-2 0v1a7 7 0 1014 0v-1a1 1 0 00-1-1zm-3 10H9a1 1 0 000 2h6a1 1 0 000-2z"/></svg>
             </button>
-            <button class="gc-input-speak-btn" onclick="openCourse('ai-kya-hai')">
+            <button class="gc-input-speak-btn" onclick="askFromHome()">
               <svg viewBox="0 0 24 24"><path d="M12 15a3 3 0 003-3V5a3 3 0 00-6 0v7a3 3 0 003 3zm6-5a1 1 0 00-1 1v1a5 5 0 11-10 0v-1a1 1 0 10-2 0v1a7 7 0 1014 0v-1a1 1 0 00-1-1z"/></svg>
               <span>Speak</span>
             </button>
@@ -267,7 +278,7 @@
     <div class="gc-input-dock">
       <div class="gc-input-wrap">
         <div class="gc-input-text">
-          <input type="text" placeholder="Reply or ask about this lesson…" readonly onclick="courseAsk()">
+          <input id="course_input" type="text" placeholder="Reply or ask about this lesson…" onkeydown="if(event.key==='Enter')askInCourse()">
         </div>
         <div class="gc-input-actions">
           <div class="gc-input-left">
@@ -279,7 +290,7 @@
             <button class="gc-input-icon-btn" aria-label="Voice" onclick="courseAsk()">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 15a3 3 0 003-3V5a3 3 0 00-6 0v7a3 3 0 003 3zm6-5a1 1 0 00-1 1v1a5 5 0 11-10 0v-1a1 1 0 10-2 0v1a7 7 0 1014 0v-1a1 1 0 00-1-1zm-3 10H9a1 1 0 000 2h6a1 1 0 000-2z"/></svg>
             </button>
-            <button class="gc-input-speak-btn" onclick="courseAsk()">
+            <button class="gc-input-speak-btn" onclick="askInCourse()">
               <svg viewBox="0 0 24 24"><path d="M12 15a3 3 0 003-3V5a3 3 0 00-6 0v7a3 3 0 003 3zm6-5a1 1 0 00-1 1v1a5 5 0 11-10 0v-1a1 1 0 10-2 0v1a7 7 0 1014 0v-1a1 1 0 00-1-1z"/></svg>
               <span>Speak</span>
             </button>
@@ -293,8 +304,8 @@
   <div class="sheet-backdrop" id="reminderSheet" onclick="if(event.target===this)closeReminderSheet()">
     <div class="sheet">
       <div class="sheet-grab"></div>
-      <div class="sheet-h">I'll remind you to keep learning</div>
-      <div class="sheet-sub">First nudge lands <strong>tomorrow</strong>. Pick when and how often.</div>
+      <div class="sheet-h">Your learning plan</div>
+      <div class="sheet-sub">One short course at a time. Pick your pace.</div>
       <div class="sheet-group">
         <div class="sheet-group-h">Time of day</div>
         <div class="sheet-opts" id="rem-time">
@@ -304,14 +315,14 @@
         </div>
       </div>
       <div class="sheet-group">
-        <div class="sheet-group-h">How often</div>
+        <div class="sheet-group-h">Your pace</div>
         <div class="sheet-opts" id="rem-freq">
           <button class="sheet-opt sel" data-v="every day">Every day</button>
           <button class="sheet-opt" data-v="every other day">Every other day</button>
           <button class="sheet-opt" data-v="on weekends">Weekends</button>
         </div>
       </div>
-      <button class="sheet-set" onclick="confirmReminder()">Set my learning reminder</button>
+      <button class="sheet-set" onclick="confirmReminder()">Start my learning plan</button>
     </div>
   </div>
 
@@ -491,16 +502,19 @@ function renderHome() {
     const scroll = section.querySelector('.cat-scroll');
     cat.subs.forEach(s => {
       const lessons = buildCourse(s).lessons.length;
+      const done = COMPLETED.has(s.id);
       const tile = document.createElement('button');
-      tile.className = 'cat-tile';
+      tile.className = 'cat-tile' + (done ? ' done' : '');
       tile.innerHTML = `
+        ${done ? '<span class="ct-tick"><svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>' : ''}
         <span class="ct-badge">${subEmoji(s.id)}</span>
         <span class="ct-title">${s.title}</span>
-        <span class="ct-meta">${lessons} lessons · ~${lessons * 2} min</span>`;
+        <span class="ct-meta">${done ? 'Done · ' + lessons + ' lessons' : lessons + ' lessons · ~' + lessons * 2 + ' min'}</span>`;
       tile.onclick = () => openCourse(s.id);
       scroll.appendChild(tile);
     });
     host.appendChild(section);
+    withArrows(scroll);
   });
 }
 
@@ -513,14 +527,112 @@ let course = { subId: null, data: null, idx: 0 };
 
 function chatEl() { return document.getElementById('courseChat'); }
 
-// Tapping the in-course input dock — a light "ask" that never breaks the guided flow.
-function courseAsk() {
+/* ===== Feedback round: free text · ticker · side arrows · learning plan · done ===== */
+
+// Courses already finished — shown with a done tick on their tiles.
+const COMPLETED = new Set(['ai-kya-hai', 'thumbnail', 'cibil']);
+
+// Free text → most relevant course (simple keyword match for the prototype).
+const MATCH_KW = {
+  'thumbnail': 'thumbnail', 'yt-channel': 'youtube|channel|subscriber', 'shorts-viral': 'shorts|viral',
+  'reel-1m': 'reel|instagram|insta', 'ai-image': 'image|photo|poster|design', 'ai-ppt': 'ppt|presentation|slide',
+  'ai-prompt': 'prompt', 'ai-blog': 'blog|article|writing', 'ai-kya-hai': '\\bai\\b|chatgpt|gpt|gemini',
+  'cibil': 'cibil|credit score', 'budgeting': 'budget|paisa|save money|kharcha', 'emergency': 'emergency fund',
+  'stock-start': 'stock|share market|invest', 'intraday': 'intraday|trading',
+  'delivery-app': 'delivery|swiggy|zomato', 'dropshipping': 'dropship', 'wa-marketing': 'whatsapp marketing',
+  'overthinking': 'overthink|tension|anxiety', 'morning': 'morning routine', 'mental': 'mental strength', 'comfort-zone': 'comfort zone|confidence',
+};
+function matchCourse(text) {
+  const t = ' ' + text.toLowerCase() + ' ';
+  for (const id in MATCH_KW) if (SUB_INDEX[id] && new RegExp('(' + MATCH_KW[id] + ')').test(t)) return id;
+  return null;
+}
+
+// Free text typed on the HOME dock → opens the chat and routes to a relevant course.
+function askFromHome() {
+  const inp = document.getElementById('home_input');
+  const text = ((inp && inp.value) || '').trim() || 'How do I get started?';
+  if (inp) inp.value = '';
+  document.getElementById('course_title').textContent = 'Ask anything';
+  document.getElementById('course_sub').textContent = 'Micro Learning';
+  showView('course');
   const chat = chatEl();
-  if (!chat || !course) return;
-  window.GC.appendUser(chat, 'Can you explain that again?');
+  chat.innerHTML = '';
+  window.GC.appendUser(chat, text);
+  const id = matchCourse(text);
   setTimeout(() => {
-    window.GC.appendAi(chat, "Of course — re-read the card above; the main idea is in the first line. Tap the button below it when you're ready to keep going. 👍");
-  }, 450);
+    if (id) {
+      const info = SUB_INDEX[id];
+      window.GC.appendAi(chat, `Good one — I've got a short course that nails this: "${info.sub.title}" (${info.catName}).`);
+      setTimeout(() => window.GC.appendChips(chat, [
+        { text: 'Start the course →', key: 'go' },
+        { text: 'Just a quick answer', key: 'quick' },
+      ], (c) => {
+        if (c.key === 'go') return openCourse(id);
+        window.GC.appendAi(chat, 'Quick version: open the tool and try the very first step today — improve one thing each time. Tap "Start the course" whenever you want the full walkthrough.');
+      }), 600);
+    } else {
+      window.GC.appendAi(chat, "Here's the short version: pick one tiny step and do it in the next 10 minutes — that's what makes it stick. Want a related course?");
+      setTimeout(() => window.GC.appendChips(chat, [
+        { text: '🤖 Get good at AI', key: 'ai-kya-hai' },
+        { text: '💳 Improve CIBIL', key: 'cibil' },
+        { text: '📺 Grow on YouTube', key: 'yt-channel' },
+      ], (c) => openCourse(c.key)), 600);
+    }
+  }, 600);
+}
+
+// Free text typed mid-course → a light, contextual answer that never breaks the flow.
+function askInCourse() {
+  const chat = chatEl();
+  if (!chat) return;
+  const inp = document.getElementById('course_input');
+  const text = ((inp && inp.value) || '').trim() || 'Can you explain that again?';
+  if (inp) inp.value = '';
+  window.GC.appendUser(chat, text);
+  setTimeout(() => {
+    window.GC.appendAi(chat, "Sure — short answer: the main idea is in the first line of the card above. Want a quick example, or shall we keep going? Tap the button on the card when you're ready. 👍");
+  }, 500);
+}
+function courseAsk() { askInCourse(); } // back-compat
+
+// Animated placeholder "ticker" so users notice they can type free text.
+const HOME_TICKER = ['What do you want to learn today?', 'Try: "YouTube thumbnail kaise banaye?"', 'Try: "CIBIL score kaise badhaye?"', 'Try: "ChatGPT se PPT banao"', 'Try: "Overthinking kaise roke?"'];
+const COURSE_TICKER = ['Reply or ask about this lesson…', 'Try: "ek aur example do"', 'Try: "isse simple karke samjhao"', 'Try: "yeh kahan use karu?"'];
+function startTicker() {
+  let hi = 0, ci = 0;
+  setInterval(() => {
+    const h = document.getElementById('home_input');
+    if (h && !h.value && document.activeElement !== h) { hi = (hi + 1) % HOME_TICKER.length; h.placeholder = HOME_TICKER[hi]; }
+    const c = document.getElementById('course_input');
+    if (c && !c.value && document.activeElement !== c) { ci = (ci + 1) % COURSE_TICKER.length; c.placeholder = COURSE_TICKER[ci]; }
+  }, 2600);
+}
+
+// Wrap a horizontal scroller with left/right side arrows.
+function withArrows(scrollEl) {
+  if (!scrollEl || scrollEl.parentNode.classList.contains('hscroll')) return;
+  const wrap = document.createElement('div');
+  wrap.className = 'hscroll';
+  scrollEl.parentNode.insertBefore(wrap, scrollEl);
+  wrap.appendChild(scrollEl);
+  const arrow = (dir) => {
+    const b = document.createElement('button');
+    b.className = 'hscroll-arrow ' + dir;
+    b.setAttribute('aria-label', dir === 'left' ? 'Scroll left' : 'Scroll right');
+    b.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M' + (dir === 'left' ? '15 6l-6 6 6 6' : '9 6l6 6-6 6') + '" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    b.onclick = () => scrollEl.scrollBy({ left: (dir === 'left' ? -1 : 1) * scrollEl.clientWidth * 0.85, behavior: 'smooth' });
+    return b;
+  };
+  const left = arrow('left'), right = arrow('right');
+  wrap.appendChild(left); wrap.appendChild(right);
+  const update = () => {
+    left.disabled = scrollEl.scrollLeft <= 4;
+    right.disabled = scrollEl.scrollLeft + scrollEl.clientWidth >= scrollEl.scrollWidth - 4;
+  };
+  scrollEl.addEventListener('scroll', update);
+  window.addEventListener('resize', update);
+  setTimeout(update, 60);
 }
 
 function openCourse(subId, resumeLesson, skipIntro) {
@@ -602,6 +714,7 @@ function showLessonCarousel(startIdx) {
     car.appendChild(slide);
   });
   chat.appendChild(car);
+  withArrows(car);
 
   const dots = document.createElement('div');
   dots.className = 'carousel-dots';
@@ -651,8 +764,8 @@ function finishCourse() {
     const next = info.next;
     end.innerHTML = `
       <button class="ce-btn primary" id="ce_remind">
-        <span class="ce-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-        <span class="ce-text">Remind me to practise<span class="ce-sub">A quick nudge so the skill sticks</span></span>
+        <span class="ce-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2.2"/><circle cx="18" cy="18" r="2.2"/><path d="M8.2 6H15a3 3 0 0 1 0 6H9a3 3 0 0 0 0 6h6.8"/></svg></span>
+        <span class="ce-text">Add to my learning plan<span class="ce-sub">A guided path through ${info.catName}</span></span>
       </button>
       ${next ? `<button class="ce-btn" id="ce_next">
         <span class="ce-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
@@ -664,7 +777,7 @@ function finishCourse() {
       </button>`;
     chat.appendChild(end);
     chat.scrollTop = chat.scrollHeight;
-    document.getElementById('ce_remind').onclick = openReminderSheet;
+    document.getElementById('ce_remind').onclick = () => openReminderSheet(info.catName);
     if (next) document.getElementById('ce_next').onclick = () => openCourse(next.id, undefined, true);
     document.getElementById('ce_share').onclick = () => shareBadge(info.sub.title);
   }, 650);
@@ -694,8 +807,15 @@ function sendWhatsApp(msg) {
 /* =========================================================================
  * REMINDER SHEET + toast
  * ========================================================================= */
-let remTime = 'Evening (7 PM)', remFreq = 'every day';
-function openReminderSheet() { document.getElementById('reminderSheet').classList.add('open'); }
+let remTime = 'Evening (7 PM)', remFreq = 'every day', planCat = '';
+function openReminderSheet(catName) {
+  planCat = catName || planCat || 'your skills';
+  const sheet = document.getElementById('reminderSheet');
+  sheet.querySelector('.sheet-h').textContent = `Your ${planCat} learning plan`;
+  sheet.querySelector('.sheet-sub').innerHTML = `I'll guide you through <strong>${planCat}</strong>, one short course at a time. Pick your pace.`;
+  const setBtn = sheet.querySelector('.sheet-set'); if (setBtn) setBtn.textContent = 'Start my learning plan';
+  sheet.classList.add('open');
+}
 function closeReminderSheet() { document.getElementById('reminderSheet').classList.remove('open'); }
 function wireSheetGroup(groupId, set) {
   document.querySelectorAll(`#${groupId} .sheet-opt`).forEach(b => {
@@ -708,7 +828,7 @@ function wireSheetGroup(groupId, set) {
 function confirmReminder() {
   closeReminderSheet();
   const clock = (remTime.match(/\(([^)]+)\)/) || [])[1] || remTime;
-  showToast(`Done — I'll remind you ${remFreq} at ${clock}. First nudge: tomorrow.`);
+  showToast(`You're on the ${planCat || 'learning'} plan — ${remFreq} at ${clock}. First course: tomorrow.`);
 }
 function showToast(text) {
   const t = document.createElement('div');
@@ -725,6 +845,7 @@ function showToast(text) {
  * ========================================================================= */
 (function init() {
   renderHome();
+  startTicker();
   wireSheetGroup('rem-time', v => remTime = v);
   wireSheetGroup('rem-freq', v => remFreq = v);
 
